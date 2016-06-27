@@ -1,0 +1,5 @@
+/.vagrant
+/vendor
+/reports
+/composer.phar
+.DS_Store
