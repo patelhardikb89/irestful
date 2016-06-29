@@ -6,15 +6,19 @@ use iRESTful\Rodson\Domain\Codes\Exceptions\CodeException;
 
 final class ConcreteCode implements Code {
     private $language;
-    private $code;
-    public function __construct(Language $language, $code) {
+    private $className;
+    public function __construct(Language $language, $className) {
 
-        if (empty($code) || !is_string($code)) {
-            throw new CodeException('The code must be a non-empty string.');
+        if (empty($className) || !is_string($className)) {
+            throw new CodeException('The className must be a non-empty string.');
+        }
+
+        if (!class_exists($className)) {
+            throw new CodeException('The className ('.$className.') is invalid.');
         }
 
         $this->language = $language;
-        $this->code = $code;
+        $this->className = $className;
 
     }
 
@@ -22,8 +26,8 @@ final class ConcreteCode implements Code {
         return $this->language;
     }
 
-    public function get() {
-        return $this->code;
+    public function getClassName() {
+        return $this->className;
     }
 
 }

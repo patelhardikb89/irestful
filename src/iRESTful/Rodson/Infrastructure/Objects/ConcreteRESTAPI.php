@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Infrastructure\Objects;
 use iRESTful\Rodson\Domain\Databases\RESTAPIs\RESTAPI;
 use iRESTful\Rodson\Domain\Databases\RESTAPIs\Exceptions\RESTAPIException;
-use iRESTful\Objects\Libraries\Credentials\Domain\Credentials;
+use iRESTful\Rodson\Domain\Databases\Credentials\Credentials;
 
 final class ConcreteRESTAPI implements RESTAPI {
     private $baseUrl;

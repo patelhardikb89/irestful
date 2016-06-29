@@ -6,12 +6,12 @@ use iRESTful\Rodson\Domain\Types\Exceptions\TypeException;
 final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
     private $databaseTypeMock;
     private $adapterMock;
-    private $codeMock;
+    private $methodMock;
     private $name;
     public function setUp() {
         $this->databaseTypeMock = $this->getMock('iRESTful\Rodson\Domain\Types\Databases\DatabaseType');
         $this->adapterMock = $this->getMock('iRESTful\Rodson\Domain\Adapters\Adapter');
-        $this->codeMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Code');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Methods\Method');
 
         $this->name = 'MyType';
     }
@@ -30,8 +30,8 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertNull($type->getDatabaseAdapter());
         $this->assertFalse($type->hasViewAdapter());
         $this->assertNull($type->getViewAdapter());
-        $this->assertFalse($type->hasCode());
-        $this->assertNull($type->getCode());
+        $this->assertFalse($type->hasMethod());
+        $this->assertNull($type->getMethod());
 
     }
 
@@ -45,8 +45,8 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->adapterMock, $type->getDatabaseAdapter());
         $this->assertFalse($type->hasViewAdapter());
         $this->assertNull($type->getViewAdapter());
-        $this->assertFalse($type->hasCode());
-        $this->assertNull($type->getCode());
+        $this->assertFalse($type->hasMethod());
+        $this->assertNull($type->getMethod());
 
     }
 
@@ -60,14 +60,14 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertNull($type->getDatabaseAdapter());
         $this->assertTrue($type->hasViewAdapter());
         $this->assertEquals($this->adapterMock, $type->getViewAdapter());
-        $this->assertFalse($type->hasCode());
-        $this->assertNull($type->getCode());
+        $this->assertFalse($type->hasMethod());
+        $this->assertNull($type->getMethod());
 
     }
 
     public function testCreate_withCode_Success() {
 
-        $type = new ConcreteType($this->name, $this->databaseTypeMock, null, null, $this->codeMock);
+        $type = new ConcreteType($this->name, $this->databaseTypeMock, null, null, $this->methodMock);
 
         $this->assertEquals($this->name, $type->getName());
         $this->assertEquals($this->databaseTypeMock, $type->getDatabaseType());
@@ -75,14 +75,14 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertNull($type->getDatabaseAdapter());
         $this->assertFalse($type->hasViewAdapter());
         $this->assertNull($type->getViewAdapter());
-        $this->assertTrue($type->hasCode());
-        $this->assertEquals($this->codeMock, $type->getCode());
+        $this->assertTrue($type->hasMethod());
+        $this->assertEquals($this->methodMock, $type->getMethod());
 
     }
 
     public function testCreate_withDatabaseAdapter_withViewAdapter_withCode_Success() {
 
-        $type = new ConcreteType($this->name, $this->databaseTypeMock, $this->adapterMock, $this->adapterMock, $this->codeMock);
+        $type = new ConcreteType($this->name, $this->databaseTypeMock, $this->adapterMock, $this->adapterMock, $this->methodMock);
 
         $this->assertEquals($this->name, $type->getName());
         $this->assertEquals($this->databaseTypeMock, $type->getDatabaseType());
@@ -90,8 +90,8 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->adapterMock, $type->getDatabaseAdapter());
         $this->assertTrue($type->hasViewAdapter());
         $this->assertEquals($this->adapterMock, $type->getViewAdapter());
-        $this->assertTrue($type->hasCode());
-        $this->assertEquals($this->codeMock, $type->getCode());
+        $this->assertTrue($type->hasMethod());
+        $this->assertEquals($this->methodMock, $type->getMethod());
 
     }
 

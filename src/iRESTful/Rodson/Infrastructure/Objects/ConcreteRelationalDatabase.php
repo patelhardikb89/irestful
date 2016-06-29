@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
 use iRESTful\Rodson\Domain\Databases\Relationals\RelationalDatabase;
-use iRESTful\Objects\Libraries\Credentials\Domain\Credentials;
+use iRESTful\Rodson\Domain\Databases\Credentials\Credentials;
 use iRESTful\Rodson\Domain\Databases\Relationals\Exceptions\RelationalDatabaseException;
 
 final class ConcreteRelationalDatabase implements RelationalDatabase {

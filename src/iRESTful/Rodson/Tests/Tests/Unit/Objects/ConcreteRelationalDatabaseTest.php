@@ -10,7 +10,7 @@ final class ConcreteRelationalDatabaseTest extends \PHPUnit_Framework_TestCase {
     private $hostName;
     public function setUp() {
 
-        $this->credentialsMock = $this->getMock('iRESTful\Objects\Libraries\Credentials\Domain\Credentials');
+        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Databases\Credentials\Credentials');
 
         $this->driver = 'mysql';
         $this->ipAddress = '127.0.0.1';

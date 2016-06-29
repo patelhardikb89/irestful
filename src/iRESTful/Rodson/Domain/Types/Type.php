@@ -8,6 +8,6 @@ interface Type {
     public function getDatabaseAdapter();
     public function hasViewAdapter();
     public function getViewAdapter();
-    public function hasCode();
-    public function getCode();
+    public function hasMethod();
+    public function getMethod();
 }

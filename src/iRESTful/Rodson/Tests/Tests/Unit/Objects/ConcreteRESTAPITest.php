@@ -9,7 +9,7 @@ final class ConcreteRESTAPITest extends \PHPUnit_Framework_TestCase {
     private $port;
     private $headerLine;
     public function setUp() {
-        $this->credentialsMock = $this->getMock('iRESTful\Objects\Libraries\Credentials\Domain\Credentials');
+        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Databases\Credentials\Credentials');
 
         $this->baseUrl = 'http://apis.irestful.com';
         $this->port = rand(1, 500);

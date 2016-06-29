@@ -9,7 +9,7 @@ final class ConcreteCodeTest extends \PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->languageMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Languages\Language');
 
-        $this->code = 'some code';
+        $this->className = 'iRESTful\Rodson\Tests\Tests\Unit\Objects\ConcreteCodeTest';
     }
 
     public function tearDown() {
@@ -18,12 +18,28 @@ final class ConcreteCodeTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_Success() {
 
-        $code = new ConcreteCode($this->languageMock, $this->code);
+        $code = new ConcreteCode($this->languageMock, $this->className);
 
         $this->assertEquals($this->languageMock, $code->getLanguage());
-        $this->assertEquals($this->code, $code->get());
+        $this->assertEquals($this->className, $code->getClassName());
 
     }
+
+    public function testCreate_withInvalidClassName_throwsCodeException() {
+
+        $asserted = false;
+        try {
+
+            new ConcreteCode($this->languageMock, 'this is not a valid class name.');
+
+        } catch (CodeException $exception) {
+            $asserted = true;
+        }
+
+        $this->assertTrue($asserted);
+
+    }
+
 
     public function testCreate_withEmptyCode_throwsCodeException() {
 
