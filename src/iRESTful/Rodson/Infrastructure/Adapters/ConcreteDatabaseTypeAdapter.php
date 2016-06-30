@@ -57,7 +57,7 @@ final class ConcreteDatabaseTypeAdapter implements DatabaseTypeAdapter {
                 $string = $this->stringAdapter->fromDataToString($data);
             }
 
-            return new ConcreteDatabaseType($data['name'], $hasBoolean, $binary, $float, $integer, $string);
+            return new ConcreteDatabaseType($hasBoolean, $binary, $float, $integer, $string);
 
         } catch (BinaryException $exception) {
             throw new DatabaseTypeException('There was an exception while converting data to a Binary object.', $exception);

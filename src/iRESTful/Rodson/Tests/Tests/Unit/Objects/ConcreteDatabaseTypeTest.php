@@ -8,14 +8,11 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
     private $floatMock;
     private $integerMock;
     private $stringMock;
-    private $name;
     public function setUp() {
         $this->binaryMock = $this->getMock('iRESTful\Rodson\Domain\Types\Databases\Binaries\Binary');
         $this->floatMock = $this->getMock('iRESTful\Rodson\Domain\Types\Databases\Floats\Float');
         $this->integerMock = $this->getMock('iRESTful\Rodson\Domain\Types\Databases\Integers\Integer');
         $this->stringMock = $this->getMock('iRESTful\Rodson\Domain\Types\Databases\Strings\String');
-
-        $this->name = 'some_name';
     }
 
     public function tearDown() {
@@ -24,9 +21,8 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_withBinary_Success() {
 
-        $type = new ConcreteDatabaseType($this->name, false, $this->binaryMock);
+        $type = new ConcreteDatabaseType(false, $this->binaryMock);
 
-        $this->assertEquals($this->name, $type->getName());
         $this->assertFalse($type->hasBoolean());
         $this->assertTrue($type->hasBinary());
         $this->assertEquals($this->binaryMock, $type->getBinary());
@@ -41,9 +37,8 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_withFloat_Success() {
 
-        $type = new ConcreteDatabaseType($this->name, false, null, $this->floatMock);
+        $type = new ConcreteDatabaseType(false, null, $this->floatMock);
 
-        $this->assertEquals($this->name, $type->getName());
         $this->assertFalse($type->hasBoolean());
         $this->assertFalse($type->hasBinary());
         $this->assertNull($type->getBinary());
@@ -58,9 +53,8 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_withInteger_Success() {
 
-        $type = new ConcreteDatabaseType($this->name, false, null, null, $this->integerMock);
+        $type = new ConcreteDatabaseType(false, null, null, $this->integerMock);
 
-        $this->assertEquals($this->name, $type->getName());
         $this->assertFalse($type->hasBoolean());
         $this->assertFalse($type->hasBinary());
         $this->assertNull($type->getBinary());
@@ -75,9 +69,8 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_withString_Success() {
 
-        $type = new ConcreteDatabaseType($this->name, false, null, null, null, $this->stringMock);
+        $type = new ConcreteDatabaseType(false, null, null, null, $this->stringMock);
 
-        $this->assertEquals($this->name, $type->getName());
         $this->assertFalse($type->hasBoolean());
         $this->assertFalse($type->hasBinary());
         $this->assertNull($type->getBinary());
@@ -92,9 +85,8 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_withBoolean_Success() {
 
-        $type = new ConcreteDatabaseType($this->name, true);
+        $type = new ConcreteDatabaseType(true);
 
-        $this->assertEquals($this->name, $type->getName());
         $this->assertTrue($type->hasBoolean());
         $this->assertFalse($type->hasBinary());
         $this->assertNull($type->getBinary());
@@ -112,7 +104,7 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteDatabaseType($this->name, true, $this->binaryMock, $this->floatMock, $this->integerMock, $this->stringMock);
+            new ConcreteDatabaseType(true, $this->binaryMock, $this->floatMock, $this->integerMock, $this->stringMock);
 
         } catch (DatabaseTypeException $exception) {
             $asserted = true;
@@ -127,7 +119,7 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteDatabaseType($this->name, false);
+            new ConcreteDatabaseType(false);
 
         } catch (DatabaseTypeException $exception) {
             $asserted = true;
@@ -136,43 +128,13 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($asserted);
 
     }
-
-    public function testCreate_withEmptyName_throwsDatabaseTypeException() {
-
-        $asserted = false;
-        try {
-
-            new ConcreteDatabaseType('', false);
-
-        } catch (DatabaseTypeException $exception) {
-            $asserted = true;
-        }
-
-        $this->assertTrue($asserted);
-
-    }
-
-    public function testCreate_withNonStringName_throwsDatabaseTypeException() {
-
-        $asserted = false;
-        try {
-
-            new ConcreteDatabaseType(new \DateTime(), false);
-
-        } catch (DatabaseTypeException $exception) {
-            $asserted = true;
-        }
-
-        $this->assertTrue($asserted);
-
-    }
-
+    
     public function testCreate_withNonBooleanHasBoolean_throwsDatabaseTypeException() {
 
         $asserted = false;
         try {
 
-            new ConcreteDatabaseType($this->name, new \DateTime());
+            new ConcreteDatabaseType(new \DateTime());
 
         } catch (DatabaseTypeException $exception) {
             $asserted = true;

@@ -2,7 +2,6 @@
 namespace iRESTful\Rodson\Domain\Types\Databases;
 
 interface DatabaseType {
-    public function getName();
     public function hasBoolean();
     public function hasBinary();
     public function getBinary();

@@ -8,20 +8,15 @@ use iRESTful\Rodson\Domain\Types\Databases\Strings\String;
 use iRESTful\Rodson\Domain\Types\Databases\Exceptions\DatabaseTypeException;
 
 final class ConcreteDatabaseType implements DatabaseType {
-    private $name;
     private $hasBoolean;
     private $binary;
     private $float;
     private $integer;
     private $string;
-    public function __construct($name, $hasBoolean, Binary $binary = null, Float $float = null, Integer $integer = null, String $string = null) {
+    public function __construct($hasBoolean, Binary $binary = null, Float $float = null, Integer $integer = null, String $string = null) {
 
         if (!is_bool($hasBoolean)) {
             throw new DatabaseTypeException('The hasBoolean parameter must be boolean.');
-        }
-
-        if (empty($name) || !is_string($name)) {
-            throw new DatabaseTypeException('The name must be a non-empty string.');
         }
 
         $amount = ($hasBoolean ? 1 : 0) + (empty($binary) ? 0 : 1) + (empty($float) ? 0 : 1) + (empty($integer) ? 0 : 1) + (empty($string) ? 0 : 1);
@@ -30,15 +25,10 @@ final class ConcreteDatabaseType implements DatabaseType {
         }
 
         $this->hasBoolean = $hasBoolean;
-        $this->name = $name;
         $this->binary = $binary;
         $this->float = $float;
         $this->integer = $integer;
         $this->string = $string;
-    }
-
-    public function getName() {
-        return $this->name;
     }
 
     public function hasBoolean() {
