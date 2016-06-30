@@ -9,6 +9,7 @@ use iRESTful\Rodson\Domain\Types\Exceptions\TypeException;
 use iRESTful\Rodson\Domain\Codes\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Types\Databases\Exceptions\DatabaseTypeException;
 
+//must have indexes.  Have a look at ConcreteAdapterAdapter's code.
 final class ConcreteTypeAdapter implements TypeAdapter {
     private $databaseTypeAdapter;
     private $methodAdapter;

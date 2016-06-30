@@ -3,7 +3,7 @@ namespace iRESTful\Rodson\Infrastructure\Adapters;
 use iRESTful\Rodson\Domain\Adapters\Adapters\AdapterAdapter;
 use iRESTful\Rodson\Domain\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteAdapter;
-use iRESTful\Rodson\Domain\Codes\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Adapters\Exceptions\AdapterException;
 
 final class ConcreteAdapterAdapter implements AdapterAdapter {

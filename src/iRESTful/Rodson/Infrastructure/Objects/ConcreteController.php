@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
 use iRESTful\Rodson\Domain\Controllers\Controller;
-use iRESTful\Rodson\Domain\Controllers\Views\View;
+use iRESTful\Rodson\Domain\Views\View;
 use iRESTful\Rodson\Domain\Controllers\Exceptions\ControllerException;
 
 final class ConcreteController implements Controller {

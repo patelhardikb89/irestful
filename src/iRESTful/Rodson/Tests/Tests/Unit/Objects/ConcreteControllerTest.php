@@ -8,7 +8,7 @@ final class ConcreteControllerTest extends \PHPUnit_Framework_TestCase {
     private $pattern;
     private $instructions;
     public function setUp() {
-        $this->viewMock = $this->getMock('iRESTful\Rodson\Domain\Controllers\Views\View');
+        $this->viewMock = $this->getMock('iRESTful\Rodson\Domain\Views\View');
 
         $this->pattern = '/\/[a-zA-Z]+/s';
 

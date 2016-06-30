@@ -20,7 +20,7 @@ final class ConcreteDatabaseAdapter implements DatabaseAdapter {
     public function fromDataToDatabases(array $data) {
         $output = [];
         foreach($data as $name => $oneData) {
-            $oneData['name'] => $name;
+            $oneData['name'] = $name;
             $output[] = $this->fromDataToDatabase($oneData);
         }
 

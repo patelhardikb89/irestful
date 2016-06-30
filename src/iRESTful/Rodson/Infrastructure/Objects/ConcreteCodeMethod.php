@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Infrastructure\Objects;
 use iRESTful\Rodson\Domain\Codes\Methods\Method;
 use iRESTful\Rodson\Domain\Codes\Code;
-use iRESTful\Rodson\Domain\Codes\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
 
 final class ConcreteCodeMethod implements Method {
     private $code;

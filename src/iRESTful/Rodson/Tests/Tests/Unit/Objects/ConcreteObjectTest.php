@@ -5,10 +5,12 @@ use iRESTful\Rodson\Domain\Objects\Exceptions\ObjectException;
 
 final class ConcreteObjectTest extends \PHPUnit_Framework_TestCase {
     private $propertyMock;
+    private $databaseMock;
     private $name;
     private $properties;
     public function setUp() {
         $this->propertyMock = $this->getMock('iRESTful\Rodson\Domain\Objects\Properties\Property');
+        $this->databaseMock = $this->getMock('iRESTful\Rodson\Domain\Databases\Database');
 
         $this->name = 'MyObject';
         $this->properties = [
@@ -26,6 +28,19 @@ final class ConcreteObjectTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($this->name, $object->getName());
         $this->assertEquals($this->properties, $object->getProperties());
+        $this->assertFalse($object->hasDatabase());
+        $this->assertNull($object->getDatabase());
+
+    }
+
+    public function testCreate_withDatabase_Success() {
+
+        $object = new ConcreteObject($this->name, $this->properties, $this->databaseMock);
+
+        $this->assertEquals($this->name, $object->getName());
+        $this->assertEquals($this->properties, $object->getProperties());
+        $this->assertTrue($object->hasDatabase());
+        $this->assertEquals($this->databaseMock, $object->getDatabase());
 
     }
 

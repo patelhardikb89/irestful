@@ -6,6 +6,7 @@ use iRESTful\Rodson\Infrastructure\Objects\ConcreteView;
 use iRESTful\Rodson\Domain\Views\Exceptions\ViewException;
 use iRESTful\Rodson\Domain\Codes\Exceptions\MethodException;
 
+//must have keynames.  Have a look at ConcreteControllerAdapter
 final class ConcreteViewAdapter implements ViewAdapter {
     private $methodAdapter;
     public function __construct(MethodAdapter $methodAdapter) {

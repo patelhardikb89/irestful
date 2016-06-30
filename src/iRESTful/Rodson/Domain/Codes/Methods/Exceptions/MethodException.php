@@ -1,5 +1,5 @@
 <?php
-namespace iRESTful\Rodson\Domain\Codes\Exceptions;
+namespace iRESTful\Rodson\Domain\Codes\Methods\Exceptions;
 
 final class MethodException extends \Exception {
     const CODE = 1;
