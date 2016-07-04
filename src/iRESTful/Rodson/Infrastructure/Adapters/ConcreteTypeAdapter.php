@@ -6,10 +6,9 @@ use iRESTful\Rodson\Domain\Types\Databases\Adapters\DatabaseTypeAdapter;
 use iRESTful\Rodson\Domain\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteType;
 use iRESTful\Rodson\Domain\Types\Exceptions\TypeException;
-use iRESTful\Rodson\Domain\Codes\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Types\Databases\Exceptions\DatabaseTypeException;
 
-//must have indexes.  Have a look at ConcreteAdapterAdapter's code.
 final class ConcreteTypeAdapter implements TypeAdapter {
     private $databaseTypeAdapter;
     private $methodAdapter;
@@ -24,7 +23,7 @@ final class ConcreteTypeAdapter implements TypeAdapter {
         $output = [];
         foreach($data as $name => $oneData) {
             $oneData['name'] = $name;
-            $output[] = $this->fromDataToType($oneData);
+            $output[$name] = $this->fromDataToType($oneData);
         }
 
         return $output;
@@ -32,7 +31,7 @@ final class ConcreteTypeAdapter implements TypeAdapter {
 
     public function fromDataToType(array $data) {
 
-        $adpters = $this->adapters;
+        $adapters = $this->adapters;
         $getAdapter = function(array $data) use(&$adapters) {
 
             if (!isset($data['from'])) {

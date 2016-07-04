@@ -167,11 +167,11 @@ final class ConcreteDatabaseAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $databases = $this->adapter->fromDataToDatabases($this->multipleData);
 
-        $this->assertEquals($this->name, $databases[0]->getName());
-        $this->assertFalse($databases[0]->hasRelational());
-        $this->assertNull($databases[0]->getRelational());
-        $this->assertTrue($databases[0]->hasRESTAPI());
-        $this->assertEquals($this->restAPIMock, $databases[0]->getRESTAPI());
+        $this->assertEquals($this->name, $databases[$this->name]->getName());
+        $this->assertFalse($databases[$this->name]->hasRelational());
+        $this->assertNull($databases[$this->name]->getRelational());
+        $this->assertTrue($databases[$this->name]->hasRESTAPI());
+        $this->assertEquals($this->restAPIMock, $databases[$this->name]->getRESTAPI());
     }
 
 }

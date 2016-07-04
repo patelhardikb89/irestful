@@ -34,7 +34,7 @@ final class ConcreteRESTAPIAdapter implements RESTAPIAdapter {
                 $credentials = $this->credentialsAdapter->fromDataToCredentials($data['credentials']);
             }
 
-            return new ConcreteRESTAPI(($data['base_url'], $data['port'], $credentials, $headerLine);
+            return new ConcreteRESTAPI($data['base_url'], $data['port'], $credentials, $headerLine);
 
         } catch (CredentialsException $exception) {
             throw new RESTAPIException('There was an exception while converting data to a Credentials object.', $exception);

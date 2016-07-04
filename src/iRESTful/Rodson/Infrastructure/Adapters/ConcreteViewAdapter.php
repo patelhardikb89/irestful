@@ -4,9 +4,8 @@ use iRESTful\Rodson\Domain\Views\Adapters\ViewAdapter;
 use iRESTful\Rodson\Domain\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteView;
 use iRESTful\Rodson\Domain\Views\Exceptions\ViewException;
-use iRESTful\Rodson\Domain\Codes\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
 
-//must have keynames.  Have a look at ConcreteControllerAdapter
 final class ConcreteViewAdapter implements ViewAdapter {
     private $methodAdapter;
     public function __construct(MethodAdapter $methodAdapter) {
@@ -16,7 +15,7 @@ final class ConcreteViewAdapter implements ViewAdapter {
     public function fromDataToViews(array $data) {
         $output = [];
         foreach($data as $name => $oneMethod) {
-            $output[] = $this->fromDataToView([
+            $output[$name] = $this->fromDataToView([
                 'name' => $name,
                 'method' => $oneMethod
             ]);
@@ -37,7 +36,7 @@ final class ConcreteViewAdapter implements ViewAdapter {
 
         try {
 
-            $method = $this->methodAdapter->fromStringToMethod(($data['method']);
+            $method = $this->methodAdapter->fromStringToMethod($data['method']);
             return new ConcreteView($data['name'], $method);
 
         } catch (MethodException $exception) {

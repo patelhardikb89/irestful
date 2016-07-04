@@ -1,5 +1,9 @@
 {
     "name": "authenticated",
+    "code": {
+        "language": "PHP",
+        "class": "iRESTful\\Rodson\\Tests\\Tests\\Files\\Codes\\Authenticated"
+    },
     "objects": {
         "api": {
             "database": "pdo",
@@ -213,9 +217,5 @@
                 }
             }
         }
-    },
-    "code": {
-        "language": "PHP",
-        "class": "iRESTful\\Rodson\\Tests\\Tests\\Files\\Codes\\Authenticated"
     }
 }

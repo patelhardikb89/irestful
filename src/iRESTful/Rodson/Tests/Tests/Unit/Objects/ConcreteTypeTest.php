@@ -65,7 +65,7 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testCreate_withCode_Success() {
+    public function testCreate_withMethod_Success() {
 
         $type = new ConcreteType($this->name, $this->databaseTypeMock, null, null, $this->methodMock);
 
@@ -80,7 +80,7 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testCreate_withDatabaseAdapter_withViewAdapter_withCode_Success() {
+    public function testCreate_withDatabaseAdapter_withViewAdapter_withMethod_Success() {
 
         $type = new ConcreteType($this->name, $this->databaseTypeMock, $this->adapterMock, $this->adapterMock, $this->methodMock);
 

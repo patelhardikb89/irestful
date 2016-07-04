@@ -2,14 +2,14 @@
 namespace iRESTful\Rodson\Infrastructure\Adapters;
 use iRESTful\Rodson\Domain\Objects\Properties\Adapters\PropertyAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteObject;
-use RESTful\Rodson\Domain\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Objects\Exceptions\ObjectException;
 use iRESTful\Rodson\Domain\Objects\Properties\Exceptions\PropertyException;
+use iRESTful\Rodson\Domain\Objects\Adapters\ObjectAdapter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $propertyAdapter;
     private $databases;
     public function __construct(PropertyAdapter $propertyAdapter, array $databases) {
-        $this->databaseAdapter = $databaseAdapter;
         $this->propertyAdapter = $propertyAdapter;
         $this->databases = $databases;
     }
@@ -18,7 +18,7 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
 
         $output = [];
         foreach($data as $name => $oneData) {
-            $oneData = array_merge(['name' => $name], $oneData);
+            $oneData['name'] = $name;
             $output[] = $this->fromDataToObject($oneData);
         }
 
@@ -40,15 +40,15 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
             $database = null;
             if (isset($data['database'])) {
 
-                if (!isset($this->databases[($data['database']])) {
-                    throw new ObjectException('The referenced database ('.($data['database'].') does not exists.');
+                if (!isset($this->databases[$data['database']])) {
+                    throw new ObjectException('The referenced database ('.$data['database'].') does not exists.');
                 }
 
-                $datbaase = $this->databases[($data['database']];
+                $database = $this->databases[$data['database']];
             }
 
             $properties = $this->propertyAdapter->fromDataToProperties($data['properties']);
-            return new ConcreteObject($data['name'], $properties, $datbaase);
+            return new ConcreteObject($data['name'], $properties, $database);
 
         } catch (PropertyException $exception) {
             throw new ObjectException('There was an exception while converting data to Property objects.', $exception);

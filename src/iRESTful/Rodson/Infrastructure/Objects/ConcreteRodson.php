@@ -6,9 +6,9 @@ use iRESTful\Rodson\Domain\Exceptions\RodsonException;
 final class ConcreteRodson implements Rodson {
     private $name;
     private $parents;
-    private $entities;
+    private $objects;
     private $controllers;
-    public function __construct($name, array $entities, array $controllers, array $parents = null) {
+    public function __construct($name, array $objects, array $controllers, array $parents = null) {
 
         $verify = function(array $data = null, $type, $badIndexMessage, $badTypeMessage) {
 
@@ -38,8 +38,8 @@ final class ConcreteRodson implements Rodson {
             throw new RodsonException('The name must be a non-empty string.');
         }
 
-        if (empty($entities)) {
-            throw new RodsonException('There must be at least 1 entity.');
+        if (empty($objects)) {
+            throw new RodsonException('There must be at least 1 object.');
         }
 
         if (empty($controllers)) {
@@ -47,12 +47,12 @@ final class ConcreteRodson implements Rodson {
         }
 
         $verify($parents, 'iRESTful\Rodson\Domain\Rodson', 'The indexes in the parents array must be integers.', 'The parents must only contain Rodson objects.');
-        $verify($entities, 'iRESTful\Rodson\Domain\Entities\Entity', 'The indexes in the entities array must be integers.', 'The entities must only contain Entity objects.');
+        $verify($objects, 'iRESTful\Rodson\Domain\Objects\Object', 'The indexes in the objects array must be integers.', 'The objects must only contain Entity objects.');
         $verify($controllers, 'iRESTful\Rodson\Domain\Controllers\Controller', 'The indexes in the controllers array must be integers.', 'The controllers must only contain Controller objects.');
 
         $this->name = $name;
         $this->parents = $parents;
-        $this->entities = $entities;
+        $this->objects = $objects;
         $this->controllers = $controllers;
     }
 
@@ -60,8 +60,8 @@ final class ConcreteRodson implements Rodson {
         return $this->name;
     }
 
-    public function getEntities() {
-        return $this->entities;
+    public function getObjects() {
+        return $this->objects;
     }
 
     public function getControllers() {

@@ -6,6 +6,7 @@ use iRESTful\Rodson\Domain\Objects\Adapters\ObjectAdapter;
 use iRESTful\Rodson\Domain\Controllers\Adapters\ControllerAdapter;
 use iRESTful\Rodson\Domain\Objects\Exceptions\ObjectException;
 use iRESTful\Rodson\Domain\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Infrastructure\Objects\ConcreteRodson;
 
 final class ConcreteRodsonAdapter implements RodsonAdapter {
     private $objectAdapter;
@@ -13,21 +14,6 @@ final class ConcreteRodsonAdapter implements RodsonAdapter {
     public function __construct(ObjectAdapter $objectAdapter, ControllerAdapter $controllerAdapter) {
         $this->objectAdapter = $objectAdapter;
         $this->controllerAdapter = $controllerAdapter;
-    }
-
-    public function fromJsonStringToRodson($json) {
-
-        if (empty($json)) {
-            throw new RodsonException('The json cannot be empty.');
-        }
-
-        $data = @json_decode($json, true);
-        if (empty($data)) {
-            throw new RodsonException('The given json is invalid.');
-        }
-
-        return $this->fromDataToRodson($data);
-
     }
 
     public function fromDataToRodson(array $data) {
@@ -53,6 +39,8 @@ final class ConcreteRodsonAdapter implements RodsonAdapter {
 
             $objects = $this->objectAdapter->fromDataToObjects($data['objects']);
             $controllers = $this->controllerAdapter->fromDataToControllers($data['controllers']);
+
+            return new ConcreteRodson($data['name'], $objects, $controllers, $parents);
 
         } catch (ObjectException $exception) {
             throw new RodsonException('There was an exception while converting data to Object objects.', $exception);

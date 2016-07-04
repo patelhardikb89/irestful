@@ -5,15 +5,15 @@ use iRESTful\Rodson\Domain\Exceptions\RodsonException;
 
 final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
     private $rodsonMock;
-    private $entityMock;
+    private $objectMock;
     private $controllerMock;
     private $name;
     private $parents;
-    private $entities;
+    private $objects;
     private $controllers;
     public function setUp() {
         $this->rodsonMock = $this->getMock('iRESTful\Rodson\Domain\Rodson');
-        $this->entityMock = $this->getMock('iRESTful\Rodson\Domain\Entities\Entity');
+        $this->objectMock = $this->getMock('iRESTful\Rodson\Domain\Objects\Object');
         $this->controllerMock = $this->getMock('iRESTful\Rodson\Domain\Controllers\Controller');
 
         $this->name = 'MyProject';
@@ -23,9 +23,9 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
             $this->rodsonMock
         ];
 
-        $this->entities = [
-            $this->entityMock,
-            $this->entityMock
+        $this->objects = [
+            $this->objectMock,
+            $this->objectMock
         ];
 
         $this->controllers = [
@@ -40,10 +40,10 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_Success() {
 
-        $rodson = new ConcreteRodson($this->name, $this->entities, $this->controllers);
+        $rodson = new ConcreteRodson($this->name, $this->objects, $this->controllers);
 
         $this->assertEquals($this->name, $rodson->getName());
-        $this->assertEquals($this->entities, $rodson->getEntities());
+        $this->assertEquals($this->objects, $rodson->getObjects());
         $this->assertEquals($this->controllers, $rodson->getControllers());
         $this->assertFalse($rodson->hasParents());
         $this->assertNull($rodson->getParents());
@@ -52,10 +52,10 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_withParents_Success() {
 
-        $rodson = new ConcreteRodson($this->name, $this->entities, $this->controllers, $this->parents);
+        $rodson = new ConcreteRodson($this->name, $this->objects, $this->controllers, $this->parents);
 
         $this->assertEquals($this->name, $rodson->getName());
-        $this->assertEquals($this->entities, $rodson->getEntities());
+        $this->assertEquals($this->objects, $rodson->getObjects());
         $this->assertEquals($this->controllers, $rodson->getControllers());
         $this->assertTrue($rodson->hasParents());
         $this->assertEquals($this->parents, $rodson->getParents());
@@ -67,7 +67,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteRodson($this->name, $this->entities, $this->controllers, ['some' => $this->rodsonMock]);
+            new ConcreteRodson($this->name, $this->objects, $this->controllers, ['some' => $this->rodsonMock]);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -84,7 +84,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteRodson($this->name, $this->entities, $this->controllers, $this->parents);
+            new ConcreteRodson($this->name, $this->objects, $this->controllers, $this->parents);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -99,7 +99,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteRodson($this->name, $this->entities, ['some' => $this->controllerMock]);
+            new ConcreteRodson($this->name, $this->objects, ['some' => $this->controllerMock]);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -116,7 +116,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteRodson($this->name, $this->entities, $this->controllers);
+            new ConcreteRodson($this->name, $this->objects, $this->controllers);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -131,7 +131,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteRodson($this->name, $this->entities, []);
+            new ConcreteRodson($this->name, $this->objects, []);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -141,12 +141,12 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testCreate_withInvalidIndexInEntities_throwsRodsonException() {
+    public function testCreate_withInvalidIndexInObjects_throwsRodsonException() {
 
         $asserted = false;
         try {
 
-            new ConcreteRodson($this->name, ['some' => $this->entityMock], $this->controllers);
+            new ConcreteRodson($this->name, ['some' => $this->objectMock], $this->controllers);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -158,12 +158,12 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_withOneInvalidEntity_throwsRodsonException() {
 
-        $this->entities[] = new \DateTime();
+        $this->objects[] = new \DateTime();
 
         $asserted = false;
         try {
 
-            new ConcreteRodson($this->name, $this->entities, $this->controllers);
+            new ConcreteRodson($this->name, $this->objects, $this->controllers);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -173,7 +173,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testCreate_withEmptyEntities_throwsRodsonException() {
+    public function testCreate_withEmptyObjects_throwsRodsonException() {
 
         $asserted = false;
         try {
@@ -193,7 +193,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteRodson('', $this->entities, $this->controllers);
+            new ConcreteRodson('', $this->objects, $this->controllers);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -208,7 +208,7 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteRodson(new \DateTime(), $this->entities, $this->controllers);
+            new ConcreteRodson(new \DateTime(), $this->objects, $this->controllers);
 
         } catch (RodsonException $exception) {
             $asserted = true;

@@ -6,6 +6,7 @@ use iRESTful\Rodson\Infrastructure\Objects\ConcreteAdapter;
 use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Adapters\Exceptions\AdapterException;
 
+//must have keynames.  Have a look at the ConcreteTypeAdapter.
 final class ConcreteAdapterAdapter implements AdapterAdapter {
     private $methodAdapter;
     private $types;
