@@ -19,11 +19,33 @@ final class ConcreteTypeAdapter implements TypeAdapter {
         $this->adapters = $adapters;
     }
 
+    public function fromDataToValidTypes(array $data) {
+        return $this->convertMultipleDataToTypes($data, false);
+    }
+
     public function fromDataToTypes(array $data) {
+        return $this->convertMultipleDataToTypes($data, true);
+    }
+
+    private function convertMultipleDataToTypes(array $data, $throwException) {
         $output = [];
         foreach($data as $name => $oneData) {
+            
             $oneData['name'] = $name;
-            $output[$name] = $this->fromDataToType($oneData);
+
+            try {
+
+                $output[$name] = $this->fromDataToType($oneData);
+
+            } catch (TypeException $exception) {
+
+                if ($throwException) {
+                    throw $exception;
+                }
+
+                continue;
+
+            }
         }
 
         return $output;
@@ -32,7 +54,7 @@ final class ConcreteTypeAdapter implements TypeAdapter {
     public function fromDataToType(array $data) {
 
         $adapters = $this->adapters;
-        $getAdapter = function(array $data) use(&$adapters) {
+        $getAdapter = function($currentTypeName, array $data) use(&$adapters) {
 
             if (!isset($data['from'])) {
                 throw new TypeException('The from keyname is mandatory in order to retrieve the adapter.');
@@ -63,12 +85,12 @@ final class ConcreteTypeAdapter implements TypeAdapter {
 
             $databaseAdapter = null;
             if (isset($data['adapters']['database_to_object'])) {
-                $databaseAdapter = $getAdapter($data['adapters']['database_to_object']);
+                $databaseAdapter = $getAdapter($data['name'], $data['adapters']['database_to_object']);
             }
 
             $viewAdapter = null;
             if (isset($data['adapters']['object_to_view'])) {
-                $viewAdapter = $getAdapter($data['adapters']['object_to_view']);
+                $viewAdapter = $getAdapter($data['name'], $data['adapters']['object_to_view']);
             }
 
             $method = null;

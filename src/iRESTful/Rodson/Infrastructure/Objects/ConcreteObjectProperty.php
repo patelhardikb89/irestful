@@ -1,13 +1,14 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
 use iRESTful\Rodson\Domain\Objects\Properties\Property;
-use iRESTful\Rodson\Domain\Types\Type;
+use iRESTful\Rodson\Domain\Objects\Properties\Types\Type;
 use iRESTful\Rodson\Domain\Objects\Properties\Exceptions\PropertyException;
 
 final class ConcreteObjectProperty implements Property {
     private $name;
     private $type;
-    public function __construct($name, Type $type) {
+    private $isOptional;
+    public function __construct($name, Type $type, $isOptional) {
 
         if (empty($name) || !is_string($name)) {
             throw new PropertyException('The name must be a non-empty string.');
@@ -21,6 +22,7 @@ final class ConcreteObjectProperty implements Property {
 
         $this->name = $name;
         $this->type = $type;
+        $this->isOptional = (boolean) $isOptional;
 
     }
 
@@ -30,6 +32,10 @@ final class ConcreteObjectProperty implements Property {
 
     public function getType() {
         return $this->type;
+    }
+
+    public function isOptional() {
+        return $this->isOptional;
     }
 
 }

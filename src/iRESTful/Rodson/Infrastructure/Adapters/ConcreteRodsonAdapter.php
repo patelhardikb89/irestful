@@ -33,7 +33,7 @@ final class ConcreteRodsonAdapter implements RodsonAdapter {
         try {
 
             $parents = null;
-            if (isset($data['parents'])){
+            if (isset($data['parents'])) {
                 $parents = $this->fromDataToRodsons($data['parents']);
             }
 

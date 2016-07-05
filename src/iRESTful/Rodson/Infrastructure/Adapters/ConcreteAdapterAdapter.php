@@ -6,7 +6,6 @@ use iRESTful\Rodson\Infrastructure\Objects\ConcreteAdapter;
 use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Adapters\Exceptions\AdapterException;
 
-//must have keynames.  Have a look at the ConcreteTypeAdapter.
 final class ConcreteAdapterAdapter implements AdapterAdapter {
     private $methodAdapter;
     private $types;
@@ -18,39 +17,42 @@ final class ConcreteAdapterAdapter implements AdapterAdapter {
     public function fromDataToAdapters(array $data) {
         $output = [];
         foreach($data as $oneData) {
-            $output[] = $this->fromDataToAdapter($oneData);
+
+            if (!isset($oneData['from']) || !is_string($oneData['from'])) {
+                throw new AdapterException('The data must contain from keynames.  The from keyname must also contain a string.');
+            }
+
+            if (!isset($oneData['to']) || !is_string($oneData['to'])) {
+                throw new AdapterException('The data must contain to keynames.  The to keyname must also contain a string.');
+            }
+
+            $keyname = 'from_'.$oneData['from'].'_to_'.$oneData['to'];
+            $output[$keyname] = $this->fromDataToAdapter($oneData);
         }
+
         return $output;
     }
 
     public function fromDataToAdapter(array $data) {
 
-        if (!isset($data['from'])) {
-            throw new AdapterException('The from keyname is mandatory in order to convert data to an Adapter object.');
-        }
-
-        if (!isset($data['to'])) {
-            throw new AdapterException('The to keyname is mandatory in order to convert data to an Adapter object.');
-        }
-
         if (!isset($data['method'])) {
             throw new AdapterException('The method keyname is mandatory in order to convert data to an Adapter object.');
         }
 
-        if (!isset($this->types[$data['from']])) {
-            throw new AdapterException('The from type reference ('.$data['from'].') is invalid.');
+        $from = null;
+        if (isset($data['from']) && isset($this->types[$data['from']])) {
+            $from = $this->types[$data['from']];
         }
 
-        if (!isset($this->types[$data['to']])) {
-            throw new AdapterException('The to type reference ('.$data['to'].') is invalid.');
+        $to = null;
+        if (isset($data['to']) && isset($this->types[$data['to']])) {
+            $to = $this->types[$data['to']];
         }
 
         try {
 
-            $from = $this->types[$data['from']];
-            $to = $this->types[$data['to']];
             $method = $this->methodAdapter->fromStringToMethod($data['method']);
-            return new ConcreteAdapter($from, $to, $method);
+            return new ConcreteAdapter($method, $from, $to);
 
         } catch (MethodException $exception) {
             throw new AdapterException('There was an exception while converting a string to a Method object.', $exception);

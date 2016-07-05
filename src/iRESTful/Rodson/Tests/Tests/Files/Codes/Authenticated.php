@@ -27,6 +27,10 @@ final class Authenticated {
 
     }
 
+    public static function validateKeyname($keyname) {
+
+    }
+
     public static function fromStringToBaseUrl($string) {
 
     }
@@ -36,6 +40,10 @@ final class Authenticated {
     }
 
     public static function fromStringToHashedPassword($string) {
+
+    }
+
+    public static function fromStringToKeyname($string) {
 
     }
 

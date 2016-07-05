@@ -164,10 +164,10 @@ final class ConcreteObjectAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $objects = $this->adapter->fromDataToObjects($this->multipleData);
 
-        $this->assertEquals($this->name, $objects[0]->getName());
-        $this->assertEquals($this->properties, $objects[0]->getProperties());
-        $this->assertFalse($objects[0]->hasDatabase());
-        $this->assertNull($objects[0]->getDatabase());
+        $this->assertEquals($this->name, $objects[$this->name]->getName());
+        $this->assertEquals($this->properties, $objects[$this->name]->getProperties());
+        $this->assertFalse($objects[$this->name]->hasDatabase());
+        $this->assertNull($objects[$this->name]->getDatabase());
 
     }
 

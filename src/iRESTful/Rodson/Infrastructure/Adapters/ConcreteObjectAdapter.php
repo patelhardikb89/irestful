@@ -14,12 +14,32 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
         $this->databases = $databases;
     }
 
-    public function fromDataToObjects(array $data) {
+    public function fromDataToValidObjects(array $data) {
+        return $this->convertMultipleDataToObjects($data, false);
+    }
 
+    public function fromDataToObjects(array $data) {
+        return $this->convertMultipleDataToObjects($data, true);
+    }
+
+    private function convertMultipleDataToObjects(array $data, $throwException) {
         $output = [];
         foreach($data as $name => $oneData) {
-            $oneData['name'] = $name;
-            $output[] = $this->fromDataToObject($oneData);
+
+            try {
+
+                $oneData['name'] = $name;
+                $output[$name] = $this->fromDataToObject($oneData);
+
+            } catch (ObjectException $exception) {
+
+                if ($throwException) {
+                    throw $exception;
+                }
+
+                continue;
+
+            }
         }
 
         return $output;

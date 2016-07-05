@@ -104,9 +104,9 @@
                 "regex_pattern?": "string",
                 "specific_value?": "string_numeric"
             },
-            "combos": {
+            "combos": [
                 "regex_pattern|specific_value"
-            }
+            ]
         },
         "credentials": {
             "properties": {
@@ -144,6 +144,11 @@
             "from": "string",
             "to": "hashed_password",
             "method": "fromStringToHashedPassword"
+        },
+        {
+            "from": "string",
+            "to": "keyname",
+            "method": "fromStringToKeyname"
         }
     ],
     "databases": {
@@ -201,6 +206,19 @@
                 "database_to_object": {
                     "from": "string",
                     "to": "uri"
+                }
+            }
+        },
+        "keyname": {
+            "database_type": {
+                "name": "string",
+                "max": 255
+            },
+            "method": "validateKeyname",
+            "adapters": {
+                "database_to_object": {
+                    "from": "string",
+                    "to": "keyname"
                 }
             }
         },

@@ -10,23 +10,22 @@ final class ConcreteRodson implements Rodson {
     private $controllers;
     public function __construct($name, array $objects, array $controllers, array $parents = null) {
 
-        $verify = function(array $data = null, $type, $badIndexMessage, $badTypeMessage) {
+        $verify = function(array $data = null, $type, $badTypeMessage) {
 
             if (empty($data)) {
                 return;
             }
 
-            foreach($data as $index => $oneElement) {
-
-                if (!is_integer($index)) {
-                    throw new RodsonException($badIndexMessage);
-                }
+            $data = array_values($data);
+            foreach($data as $oneElement) {
 
                 if (!($oneElement instanceof $type)) {
                     throw new RodsonException($badTypeMessage);
                 }
 
             }
+
+            return $data;
 
         };
 
@@ -46,9 +45,9 @@ final class ConcreteRodson implements Rodson {
             throw new RodsonException('There must be at least 1 controller.');
         }
 
-        $verify($parents, 'iRESTful\Rodson\Domain\Rodson', 'The indexes in the parents array must be integers.', 'The parents must only contain Rodson objects.');
-        $verify($objects, 'iRESTful\Rodson\Domain\Objects\Object', 'The indexes in the objects array must be integers.', 'The objects must only contain Entity objects.');
-        $verify($controllers, 'iRESTful\Rodson\Domain\Controllers\Controller', 'The indexes in the controllers array must be integers.', 'The controllers must only contain Controller objects.');
+        $parents = $verify($parents, 'iRESTful\Rodson\Domain\Rodson', 'The parents must only contain Rodson objects.');
+        $objects = $verify($objects, 'iRESTful\Rodson\Domain\Objects\Object', 'The objects must only contain Entity objects.');
+        $controllers = $verify($controllers, 'iRESTful\Rodson\Domain\Controllers\Controller', 'The controllers must only contain Controller objects.');
 
         $this->name = $name;
         $this->parents = $parents;

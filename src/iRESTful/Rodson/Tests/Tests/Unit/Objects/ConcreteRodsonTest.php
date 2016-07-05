@@ -62,20 +62,42 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testCreate_withInvalidIndexInParents_throwsRodsonException() {
+    public function testCreate_withInvalidIndexInObjects_Success() {
 
-        $asserted = false;
-        try {
+        $rodson = new ConcreteRodson($this->name, ['some' => $this->objectMock, 'other' => $this->objectMock], $this->controllers);
 
-            new ConcreteRodson($this->name, $this->objects, $this->controllers, ['some' => $this->rodsonMock]);
-
-        } catch (RodsonException $exception) {
-            $asserted = true;
-        }
-
-        $this->assertTrue($asserted);
+        $this->assertEquals($this->name, $rodson->getName());
+        $this->assertEquals($this->objects, $rodson->getObjects());
+        $this->assertEquals($this->controllers, $rodson->getControllers());
+        $this->assertFalse($rodson->hasParents());
+        $this->assertNull($rodson->getParents());
 
     }
+
+    public function testCreate_withInvalidIndexInParents_Success() {
+
+        $rodson = new ConcreteRodson($this->name, $this->objects, $this->controllers, ['some' => $this->rodsonMock, 'other' => $this->rodsonMock]);
+
+        $this->assertEquals($this->name, $rodson->getName());
+        $this->assertEquals($this->objects, $rodson->getObjects());
+        $this->assertEquals($this->controllers, $rodson->getControllers());
+        $this->assertTrue($rodson->hasParents());
+        $this->assertEquals($this->parents, $rodson->getParents());
+
+    }
+
+    public function testCreate_withInvalidIndexInControllers_Success() {
+
+        $rodson = new ConcreteRodson($this->name, $this->objects, ['some' => $this->controllerMock, 'other' => $this->controllerMock]);
+
+        $this->assertEquals($this->name, $rodson->getName());
+        $this->assertEquals($this->objects, $rodson->getObjects());
+        $this->assertEquals($this->controllers, $rodson->getControllers());
+        $this->assertFalse($rodson->hasParents());
+        $this->assertNull($rodson->getParents());
+
+    }
+
 
     public function testCreate_withOneInvalidParent_throwsRodsonException() {
 
@@ -85,21 +107,6 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         try {
 
             new ConcreteRodson($this->name, $this->objects, $this->controllers, $this->parents);
-
-        } catch (RodsonException $exception) {
-            $asserted = true;
-        }
-
-        $this->assertTrue($asserted);
-
-    }
-
-    public function testCreate_withInvalidIndexInControllers_throwsRodsonException() {
-
-        $asserted = false;
-        try {
-
-            new ConcreteRodson($this->name, $this->objects, ['some' => $this->controllerMock]);
 
         } catch (RodsonException $exception) {
             $asserted = true;
@@ -132,21 +139,6 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
         try {
 
             new ConcreteRodson($this->name, $this->objects, []);
-
-        } catch (RodsonException $exception) {
-            $asserted = true;
-        }
-
-        $this->assertTrue($asserted);
-
-    }
-
-    public function testCreate_withInvalidIndexInObjects_throwsRodsonException() {
-
-        $asserted = false;
-        try {
-
-            new ConcreteRodson($this->name, ['some' => $this->objectMock], $this->controllers);
 
         } catch (RodsonException $exception) {
             $asserted = true;
