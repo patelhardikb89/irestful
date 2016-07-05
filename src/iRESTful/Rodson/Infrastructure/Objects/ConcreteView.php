@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Views\View;
-use iRESTful\Rodson\Domain\Codes\Methods\Method;
-use iRESTful\Rodson\Domain\Views\Exceptions\ViewException;
+use iRESTful\Rodson\Domain\Inputs\Views\View;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Views\Exceptions\ViewException;
 
 final class ConcreteView implements View {
     private $name;

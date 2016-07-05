@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Codes\Methods\Adapters\MethodAdapter;
-use iRESTful\Rodson\Domain\Codes\Methods\Method;
-use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Exceptions\MethodException;
 
 final class MethodAdapterHelper {
     private $phpunit;

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteRESTAPI;
-use iRESTful\Rodson\Domain\Databases\RESTAPIs\Exceptions\RESTAPIException;
+use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Exceptions\RESTAPIException;
 
 final class ConcreteRESTAPITest extends \PHPUnit_Framework_TestCase {
     private $credentialsMock;
@@ -9,7 +9,7 @@ final class ConcreteRESTAPITest extends \PHPUnit_Framework_TestCase {
     private $port;
     private $headerLine;
     public function setUp() {
-        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Databases\Credentials\Credentials');
+        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Credentials');
 
         $this->baseUrl = 'http://apis.irestful.com';
         $this->port = rand(1, 500);

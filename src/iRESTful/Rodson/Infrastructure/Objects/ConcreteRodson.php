@@ -46,8 +46,8 @@ final class ConcreteRodson implements Rodson {
         }
 
         $parents = $verify($parents, 'iRESTful\Rodson\Domain\Rodson', 'The parents must only contain Rodson objects.');
-        $objects = $verify($objects, 'iRESTful\Rodson\Domain\Objects\Object', 'The objects must only contain Entity objects.');
-        $controllers = $verify($controllers, 'iRESTful\Rodson\Domain\Controllers\Controller', 'The controllers must only contain Controller objects.');
+        $objects = $verify($objects, 'iRESTful\Rodson\Domain\Inputs\Objects\Object', 'The objects must only contain Entity objects.');
+        $controllers = $verify($controllers, 'iRESTful\Rodson\Domain\Inputs\Controllers\Controller', 'The controllers must only contain Controller objects.');
 
         $this->name = $name;
         $this->parents = $parents;

@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Objects\Object;
-use iRESTful\Rodson\Domain\Objects\Exceptions\ObjectException;
-use iRESTful\Rodson\Domain\Databases\Database;
+use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Databases\Database;
 
 final class ConcreteObject implements Object {
     private $name;
@@ -24,7 +24,7 @@ final class ConcreteObject implements Object {
                 throw new ObjectException('The indexes of the properties array must be integers.');
             }
 
-            if (!($oneProperty instanceof \iRESTful\Rodson\Domain\Objects\Properties\Property)) {
+            if (!($oneProperty instanceof \iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property)) {
                 throw new ObjectException('The properties array must only contain Property objects.');
             }
 

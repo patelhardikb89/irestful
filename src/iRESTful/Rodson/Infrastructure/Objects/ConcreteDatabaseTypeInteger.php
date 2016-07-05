@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Types\Databases\Integers\Integer;
-use iRESTful\Rodson\Domain\Types\Databases\Integers\Exceptions\IntegerException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Integer;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Exceptions\IntegerException;
 
 final class ConcreteDatabaseTypeInteger implements Integer {
     private $maximumBitSize;

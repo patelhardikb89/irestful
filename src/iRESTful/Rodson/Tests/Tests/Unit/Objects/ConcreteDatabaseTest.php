@@ -1,15 +1,15 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteDatabase;
-use iRESTful\Rodson\Domain\Databases\Exceptions\DatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Databases\Exceptions\DatabaseException;
 
 final class ConcreteDatabaseTest extends \PHPUnit_Framework_TestCase {
     private $relationalDatabaseMock;
     private $restAPIMock;
     private $name;
     public function setUp() {
-        $this->relationalDatabaseMock = $this->getMock('iRESTful\Rodson\Domain\Databases\Relationals\RelationalDatabase');
-        $this->restAPIMock = $this->getMock('iRESTful\Rodson\Domain\Databases\RESTAPIs\RESTAPI');
+        $this->relationalDatabaseMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Relationals\RelationalDatabase');
+        $this->restAPIMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\RESTAPI');
 
         $this->name = 'my_name';
     }

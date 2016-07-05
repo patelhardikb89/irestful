@@ -1,14 +1,14 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteController;
-use iRESTful\Rodson\Domain\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
 
 final class ConcreteControllerTest extends \PHPUnit_Framework_TestCase {
     private $viewMock;
     private $pattern;
     private $instructions;
     public function setUp() {
-        $this->viewMock = $this->getMock('iRESTful\Rodson\Domain\Views\View');
+        $this->viewMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Views\View');
 
         $this->pattern = '/\/[a-zA-Z]+/s';
 

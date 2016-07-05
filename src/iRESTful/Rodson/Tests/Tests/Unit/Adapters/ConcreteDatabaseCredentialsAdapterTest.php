@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteDatabaseCredentialsAdapter;
-use iRESTful\Rodson\Domain\Databases\Credentials\Exceptions\CredentialsException;
+use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Exceptions\CredentialsException;
 
 final class ConcreteDatabaseCredentialsAdapterTest extends \PHPUnit_Framework_TestCase {
     private $username;

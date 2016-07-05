@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Types\Databases\Floats\Adapters\FloatAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Adapters\FloatAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteDatabaseTypeFloat;
-use iRESTful\Rodson\Domain\Types\Databases\Floats\Exceptions\FloatException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Exceptions\FloatException;
 
 final class ConcreteDatabaseTypeFloatAdapter implements FloatAdapter {
 

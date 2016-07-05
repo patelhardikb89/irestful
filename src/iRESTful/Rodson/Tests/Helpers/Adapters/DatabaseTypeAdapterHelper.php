@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Types\Databases\Adapters\DatabaseTypeAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\DatabaseType;
-use iRESTful\Rodson\Domain\Types\Databases\Exceptions\DatabaseTypeException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Adapters\DatabaseTypeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Exceptions\DatabaseTypeException;
 
 final class DatabaseTypeAdapterHelper {
     private $phpunit;

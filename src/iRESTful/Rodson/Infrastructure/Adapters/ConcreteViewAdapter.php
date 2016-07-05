@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Views\Adapters\ViewAdapter;
-use iRESTful\Rodson\Domain\Codes\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Views\Adapters\ViewAdapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteView;
-use iRESTful\Rodson\Domain\Views\Exceptions\ViewException;
-use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Inputs\Views\Exceptions\ViewException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Exceptions\MethodException;
 
 final class ConcreteViewAdapter implements ViewAdapter {
     private $methodAdapter;

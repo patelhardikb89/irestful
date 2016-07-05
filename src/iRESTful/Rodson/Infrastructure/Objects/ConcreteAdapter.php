@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Adapters\Adapter;
-use iRESTful\Rodson\Domain\Types\Type;
-use iRESTful\Rodson\Domain\Codes\Methods\Method;
-use iRESTful\Rodson\Domain\Adapters\Exceptions\AdapterException;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Exceptions\AdapterException;
 
 final class ConcreteAdapter implements Adapter {
     private $from;

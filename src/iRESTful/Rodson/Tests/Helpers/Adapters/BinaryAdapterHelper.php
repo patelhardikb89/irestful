@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Types\Databases\Binaries\Adapters\BinaryAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\Binaries\Binary;
-use iRESTful\Rodson\Domain\Types\Databases\Binaries\Exceptions\BinaryException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Adapters\BinaryAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Binary;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Exceptions\BinaryException;
 
 final class BinaryAdapterHelper {
     private $phpunit;

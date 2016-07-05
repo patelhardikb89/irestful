@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Controllers\Adapters\ControllerAdapter;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Adapters\ControllerAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteController;
-use iRESTful\Rodson\Domain\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
 
 final class ConcreteControllerAdapter implements ControllerAdapter {
     private $views;

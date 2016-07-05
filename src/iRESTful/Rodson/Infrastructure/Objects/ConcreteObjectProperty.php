@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Objects\Properties\Property;
-use iRESTful\Rodson\Domain\Objects\Properties\Types\Type;
-use iRESTful\Rodson\Domain\Objects\Properties\Exceptions\PropertyException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Exceptions\PropertyException;
 
 final class ConcreteObjectProperty implements Property {
     private $name;

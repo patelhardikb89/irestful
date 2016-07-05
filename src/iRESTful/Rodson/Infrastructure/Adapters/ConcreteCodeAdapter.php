@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Codes\Adapters\CodeAdapter;
-use iRESTful\Rodson\Domain\Codes\Languages\Adapters\LanguageAdapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Adapters\CodeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Adapters\LanguageAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteCode;
-use iRESTful\Rodson\Domain\Codes\Exceptions\CodeException;
-use iRESTful\Rodson\Domain\Codes\Languages\Exceptions\LanguageException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Exceptions\CodeException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Exceptions\LanguageException;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $languageAdapter;

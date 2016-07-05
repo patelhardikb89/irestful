@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteCodeAdapter;
 use iRESTful\Rodson\Tests\Helpers\Adapters\LanguageAdapterHelper;
-use iRESTful\Rodson\Domain\Codes\Exceptions\CodeException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Exceptions\CodeException;
 
 final class ConcreteCodeAdapterTest extends \PHPUnit_Framework_TestCase {
     private $languageAdapterMock;
@@ -13,8 +13,8 @@ final class ConcreteCodeAdapterTest extends \PHPUnit_Framework_TestCase {
     private $adapter;
     private $languageAdapterHelper;
     public function setUp() {
-        $this->languageAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Languages\Adapters\LanguageAdapter');
-        $this->languageMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Languages\Language');
+        $this->languageAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Languages\Adapters\LanguageAdapter');
+        $this->languageMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Languages\Language');
 
         $this->language = 'PHP';
         $this->className = 'iRESTful\Rodson\Tests\Tests\Unit\Adapters\ConcreteCodeAdapterTest';

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteDatabaseTypeBinary;
-use iRESTful\Rodson\Domain\Types\Databases\Binaries\Exceptions\BinaryException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Exceptions\BinaryException;
 
 final class ConcreteDatabaseTypeBinaryTest extends \PHPUnit_Framework_TestCase {
     private $specificBitSize;

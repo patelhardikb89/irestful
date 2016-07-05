@@ -1,14 +1,14 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteObjectPropertyType;
-use iRESTful\Rodson\Domain\Objects\Properties\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Exceptions\TypeException;
 
 final class ConcreteObjectPropertyTypeTest extends \PHPUnit_Framework_TestCase {
     private $typeMock;
     private $objectMock;
     public function setUp() {
-        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Types\Type');
-        $this->objectMock = $this->getMock('iRESTful\Rodson\Domain\Objects\Object');
+        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Type');
+        $this->objectMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Object');
     }
 
     public function tearDown() {

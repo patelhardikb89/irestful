@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Objects\Properties\Types\Type as PropertyType;
-use iRESTful\Rodson\Domain\Types\Type;
-use iRESTful\Rodson\Domain\Objects\Object;
-use iRESTful\Rodson\Domain\Objects\Properties\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type as PropertyType;
+use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Exceptions\TypeException;
 
 final class ConcreteObjectPropertyType implements PropertyType {
     private $isArray;

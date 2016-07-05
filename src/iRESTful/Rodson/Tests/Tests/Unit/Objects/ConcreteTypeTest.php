@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteType;
-use iRESTful\Rodson\Domain\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
 
 final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
     private $databaseTypeMock;
@@ -9,9 +9,9 @@ final class ConcreteTypeTest extends \PHPUnit_Framework_TestCase {
     private $methodMock;
     private $name;
     public function setUp() {
-        $this->databaseTypeMock = $this->getMock('iRESTful\Rodson\Domain\Types\Databases\DatabaseType');
-        $this->adapterMock = $this->getMock('iRESTful\Rodson\Domain\Adapters\Adapter');
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Methods\Method');
+        $this->databaseTypeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType');
+        $this->adapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Adapters\Adapter');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method');
 
         $this->name = 'MyType';
     }

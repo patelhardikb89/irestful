@@ -2,10 +2,10 @@
 namespace iRESTful\Rodson\Infrastructure\Adapters;
 use iRESTful\Rodson\Domain\Adapters\RodsonAdapter;
 use iRESTful\Rodson\Domain\Exceptions\RodsonException;
-use iRESTful\Rodson\Domain\Objects\Adapters\ObjectAdapter;
-use iRESTful\Rodson\Domain\Controllers\Adapters\ControllerAdapter;
-use iRESTful\Rodson\Domain\Objects\Exceptions\ObjectException;
-use iRESTful\Rodson\Domain\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Adapters\ObjectAdapter;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Adapters\ControllerAdapter;
+use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteRodson;
 
 final class ConcreteRodsonAdapter implements RodsonAdapter {

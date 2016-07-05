@@ -1,13 +1,13 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteCode;
-use iRESTful\Rodson\Domain\Codes\Exceptions\CodeException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Exceptions\CodeException;
 
 final class ConcreteCodeTest extends \PHPUnit_Framework_TestCase {
     private $languageMock;
     private $code;
     public function setUp() {
-        $this->languageMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Languages\Language');
+        $this->languageMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Languages\Language');
 
         $this->className = 'iRESTful\Rodson\Tests\Tests\Unit\Objects\ConcreteCodeTest';
     }

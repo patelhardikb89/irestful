@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Objects\Properties\Types\Adapters\TypeAdapter;
-use iRESTful\Rodson\Domain\Objects\Properties\Types\Type;
-use iRESTful\Rodson\Domain\Objects\Properties\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Adapters\TypeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Exceptions\TypeException;
 
 final class PropertyTypeAdapterHelper {
     private $phpunit;

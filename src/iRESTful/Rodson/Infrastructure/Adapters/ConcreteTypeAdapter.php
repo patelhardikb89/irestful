@@ -1,13 +1,13 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Types\Adapters\TypeAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\Adapters;
-use iRESTful\Rodson\Domain\Types\Databases\Adapters\DatabaseTypeAdapter;
-use iRESTful\Rodson\Domain\Codes\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Adapters\TypeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Adapters;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Adapters\DatabaseTypeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteType;
-use iRESTful\Rodson\Domain\Types\Exceptions\TypeException;
-use iRESTful\Rodson\Domain\Codes\Methods\Exceptions\MethodException;
-use iRESTful\Rodson\Domain\Types\Databases\Exceptions\DatabaseTypeException;
+use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Exceptions\DatabaseTypeException;
 
 final class ConcreteTypeAdapter implements TypeAdapter {
     private $databaseTypeAdapter;

@@ -1,16 +1,16 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Types\Databases\Adapters\DatabaseTypeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Adapters\DatabaseTypeAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteDatabaseType;
-use iRESTful\Rodson\Domain\Types\Databases\Binaries\Adapters\BinaryAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\Floats\Adapters\FloatAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\Integers\Adapters\IntegerAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\Strings\Adapters\StringAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\Exceptions\DatabaseTypeException;
-use iRESTful\Rodson\Domain\Types\Databases\Binaries\Exceptions\BinaryException;
-use iRESTful\Rodson\Domain\Types\Databases\Floats\Exceptions\FloatException;
-use iRESTful\Rodson\Domain\Types\Databases\Integers\Exceptions\IntegerException;
-use iRESTful\Rodson\Domain\Types\Databases\Strings\Exceptions\StringException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Adapters\BinaryAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Adapters\FloatAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Adapters\IntegerAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Adapters\StringAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Exceptions\DatabaseTypeException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Exceptions\BinaryException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Exceptions\FloatException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Exceptions\IntegerException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Exceptions\StringException;
 
 final class ConcreteDatabaseTypeAdapter implements DatabaseTypeAdapter {
     private $binaryAdapter;

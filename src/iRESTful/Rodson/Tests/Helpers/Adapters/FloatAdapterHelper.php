@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Types\Databases\Floats\Adapters\FloatAdapter;
-use iRESTful\Rodson\Domain\Types\Databases\Floats\Float;
-use iRESTful\Rodson\Domain\Types\Databases\Floats\Exceptions\FloatException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Adapters\FloatAdapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Float;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Exceptions\FloatException;
 
 final class FloatAdapterHelper {
     private $phpunit;

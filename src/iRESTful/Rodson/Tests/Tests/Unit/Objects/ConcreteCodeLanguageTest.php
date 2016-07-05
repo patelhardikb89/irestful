@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteCodeLanguage;
-use iRESTful\Rodson\Domain\Codes\Languages\Exceptions\LanguageException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Exceptions\LanguageException;
 
 final class ConcreteCodeLanguageTest extends \PHPUnit_Framework_TestCase {
     private $language;

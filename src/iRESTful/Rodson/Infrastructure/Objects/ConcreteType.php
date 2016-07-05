@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Types\Type;
-use iRESTful\Rodson\Domain\Types\Exceptions\TypeException;
-use iRESTful\Rodson\Domain\Types\Databases\DatabaseType;
-use iRESTful\Rodson\Domain\Adapters\Adapter;
-use iRESTful\Rodson\Domain\Codes\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
 
 final class ConcreteType implements Type {
     private $name;

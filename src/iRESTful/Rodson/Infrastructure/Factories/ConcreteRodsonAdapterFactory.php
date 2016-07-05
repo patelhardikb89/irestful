@@ -20,12 +20,12 @@ use iRESTful\Rodson\Infrastructure\Adapters\ConcreteViewAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteCodeAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteCodeLanguageAdapter;
-use iRESTful\Rodson\Domain\Codes\Code;
-use iRESTful\Rodson\Domain\Codes\Exceptions\CodeException;
-use iRESTful\Rodson\Domain\Databases\Exceptions\DatabaseException;
-use iRESTful\Rodson\Domain\Views\Exceptions\ViewException;
-use iRESTful\Rodson\Domain\Adapters\Exceptions\AdapterException;
-use iRESTful\Rodson\Domain\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Codes\Code;
+use iRESTful\Rodson\Domain\Inputs\Codes\Exceptions\CodeException;
+use iRESTful\Rodson\Domain\Inputs\Databases\Exceptions\DatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Views\Exceptions\ViewException;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Exceptions\AdapterException;
+use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
 use iRESTful\Rodson\Domain\Exceptions\RodsonException;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteObjectPropertyTypeAdapter;
 

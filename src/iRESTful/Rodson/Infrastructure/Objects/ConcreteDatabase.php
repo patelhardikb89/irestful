@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Databases\Database;
-use iRESTful\Rodson\Domain\Databases\Relationals\RelationalDatabase;
-use iRESTful\Rodson\Domain\Databases\RESTAPIs\RESTAPI;
-use iRESTful\Rodson\Domain\Databases\Exceptions\DatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Databases\Database;
+use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\RelationalDatabase;
+use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\RESTAPI;
+use iRESTful\Rodson\Domain\Inputs\Databases\Exceptions\DatabaseException;
 
 final class ConcreteDatabase implements Database {
     private $name;

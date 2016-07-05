@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Controllers\Controller;
-use iRESTful\Rodson\Domain\Views\View;
-use iRESTful\Rodson\Domain\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
+use iRESTful\Rodson\Domain\Inputs\Views\View;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
 
 final class ConcreteController implements Controller {
     private $pattern;

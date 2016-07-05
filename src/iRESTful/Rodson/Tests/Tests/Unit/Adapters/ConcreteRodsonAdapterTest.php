@@ -22,10 +22,10 @@ final class ConcreteRodsonAdapterTest extends \PHPUnit_Framework_TestCase {
     private $objectAdapterHelper;
     private $controllerAdapterHelper;
     public function setUp() {
-        $this->objectAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Objects\Adapters\ObjectAdapter');
-        $this->objectMock = $this->getMock('iRESTful\Rodson\Domain\Objects\Object');
-        $this->controllerAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Controllers\Adapters\ControllerAdapter');
-        $this->controllerMock = $this->getMock('iRESTful\Rodson\Domain\Controllers\Controller');
+        $this->objectAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Adapters\ObjectAdapter');
+        $this->objectMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Object');
+        $this->controllerAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Controllers\Adapters\ControllerAdapter');
+        $this->controllerMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Controllers\Controller');
         $this->rodsonMock = $this->getMock('iRESTful\Rodson\Domain\Rodson');
 
         $this->name = 'my_rodson';

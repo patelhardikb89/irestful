@@ -10,7 +10,7 @@ final class ConcreteCodeMethodAdapterTest extends \PHPUnit_Framework_TestCase {
     private $adapter;
     private $codeHelper;
     public function setUp() {
-        $this->codeMock = $this->getMock('iRESTful\Rodson\Domain\Codes\Code');
+        $this->codeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Code');
 
         $this->className = 'iRESTful\Rodson\Tests\Tests\Unit\Adapters\ConcreteCodeMethodAdapterTest';
         $this->methodName = 'setUp';

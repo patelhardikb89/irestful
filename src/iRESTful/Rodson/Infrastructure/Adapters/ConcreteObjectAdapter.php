@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Objects\Properties\Adapters\PropertyAdapter;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Adapters\PropertyAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteObject;
-use iRESTful\Rodson\Domain\Objects\Exceptions\ObjectException;
-use iRESTful\Rodson\Domain\Objects\Properties\Exceptions\PropertyException;
-use iRESTful\Rodson\Domain\Objects\Adapters\ObjectAdapter;
+use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Exceptions\PropertyException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Adapters\ObjectAdapter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $propertyAdapter;

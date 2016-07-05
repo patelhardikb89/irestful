@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteObjectPropertyAdapter;
-use iRESTful\Rodson\Domain\Objects\Properties\Exceptions\PropertyException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Exceptions\PropertyException;
 use iRESTful\Rodson\Tests\Helpers\Adapters\PropertyTypeAdapterHelper;
 
 final class ConcreteObjectPropertyAdapterTest extends \PHPUnit_Framework_TestCase {
@@ -14,8 +14,8 @@ final class ConcreteObjectPropertyAdapterTest extends \PHPUnit_Framework_TestCas
     private $adapter;
     private $typeAdapterHelper;
     public function setUp() {
-        $this->typeAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Objects\Properties\Types\Adapters\TypeAdapter');
-        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Objects\Properties\Types\Type');
+        $this->typeAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Adapters\TypeAdapter');
+        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type');
 
         $this->name = 'my_property';
         $this->type = 'some_type';

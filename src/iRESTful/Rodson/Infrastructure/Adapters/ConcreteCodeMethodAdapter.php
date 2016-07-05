@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
-use iRESTful\Rodson\Domain\Codes\Methods\Adapters\MethodAdapter;
-use iRESTful\Rodson\Domain\Codes\Code;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Code;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteCodeMethod;
 
 final class ConcreteCodeMethodAdapter implements MethodAdapter {

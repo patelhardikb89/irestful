@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Databases\Relationals\RelationalDatabase;
-use iRESTful\Rodson\Domain\Databases\Credentials\Credentials;
-use iRESTful\Rodson\Domain\Databases\Relationals\Exceptions\RelationalDatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\RelationalDatabase;
+use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Credentials;
+use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Exceptions\RelationalDatabaseException;
 
 final class ConcreteRelationalDatabase implements RelationalDatabase {
     private $driver;
