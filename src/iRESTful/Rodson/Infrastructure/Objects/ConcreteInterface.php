@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\ObjectInterface;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Method;
+use iRESTful\Rodson\Domain\Outputs\Methods\Method;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Exceptions\InterfaceException;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Namespaces\ObjectNamespace;
+use iRESTful\Rodson\Domain\Outputs\Namespaces\ObjectNamespace;
 
 final class ConcreteInterface implements ObjectInterface {
     private $name;

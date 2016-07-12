@@ -1,0 +1,10 @@
+<?php
+namespace iRESTful\Rodson\Domain\Outputs\Classes;
+
+interface ObjectClass {
+    public function getName();
+    public function getInterface();
+    public function getConstructor();
+    public function getMethods();
+    public function isEntity();
+}

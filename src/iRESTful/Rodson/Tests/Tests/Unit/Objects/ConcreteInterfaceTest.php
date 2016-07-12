@@ -12,8 +12,8 @@ final class ConcreteInterfaceTest extends \PHPUnit_Framework_TestCase {
     private $subInterfaces;
     public function setUp() {
         $this->interfaceMock = $this->getMock('iRESTful\Rodson\Domain\Outputs\Interfaces\ObjectInterface');
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Method');
-        $this->namespaceMock = $this->getMock('iRESTful\Rodson\Domain\Outputs\Interfaces\Namespaces\ObjectNamespace');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Outputs\Methods\Method');
+        $this->namespaceMock = $this->getMock('iRESTful\Rodson\Domain\Outputs\Namespaces\ObjectNamespace');
 
         $this->name = 'MyInterface';
         $this->methods = [

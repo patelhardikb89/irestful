@@ -2,14 +2,12 @@
 namespace iRESTful\Rodson\Infrastructure\Adapters;
 use iRESTful\Rodson\Domain\Outputs\Codes\Adapters\CodeAdapter;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Interface;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Namespaces\Adapters\Adapters\NamespaceAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Objects;
+use iRESTful\Rodson\Domain\Outputs\Classes\ObjectClass;
 
 final class PHPCodeAdapter implements CodeAdapter {
-    private $namespaceAdapterAdapter;
     private $baseFilePath;
-    public function __construct(NamespaceAdapterAdapter $namespaceAdapterAdapter, $baseFilePath) {
-        $this->namespaceAdapterAdapter = $namespaceAdapterAdapter;
+    public function __construct($baseFilePath) {
         $this->baseFilePath = $baseFilePath;
     }
 
@@ -17,7 +15,6 @@ final class PHPCodeAdapter implements CodeAdapter {
 
         $name = $interface->getName();
         $methods = $interface->getMethods();
-        $namespaceAdapter = $this->namespaceAdapterAdapter->fromRootInterfaceToNamespaceAdapter($interface);
 
         $methodsCode = [];
         $includedNamespaces = [];
@@ -34,15 +31,15 @@ final class PHPCodeAdapter implements CodeAdapter {
             foreach($parameters as $oneParameter) {
 
                 $name = $oneParameter->getName();
-                if (!$oneParameter->hasInterface()) {
+                if (!$oneParameter->hasReturnedInterface()) {
                     $parametersCode[] = $name;
                     continue;
                 }
 
-                $interface = $oneParameter->getInterface();
-                $interfaceName = $interface->getName();
+                $returnedInterface = $oneParameter->getReturnedInterface();
+                $interfaceName = $returnedInterface->getName();
                 $parametersCode[] = $interfaceName.' '.$name;
-                $includedNamespaces[] = $namespaceAdapter->fromInterfaceToNamespace($interface);
+                $includedNamespaces[] = $returnedInterface->getNamespace()->get();
                 continue;
             }
 
@@ -50,7 +47,7 @@ final class PHPCodeAdapter implements CodeAdapter {
             continue;
         }
 
-        $currentNamespace = $namespaceAdapter->fromInterfaceToNamespace($interface);
+        $currentNamespace = $interface->getNamespace()->get();
         $code = '<?php
 namespace '.$currentNamespace.';
 '.implode(PHP_EOL, $includedNamespaces).'
@@ -61,6 +58,10 @@ interface '.$name.' {
 
         $relativeFilePath = '/'.str_replace('\\', '/', $currentNamespace).'/'.$name.'.php';
         return new ConcreteOutputCode($code, $relativeFilePath);
+    }
+
+    public function fromClassToCode(ObjectClass $class) {
+        
     }
 
 }

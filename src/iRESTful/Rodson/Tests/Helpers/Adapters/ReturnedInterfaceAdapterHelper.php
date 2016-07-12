@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Tests\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Returns\Adapters\ReturnedInterfaceAdapter;
+use iRESTful\Rodson\Domain\Outputs\Methods\Returns\Adapters\ReturnedInterfaceAdapter;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type as PropertyType;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Returns\ReturnedInterface;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Returns\Exceptions\ReturnedInterfaceException;
+use iRESTful\Rodson\Domain\Outputs\Methods\Returns\ReturnedInterface;
+use iRESTful\Rodson\Domain\Outputs\Methods\Returns\Exceptions\ReturnedInterfaceException;
 
 final class ReturnedInterfaceAdapterHelper {
     private $phpunit;

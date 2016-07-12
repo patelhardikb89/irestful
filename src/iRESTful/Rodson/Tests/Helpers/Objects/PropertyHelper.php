@@ -23,4 +23,11 @@ final class PropertyHelper {
                             ->will($this->phpunit->returnValue($returnedType));
     }
 
+    public function expectsGetType_multiple_Success(array $returnedTypes) {
+        $amount = count($returnedTypes);
+        $this->propertyMock->expects($this->phpunit->exactly($amount))
+                            ->method('getType')
+                            ->will(call_user_func_array(array($this->phpunit, 'onConsecutiveCalls'), $returnedTypes));
+    }
+
 }

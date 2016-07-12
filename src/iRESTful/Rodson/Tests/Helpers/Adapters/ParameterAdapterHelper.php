@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Tests\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Parameters\Parameter;
+use iRESTful\Rodson\Domain\Outputs\Methods\Parameters\Adapters\ParameterAdapter;
+use iRESTful\Rodson\Domain\Outputs\Methods\Parameters\Parameter;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Parameters\Exceptions\ParameterException;
+use iRESTful\Rodson\Domain\Outputs\Methods\Parameters\Exceptions\ParameterException;
 
 final class ParameterAdapterHelper {
     private $phpunit;

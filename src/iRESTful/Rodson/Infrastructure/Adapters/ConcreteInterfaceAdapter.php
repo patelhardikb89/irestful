@@ -2,95 +2,110 @@
 namespace iRESTful\Rodson\Infrastructure\Adapters;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Adapters\InterfaceAdapter;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Outputs\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteInterface;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Outputs\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Exceptions\InterfaceException;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type as PropertyType;
+use iRESTful\Rodson\Domain\Outputs\Namespaces\Adapters\NamespaceAdapter;
+use iRESTful\Rodson\Domain\Outputs\Namespaces\Exceptions\NamespaceException;
 
 final class ConcreteInterfaceAdapter implements InterfaceAdapter {
     private $methodAdapter;
-    public function __construct(MethodAdapter $methodAdapter) {
+    private $namespaceAdapter;
+    public function __construct(MethodAdapter $methodAdapter, NamespaceAdapter $namespaceAdapter) {
         $this->methodAdapter = $methodAdapter;
+        $this->namespaceAdapter = $namespaceAdapter;
     }
 
     public function fromObjectToInterface(Object $object) {
-
-        try {
-
-            $name = $this->fromNameToInterfaceName($object->getName());
-            $properties = $object->getProperties();
-            $methods = $this->methodAdapter->fromPropertiesToMethods($properties);
-            $subInterfaces = $this->fromPropertyTypesToInterfaces($properties);
-
-            return new ConcreteInterface($name, $methods, $subInterfaces);
-
-        } catch (MethodException $exception) {
-            throw new InterfaceException('There was an exception while converting Property objects to Method objects.', $exception);
-        }
+        return $this->fromObjectToInterfaceWithNamespacePrefix($object);
 
     }
 
     public function fromTypeToInterface(Type $type) {
+        return $this->fromTypeToInterfaceWithNamespacePrefix($type);
+    }
 
+    private function fromObjectToInterfaceWithNamespacePrefix(Object $object, array $namespacePrefix = []) {
         try {
 
-            $name = $this->fromNameToInterfaceName($type->getName());
+            $objectName = $object->getName();
+            $name = $this->fromNameToInterfaceName($objectName);
+            $properties = $object->getProperties();
+            $methods = $this->methodAdapter->fromPropertiesToMethods($properties);
+            $namespaceData = array_merge($namespacePrefix, [$name]);
+            $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
+            $subInterfaces = $this->fromPropertiesToInterfaces($properties, $namespaceData);
+
+            return new ConcreteInterface($name, $methods, $namespace, $subInterfaces);
+
+        } catch (MethodException $exception) {
+            throw new InterfaceException('There was an exception while converting Property objects to Method objects.', $exception);
+        } catch (NamespaceException $exception) {
+            throw new InterfaceException('There was an exception while converting data to a Namespace object.', $exception);
+        }
+    }
+
+    private function fromTypeToInterfaceWithNamespacePrefix(Type $type, array $namespacePrefix = []) {
+        try {
+
+            $typeName = $type->getName();
+            $name = $this->fromNameToInterfaceName($typeName);
             $methods = $this->methodAdapter->fromDataToMethods([
                 'name' => 'get'
             ]);
 
-            $attachedInterfaces = $this->fromTypeToAttachedInterfaces($type);
-            return new ConcreteInterface($name, $methods, null, $attachedInterfaces);
+            $namespaceData = array_merge($namespacePrefix, [$name]);
+            $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
+            $subInterfaces = $this->createSubInterfaces($name, $type, $namespaceData);
+            return new ConcreteInterface($name, $methods, $namespace, $subInterfaces);
 
         } catch (MethodException $exception) {
             throw new InterfaceException('There was an exception while converting data to Method objects.', $exception);
+        } catch (NamespaceException $exception) {
+            throw new InterfaceException('There was an exception while converting data to a Namespace object.', $exception);
         }
-
     }
 
-    public function fromPropertyTypesToInterfaces(array $propertyTypes) {
+    private function fromPropertiesToInterfaces(array $properties, array $namespacePrefix) {
         $output = [];
-        foreach($propertyTypes as $onePropertyType) {
-            $output[] = $this->fromPropertyTypeToInterface($onePropertyType);
+        foreach($properties as $oneProperty) {
+            $type = $oneProperty->getType();
+            $output[] = $this->fromPropertyTypeToInterface($type, $namespacePrefix);
         }
 
         return $output;
     }
 
-    public function fromPropertyTypeToInterface(PropertyType $propertyType) {
+    private function fromPropertyTypeToInterface(PropertyType $propertyType, array $namespacePrefix) {
 
         if ($propertyType->hasType()) {
             $type = $propertyType->getType();
-            return $this->fromTypeToInterface($type);
+            return $this->fromTypeToInterfaceWithNamespacePrefix($type, $namespacePrefix);
         }
 
         if ($propertyType->hasObject()) {
             $object = $propertyType->getObject();
-            return $this->fromObjectToInterface($object);
+            return $this->fromObjectToInterfaceWithNamespacePrefix($object, $namespacePrefix);
         }
 
         throw new InterfaceException('There was no Type or Object inside the given PropertyType.');
 
     }
 
-    private function fromTypeToAttachedInterfaces(Type $type) {
+    private function createSubInterfaces($interfaceName, Type $type, array $namespacePrefix) {
 
-        $name = $this->fromNameToInterfaceName($type->getName().'Adapter');
+        $name = $interfaceName.'Adapter';
+        $methods = $this->methodAdapter->fromTypeToMethods($type);
 
-        $methods = [];
-        if ($type->hasDatabaseAdapter()) {
-            $databaseAdapter = $type->getDatabaseAdapter();
-            $methods[] = $this->methodAdapter->fromAdapterToMethod($databaseAdapter);
+        if (empty($methods)) {
+            return null;
         }
 
-        if ($type->hasViewAdapter()) {
-            $viewAdapter = $type->getViewAdapter();
-            $methods[] = $this->methodAdapter->fromAdapterToMethod($viewAdapter);
-        }
-
-        $adapterInterface = new ConcreteInterface($name, $methods);
+        $namespace = $this->namespaceAdapter->fromDataToNamespace(array_merge($namespacePrefix, ['Adapters']));
+        $adapterInterface = new ConcreteInterface($name, $methods, $namespace);
         return [
             $adapterInterface
         ];
@@ -105,7 +120,7 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
             $name = str_replace($oneElement, $replacement, $name);
         }
 
-        return $name;
+        return ucfirst($name);
     }
 
 }
