@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Domain\Outputs\Interfaces\Namespaces;
 
-interface Namespace {
+interface ObjectNamespace {
     public function get();
 }

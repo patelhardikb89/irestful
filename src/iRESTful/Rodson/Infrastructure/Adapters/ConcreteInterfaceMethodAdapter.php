@@ -1,13 +1,22 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Adapters;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Returns\Adapters\ReturnedInterfaceAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteInterfaceMethod;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Returns\Exceptions\ReturnedInterfaceException;
+use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
+use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Parameters\Exceptions\ParameterException;
 
 final class ConcreteInterfaceMethodAdapter implements MethodAdapter {
-
-    public function __construct() {
-
+    private $returnedInterfaceAdapter;
+    private $parameterAdapter;
+    public function __construct(ReturnedInterfaceAdapter $returnedInterfaceAdapter, ParameterAdapter $parameterAdapter) {
+        $this->returnedInterfaceAdapter = $returnedInterfaceAdapter;
+        $this->parameterAdapter = $parameterAdapter;
     }
 
     public function fromDataToMethods(array $data) {
@@ -56,9 +65,80 @@ final class ConcreteInterfaceMethodAdapter implements MethodAdapter {
 
         };
 
-        $name = $convert($property->getName());
-        $type = $property->getType();
-        return new ConcreteInterfaceMethod($name, $type);
+        try {
+
+            $name = $convert($property->getName());
+            $type = $property->getType();
+            $returnedType = $this->returnedInterfaceAdapter->fromPropertyTypeToReturnedInterface($type);
+
+            return new ConcreteInterfaceMethod($name, $returnedType);
+
+        } catch (ReturnedInterfaceException $exception) {
+            throw new MethodException('There was an exception while converting a PropertyType object to a ReturnedInterface object.', $exception);
+        }
+
+    }
+
+    public function fromTypeToMethods(Type $type) {
+
+        $getMethod = function(Type $type, Adapter $adapter) {
+
+            $typeName = $type->getName();
+
+            $fromType = $typeName;
+            $parameterType = null;
+            if ($adapter->hasFromType()) {
+                $parameterType = $adapter->fromType();
+                $fromType = $parameterType->getName();
+            }
+
+            $toType = $typeName;
+            $returnedType = null;
+            if ($adapter->hasToType()) {
+                $returnedType = $adapter->toType();
+                $toType = $returnedType->getName();
+            }
+
+            if (empty($returnedType)) {
+                $returnedType = $type;
+            }
+
+            if (empty($parameterType)) {
+                $parameterType = $type;
+            }
+
+            $methodName = 'from'.ucfirst($fromType).'To'.ucfirst($toType);
+            $returnedInterface = $this->returnedInterfaceAdapter->fromTypeToReturnedInterface($returnedType);
+
+            $parameters = [
+                $this->parameterAdapter->fromTypeToParameter($parameterType)
+            ];
+
+            return new ConcreteInterfaceMethod($methodName, $returnedInterface, $parameters);
+
+
+        };
+
+        try {
+
+            $output = [];
+            if ($type->hasDatabaseAdapter()) {
+                $databaseAdapter = $type->getDatabaseAdapter();
+                $output['database'] = $getMethod($type, $databaseAdapter);
+            }
+
+            if ($type->hasViewAdapter()) {
+                $viewAdapter = $type->getViewAdapter();
+                $output['view'] = $getMethod($type, $viewAdapter);
+            }
+
+            return $output;
+
+        } catch (ParameterException $exception) {
+            throw new MethodException('There was an exception while converting a Type object to a Parameter object.', $exception);
+        } catch (ReturnedInterfaceException $exception) {
+            throw new MethodException('There was an exception while converting a Type object to a ReturnedInterface object.', $exception);
+        }
 
     }
 

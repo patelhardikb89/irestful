@@ -8,6 +8,45 @@
     "content-hash": "e145d6540caaf15a749751a9f04f14b7",
     "packages": [
         {
+            "name": "erusev/parsedown",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7",
+                "reference": "3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2015-10-04 16:44:32"
+        },
+        {
             "name": "phpunit/php-code-coverage",
             "version": "2.0.17",
             "source": {
@@ -657,16 +696,17 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/steve-rodrigue/objects.git",
-                "reference": "0ad7e8a84fbbbeb548055af336cf8e017d54d732"
+                "url": "https://github.com/steve-rodrigue/irestful.git",
+                "reference": "c302ddf12e79e5c2409115248bbb85e4076317ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/steve-rodrigue/objects/zipball/0ad7e8a84fbbbeb548055af336cf8e017d54d732",
-                "reference": "0ad7e8a84fbbbeb548055af336cf8e017d54d732",
+                "url": "https://api.github.com/repos/steve-rodrigue/irestful/zipball/c302ddf12e79e5c2409115248bbb85e4076317ca",
+                "reference": "c302ddf12e79e5c2409115248bbb85e4076317ca",
                 "shasum": ""
             },
             "require": {
+                "erusev/parsedown": "1.6.0",
                 "php": ">=5.5",
                 "phpunit/phpunit": "4.0.5",
                 "ramsey/uuid": "3.1.0"
@@ -688,20 +728,20 @@
                 }
             ],
             "homepage": "https://github.com/steve-rodrigue/objects",
-            "time": "2016-06-10 17:12:47"
+            "time": "2016-06-23 18:02:40"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.7",
+            "version": "v2.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "815fabf3f48c7d1df345a69d1ad1a88f59757b34"
+                "reference": "dba4bb5846798cd12f32e2d8f3f35d77045773c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/815fabf3f48c7d1df345a69d1ad1a88f59757b34",
-                "reference": "815fabf3f48c7d1df345a69d1ad1a88f59757b34",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/dba4bb5846798cd12f32e2d8f3f35d77045773c8",
+                "reference": "dba4bb5846798cd12f32e2d8f3f35d77045773c8",
                 "shasum": ""
             },
             "require": {
@@ -737,7 +777,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-06-06 11:11:27"
+            "time": "2016-06-29 05:29:29"
         }
     ],
     "packages-dev": [],

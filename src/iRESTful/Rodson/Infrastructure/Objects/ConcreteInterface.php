@@ -1,22 +1,27 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Objects;
-use iRESTful\Rodson\Domain\Outputs\Interfaces\Interface;
+use iRESTful\Rodson\Domain\Outputs\Interfaces\ObjectInterface;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Methods\Method;
 use iRESTful\Rodson\Domain\Outputs\Interfaces\Exceptions\InterfaceException;
+use iRESTful\Rodson\Domain\Outputs\Interfaces\Namespaces\ObjectNamespace;
 
-final class ConcreteInterface implements Interface {
+final class ConcreteInterface implements ObjectInterface {
     private $name;
     private $methods;
+    private $namespace;
     private $subInterfaces;
-    private $attachedInterfaces;
-    public function __construct($name, array $methods, array $subInterfaces, array $attachedInterfaces = null) {
+    public function __construct($name, array $methods, ObjectNamespace $namespace, array $subInterfaces = null) {
 
-        if (empty($attachedInterfaces)) {
-            $attachedInterfaces = null;
+        if (empty($subInterfaces)) {
+            $subInterfaces = null;
         }
 
         if (empty($name) || !is_string($name)) {
             throw new InterfaceException('The name must be a non-empty string.');
+        }
+
+        if (empty($methods)) {
+            throw new InterfaceException('The methods array cannot be empty.');
         }
 
         foreach($methods as $oneMethod) {
@@ -27,19 +32,20 @@ final class ConcreteInterface implements Interface {
 
         }
 
-        foreach($subInterfaces as $oneSubInterface) {
+        if (!empty($subInterfaces)) {
+            foreach($subInterfaces as $oneSubInterface) {
 
-            if (!($oneSubInterface instanceof Interface)) {
-                throw new InterfaceException('The subInterfaces array must only contain Interface objects.');
+                if (!($oneSubInterface instanceof ObjectInterface)) {
+                    throw new InterfaceException('The subInterfaces array must only contain ObjectInterface objects.');
+                }
+
             }
-
         }
 
         $this->name = $name;
         $this->methods = $methods;
+        $this->namespace = $namespace;
         $this->subInterfaces = $subInterfaces;
-        $this->attachedInterfaces = $attachedInterfaces;
-
     }
 
     public function getName() {
@@ -50,19 +56,15 @@ final class ConcreteInterface implements Interface {
         return $this->methods;
     }
 
+    public function getNamespace() {
+        return $this->namespace;
+    }
+
     public function hasSubInterfaces() {
         return !empty($this->subInterfaces);
     }
 
     public function getSubInterfaces() {
         return $this->subInterfaces;
-    }
-
-    public function hasAttachedInterfaces() {
-        return !empty($this->attachedInterfaces);
-    }
-
-    public function getAttachedInterfaces() {
-        return $this->attachedInterfaces;
     }
 }

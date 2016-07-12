@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Tests\Files\Codes;
 
 final class Authenticated {
-
+    
     public static function validateString($string) {
 
     }

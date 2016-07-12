@@ -1,11 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Domain\Outputs\Interfaces;
 
-interface Interface {
+interface ObjectInterface {
     public function getName();
     public function getMethods();
+    public function getNamespace();
     public function hasSubInterfaces();
     public function getSubInterfaces();
-    public function hasAttachedInterfaces();
-    public function getAttachedInterfaces();
 }
