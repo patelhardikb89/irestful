@@ -5,14 +5,11 @@ use iRESTful\Rodson\Domain\Outputs\Namespaces\Exceptions\NamespaceException;
 
 final class ConcreteNamespaceTest extends \PHPUnit_Framework_TestCase {
     private $namespace;
-    private $output;
     public function setUp() {
         $this->namespace = [
             'Rodson',
             'Tests'
         ];
-
-        $this->output = 'Rodson\\Tests';
     }
 
     public function tearDown() {
@@ -23,7 +20,7 @@ final class ConcreteNamespaceTest extends \PHPUnit_Framework_TestCase {
 
         $namespace = new ConcreteNamespace($this->namespace);
 
-        $this->assertEquals($this->output, $namespace->get());
+        $this->assertEquals($this->namespace, $namespace->get());
 
     }
 

@@ -19,7 +19,13 @@ final class ConcreteNamespaceAdapterTest extends \PHPUnit_Framework_TestCase {
             'Adapters'
         ];
 
-        $this->all = 'Rodson\Tests\Tests\Unit\Adapters';
+        $this->all = [
+            'Rodson',
+            'Tests',
+            'Tests',
+            'Unit',
+            'Adapters'
+        ];
 
         $this->adapter = new ConcreteNamespaceAdapter($this->base);
     }

@@ -22,7 +22,7 @@ final class ConcreteNamespace implements ObjectNamespace {
     }
 
     public function get() {
-        return implode('\\', $this->namespace);
+        return $this->namespace;
     }
 
 }

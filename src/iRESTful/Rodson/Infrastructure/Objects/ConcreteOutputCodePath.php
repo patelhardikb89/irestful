@@ -48,6 +48,10 @@ final class ConcreteOutputCodePath implements Path {
         return array_merge($this->basePath, $this->relativePath, [$this->file->get()]);
     }
 
+    public function getAbsolutePath() {
+        return array_merge($this->basePath, $this->relativePath);
+    }
+
     public function getRelativePath() {
         return $this->relativePath;
     }

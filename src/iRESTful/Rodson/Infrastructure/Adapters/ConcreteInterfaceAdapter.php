@@ -53,14 +53,14 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
 
             $typeName = $type->getName();
             $name = $this->fromNameToInterfaceName($typeName);
-            $methods = $this->methodAdapter->fromDataToMethods([
+            $method = $this->methodAdapter->fromDataToMethod([
                 'name' => 'get'
             ]);
 
             $namespaceData = array_merge($namespacePrefix, [$name]);
             $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
             $subInterfaces = $this->createSubInterfaces($name, $type, $namespaceData);
-            return new ConcreteInterface($name, $methods, $namespace, $subInterfaces);
+            return new ConcreteInterface($name, [$method], $namespace, $subInterfaces);
 
         } catch (MethodException $exception) {
             throw new InterfaceException('There was an exception while converting data to Method objects.', $exception);

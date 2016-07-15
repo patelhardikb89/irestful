@@ -92,7 +92,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
         $this->propertyTypeHelper->expectsGetType_Success($this->typeMock);
 
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_Success($this->subMethods, ['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
         $this->methodAdapterHelper->expectsFromTypeToMethods_Success([], $this->typeMock);
 
         $interface = $this->adapter->fromObjectToInterface($this->objectMock);
@@ -132,7 +132,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $this->propertyTypeHelper->expectsGetType_Success($this->typeMock);
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_Success($this->subMethods, ['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
         $this->methodAdapterHelper->expectsFromTypeToMethods_Success([], $this->typeMock);
 
         $interface = $this->adapter->fromObjectToInterface($this->objectMock);
@@ -194,7 +194,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
         $this->propertyTypeHelper->expectsGetType_Success($this->typeMock);
 
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_Success($this->subMethods, ['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
         $this->methodAdapterHelper->expectsFromTypeToMethods_throwsMethodException($this->typeMock);
 
         $asserted = false;
@@ -249,7 +249,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
     public function testFromTypeToInterface_Success() {
 
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_Success($this->methods, ['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
         $this->namespaceAdapterHelper->expectsFromDataToNamespace_Success($this->namespaceMock, [$this->typeInterfaceName]);
         $this->methodAdapterHelper->expectsFromTypeToMethods_Success([], $this->typeMock);
 
@@ -264,7 +264,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
     public function testFromTypeToInterface_withSubInterfaces_Success() {
 
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_Success($this->methods, ['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
         $this->namespaceAdapterHelper->expectsFromDataToNamespace_multiple_Success(
             [$this->namespaceMock, $this->namespaceMock],
             [[$this->typeInterfaceName], [$this->typeInterfaceName, 'Adapters']]
@@ -275,7 +275,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($this->typeInterfaceName, $interface->getName());
         $this->assertEquals($this->namespaceMock, $interface->getNamespace());
-        $this->assertEquals($this->methods, $interface->getMethods());
+        $this->assertEquals([$this->methodMock], $interface->getMethods());
         $this->assertTrue($interface->hasSubInterfaces());
 
         $subInterfaces = $interface->getSubInterfaces();
@@ -290,7 +290,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
     public function testFromTypeToInterface_throwsMethodException_throwsInterfaceException() {
 
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_Success($this->methods, ['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
         $this->namespaceAdapterHelper->expectsFromDataToNamespace_Success($this->namespaceMock, [$this->typeInterfaceName]);
         $this->methodAdapterHelper->expectsFromTypeToMethods_throwsMethodException($this->typeMock);
 
@@ -310,7 +310,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
     public function testFromTypeToInterface_throwsNamespaceException_throwsInterfaceException() {
 
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_Success($this->methods, ['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
         $this->namespaceAdapterHelper->expectsFromDataToNamespace_throwsNamespaceException([$this->typeInterfaceName]);
 
         $asserted = false;
@@ -329,7 +329,7 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
     public function testFromTypeToInterface_throwsMethodException_onFromDataToMethods_throwsInterfaceException() {
 
         $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethods_throwsMethodException(['name' => 'get']);
+        $this->methodAdapterHelper->expectsFromDataToMethod_throwsMethodException(['name' => 'get']);
 
         $asserted = false;
         try {

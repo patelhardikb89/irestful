@@ -3,6 +3,7 @@ namespace iRESTful\Rodson\Tests\Helpers\Adapters;
 use iRESTful\Rodson\Domain\Outputs\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Domain\Outputs\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Outputs\Methods\Method;
 
 final class OutputMethodAdapterHelper {
     private $phpunit;
@@ -34,16 +35,16 @@ final class OutputMethodAdapterHelper {
                                     ->will($this->phpunit->throwException(new MethodException('TEST')));
     }
 
-    public function expectsFromDataToMethods_Success(array $returnedMethods, array $data) {
+    public function expectsFromDataToMethod_Success(Method $returnedMethod, array $data) {
         $this->methodAdapterMock->expects($this->phpunit->once())
-                                    ->method('fromDataToMethods')
+                                    ->method('fromDataToMethod')
                                     ->with($data)
-                                    ->will($this->phpunit->returnValue($returnedMethods));
+                                    ->will($this->phpunit->returnValue($returnedMethod));
     }
 
-    public function expectsFromDataToMethods_throwsMethodException(array $data) {
+    public function expectsFromDataToMethod_throwsMethodException(array $data) {
         $this->methodAdapterMock->expects($this->phpunit->once())
-                                    ->method('fromDataToMethods')
+                                    ->method('fromDataToMethod')
                                     ->with($data)
                                     ->will($this->phpunit->throwException(new MethodException('TEST')));
     }

@@ -34,7 +34,12 @@ final class ConcreteMethodAdapter implements MethodAdapter {
             throw new MethodException('The name keyname is mandatory in order to convert data to a Method object.');
         }
 
-        return new ConcreteMethod($data['name']);
+        $parameters = null;
+        if (isset($data['parameters'])) {
+            $parameters = $data['parameters'];
+        }
+
+        return new ConcreteMethod($data['name'], null, $parameters);
 
     }
 
