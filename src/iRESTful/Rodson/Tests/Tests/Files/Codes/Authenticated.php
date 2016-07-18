@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Tests\Files\Codes;
 
 final class Authenticated {
-    
+
     public static function validateString($string) {
 
     }
@@ -16,7 +16,8 @@ final class Authenticated {
     }
 
     public static function validateBaseUrl($baseUrl) {
-
+        //here is some validation
+        //oh yeah!
     }
 
     public static function validateUri($uri) {
@@ -32,7 +33,7 @@ final class Authenticated {
     }
 
     public static function fromStringToBaseUrl($string) {
-
+        //here is some code...
     }
 
     public static function fromStringToUri($string) {

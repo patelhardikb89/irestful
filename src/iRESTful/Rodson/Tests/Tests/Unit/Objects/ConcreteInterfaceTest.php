@@ -39,53 +39,10 @@ final class ConcreteInterfaceTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->name, $interface->getName());
         $this->assertEquals($this->methods, $interface->getMethods());
         $this->assertEquals($this->namespaceMock, $interface->getNamespace());
-        $this->assertFalse($interface->hasSubInterfaces());
-        $this->assertNull($interface->getSubInterfaces());
 
     }
 
-    public function testCreate_withEmptySubInterfaces_Success() {
-
-        $interface = new ConcreteInterface($this->name, $this->methods, $this->namespaceMock, []);
-
-        $this->assertEquals($this->name, $interface->getName());
-        $this->assertEquals($this->methods, $interface->getMethods());
-        $this->assertEquals($this->namespaceMock, $interface->getNamespace());
-        $this->assertFalse($interface->hasSubInterfaces());
-        $this->assertNull($interface->getSubInterfaces());
-
-    }
-
-    public function testCreate_withSubInterfaces_Success() {
-
-        $interface = new ConcreteInterface($this->name, $this->methods, $this->namespaceMock, $this->subInterfaces);
-
-        $this->assertEquals($this->name, $interface->getName());
-        $this->assertEquals($this->methods, $interface->getMethods());
-        $this->assertEquals($this->namespaceMock, $interface->getNamespace());
-        $this->assertTrue($interface->hasSubInterfaces());
-        $this->assertEquals($this->subInterfaces, $interface->getSubInterfaces());
-
-    }
-
-    public function testCreate_withSubInterfaces_withOneInvalidSubInterface_throwsInterfaceException() {
-
-        $this->subInterfaces[] = new \DateTime();
-
-        $asserted = false;
-        try {
-
-            new ConcreteInterface($this->name, $this->methods, $this->namespaceMock, $this->subInterfaces);
-
-        } catch (InterfaceException $exception) {
-            $asserted = true;
-        }
-
-        $this->assertTrue($asserted);
-
-    }
-
-    public function testCreate_withSubInterfaces_withOneInvalidMethod_throwsInterfaceException() {
+    public function testCreate_withOneInvalidMethod_throwsInterfaceException() {
 
         $this->methods[] = new \DateTime();
 
@@ -102,7 +59,7 @@ final class ConcreteInterfaceTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testCreate_withSubInterfaces_withEmptyMethods_throwsInterfaceException() {
+    public function testCreate_withEmptyMethods_throwsInterfaceException() {
 
         $asserted = false;
         try {

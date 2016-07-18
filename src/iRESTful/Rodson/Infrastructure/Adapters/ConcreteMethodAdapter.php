@@ -87,55 +87,17 @@ final class ConcreteMethodAdapter implements MethodAdapter {
 
     public function fromTypeToMethods(Type $type) {
 
-        $getMethod = function(Type $type, Adapter $adapter) {
-
-            $typeName = $type->getName();
-
-            $fromType = $typeName;
-            $parameterType = null;
-            if ($adapter->hasFromType()) {
-                $parameterType = $adapter->fromType();
-                $fromType = $parameterType->getName();
-            }
-
-            $toType = $typeName;
-            $returnedType = null;
-            if ($adapter->hasToType()) {
-                $returnedType = $adapter->toType();
-                $toType = $returnedType->getName();
-            }
-
-            if (empty($returnedType)) {
-                $returnedType = $type;
-            }
-
-            if (empty($parameterType)) {
-                $parameterType = $type;
-            }
-
-            $methodName = 'from'.ucfirst($fromType).'To'.ucfirst($toType);
-            $returnedInterface = $this->returnedInterfaceAdapter->fromTypeToReturnedInterface($returnedType);
-
-            $parameters = [
-                $this->parameterAdapter->fromTypeToParameter($parameterType)
-            ];
-
-            return new ConcreteMethod($methodName, $returnedInterface, $parameters);
-
-
-        };
-
         try {
 
             $output = [];
             if ($type->hasDatabaseAdapter()) {
                 $databaseAdapter = $type->getDatabaseAdapter();
-                $output[] = $getMethod($type, $databaseAdapter);
+                $output[] = $this->getMethod($type, $databaseAdapter);
             }
 
             if ($type->hasViewAdapter()) {
                 $viewAdapter = $type->getViewAdapter();
-                $output[] = $getMethod($type, $viewAdapter);
+                $output[] = $this->getMethod($type, $viewAdapter);
             }
 
             return $output;
@@ -146,6 +108,75 @@ final class ConcreteMethodAdapter implements MethodAdapter {
             throw new MethodException('There was an exception while converting a Type object to a ReturnedInterface object.', $exception);
         }
 
+    }
+
+    public function fromTypeToDatabaseAdapterMethod(Type $type) {
+
+        if (!$type->hasDatabaseAdapter()) {
+            //throws
+        }
+
+        $adapter = $type->getDatabaseAdapter();
+        return $this->getMethod($type, $adapter);
+
+    }
+
+    public function fromTypeToViewAdapterMethod(Type $type) {
+        if (!$type->hasViewAdapter()) {
+            //throws
+        }
+
+        $adapter = $type->getViewAdapter();
+        return $this->getMethod($type, $adapter);
+    }
+
+    private function getMethod(Type $type, Adapter $adapter) {
+
+        $convert = function($name) {
+            $matches = [];
+            preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
+
+            foreach($matches[0] as $oneElement) {
+                $replacement = strtoupper(str_replace('_', '', $oneElement));
+                $name = str_replace($oneElement, $replacement, $name);
+            }
+
+            return ucfirst($name);
+        };
+
+
+        $typeName = $type->getName();
+
+        $fromType = $typeName;
+        $parameterType = null;
+        if ($adapter->hasFromType()) {
+            $parameterType = $adapter->fromType();
+            $fromType = $parameterType->getName();
+        }
+
+        $toType = $typeName;
+        $returnedType = null;
+        if ($adapter->hasToType()) {
+            $returnedType = $adapter->toType();
+            $toType = $returnedType->getName();
+        }
+
+        if (empty($returnedType)) {
+            $returnedType = $type;
+        }
+
+        if (empty($parameterType)) {
+            $parameterType = $type;
+        }
+
+        $methodName = 'from'.$convert($fromType).'To'.$convert($toType);
+        $returnedInterface = $this->returnedInterfaceAdapter->fromTypeToReturnedInterface($returnedType);
+
+        $parameters = [
+            $this->parameterAdapter->fromTypeToParameter($parameterType)
+        ];
+
+        return new ConcreteMethod($methodName, $returnedInterface, $parameters);
     }
 
 }

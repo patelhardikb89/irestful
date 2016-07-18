@@ -12,4 +12,5 @@ interface ClassAdapter {
     public function fromTypeToTypeClass(Type $type);
     public function fromControllerToClass(Controller $controller);
     public function fromControllersToClasses(array $controllers);
+    public function fromTypeToAdapterClass(Type $type);
 }

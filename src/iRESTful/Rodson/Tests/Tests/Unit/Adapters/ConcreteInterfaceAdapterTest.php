@@ -100,15 +100,6 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->objectInterfaceName, $interface->getName());
         $this->assertEquals($this->namespaceMock, $interface->getNamespace());
         $this->assertEquals($this->methods, $interface->getMethods());
-        $this->assertTrue($interface->hasSubInterfaces());
-
-        $subInterfaces = $interface->getSubInterfaces();
-        $this->assertEquals(1, count($subInterfaces));
-        $this->assertEquals($this->typeInterfaceName, $subInterfaces[0]->getName());
-        $this->assertEquals($this->namespaceMock, $subInterfaces[0]->getNamespace());
-        $this->assertEquals($this->subMethods, $subInterfaces[0]->getMethods());
-        $this->assertFalse($subInterfaces[0]->hasSubInterfaces());
-        $this->assertNull($subInterfaces[0]->getSubInterfaces());
     }
 
     public function testFromObjectToInterface_withObjectProperty_Success() {
@@ -140,22 +131,6 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->objectInterfaceName, $interface->getName());
         $this->assertEquals($this->namespaceMock, $interface->getNamespace());
         $this->assertEquals($this->methods, $interface->getMethods());
-        $this->assertTrue($interface->hasSubInterfaces());
-
-        $subInterfaces = $interface->getSubInterfaces();
-        $this->assertEquals(1, count($subInterfaces));
-        $this->assertEquals($this->secondObjectInterfaceName, $subInterfaces[0]->getName());
-        $this->assertEquals($this->namespaceMock, $subInterfaces[0]->getNamespace());
-        $this->assertEquals($this->methods, $subInterfaces[0]->getMethods());
-        $this->assertTrue($subInterfaces[0]->hasSubInterfaces());
-
-        $subSubInterfaces = $subInterfaces[0]->getSubInterfaces();
-        $this->assertEquals(1, count($subSubInterfaces));
-        $this->assertEquals($this->typeInterfaceName, $subSubInterfaces[0]->getName());
-        $this->assertEquals($this->namespaceMock, $subSubInterfaces[0]->getNamespace());
-        $this->assertEquals($this->subMethods, $subSubInterfaces[0]->getMethods());
-        $this->assertFalse($subSubInterfaces[0]->hasSubInterfaces());
-        $this->assertNull($subSubInterfaces[0]->getSubInterfaces());
     }
 
     public function testFromObjectToInterface_withoutTypeProperty_withoutObjectProperty_throwsInterfaceException() {
@@ -257,34 +232,6 @@ final class ConcreteInterfaceAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($this->typeInterfaceName, $interface->getName());
         $this->assertEquals($this->namespaceMock, $interface->getNamespace());
-        $this->assertFalse($interface->hasSubInterfaces());
-        $this->assertNull($interface->getSubInterfaces());
-    }
-
-    public function testFromTypeToInterface_withSubInterfaces_Success() {
-
-        $this->typeHelper->expectsGetName_Success($this->typeName);
-        $this->methodAdapterHelper->expectsFromDataToMethod_Success($this->methodMock, ['name' => 'get']);
-        $this->namespaceAdapterHelper->expectsFromDataToNamespace_multiple_Success(
-            [$this->namespaceMock, $this->namespaceMock],
-            [[$this->typeInterfaceName], [$this->typeInterfaceName, 'Adapters']]
-        );
-        $this->methodAdapterHelper->expectsFromTypeToMethods_Success($this->subMethods, $this->typeMock);
-
-        $interface = $this->adapter->fromTypeToInterface($this->typeMock);
-
-        $this->assertEquals($this->typeInterfaceName, $interface->getName());
-        $this->assertEquals($this->namespaceMock, $interface->getNamespace());
-        $this->assertEquals([$this->methodMock], $interface->getMethods());
-        $this->assertTrue($interface->hasSubInterfaces());
-
-        $subInterfaces = $interface->getSubInterfaces();
-        $this->assertEquals(1, count($subInterfaces));
-        $this->assertEquals($this->typeInterfaceName.'Adapter', $subInterfaces[0]->getName());
-        $this->assertEquals($this->namespaceMock, $subInterfaces[0]->getNamespace());
-        $this->assertEquals($this->subMethods, $subInterfaces[0]->getMethods());
-        $this->assertFalse($subInterfaces[0]->hasSubInterfaces());
-        $this->assertNull($subInterfaces[0]->getSubInterfaces());
     }
 
     public function testFromTypeToInterface_throwsMethodException_throwsInterfaceException() {

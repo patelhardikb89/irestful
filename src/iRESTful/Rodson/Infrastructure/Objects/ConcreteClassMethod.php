@@ -9,8 +9,12 @@ final class ConcreteClassMethod implements Method {
     private $method;
     public function __construct($code, InterfaceMethod $method) {
 
-        if (empty($code) || !is_string($code)) {
-            throw new MethodException('The code must be a non-empty string.');
+        if (!empty($code) && !is_string($code)) {
+            throw new MethodException('The code must be a string if non-empty.');
+        }
+
+        if (empty($code)) {
+            $code = '';
         }
 
         $this->code = $code;

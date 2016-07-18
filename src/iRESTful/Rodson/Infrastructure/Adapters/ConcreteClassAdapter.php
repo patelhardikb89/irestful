@@ -14,6 +14,7 @@ use iRESTful\Rodson\Domain\Outputs\Classes\Exceptions\ClassException;
 use iRESTful\Rodson\Domain\Outputs\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\Rodson\Domain\Outputs\Namespaces\Exceptions\NamespaceException;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
 
 final class ConcreteClassAdapter implements ClassAdapter {
     private $namespaceAdapter;
@@ -134,7 +135,12 @@ final class ConcreteClassAdapter implements ClassAdapter {
             $interfaceName = $interface->getName();
             $name = 'Concrete'.$interfaceName;
 
-            return new ConcreteClass($name, $namespace, $interface, $constructor, $methods, [$property], false);
+            $subClasses = [];
+            if ($type->hasViewAdapter() || $type->hasDatabaseAdapter()) {
+                $subClasses[] = $this->fromTypeToAdapterClass($type);
+            }
+
+            return new ConcreteClass($name, $namespace, $interface, $constructor, $methods, [$property], false, $subClasses);
 
         } catch (InterfaceException $exception) {
             throw new ClassException('There was an exception while converting an Object to an Interface object.', $exception);
@@ -160,6 +166,25 @@ final class ConcreteClassAdapter implements ClassAdapter {
         }
 
         return $output;
+
+    }
+
+    public function fromTypeToAdapterClass(Type $type) {
+
+        $adapterInterface = $this->interfaceAdapter->fromTypeToAdapterInterface($type);
+
+        $subMethods = $adapterInterface->getMethods();
+        $interfaceMethod = $type->getMethod();
+
+        $constructor = $this->methodAdapter->fromEmptyToConstructor();
+        $methods = $this->methodAdapter->fromTypeToCustomMethods($type);
+        $namespace = $this->namespaceAdapter->fromDataToNamespace(['Types', 'Adapters']);
+
+        $interfaceName = $adapterInterface->getName();
+        $name = 'Concrete'.$interfaceName;
+
+        return new ConcreteClass($name, $namespace,$adapterInterface, $constructor, $methods, [], false);
+
 
     }
 

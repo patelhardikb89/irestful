@@ -14,7 +14,21 @@ final class ConcreteClass implements ObjectClass {
     private $methods;
     private $properties;
     private $isEntity;
-    public function __construct($name, ObjectNamespace $namespace, ObjectInterface $interface, Method $constructor, array $methods, array $properties, $isEntity) {
+    private $subClasses;
+    public function __construct(
+        $name,
+        ObjectNamespace $namespace,
+        ObjectInterface $interface,
+        Method $constructor,
+        array $methods,
+        array $properties,
+        $isEntity,
+        array $subClasses = null
+    ) {
+
+        if (empty($subClasses)) {
+            $subClasses = null;
+        }
 
         if (empty($name) || !is_string($name)) {
             throw new ClassException('The name must be a non-empty string.');
@@ -36,6 +50,14 @@ final class ConcreteClass implements ObjectClass {
 
         }
 
+        if (!empty($subClasses)) {
+            foreach($subClasses as $oneSubClass) {
+                if (!($oneSubClass instanceof ObjectClass)) {
+                    throw new ClassException('The subClasses array must only contain Class objects.');
+                }
+            }
+        }
+
         $this->name = $name;
         $this->namespace = $namespace;
         $this->interface = $interface;
@@ -43,7 +65,7 @@ final class ConcreteClass implements ObjectClass {
         $this->methods = $methods;
         $this->properties = $properties;
         $this->isEntity = (bool) $isEntity;
-
+        $this->subClasses = $subClasses;
     }
 
     public function getName() {
@@ -72,6 +94,14 @@ final class ConcreteClass implements ObjectClass {
 
     public function isEntity() {
         return $this->isEntity;
+    }
+
+    public function hasSubClasses() {
+        return !empty($this->subClasses);
+    }
+
+    public function getSubClasses() {
+        return $this->subClasses;
     }
 
 }

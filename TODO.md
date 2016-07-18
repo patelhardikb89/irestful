@@ -1,4 +1,3 @@
-* Generate class code for adapter classes.
 * Generate class code for controller classes.
 * Fix namespaces in interfaces.
 * Finish the repository and service.

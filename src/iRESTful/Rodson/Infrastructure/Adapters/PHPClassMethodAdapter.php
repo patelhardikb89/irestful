@@ -7,6 +7,7 @@ use iRESTful\Rodson\Domain\Outputs\Methods\Parameters\Adapters\ParameterAdapter;
 use iRESTful\Rodson\Domain\Outputs\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteClassMethod;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
 
 final class PHPClassMethodAdapter implements ClassMethodAdapter {
     private $parameterAdapter;
@@ -16,6 +17,83 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
         $this->parameterAdapter = $parameterAdapter;
         $this->interfaceMethodAdapter = $interfaceMethodAdapter;
         $this->propertyAdapter = $propertyAdapter;
+    }
+
+    public function fromEmptyToConstructor() {
+        return $this->createClassConstructor();
+    }
+
+    public function fromDataToMethods(array $data) {
+        $output = [];
+        foreach($data as $oneData) {
+            $output[] = $this->fromDataToMethod($oneData);
+        }
+
+        return $output;
+    }
+
+    public function fromTypeToCustomMethods(Type $type) {
+
+        $getCode = function(Adapter $adapter) {
+            $removeBraces = function(array $code) {
+                $codeWithBraces = trim(implode(PHP_EOL, $code));
+                $firstPos = strpos($codeWithBraces, '{');
+                if ($firstPos === 0) {
+                    $codeWithBraces = substr($codeWithBraces, 1);
+                }
+
+                $lastPos = strrpos($codeWithBraces, '}');
+                $length = strlen($codeWithBraces) - 1;
+                if ($lastPos === $length) {
+                    $codeWithBraces = substr($codeWithBraces, 0, $length - 2);
+                }
+
+                return trim($codeWithBraces);
+
+            };
+
+            $codeMethod = $adapter->getMethod();
+            $code = $codeMethod->getCode();
+            $language = $code->getLanguage();
+            if ($language->get() != 'PHP') {
+                //throws
+            }
+
+            $className = $code->getClassName();
+            $methodName = $codeMethod->getMethodName();
+
+            $reflectionMethod = new \ReflectionMethod($className, $methodName);
+
+            $fileName = $reflectionMethod->getFileName();
+            $startLine = $reflectionMethod->getStartLine();
+            $endLine = $reflectionMethod->getEndLine();
+            $numLines = $endLine - $startLine;
+
+            $contents = file_get_contents($fileName);
+            $contentLines = explode(PHP_EOL, $contents);
+            $sliced = array_slice($contentLines, $startLine, $numLines);
+            return $removeBraces($sliced);
+        };
+
+
+
+        $methods = [];
+        if ($type->hasDatabaseAdapter()) {
+            $databaseAdapter = $type->getDatabaseAdapter();
+            $code = $getCode($databaseAdapter);
+            $interfaceMethod = $this->interfaceMethodAdapter->fromTypeToDatabaseAdapterMethod($type);
+            $methods[] = new ConcreteClassMethod($code, $interfaceMethod);
+        }
+
+        if ($type->hasViewAdapter()) {
+            $viewAdapter = $type->getViewAdapter();
+            $code = $getCode($viewAdapter);
+            $interfaceMethod = $this->interfaceMethodAdapter->fromTypeToViewAdapterMethod($type);
+            $methods[] = new ConcreteClassMethod($code, $interfaceMethod);
+        }
+
+        return $methods;
+
     }
 
     public function fromObjectToConstructor(Object $object) {
@@ -78,7 +156,7 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
         return [$method];
     }
 
-    private function createClassConstructor(array $methodParameters) {
+    private function createClassConstructor(array $methodParameters = null) {
 
         $interfaceMethod = $this->interfaceMethodAdapter->fromDataToMethod([
             'name' => '__construct',
@@ -86,9 +164,11 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
         ]);
 
         $codeLines = [];
-        foreach($methodParameters as $oneMethodParameter) {
-            $parameterName = $oneMethodParameter->getName();
-            $codeLines[] = '$this->'.$parameterName.' = $'.$parameterName.';';
+        if (!empty($methodParameters)) {
+            foreach($methodParameters as $oneMethodParameter) {
+                $parameterName = $oneMethodParameter->getName();
+                $codeLines[] = '$this->'.$parameterName.' = $'.$parameterName.';';
+            }
         }
 
         $code = implode(PHP_EOL, $codeLines);

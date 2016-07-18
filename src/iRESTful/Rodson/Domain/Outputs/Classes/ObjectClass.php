@@ -9,4 +9,6 @@ interface ObjectClass {
     public function getConstructor();
     public function getMethods();
     public function isEntity();
+    public function hasSubClasses();
+    public function getSubClasses();
 }

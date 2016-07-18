@@ -41,7 +41,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $returnedInterface = $oneParameter->getReturnedInterface();
                 $interfaceName = $returnedInterface->getName();
                 $parametersCode[] = $interfaceName.' '.$name;
-                $includedNamespaces[] = $returnedInterface->getNamespace()->get();
+                $includedNamespaces[] = implode('\\', $returnedInterface->getNamespace()->get());
                 continue;
             }
 
@@ -115,7 +115,7 @@ interface '.$name.' {
         $codeConstructor = function(Method $constructor, array &$namespaces) use(&$codeMethod) {
             $interfaceMethod = $constructor->getInterfaceMethod();
             if (!$interfaceMethod->hasParameters()) {
-                return [];
+                return $codeMethod($constructor);
             }
 
             $methodParameters = $interfaceMethod->getParameters();
@@ -188,7 +188,15 @@ interface '.$name.' {
 
         $relativeFilePath = str_replace('\\', '/', $currentNamespace).'/'.$name.'.php';
         $path = $this->pathAdapter->fromRelativePathStringToPath($relativeFilePath);
-        return new ConcreteOutputCode($code, $path, [$interfaceCode]);
+
+        $subCodes = [$interfaceCode];
+        if ($class->hasSubClasses()) {
+            $subClasses = $class->getSubClasses();
+            $subClassesCode = $this->fromClassesToCodes($subClasses);
+            $subCodes = array_merge($subCodes, $subClassesCode);
+        }
+
+        return new ConcreteOutputCode($code, $path, $subCodes);
     }
 
     public function fromClassesToCodes(array $classes) {

@@ -9,12 +9,7 @@ final class ConcreteInterface implements ObjectInterface {
     private $name;
     private $methods;
     private $namespace;
-    private $subInterfaces;
-    public function __construct($name, array $methods, ObjectNamespace $namespace, array $subInterfaces = null) {
-
-        if (empty($subInterfaces)) {
-            $subInterfaces = null;
-        }
+    public function __construct($name, array $methods, ObjectNamespace $namespace) {
 
         if (empty($name) || !is_string($name)) {
             throw new InterfaceException('The name must be a non-empty string.');
@@ -32,20 +27,9 @@ final class ConcreteInterface implements ObjectInterface {
 
         }
 
-        if (!empty($subInterfaces)) {
-            foreach($subInterfaces as $oneSubInterface) {
-
-                if (!($oneSubInterface instanceof ObjectInterface)) {
-                    throw new InterfaceException('The subInterfaces array must only contain ObjectInterface objects.');
-                }
-
-            }
-        }
-
         $this->name = $name;
         $this->methods = $methods;
         $this->namespace = $namespace;
-        $this->subInterfaces = $subInterfaces;
     }
 
     public function getName() {
@@ -58,13 +42,5 @@ final class ConcreteInterface implements ObjectInterface {
 
     public function getNamespace() {
         return $this->namespace;
-    }
-
-    public function hasSubInterfaces() {
-        return !empty($this->subInterfaces);
-    }
-
-    public function getSubInterfaces() {
-        return $this->subInterfaces;
     }
 }
