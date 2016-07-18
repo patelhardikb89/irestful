@@ -6,6 +6,7 @@ use iRESTful\Rodson\Domain\Outputs\Classes\Properties\Adapters\PropertyAdapter;
 use iRESTful\Rodson\Domain\Outputs\Methods\Parameters\Adapters\ParameterAdapter;
 use iRESTful\Rodson\Domain\Outputs\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteClassMethod;
+use iRESTful\Rodson\Domain\Inputs\Types\Type;
 
 final class PHPClassMethodAdapter implements ClassMethodAdapter {
     private $parameterAdapter;
@@ -21,20 +22,7 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
 
         $properties = $object->getProperties();
         $methodParameters = $this->parameterAdapter->fromPropertiesToParameters($properties);
-
-        $interfaceMethod = $this->interfaceMethodAdapter->fromDataToMethod([
-            'name' => '__construct',
-            'parameters' => $methodParameters
-        ]);
-
-        $codeLines = [];
-        foreach($methodParameters as $oneMethodParameter) {
-            $parameterName = $oneMethodParameter->getName();
-            $codeLines[] = '$this->'.$parameterName.' = $'.$parameterName.';';
-        }
-
-        $code = implode(PHP_EOL, $codeLines);
-        return new ConcreteClassMethod($code, $interfaceMethod);
+        return $this->createClassConstructor($methodParameters);
 
     }
 
@@ -52,6 +40,59 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
 
         return $methods;
 
+    }
+
+    public function fromTypeToConstructor(Type $type) {
+
+        $convert = function($name) {
+
+            $matches = [];
+            preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
+
+            foreach($matches[0] as $oneElement) {
+                $replacement = strtoupper(str_replace('_', '', $oneElement));
+                $name = str_replace($oneElement, $replacement, $name);
+            }
+
+            return lcfirst($name);
+
+        };
+
+        $name = $type->getName();
+        $methodParameter = $this->parameterAdapter->fromDataToParameter([
+            'name' => $convert($name)
+        ]);
+
+        return $this->createClassConstructor([$methodParameter]);
+    }
+
+    public function fromTypeToMethods(Type $type) {
+
+        $interfaceMethod = $this->interfaceMethodAdapter->fromDataToMethod([
+            'name' => 'get'
+        ]);
+
+        $property = $this->propertyAdapter->fromTypeToProperty($type);
+        $code = 'return $this->'.$property->get().';';
+        $method = new ConcreteClassMethod($code, $interfaceMethod);
+        return [$method];
+    }
+
+    private function createClassConstructor(array $methodParameters) {
+
+        $interfaceMethod = $this->interfaceMethodAdapter->fromDataToMethod([
+            'name' => '__construct',
+            'parameters' => $methodParameters
+        ]);
+
+        $codeLines = [];
+        foreach($methodParameters as $oneMethodParameter) {
+            $parameterName = $oneMethodParameter->getName();
+            $codeLines[] = '$this->'.$parameterName.' = $'.$parameterName.';';
+        }
+
+        $code = implode(PHP_EOL, $codeLines);
+        return new ConcreteClassMethod($code, $interfaceMethod);
     }
 
 }

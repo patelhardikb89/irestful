@@ -3,3 +3,4 @@
 /reports
 /composer.phar
 .DS_Store
+/src/iRESTful/Rodson/Tests/Tests/Files/Output/iRESTful/*

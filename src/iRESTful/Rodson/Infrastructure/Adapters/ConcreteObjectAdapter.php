@@ -5,6 +5,7 @@ use iRESTful\Rodson\Infrastructure\Objects\ConcreteObject;
 use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Exceptions\PropertyException;
 use iRESTful\Rodson\Domain\Inputs\Objects\Adapters\ObjectAdapter;
+use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $propertyAdapter;
@@ -20,29 +21,6 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
 
     public function fromDataToObjects(array $data) {
         return $this->convertMultipleDataToObjects($data, true);
-    }
-
-    private function convertMultipleDataToObjects(array $data, $throwException) {
-        $output = [];
-        foreach($data as $name => $oneData) {
-
-            try {
-
-                $oneData['name'] = $name;
-                $output[$name] = $this->fromDataToObject($oneData);
-
-            } catch (ObjectException $exception) {
-
-                if ($throwException) {
-                    throw $exception;
-                }
-
-                continue;
-
-            }
-        }
-
-        return $output;
     }
 
     public function fromDataToObject(array $data) {
@@ -73,6 +51,29 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
         } catch (PropertyException $exception) {
             throw new ObjectException('There was an exception while converting data to Property objects.', $exception);
         }
+    }
+
+    private function convertMultipleDataToObjects(array $data, $throwException) {
+        $output = [];
+        foreach($data as $name => $oneData) {
+
+            try {
+
+                $oneData['name'] = $name;
+                $output[$name] = $this->fromDataToObject($oneData);
+
+            } catch (ObjectException $exception) {
+
+                if ($throwException) {
+                    throw $exception;
+                }
+
+                continue;
+
+            }
+        }
+
+        return $output;
     }
 
 }

@@ -28,6 +28,14 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
         return $this->fromTypeToInterfaceWithNamespacePrefix($type);
     }
 
+    public function fromPropertiesToInterfaces(array $properties) {
+        return $this->fromPropertiesToInterfacesWithNamespacePrefix($properties, []);
+    }
+
+    public function fromPropertyTypeToInterface(PropertyType $propertyType) {
+        return $this->fromPropertiesToInterfacesWithNamespacePrefix($propertyType, []);
+    }
+
     private function fromObjectToInterfaceWithNamespacePrefix(Object $object, array $namespacePrefix = []) {
         try {
 
@@ -37,7 +45,7 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
             $methods = $this->methodAdapter->fromPropertiesToMethods($properties);
             $namespaceData = array_merge($namespacePrefix, [$name]);
             $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
-            $subInterfaces = $this->fromPropertiesToInterfaces($properties, $namespaceData);
+            $subInterfaces = $this->fromPropertiesToInterfacesWithNamespacePrefix($properties, $namespaceData);
 
             return new ConcreteInterface($name, $methods, $namespace, $subInterfaces);
 
@@ -69,17 +77,7 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
         }
     }
 
-    private function fromPropertiesToInterfaces(array $properties, array $namespacePrefix) {
-        $output = [];
-        foreach($properties as $oneProperty) {
-            $type = $oneProperty->getType();
-            $output[] = $this->fromPropertyTypeToInterface($type, $namespacePrefix);
-        }
-
-        return $output;
-    }
-
-    private function fromPropertyTypeToInterface(PropertyType $propertyType, array $namespacePrefix) {
+    private function fromPropertyTypeToInterfaceWithNamespacePrefix(PropertyType $propertyType, array $namespacePrefix) {
 
         if ($propertyType->hasType()) {
             $type = $propertyType->getType();
@@ -93,6 +91,16 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
 
         throw new InterfaceException('There was no Type or Object inside the given PropertyType.');
 
+    }
+
+    private function fromPropertiesToInterfacesWithNamespacePrefix(array $properties, array $namespacePrefix) {
+        $output = [];
+        foreach($properties as $oneProperty) {
+            $type = $oneProperty->getType();
+            $output[] = $this->fromPropertyTypeToInterfaceWithNamespacePrefix($type, $namespacePrefix);
+        }
+
+        return $output;
     }
 
     private function createSubInterfaces($interfaceName, Type $type, array $namespacePrefix) {

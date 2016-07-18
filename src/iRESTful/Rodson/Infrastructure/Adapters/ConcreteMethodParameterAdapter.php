@@ -14,6 +14,15 @@ final class ConcreteMethodParameterAdapter implements ParameterAdapter {
         $this->returnedInterfaceAdapter = $returnedInterfaceAdapter;
     }
 
+    public function fromDataToParameter(array $data) {
+
+        if (!isset($data['name'])) {
+            throw new ParameterException('The name keyname is mandatory in order to convert data to a Parameter objet.');
+        }
+
+        return new ConcreteMethodParameter($data['name']);
+    }
+
     public function fromTypeToParameter(Type $type) {
 
         $convert = function(Type $type) {
