@@ -7,6 +7,7 @@ use iRESTful\Rodson\Infrastructure\Objects\ConcreteMethodParameter;
 use iRESTful\Rodson\Domain\Outputs\Methods\Returns\Exceptions\ReturnedInterfaceException;
 use iRESTful\Rodson\Domain\Outputs\Methods\Parameters\Exceptions\ParameterException;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
+use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 
 final class ConcreteMethodParameterAdapter implements ParameterAdapter {
     private $returnedInterfaceAdapter;
@@ -89,6 +90,29 @@ final class ConcreteMethodParameterAdapter implements ParameterAdapter {
         }
 
         return $output;
+    }
+
+
+
+    public function fromObjectToParameters(Object $object) {
+
+        $entityParameters = [];
+        if ($object->hasDatabase()) {
+            $interfaces = $this->returnedInterfaceAdapter->fromDataToReturnedInterfaces([
+                ['name' => 'Uuid', 'namespace' => 'iRESTful\Objects\Libraries\Ids\Domain\Uuids\Uuid'],
+                ['name' => '\DateTime', 'namespace' => '\DateTime']
+            ]);
+
+            $names = ['uuid', 'createdOn'];
+            foreach($interfaces as $index => $oneInterface) {
+                $entityParameters[] = new ConcreteMethodParameter($names[$index], $oneInterface, true);
+            }
+        }
+
+        $properties = $object->getProperties();
+        $parameters = $this->fromPropertiesToParameters($properties);
+        return array_merge($entityParameters, $parameters);
+
     }
 
 }

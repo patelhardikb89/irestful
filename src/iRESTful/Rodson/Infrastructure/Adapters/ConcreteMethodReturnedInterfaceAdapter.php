@@ -15,6 +15,30 @@ final class ConcreteMethodReturnedInterfaceAdapter implements  ReturnedInterface
         $this->namespaceAdapter = $namespaceAdapter;
     }
 
+    public function fromDataToReturnedInterfaces(array $data) {
+        $output = [];
+        foreach($data as $oneData) {
+            $output[] = $this->fromDataToReturnedInterface($oneData);
+        }
+
+        return $output;
+    }
+
+    public function fromDataToReturnedInterface(array $data) {
+
+        if (!isset($data['name'])) {
+            throw new ReturnedInterfaceException('The name keyname is mandatory in order to convert data to a ReturnedInterface object.');
+        }
+
+        if (!isset($data['namespace'])) {
+            throw new ReturnedInterfaceException('The namespace keyname is mandatory in order to convert data to a ReturnedInterface object.');
+        }
+
+        $namespace = $this->namespaceAdapter->fromStringToNamespace($data['namespace']);
+        return new ConcreteMethodReturnedInterface($data['name'], $namespace);
+
+    }
+
     public function fromTypeToReturnedInterface(Type $type) {
 
         try {

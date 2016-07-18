@@ -5,7 +5,8 @@ use iRESTful\Rodson\Domain\Outputs\Namespaces\Exceptions\NamespaceException;
 
 final class ConcreteNamespace implements ObjectNamespace {
     private $namespace;
-    public function __construct(array $namespace) {
+    private $isMandatory;
+    public function __construct(array $namespace, $isMandatory) {
 
         if (empty($namespace)) {
             throw new NamespaceException('The namespace array cannot be empty.');
@@ -18,7 +19,11 @@ final class ConcreteNamespace implements ObjectNamespace {
         }
 
         $this->namespace = $namespace;
+        $this->isMandatory = $isMandatory;
+    }
 
+    public function isMandatory() {
+        return $this->isMandatory;
     }
 
     public function get() {

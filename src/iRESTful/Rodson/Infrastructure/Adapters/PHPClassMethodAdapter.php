@@ -97,10 +97,8 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
     }
 
     public function fromObjectToConstructor(Object $object) {
-
-        $properties = $object->getProperties();
-        $methodParameters = $this->parameterAdapter->fromPropertiesToParameters($properties);
-        return $this->createClassConstructor($methodParameters);
+        $methodParameters = $this->parameterAdapter->fromObjectToParameters($object);
+        return $this->createClassConstructor($methodParameters, $object->hasDatabase());
 
     }
 
@@ -156,22 +154,34 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
         return [$method];
     }
 
-    private function createClassConstructor(array $methodParameters = null) {
+    private function createClassConstructor(array $methodParameters = null, $isEntity = false) {
 
         $interfaceMethod = $this->interfaceMethodAdapter->fromDataToMethod([
             'name' => '__construct',
             'parameters' => $methodParameters
         ]);
 
-        $codeLines = [];
+
+        $parentParams = [];
+        $assignments = [];
         if (!empty($methodParameters)) {
             foreach($methodParameters as $oneMethodParameter) {
                 $parameterName = $oneMethodParameter->getName();
-                $codeLines[] = '$this->'.$parameterName.' = $'.$parameterName.';';
+                if ($oneMethodParameter->isParent()) {
+                    $parentParams[] = '$'.$parameterName;
+                    continue;
+                }
+
+                $assignments[] = '$this->'.$parameterName.' = $'.$parameterName.';';
             }
         }
 
-        $code = implode(PHP_EOL, $codeLines);
+        $codeLines = [];
+        if ($isEntity) {
+            $codeLines[] = 'parent::__construct('.implode(', ', $parentParams).');';
+        }
+
+        $code = implode(PHP_EOL, array_merge($codeLines, $assignments));
         return new ConcreteClassMethod($code, $interfaceMethod);
     }
 

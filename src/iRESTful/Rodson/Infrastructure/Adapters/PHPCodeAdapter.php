@@ -142,16 +142,17 @@ interface '.$name.' {
             return implode(PHP_EOL.PHP_EOL, $blocks);
         };
 
-        $includeNamespaces = function(array $namespaces) {
+        $codeNamespaces = function(array $namespaces) {
 
             $lines = [];
             foreach($namespaces as $oneNamespace) {
-                $data = $oneNamespace->get();
-                $lines[] = 'use '.implode('\\', $data).';';
+                if ($oneNamespace->isMandatory()) {
+                    $data = $oneNamespace->get();
+                    $lines[] = 'use '.implode('\\', $data).';';
+                }
             }
 
-            $lines = array_unique($lines);
-            return implode(PHP_EOL, $lines);
+            return array_unique($lines);
 
         };
 
@@ -166,23 +167,12 @@ interface '.$name.' {
         $currentNamespace = implode('\\', $class->getNamespace()->get());
 
         $namespaces = [];
-        $code = [
+        $codeParts = [
             'properties' => $codeProperties($properties),
             'constructor' => $codeConstructor($constructor, $namespaces),
-            'methods' => $codeMethods($methods)
+            'methods' => $codeMethods($methods),
+            'namespaces' => $codeNamespaces($namespaces)
         ];
-
-        $code = '<?php
-                namespace '.$currentNamespace.';
-                '.$includeNamespaces($namespaces).'
-
-                final class '.$name.' implements '.$interfaceName.' {
-                    '.$code['properties'].'
-                    '.$code['constructor'].'
-
-                    '.$code['methods'].'
-                }
-        ';
 
         $interfaceCode = $this->fromInterfaceToCode($interface);
 
@@ -195,6 +185,24 @@ interface '.$name.' {
             $subClassesCode = $this->fromClassesToCodes($subClasses);
             $subCodes = array_merge($subCodes, $subClassesCode);
         }
+
+        $extendsString = '';
+        if ($class->isEntity()) {
+            $codeParts['namespaces'][] = 'use iRESTful\Objects\Entities\Entities\Infrastructure\Objects\AbstractEntity;';
+            $extendsString = ' extends AbstractEntity';
+        }
+
+        $code = '<?php
+                namespace '.$currentNamespace.';
+                '.implode(PHP_EOL, $codeParts['namespaces']).'
+
+                final class '.$name.$extendsString.' implements '.$interfaceName.' {
+                    '.$codeParts['properties'].'
+                    '.$codeParts['constructor'].'
+
+                    '.$codeParts['methods'].'
+                }
+        ';
 
         return new ConcreteOutputCode($code, $path, $subCodes);
     }

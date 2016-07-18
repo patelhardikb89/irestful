@@ -9,9 +9,21 @@ final class ConcreteNamespaceAdapter implements NamespaceAdapter {
         $this->baseNamespace = $baseNamespace;
     }
 
+    public function fromStringToNamespace($string) {
+
+        $pos = strpos($string, '\\');
+        if ($pos === 0) {
+            return new ConcreteNamespace([$string], false);
+        }
+
+        $exploded = explode('\\', $string);
+        return new ConcreteNamespace($exploded, true);
+
+    }
+
     public function fromDataToNamespace(array $data) {
         $namespace = array_merge($this->baseNamespace, $data);
-        return new ConcreteNamespace($namespace);
+        return new ConcreteNamespace($namespace, true);
     }
 
 }
