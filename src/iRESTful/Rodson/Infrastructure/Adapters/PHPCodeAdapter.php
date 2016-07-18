@@ -49,12 +49,18 @@ final class PHPCodeAdapter implements CodeAdapter {
             continue;
         }
 
+        $extendsString = '';
+        if ($interface->isEntity()) {
+            $extendsString = ' extends Entity';
+            $includedNamespaces[] = 'use iRESTful\Objects\Entities\Entities\Domain\Entity;';
+        }
+
         $currentNamespace = implode('\\', $interface->getNamespace()->get());
         $code = '<?php
 namespace '.$currentNamespace.';
 '.implode(PHP_EOL, $includedNamespaces).'
 
-interface '.$name.' {
+interface '.$name.$extendsString.' {
 '.implode(PHP_EOL, $methodsCode).'
 }';
 

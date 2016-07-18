@@ -51,13 +51,14 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
         }
 
         $namespace = $this->namespaceAdapter->fromDataToNamespace(array_merge($namespacePrefix, ['Adapters']));
-        return new ConcreteInterface($name, $methods, $namespace);
+        return new ConcreteInterface($name, $methods, $namespace, false);
     }
 
     private function fromObjectToInterfaceWithNamespacePrefix(Object $object, array $namespacePrefix = []) {
         try {
 
             $objectName = $object->getName();
+            $isEntity = $object->hasDatabase();
             $name = $this->fromNameToInterfaceName($objectName);
             $properties = $object->getProperties();
             $methods = $this->methodAdapter->fromPropertiesToMethods($properties);
@@ -65,7 +66,7 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
             $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
             $subInterfaces = $this->fromPropertiesToInterfacesWithNamespacePrefix($properties, $namespaceData);
 
-            return new ConcreteInterface($name, $methods, $namespace, $subInterfaces);
+            return new ConcreteInterface($name, $methods, $namespace, $subInterfaces, $isEntity);
 
         } catch (MethodException $exception) {
             throw new InterfaceException('There was an exception while converting Property objects to Method objects.', $exception);
@@ -85,7 +86,7 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
 
             $namespaceData = array_merge($namespacePrefix, [$name]);
             $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
-            return new ConcreteInterface($name, [$method], $namespace);
+            return new ConcreteInterface($name, [$method], $namespace, false);
 
         } catch (MethodException $exception) {
             throw new InterfaceException('There was an exception while converting data to Method objects.', $exception);

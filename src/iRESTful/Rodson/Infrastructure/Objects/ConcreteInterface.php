@@ -9,7 +9,8 @@ final class ConcreteInterface implements ObjectInterface {
     private $name;
     private $methods;
     private $namespace;
-    public function __construct($name, array $methods, ObjectNamespace $namespace) {
+    private $isEntity;
+    public function __construct($name, array $methods, ObjectNamespace $namespace, $isEntity) {
 
         if (empty($name) || !is_string($name)) {
             throw new InterfaceException('The name must be a non-empty string.');
@@ -30,6 +31,7 @@ final class ConcreteInterface implements ObjectInterface {
         $this->name = $name;
         $this->methods = $methods;
         $this->namespace = $namespace;
+        $this->isEntity = (bool) $isEntity;
     }
 
     public function getName() {
@@ -42,5 +44,9 @@ final class ConcreteInterface implements ObjectInterface {
 
     public function getNamespace() {
         return $this->namespace;
+    }
+
+    public function isEntity() {
+        return $this->isEntity;
     }
 }
