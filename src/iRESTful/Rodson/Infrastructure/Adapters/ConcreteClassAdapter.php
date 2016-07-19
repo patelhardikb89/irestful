@@ -37,44 +37,18 @@ final class ConcreteClassAdapter implements ClassAdapter {
         $this->baseInterfaceNamespace = $baseInterfaceNamespace;
     }
 
-    public function fromObjectsToRootClasses(array $objects) {
+    public function fromObjectToClass(Object $object) {
 
-        $getNonRootNames = function() use(&$objects) {
-            $nonRootNames = [];
-            foreach($objects as $oneObject) {
-                $properties = $oneObject->getProperties();
-                foreach($properties as $oneProperty) {
-                    $type = $oneProperty->getType();
-                    if ($type->hasObject()) {
-                        $typeObject = $type->getObject();
-
-                        if ($typeObject->hasDatabase()) {
-                            $nonRootNames[] = $typeObject->getName();
-                        }
-
-                        continue;
-                    }
-                }
-            }
-
-            return array_unique($nonRootNames);
-        };
-
-        $rootObjects = [];
-        $nonRootNames = $getNonRootNames();
-        foreach($objects as $oneObject) {
-            $name = $oneObject->getName();
-            if (!in_array($name, $nonRootNames)) {
-                $rootObjects[] = $oneObject;
-            }
+        $baseInterfaceNames = [];
+        if ($object->hasDatabase()) {
+            $baseInterfaceNames = array_merge($this->baseInterfaceNamespace, ['Entities']);
         }
 
-        return $this->fromObjectsToClasses($rootObjects);
+        if (!$object->hasDatabase()) {
+            $baseInterfaceNames = array_merge($this->baseInterfaceNamespace, ['Objects']);
+        }
 
-    }
-
-    public function fromObjectToClass(Object $object) {
-        return $this->fromObjectToClassWithInterfaceBaseNamespace($object, $this->baseInterfaceNamespace);
+        return $this->fromObjectToClassWithInterfaceBaseNamespace($object, $baseInterfaceNames);
     }
 
     public function fromObjectsToClasses(array $objects) {
@@ -131,7 +105,7 @@ final class ConcreteClassAdapter implements ClassAdapter {
     }
 
     public function fromTypeToTypeClass(Type $type) {
-        return $this->fromTypeToTypeClassWithInterfaceBaseNamespace($type, $this->baseInterfaceNamespace);
+        return $this->fromTypeToTypeClassWithInterfaceBaseNamespace($type, array_merge($this->baseInterfaceNamespace, ['Types']));
     }
 
     public function fromControllerToClass(Controller $controller) {
@@ -170,7 +144,7 @@ final class ConcreteClassAdapter implements ClassAdapter {
         return new ConcreteClass($name, $namespace, $adapterInterface, $constructor, $methods, [], false);
     }
 
-    private function getSubClasses(ObjectInterface $interface, Object $object, array $alreadyProcessedObjectNames = []) {
+    /*private function getSubClasses(ObjectInterface $interface, Object $object, array $alreadyProcessedObjectNames = []) {
 
         $subClasses = [];
         $properties = $object->getProperties();
@@ -194,7 +168,7 @@ final class ConcreteClassAdapter implements ClassAdapter {
         }
 
         return $subClasses;
-    }
+    }*/
 
     private function fromObjectToClassWithInterfaceBaseNamespace(Object $object, array $baseNamespace, array $alreadyProcessedObjectNames = []) {
 
@@ -215,9 +189,9 @@ final class ConcreteClassAdapter implements ClassAdapter {
 
             $interfaceName = $interface->getName();
             $name = 'Concrete'.$interfaceName;
-            $subClasses = $this->getSubClasses($interface, $object, $alreadyProcessedObjectNames);
+            //$subClasses = $this->getSubClasses($interface, $object, $alreadyProcessedObjectNames);
 
-            return new ConcreteClass($name, $namespace, $interface, $constructor, $methods, $properties, $isEntity, $subClasses);
+            return new ConcreteClass($name, $namespace, $interface, $constructor, $methods, $properties, $isEntity);
 
         } catch (InterfaceException $exception) {
             throw new ClassException('There was an exception while converting an Object to an Interface object.', $exception);
