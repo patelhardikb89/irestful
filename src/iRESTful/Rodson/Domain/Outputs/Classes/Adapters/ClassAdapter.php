@@ -5,6 +5,7 @@ use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 
 interface ClassAdapter {
+    public function fromObjectsToRootClasses(array $objects);
     public function fromObjectToClass(Object $object);
     public function fromObjectsToClasses(array $objects);
     public function fromObjectsToTypeClasses(array $objects);

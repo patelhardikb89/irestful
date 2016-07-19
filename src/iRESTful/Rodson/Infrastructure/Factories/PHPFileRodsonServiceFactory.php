@@ -8,12 +8,13 @@ use iRESTful\Rodson\Infrastructure\Adapters\ConcreteMethodAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteMethodParameterAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteMethodReturnedInterfaceAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteNamespaceAdapter;
-use iRESTful\Rodson\Infrastructure\Adapters\ConcreteInterfaceAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\PHPCodeAdapter;
 use iRESTful\Rodson\Infrastructure\Services\FileCodeService;
 use iRESTful\Rodson\Infrastructure\Adapters\PHPClassMethodAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteOutputCodePathAdapter;
 use iRESTful\Rodson\Infrastructure\Adapters\ConcreteOutputCodeFileAdapter;
+use iRESTful\Rodson\Infrastructure\Adapters\ConcreteInterfaceAdapterAdapter;
+use iRESTful\Rodson\Infrastructure\Adapters\ConcreteNamespaceAdapterAdapter;
 
 final class PHPFileRodsonServiceFactory implements RodsonServiceFactory {
     private $interfaceBaseNamespace;
@@ -34,10 +35,12 @@ final class PHPFileRodsonServiceFactory implements RodsonServiceFactory {
         $parameterAdapter = new ConcreteMethodParameterAdapter($returnedInterfaceAdapter);
         $methodAdapter = new ConcreteMethodAdapter($returnedInterfaceAdapter, $parameterAdapter);
         $propertyAdapter = new ConcreteClassPropertyAdapter();
-        $interfaceAdapter = new ConcreteInterfaceAdapter($methodAdapter, $interfaceNamespaceAdapter);
+
+        $interfaceNamespaceAdapterAdapter = new ConcreteNamespaceAdapterAdapter();
+        $interfaceAdapterAdapter = new ConcreteInterfaceAdapterAdapter($methodAdapter, $interfaceNamespaceAdapterAdapter);
 
         $classMethodAdapter = new PHPClassMethodAdapter($parameterAdapter, $methodAdapter, $propertyAdapter);
-        $classAdapter = new ConcreteClassAdapter($classNamespaceAdapter, $interfaceAdapter, $classMethodAdapter, $propertyAdapter);
+        $classAdapter = new ConcreteClassAdapter($classNamespaceAdapter, $interfaceAdapterAdapter, $classMethodAdapter, $propertyAdapter, $this->interfaceBaseNamespace);
 
         $fileAdapter = new ConcreteOutputCodeFileAdapter();
         $pathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $this->baseFilePath);

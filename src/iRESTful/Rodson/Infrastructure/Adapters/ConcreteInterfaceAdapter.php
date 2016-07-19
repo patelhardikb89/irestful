@@ -51,6 +51,7 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
         }
 
         $namespace = $this->namespaceAdapter->fromDataToNamespace(array_merge($namespacePrefix, ['Adapters']));
+
         return new ConcreteInterface($name, $methods, $namespace, false);
     }
 
@@ -86,6 +87,7 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
 
             $namespaceData = array_merge($namespacePrefix, [$name]);
             $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
+
             return new ConcreteInterface($name, [$method], $namespace, false);
 
         } catch (MethodException $exception) {

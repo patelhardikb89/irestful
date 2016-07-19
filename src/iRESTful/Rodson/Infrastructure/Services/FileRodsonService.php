@@ -20,7 +20,8 @@ final class FileRodsonService implements RodsonService {
         $objects = $rodson->getObjects();
         $controllers = $rodson->getControllers();
 
-        $objectClasses = $this->classAdapter->fromObjectsToClasses($objects);
+        $objectClasses = $this->classAdapter->fromObjectsToRootClasses($objects);
+
         $objectTypeClasses = $this->classAdapter->fromObjectsToTypeClasses($objects);
         $controllerClasses = [];//$this->classAdapter->fromControllersToClasses($controllers);
         $classes = array_merge($objectClasses, $objectTypeClasses, $controllerClasses);

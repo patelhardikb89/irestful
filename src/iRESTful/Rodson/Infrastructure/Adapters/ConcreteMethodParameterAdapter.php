@@ -21,7 +21,7 @@ final class ConcreteMethodParameterAdapter implements ParameterAdapter {
             throw new ParameterException('The name keyname is mandatory in order to convert data to a Parameter objet.');
         }
 
-        return new ConcreteMethodParameter($data['name']);
+        return new ConcreteMethodParameter($data['name'], false, false);
     }
 
     public function fromTypeToParameter(Type $type) {
@@ -35,7 +35,7 @@ final class ConcreteMethodParameterAdapter implements ParameterAdapter {
 
             $name = $convert($type);
             $interface = $this->returnedInterfaceAdapter->fromTypeToReturnedInterface($type);
-            return new ConcreteMethodParameter($name, $interface);
+            return new ConcreteMethodParameter($name, false, false, $interface);
 
         } catch (ReturnedInterfaceException $exception) {
             throw new ParameterException('There was an exception while converting a Type object to a ReturnedInterface object.', $exception);
@@ -69,17 +69,18 @@ final class ConcreteMethodParameterAdapter implements ParameterAdapter {
 
         $propertyType = $property->getType();
         $propertyName = $property->getName();
+        $isArray = $propertyType->isArray();
 
         try {
 
             $name = $convert($propertyName);
             $returnedInterface = $this->returnedInterfaceAdapter->fromPropertyTypeToReturnedInterface($propertyType);
 
+            return new ConcreteMethodParameter($name, false, $isArray, $returnedInterface);
+
         } catch (ReturnedInterfaceException $exception) {
             throw new ParameterException('There was an exception while converting a Property Type to a ReturnedInterface.', $exception);
         }
-
-        return new ConcreteMethodParameter($name, $returnedInterface);
 
     }
 
@@ -105,7 +106,7 @@ final class ConcreteMethodParameterAdapter implements ParameterAdapter {
 
             $names = ['uuid', 'createdOn'];
             foreach($interfaces as $index => $oneInterface) {
-                $entityParameters[] = new ConcreteMethodParameter($names[$index], $oneInterface, true);
+                $entityParameters[] = new ConcreteMethodParameter($names[$index], true, false, $oneInterface);
             }
         }
 

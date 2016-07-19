@@ -7,8 +7,9 @@ use iRESTful\Rodson\Domain\Outputs\Methods\Returns\ReturnedInterface;
 final class ConcreteMethodParameter implements Parameter {
     private $name;
     private $isParent;
+    private $isArray;
     private $interface;
-    public function __construct($name, ReturnedInterface $interface = null, $isParent = false) {
+    public function __construct($name, $isParent, $isArray, ReturnedInterface $interface = null) {
 
         if (empty($name) || !is_string($name)) {
             throw new ParameterException('The name must be a non-empty string.');
@@ -16,6 +17,7 @@ final class ConcreteMethodParameter implements Parameter {
 
         $this->name = $name;
         $this->isParent = (bool) $isParent;
+        $this->isArray = (bool) $isArray;
         $this->interface = $interface;
 
     }
@@ -26,6 +28,10 @@ final class ConcreteMethodParameter implements Parameter {
 
     public function isParent() {
         return $this->isParent;
+    }
+
+    public function isArray() {
+        return $this->isArray;
     }
 
     public function hasReturnedInterface() {

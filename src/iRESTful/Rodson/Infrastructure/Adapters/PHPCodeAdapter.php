@@ -34,13 +34,13 @@ final class PHPCodeAdapter implements CodeAdapter {
 
                 $name = $oneParameter->getName();
                 if (!$oneParameter->hasReturnedInterface()) {
-                    $parametersCode[] = $name;
+                    $parametersCode[] = '$'.$name;
                     continue;
                 }
 
                 $returnedInterface = $oneParameter->getReturnedInterface();
                 $interfaceName = $returnedInterface->getName();
-                $parametersCode[] = $interfaceName.' '.$name;
+                $parametersCode[] = $interfaceName.' $'.$name;
                 $includedNamespaces[] = implode('\\', $returnedInterface->getNamespace()->get());
                 continue;
             }
@@ -87,6 +87,11 @@ interface '.$name.$extendsString.' {
                 $lines = [];
                 foreach($parameters as $oneParameter) {
                     $name = $oneParameter->getName();
+
+                    if ($oneParameter->isArray()) {
+                        $lines[] = 'array $'.$name;
+                        continue;
+                    }
 
                     if (!$oneParameter->hasReturnedInterface()) {
                         $lines[] = '$'.$name;
