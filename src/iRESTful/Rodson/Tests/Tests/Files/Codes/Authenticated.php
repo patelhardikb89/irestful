@@ -5,6 +5,10 @@ final class Authenticated {
 
     public static function validateString($string) {
 
+        if (!is_string($string)) {
+            throw new \Exception('The given input is not a valid string.');
+        }
+
     }
 
     public static function validateStringNumeric($stringNumeric) {
@@ -15,9 +19,15 @@ final class Authenticated {
 
     }
 
-    public static function validateBaseUrl($baseUrl) {
-        //here is some validation
-        //oh yeah!
+    public static function validateBaseUrl($test) {
+
+        if (empty($test) || !is_string($test)) {
+            throw new \Exception('The baseUrl must be a non-empty string.');
+        }
+
+        if (filter_var($test, FILTER_VALIDATE_URL) === false) {
+            throw new \Exception('The baseUrl ('.$test.') is invalid.');
+        }
     }
 
     public static function validateUri($uri) {
@@ -32,8 +42,8 @@ final class Authenticated {
 
     }
 
-    public static function fromStringToBaseUrl($string) {
-        //here is some code...
+    public static function fromStringToBaseUrl($value) {
+        return new ConcreteBaseUrl($value);
     }
 
     public static function fromStringToUri($string) {

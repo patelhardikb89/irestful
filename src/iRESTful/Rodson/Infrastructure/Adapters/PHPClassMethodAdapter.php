@@ -8,12 +8,17 @@ use iRESTful\Rodson\Domain\Outputs\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Objects\ConcreteClassMethod;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter as CodeMethodAdapter;
 
 final class PHPClassMethodAdapter implements ClassMethodAdapter {
     private $parameterAdapter;
     private $interfaceMethodAdapter;
     private $propertyAdapter;
-    public function __construct(ParameterAdapter $parameterAdapter, MethodAdapter $interfaceMethodAdapter, PropertyAdapter $propertyAdapter) {
+    public function __construct(
+        ParameterAdapter $parameterAdapter,
+        MethodAdapter $interfaceMethodAdapter,
+        PropertyAdapter $propertyAdapter
+    ) {
         $this->parameterAdapter = $parameterAdapter;
         $this->interfaceMethodAdapter = $interfaceMethodAdapter;
         $this->propertyAdapter = $propertyAdapter;
@@ -34,60 +39,19 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
 
     public function fromTypeToCustomMethods(Type $type) {
 
-        $getCode = function(Adapter $adapter) {
-            $removeBraces = function(array $code) {
-                $codeWithBraces = trim(implode(PHP_EOL, $code));
-                $firstPos = strpos($codeWithBraces, '{');
-                if ($firstPos === 0) {
-                    $codeWithBraces = substr($codeWithBraces, 1);
-                }
-
-                $lastPos = strrpos($codeWithBraces, '}');
-                $length = strlen($codeWithBraces) - 1;
-                if ($lastPos === $length) {
-                    $codeWithBraces = substr($codeWithBraces, 0, $length - 2);
-                }
-
-                return trim($codeWithBraces);
-
-            };
-
-            $codeMethod = $adapter->getMethod();
-            $code = $codeMethod->getCode();
-            $language = $code->getLanguage();
-            if ($language->get() != 'PHP') {
-                //throws
-            }
-
-            $className = $code->getClassName();
-            $methodName = $codeMethod->getMethodName();
-
-            $reflectionMethod = new \ReflectionMethod($className, $methodName);
-
-            $fileName = $reflectionMethod->getFileName();
-            $startLine = $reflectionMethod->getStartLine();
-            $endLine = $reflectionMethod->getEndLine();
-            $numLines = $endLine - $startLine;
-
-            $contents = file_get_contents($fileName);
-            $contentLines = explode(PHP_EOL, $contents);
-            $sliced = array_slice($contentLines, $startLine, $numLines);
-            return $removeBraces($sliced);
-        };
-
-
-
         $methods = [];
         if ($type->hasDatabaseAdapter()) {
             $databaseAdapter = $type->getDatabaseAdapter();
-            $code = $getCode($databaseAdapter);
+            $codeMethod = $databaseAdapter->getMethod();
+            $code = $codeMethod->getSourceCode();
             $interfaceMethod = $this->interfaceMethodAdapter->fromTypeToDatabaseAdapterMethod($type);
             $methods[] = new ConcreteClassMethod($code, $interfaceMethod);
         }
 
         if ($type->hasViewAdapter()) {
             $viewAdapter = $type->getViewAdapter();
-            $code = $getCode($viewAdapter);
+            $codeMethod = $viewAdapter->getMethod();
+            $code = $codeMethod->getSourceCode();
             $interfaceMethod = $this->interfaceMethodAdapter->fromTypeToViewAdapterMethod($type);
             $methods[] = new ConcreteClassMethod($code, $interfaceMethod);
         }
@@ -139,7 +103,14 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
             'name' => $convert($name)
         ]);
 
-        return $this->createClassConstructor([$methodParameter]);
+        $constructorCodeLines = [];
+        if ($type->hasMethod()) {
+            $method = $type->getMethod();
+            $methodCode = $method->getSourceCode();
+            $constructorCodeLines = explode(PHP_EOL, $methodCode);
+        }
+
+        return $this->createClassConstructor([$methodParameter], false, $constructorCodeLines);
     }
 
     public function fromTypeToMethods(Type $type) {
@@ -154,7 +125,7 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
         return [$method];
     }
 
-    private function createClassConstructor(array $methodParameters = null, $isEntity = false) {
+    private function createClassConstructor(array $methodParameters = null, $isEntity = false, array $additionalCodeLines = null) {
 
         $interfaceMethod = $this->interfaceMethodAdapter->fromDataToMethod([
             'name' => '__construct',
@@ -177,6 +148,10 @@ final class PHPClassMethodAdapter implements ClassMethodAdapter {
         }
 
         $codeLines = [];
+        if (!empty($additionalCodeLines)) {
+            $codeLines = $additionalCodeLines;
+        }
+
         if ($isEntity) {
             $codeLines[] = 'parent::__construct('.implode(', ', $parentParams).');';
         }

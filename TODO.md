@@ -1,4 +1,5 @@
 * Generate class code for controller classes.
 * Create functional tests that reads a recipe and writes code.
-* Add the validation code in type classes
 * Make sure to add annotations in class
+* Some constructor fields are optional.
+* Make sure to modify the variable names when adding code in classes.

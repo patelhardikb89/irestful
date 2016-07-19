@@ -144,32 +144,6 @@ final class ConcreteClassAdapter implements ClassAdapter {
         return new ConcreteClass($name, $namespace, $adapterInterface, $constructor, $methods, [], false);
     }
 
-    /*private function getSubClasses(ObjectInterface $interface, Object $object, array $alreadyProcessedObjectNames = []) {
-
-        $subClasses = [];
-        $properties = $object->getProperties();
-        foreach($properties as $oneProperty) {
-            $type = $oneProperty->getType();
-            $baseNamespace = $interface->getNamespace()->get();
-
-            if ($type->hasObject()) {
-                $typeObject = $type->getObject();
-                if ($typeObject->hasDatabase()) {
-                    $typeObjectName =  $typeObject->getName();
-                    if (!in_array($typeObjectName, $alreadyProcessedObjectNames)) {
-                        $alreadyProcessedObjectNames[] = $typeObjectName;
-                        $subClasses[] = $this->fromObjectToClassWithInterfaceBaseNamespace($typeObject, $baseNamespace, $alreadyProcessedObjectNames);
-                    }
-
-                    continue;
-                }
-
-            }
-        }
-
-        return $subClasses;
-    }*/
-
     private function fromObjectToClassWithInterfaceBaseNamespace(Object $object, array $baseNamespace, array $alreadyProcessedObjectNames = []) {
 
         try {
@@ -189,7 +163,6 @@ final class ConcreteClassAdapter implements ClassAdapter {
 
             $interfaceName = $interface->getName();
             $name = 'Concrete'.$interfaceName;
-            //$subClasses = $this->getSubClasses($interface, $object, $alreadyProcessedObjectNames);
 
             return new ConcreteClass($name, $namespace, $interface, $constructor, $methods, $properties, $isEntity);
 
