@@ -19,7 +19,7 @@ final class ConcreteClassInterfaceMethodParameter implements Parameter {
         $this->isOptional = (bool) $isOptional;
 
     }
-
+    
     public function getName() {
         return $this->name;
     }

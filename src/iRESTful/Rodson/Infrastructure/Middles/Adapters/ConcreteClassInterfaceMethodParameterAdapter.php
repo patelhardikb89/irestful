@@ -5,7 +5,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Excepti
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Types\Adapters\TypeAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInterfaceMethodParameter;
 use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Adapters\NamespaceAdapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Types\Type;
 
 final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAdapter {
     private $namespaceAdapter;
@@ -16,9 +16,23 @@ final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAda
     }
 
     public function fromTypeToParameter(Type $type) {
-        $name = $type->getName();
-        $namespace = $this->namespaceAdapter->fromTypeToNamespace($type);
 
+        $getName = function(Type $type) {
+            if ($type->hasType()) {
+                return $type->getType()->getName();
+            }
+
+            return $type->getPrimitive()->getName();
+        };
+
+        $name = $getName($type);
+        if ($type->hasPrimitive()) {
+            return $this->fromDataToParameter([
+                'name' => $name
+            ]);
+        }
+
+        $namespace = $this->namespaceAdapter->fromTypeToNamespace($type);
         return $this->fromDataToParameter([
             'name' => $name,
             'namespace' => $namespace
@@ -56,6 +70,10 @@ final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAda
         $typeData = ['is_array' => $isArray];
         if (isset($data['namespace'])) {
             $typeData['namespace'] = $data['namespace'];
+        }
+
+        if (isset($data['primitive'])) {
+            $typeData['primitive'] = $data['primitive'];
         }
 
         $name = $convert($data['name']);

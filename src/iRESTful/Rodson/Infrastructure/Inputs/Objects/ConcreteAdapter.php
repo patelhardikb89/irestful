@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Types\Type;
 use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Exceptions\AdapterException;
 

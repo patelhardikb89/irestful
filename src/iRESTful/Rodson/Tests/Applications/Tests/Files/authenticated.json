@@ -166,25 +166,12 @@
         }
     },
     "types": {
-        "string": {
-            "database_type": {
-                "name": "string",
-                "max": 255
-            },
-            "method": "validateString"
-        },
         "string_numeric": {
             "database_type": {
                 "name": "string",
                 "max": 255
             },
             "method": "validateStringNumeric"
-        },
-        "boolean": {
-            "database_type": {
-                "name": "boolean"
-            },
-            "method": "validateBoolean"
         },
         "base_url": {
             "database_type": {

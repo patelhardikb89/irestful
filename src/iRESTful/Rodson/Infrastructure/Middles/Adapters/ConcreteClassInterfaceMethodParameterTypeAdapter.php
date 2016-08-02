@@ -21,7 +21,12 @@ final class ConcreteClassInterfaceMethodParameterTypeAdapter implements TypeAdap
             $namespace = $data['namespace'];
         }
 
-        return new ConcreteClassInterfaceMethodParameterType($isArray, $namespace);
+        $primitive = null;
+        if (isset($data['primitive'])) {
+            $primitive = $data['primitive'];
+        }
+
+        return new ConcreteClassInterfaceMethodParameterType($isArray, $namespace, $primitive);
 
     }
 

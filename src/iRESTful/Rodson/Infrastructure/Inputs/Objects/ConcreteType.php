@@ -5,6 +5,7 @@ use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
 use iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
 use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Types\Type as AdapterType;
 
 final class ConcreteType implements Type {
     private $name;
@@ -78,14 +79,25 @@ final class ConcreteType implements Type {
     }
 
     private function getMethodName(Adapter $adapter) {
+
+        $getAdapterTypeName = function(AdapterType $type) {
+            if ($type->hasType()) {
+                return $type->getType()->getName();
+            }
+
+            return $type->getPrimitive()->getName();
+        };
+
         $fromName = $this->getName();
         if ($adapter->hasFromType()) {
-            $fromName = $adapter->fromType()->getName();
+            $fromType = $adapter->fromType();
+            $fromName = $getAdapterTypeName($fromType);
         }
 
         $toName = $this->getName();
         if ($adapter->hasToType()) {
-            $toName = $adapter->toType()->getName();
+            $toType = $adapter->toType();
+            $toName = $getAdapterTypeName($toType);
         }
 
         return 'from'.ucfirst($fromName).'To'.ucfirst($toName);

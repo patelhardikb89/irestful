@@ -37,7 +37,7 @@ abstract class AbstractClassNamespaceAdapter implements NamespaceAdapter {
             return $this->fromObjectToNamespace($object);
         }
 
-        throw new NamespaceException('The given propertyType did not have a Type or an Object.');
+        throw new NamespaceException('The given propertyType did not have a Type or an Object.  Primitives do not have namespaces.');
 
     }
 

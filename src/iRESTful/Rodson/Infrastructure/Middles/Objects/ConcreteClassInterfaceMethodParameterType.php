@@ -6,9 +6,16 @@ use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
 final class ConcreteClassInterfaceMethodParameterType implements Type {
     private $isArray;
     private $namespace;
-    public function __construct($isArray, ClassNamespace $namespace = null) {
+    private $primitive;
+    public function __construct($isArray, ClassNamespace $namespace = null, $primitive = null) {
+
+        if (empty($primitive)) {
+            $primitive = null;
+        }
+
         $this->isArray = (bool) $isArray;
         $this->namespace = $namespace;
+        $this->primitive = $primitive;
     }
 
     public function isArray() {
@@ -21,6 +28,14 @@ final class ConcreteClassInterfaceMethodParameterType implements Type {
 
     public function getNamespace() {
         return $this->namespace;
+    }
+
+    public function hasPrimitive() {
+        return !empty($this->primitive);
+    }
+
+    public function getPrimitive() {
+        return $this->primitive;
     }
 
 }

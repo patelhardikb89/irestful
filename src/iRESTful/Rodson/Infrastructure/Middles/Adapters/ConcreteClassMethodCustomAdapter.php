@@ -38,35 +38,16 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
     public function fromTypeToAdapterCustomMethods(Type $type) {
 
-        $currentTypeName = $type->getName();
-        $getName = function(Adapter $adapter) use(&$currentTypeName) {
-
-            $fromName = $currentTypeName;
-            if ($adapter->hasFromType()) {
-                $fromName = $adapter->fromType()->getName();
-            }
-
-            $toName = $currentTypeName;
-            if ($adapter->hasToType()) {
-                $toName = $adapter->toType()->getName();
-            }
-
-            return 'from'.ucfirst($fromName).'To'.ucfirst($toName);
-
-        };
-
         $customMethods = [];
         if ($type->hasDatabaseAdapter()) {
-            $databaseAdapter = $type->getDatabaseAdapter();
-            $databaseAdapterMethod = $databaseAdapter->getMethod();
-            $databaseAdapterName = $getName($databaseAdapter);
+            $databaseAdapterMethod = $type->getDatabaseAdapter()->getMethod();
+            $databaseAdapterName = $type->getDatabaseAdapterMethodName();
             $customMethods[] = $this->createClassMethodCustom($databaseAdapterName, $databaseAdapterMethod);
         }
 
         if ($type->hasViewAdapter()) {
-            $viewAdapter = $type->getViewAdapter();
-            $viewAdapterMethod = $viewAdapter->getMethod();
-            $viewAdapterName = $getName($viewAdapter);
+            $viewAdapterMethod = $type->getViewAdapter()->getMethod();
+            $viewAdapterName = $type->getViewAdapterMethodName();
             $customMethods[] = $this->createClassMethodCustom($viewAdapterName, $viewAdapterMethod);
         }
 

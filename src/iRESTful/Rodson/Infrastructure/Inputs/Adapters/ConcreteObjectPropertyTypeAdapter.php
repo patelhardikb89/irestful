@@ -6,9 +6,11 @@ use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Exceptions\TypeExcept
 
 final class ConcreteObjectPropertyTypeAdapter implements TypeAdapter {
     private $types;
+    private $primitives;
     private $objects;
-    public function __construct(array $types, array $objects) {
+    public function __construct(array $types, array $primitives, array $objects) {
         $this->types = $types;
+        $this->primitives = $primitives;
         $this->objects = $objects;
     }
 
@@ -22,15 +24,18 @@ final class ConcreteObjectPropertyTypeAdapter implements TypeAdapter {
         }
 
         if (isset($this->types[$type])) {
-            return new ConcreteObjectPropertyType($isArray, $this->types[$type]);
+            return new ConcreteObjectPropertyType($isArray, null, $this->types[$type]);
         }
 
         if (isset($this->objects[$type])) {
-            return new ConcreteObjectPropertyType($isArray, null, $this->objects[$type]);
+            return new ConcreteObjectPropertyType($isArray, null, null, $this->objects[$type]);
         }
 
-        throw new TypeException('The given type ('.$type.') does not reference a Type or an Object.');
+        if (isset($this->primitives[$type])) {
+            return new ConcreteObjectPropertyType($isArray, $this->primitives[$type]);
+        }
 
+        throw new TypeException('The given type ('.$type.') does not reference a Primitive, Type or an Object.');
     }
 
 }

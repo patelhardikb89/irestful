@@ -3,22 +3,33 @@ namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type as PropertyType;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Primitives\Primitive;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Exceptions\TypeException;
 
 final class ConcreteObjectPropertyType implements PropertyType {
     private $isArray;
+    private $primitive;
     private $type;
     private $object;
-    public function __construct($isArray, Type $type = null, Object $object = null) {
+    public function __construct($isArray, Primitive $primitive = null, Type $type = null, Object $object = null) {
 
-        $amount = (empty($type) ? 0 : 1) + (empty($object) ? 0 : 1);
+        $amount = (empty($primitive) ? 0 : 1) +  (empty($type) ? 0 : 1) + (empty($object) ? 0 : 1);
         if ($amount != 1) {
-            throw new TypeException('The must be either a Type or an Object.  '.$amount.' given.');
+            throw new TypeException('The must be either a Primitive, Type or an Object.  '.$amount.' given.');
         }
 
         $this->isArray = (bool) $isArray;
+        $this->primitive = $primitive;
         $this->type = $type;
         $this->object = $object;
+    }
+
+    public function hasPrimitive() {
+        return !empty($this->primitive);
+    }
+
+    public function getPrimitive() {
+        return $this->primitive;
     }
 
     public function hasType() {

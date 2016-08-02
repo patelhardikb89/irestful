@@ -5,13 +5,18 @@ use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteAdapter;
 use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Exceptions\AdapterException;
+use iRESTful\Rodson\Domain\Inputs\Adapters\Types\Adapters\TypeAdapter;
 
 final class ConcreteAdapterAdapter implements AdapterAdapter {
+    private $typeAdapter;
     private $methodAdapter;
     private $types;
-    public function __construct(MethodAdapter $methodAdapter, array $types) {
+    private $primitives;
+    public function __construct(TypeAdapter $typeAdapter, MethodAdapter $methodAdapter, array $types, array $primitives) {
+        $this->typeAdapter = $typeAdapter;
         $this->methodAdapter = $methodAdapter;
         $this->types = $types;
+        $this->primitives = $primitives;
     }
 
     public function fromDataToAdapters(array $data) {
@@ -40,13 +45,28 @@ final class ConcreteAdapterAdapter implements AdapterAdapter {
         }
 
         $from = null;
-        if (isset($data['from']) && isset($this->types[$data['from']])) {
-            $from = $this->types[$data['from']];
+        if (isset($data['from'])) {
+
+            if (isset($this->types[$data['from']])) {
+                $from = $this->typeAdapter->fromTypeToAdapterType($this->types[$data['from']]);
+            }
+
+            if (isset($this->primitives[$data['from']])) {
+                $from = $this->typeAdapter->fromPrimitiveToAdapterType($this->primitives[$data['from']]);
+            }
         }
 
         $to = null;
-        if (isset($data['to']) && isset($this->types[$data['to']])) {
-            $to = $this->types[$data['to']];
+        if (isset($data['to'])) {
+
+            if (isset($this->types[$data['to']])) {
+                $to = $this->typeAdapter->fromTypeToAdapterType($this->types[$data['to']]);
+            }
+
+            if (isset($this->primitives[$data['to']])) {
+                $to = $this->typeAdapter->fromPrimitiveToAdapterType($this->primitives[$data['to']]);
+            }
+
         }
 
         try {

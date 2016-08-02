@@ -29,6 +29,8 @@ use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
 use iRESTful\Rodson\Domain\Inputs\Exceptions\RodsonException;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectPropertyTypeAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectMethodAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteAdapterTypeAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Factories\ConcretePrimitiveFactory;
 
 final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
     private $codeData;
@@ -66,14 +68,15 @@ final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
         return $viewAdapter->fromDataToViews($this->viewsData);
     }
 
-    private function getTypes(Code $code) {
+    private function getTypes(Code $code, array $primitives) {
 
         $adaptersData = $this->adaptersData;
         $typesData = $this->typesData;
         $methodAdapter = new ConcreteCodeMethodAdapter($code);
 
-        $getAdapters = function(array $types) use(&$adaptersData, &$methodAdapter) {
-            $adapterAdapter = new ConcreteAdapterAdapter($methodAdapter, $types);
+        $getAdapters = function(array $types) use(&$primitives, &$adaptersData, &$methodAdapter) {
+            $adapterTypeAdapter = new ConcreteAdapterTypeAdapter();
+            $adapterAdapter = new ConcreteAdapterAdapter($adapterTypeAdapter, $methodAdapter, $types, $primitives);
             return $adapterAdapter->fromDataToAdapters($adaptersData);
         };
 
@@ -101,25 +104,25 @@ final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
         return $getTypes($adapters);
     }
 
-    private function getObjectAdapter(Code $code, array $types, array $objects) {
+    private function getObjectAdapter(Code $code, array $types, array $primitives, array $objects) {
         $databases = $this->getDatabases();
 
         $methodAdapter = new ConcreteCodeMethodAdapter($code);
         $objectMethodAdapter = new ConcreteObjectMethodAdapter($methodAdapter);
 
-        $propertyTypeAdapter = new ConcreteObjectPropertyTypeAdapter($types, $objects);
+        $propertyTypeAdapter = new ConcreteObjectPropertyTypeAdapter($types, $primitives, $objects);
         $propertyAdapter = new ConcreteObjectPropertyAdapter($propertyTypeAdapter);
         return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $databases);
     }
 
-    private function getObjects(Code $code, array $types) {
+    private function getObjects(Code $code, array $types, array $primitives) {
 
         $objects = [];
         $amountObjectsData = count($this->objectsData);
         $amountNewObjects = 0;
 
         while($amountNewObjects != $amountObjectsData) {
-            $objectAdapter = $this->getObjectAdapter($code, $types, $objects);
+            $objectAdapter = $this->getObjectAdapter($code, $types, $primitives, $objects);
             $newObjects = $objectAdapter->fromDataToValidObjects($this->objectsData);
             $amountNewObjects = count($newObjects);
             if ($amountNewObjects == count($objects)) {
@@ -137,12 +140,15 @@ final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
 
         try {
 
+            $primitiveFactory = new ConcretePrimitiveFactory();
+            $primitives = $primitiveFactory->createAll();
+
             $code = $this->getCode();
-            $types = $this->getTypes($code);
-            $objects = $this->getObjects($code, $types);
+            $types = $this->getTypes($code, $primitives);
+            $objects = $this->getObjects($code, $types, $primitives);
             $views = $this->getViews($code);
 
-            $objectAdapter = $this->getObjectAdapter($code, $types, $objects);
+            $objectAdapter = $this->getObjectAdapter($code, $types, $primitives, $objects);
             $controllerAdapter = new ConcreteControllerAdapter($views);
             return new ConcreteRodsonAdapter($objectAdapter, $controllerAdapter);
 

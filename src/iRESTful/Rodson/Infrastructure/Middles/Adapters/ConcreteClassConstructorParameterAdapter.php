@@ -42,10 +42,22 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
         $propertyName = $property->getName();
         $propertyIsOptional = $property->isOptional();
         $propertyType = $property->getType();
-        $propertyIsArray = $propertyType->isArray();
-
-        $namespace = $this->namespaceAdapter->fromPropertyTypeToNamespace($propertyType);
+        $method = $this->methodAdapter->fromPropertyToMethod($property);
         $classProperty = $this->propertyAdapter->fromNameToProperty($propertyName);
+
+        if ($propertyType->hasPrimitive()) {
+            $propertyTypePrimitive = $propertyType->getPrimitive();
+            $methodParameter = $this->parameterAdapter->fromDataToParameter([
+                'name' => $propertyName,
+                'primitive' => $propertyTypePrimitive->getName(),
+                'is_optional' => $propertyIsOptional
+            ]);
+
+            return new ConcreteClassConstructorParameter($classProperty, $methodParameter, $method);
+        }
+
+        $propertyIsArray = $propertyType->isArray();
+        $namespace = $this->namespaceAdapter->fromPropertyTypeToNamespace($propertyType);
         $methodParameter = $this->parameterAdapter->fromDataToParameter([
             'name' => $propertyName,
             'namespace' => $namespace,
@@ -53,7 +65,6 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
             'is_array' => $propertyIsArray
         ]);
 
-        $method = $this->methodAdapter->fromPropertyToMethod($property);
         return new ConcreteClassConstructorParameter($classProperty, $methodParameter, $method);
     }
 

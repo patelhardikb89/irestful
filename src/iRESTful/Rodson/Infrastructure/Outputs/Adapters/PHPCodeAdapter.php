@@ -104,7 +104,54 @@ final class PHPCodeAdapter implements CodeAdapter {
 
             $fromParametersToPropertiesAssignementCodeLines = function(array $parameters) {
 
+                $validatePrimitive = function($name, $primitive, $isOptional) {
+
+                    $fn = 'is_string';
+                    if ($primitive == 'boolean') {
+                        $fn = 'is_boolean';
+                    }
+
+                    if ($primitive == 'integer') {
+                        $fn = 'is_integer';
+                    }
+
+                    if ($primitive == 'float') {
+                        $fn = 'is_float';
+                    }
+
+                    if ($isOptional) {
+                        return [
+                            'if (!is_null($'.$name.') && !'.$fn.'($'.$name.')) {',
+                            [
+                                'throw new \Exception("The '.$name.' must be a '.$primitive.' if non-null.");'
+                            ],
+                            '}'
+                        ];
+                    }
+
+                    return [
+                        'if (is_null($'.$name.') || !'.$fn.'($'.$name.')) {',
+                        [
+                            'throw new \Exception("The '.$name.' must be a non-null '.$primitive.'.");'
+                        ],
+                        '}',
+                        ''
+                    ];
+                };
+
                 $lines = [];
+                foreach($parameters as $oneParameter) {
+                    $parameter = $oneParameter->getParameter();
+                    $parameterType = $parameter->getType();
+
+                    if ($parameterType->hasPrimitive()) {
+                        $parameterName = $parameter->getName();
+                        $primitive = $parameterType->getPrimitive();
+                        $isOptional = $parameter->isOptional();
+                        $lines = array_merge($lines, $validatePrimitive($parameterName, $primitive, $isOptional));
+                    }
+                }
+
                 foreach($parameters as $oneParameter) {
                     $property = $oneParameter->getProperty();
                     $parameter = $oneParameter->getParameter();

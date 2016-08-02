@@ -87,7 +87,13 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
             return $this->fromNameToMethod('get'.ucfirst($typeTypeName));
         }
 
-        throw new MethodException('The given PropertyType object did not have an Object or a Type.');
+        if ($type->hasPrimitive()) {
+            $primitive = $type->getPrimitive();
+            $primitiveName = $primitive->getName();
+            return $this->fromNameToMethod('get'.ucfirst($primitiveName));
+        }
+
+        throw new MethodException('The given PropertyType object did not have a Primitive, an Object or a Type.');
 
     }
 
