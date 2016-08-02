@@ -8,7 +8,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Adapters\InterfaceAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Adapters\ConstructorAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\Adapters\CustomMethodAdapter;
-use iRESTful\Rodson\Domain\Middles\Classes\Methods\Getters\Adapters\GetterMethodAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Adapters\InputAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClass;
 use iRESTful\Rodson\Domain\Inputs\Rodson;
 
@@ -17,19 +17,19 @@ final class ConcreteClassAdapter implements ClassAdapter {
     private $interfaceAdapter;
     private $constructorAdapter;
     private $customMethodAdapter;
-    private $getterMethodAdapter;
+    private $inputAdapter;
     public function __construct(
         NamespaceAdapter $namespaceAdapter,
         InterfaceAdapter $interfaceAdapter,
         ConstructorAdapter $constructorAdapter,
         CustomMethodAdapter $customMethodAdapter,
-        GetterMethodAdapter $getterMethodAdapter
+        InputAdapter $inputAdapter
     ) {
         $this->namespaceAdapter = $namespaceAdapter;
         $this->interfaceAdapter = $interfaceAdapter;
         $this->constructorAdapter = $constructorAdapter;
         $this->customMethodAdapter = $customMethodAdapter;
-        $this->getterMethodAdapter = $getterMethodAdapter;
+        $this->inputAdapter = $inputAdapter;
     }
 
     public function fromRodsonToClasses(Rodson $rodson) {
@@ -81,10 +81,17 @@ final class ConcreteClassAdapter implements ClassAdapter {
         $interface = $this->interfaceAdapter->fromObjectToInterface($object);
         $constructor = $this->constructorAdapter->fromObjectToConstructor($object);
         $customMethods = $this->customMethodAdapter->fromObjectToCustomMethods($object);
-        $getterMethods = $this->getterMethodAdapter->fromConstructorToGetterMethods($constructor);
+        $classInput = $this->inputAdapter->fromObjectToInput($object);
 
         $name = $namespace->getName();
-        return new ConcreteClass($name, $namespace, $interface, $constructor, $customMethods, $getterMethods);
+        return new ConcreteClass(
+            $name,
+            $classInput,
+            $namespace,
+            $interface,
+            $constructor,
+            $customMethods
+        );
     }
 
     private function fromObjectsToClasses(array $objects) {
@@ -110,7 +117,7 @@ final class ConcreteClassAdapter implements ClassAdapter {
         $interface = $this->interfaceAdapter->fromTypeToInterface($type);
         $constructor = $this->constructorAdapter->fromTypeToConstructor($type);
         $customMethod = $this->customMethodAdapter->fromTypeToCustomMethod($type);
-        $getterMethods = $this->getterMethodAdapter->fromConstructorToGetterMethods($constructor);
+        $classInput = $this->inputAdapter->fromTypeToInput($type);
 
         $customMethods = null;
         if (!empty($customMethod)) {
@@ -123,7 +130,7 @@ final class ConcreteClassAdapter implements ClassAdapter {
         }
 
         $name = $namespace->getName();
-        return new ConcreteClass($name, $namespace, $interface, $constructor, $customMethods, $getterMethods, $subClasses);
+        return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor, $customMethods, $subClasses);
     }
 
     private function fromControllerToClass(Controller $controller) {
@@ -139,9 +146,9 @@ final class ConcreteClassAdapter implements ClassAdapter {
         $interface = $this->interfaceAdapter->fromTypeToAdapterInterface($type);
         $constructor = $this->constructorAdapter->fromTypeToAdapterConstructor($type);
         $customMethods = $this->customMethodAdapter->fromTypeToAdapterCustomMethods($type);
-        $getterMethods = $this->getterMethodAdapter->fromConstructorToGetterMethods($constructor);
+        $classInput = $this->inputAdapter->fromTypeToInput($type);
 
         $name = $namespace->getName();
-        return new ConcreteClass($name, $namespace, $interface, $constructor, $customMethods, $getterMethods);
+        return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor, $customMethods);
     }
 }

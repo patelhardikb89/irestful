@@ -37,4 +37,12 @@ final class ConcreteClassNamespace implements ClassNamespace {
         return $this->namespace;
     }
 
+    public function getAllAsString() {
+        return implode('\\', $this->namespace);
+    }
+
+    public function getPathAsString() {
+        return implode('\\', $this->namespace);
+    }
+
 }

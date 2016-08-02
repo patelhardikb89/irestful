@@ -8,15 +8,23 @@ use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassConstructorParameter;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
 use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Adapters\NamespaceAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Methods\Adapters\MethodAdapter;
 
 final class ConcreteClassConstructorParameterAdapter implements ConstructorParameterAdapter {
     private $namespaceAdapter;
     private $propertyAdapter;
     private $parameterAdapter;
-    public function __construct(NamespaceAdapter $namespaceAdapter, PropertyAdapter $propertyAdapter, ParameterAdapter $parameterAdapter) {
+    private $methodAdapter;
+    public function __construct(
+        NamespaceAdapter $namespaceAdapter,
+        PropertyAdapter $propertyAdapter,
+        ParameterAdapter $parameterAdapter,
+        MethodAdapter $methodAdapter
+    ) {
         $this->namespaceAdapter = $namespaceAdapter;
         $this->propertyAdapter = $propertyAdapter;
         $this->parameterAdapter = $parameterAdapter;
+        $this->methodAdapter = $methodAdapter;
     }
 
     public function fromObjectToParameters(Object $object) {
@@ -45,7 +53,8 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
             'is_array' => $propertyIsArray
         ]);
 
-        return new ConcreteClassConstructorParameter($classProperty, $methodParameter);
+        $method = $this->methodAdapter->fromPropertyToMethod($property);
+        return new ConcreteClassConstructorParameter($classProperty, $methodParameter, $method);
     }
 
     public function fromTypeToParameter(Type $type) {
@@ -55,7 +64,8 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
             'name' => $name
         ]);
 
-        return new ConcreteClassConstructorParameter($classProperty, $methodParameter);
+        $method = $this->methodAdapter->fromTypeToMethod($type);
+        return new ConcreteClassConstructorParameter($classProperty, $methodParameter, $method);
     }
 
 }

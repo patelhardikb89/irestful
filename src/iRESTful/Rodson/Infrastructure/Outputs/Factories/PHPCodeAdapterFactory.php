@@ -12,7 +12,6 @@ final class PHPCodeAdapterFactory implements CodeAdapterFactory {
     }
 
     public function create() {
-
         $fileAdapter = new ConcreteOutputCodeFileAdapter();
         $pathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $this->basePath);
         return new PHPCodeAdapter($pathAdapter);

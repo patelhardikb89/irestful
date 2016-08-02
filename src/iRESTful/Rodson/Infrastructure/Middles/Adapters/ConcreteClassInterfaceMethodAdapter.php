@@ -3,7 +3,6 @@ namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInterfaceMethod;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
-use iRESTful\Rodson\Domain\Middles\Classes\Methods\Getters\GetterMethod;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
@@ -41,26 +40,8 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
 
     public function fromTypeToAdapterMethods(Type $type) {
 
-        $currentTypeName = $type->getName();
-        $getName = function(Adapter $adapter) use(&$currentTypeName) {
-
-            $fromName = $currentTypeName;
-            if ($adapter->hasFromType()) {
-                $fromName = $adapter->fromType()->getName();
-            }
-
-            $toName = $currentTypeName;
-            if ($adapter->hasToType()) {
-                $toName = $adapter->toType()->getName();
-            }
-
-            return 'from'.ucfirst($fromName).'To'.ucfirst($toName);
-
-        };
-
         $parameterAdapter = $this->parameterAdapter;
-        $createMethod = function(Type $type, Adapter $adapter) use(&$getName, &$parameterAdapter) {
-            $name = $getName($adapter);
+        $createMethod = function($name, Type $type, Adapter $adapter) use(&$parameterAdapter) {
             $parameterType = ($adapter->hasFromType()) ? $adapter->fromType() : $type;
             $parameter = $parameterAdapter->fromTypeToParameter($parameterType);
             return new ConcreteClassInterfaceMethod($name, [$parameter]);
@@ -69,12 +50,14 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
         $methods = [];
         if ($type->hasDatabaseAdapter()) {
             $databaseAdapter = $type->getDatabaseAdapter();
-            $methods[] = $createMethod($type, $databaseAdapter);
+            $databaseAdapterMethodName = $type->getDatabaseAdapterMethodName();
+            $methods[] = $createMethod($databaseAdapterMethodName, $type, $databaseAdapter);
         }
 
         if ($type->hasViewAdapter()) {
             $viewAdapter = $type->getViewAdapter();
-            $methods[] = $createMethod($type, $viewAdapter);
+            $viewAdapterMethodName = $type->getViewAdapterMethodName();
+            $methods[] = $createMethod($viewAdapterMethodName, $type, $viewAdapter);
         }
 
         return $methods;

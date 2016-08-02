@@ -41,6 +41,16 @@ final class ConcreteType implements Type {
         return $this->databaseAdapter;
     }
 
+    public function getDatabaseAdapterMethodName() {
+
+        if (!$this->hasDatabaseAdapter()) {
+            return null;
+        }
+
+        return $this->getMethodName($this->databaseAdapter);
+
+    }
+
     public function hasViewAdapter() {
         return !empty($this->viewAdapter);
     }
@@ -49,12 +59,36 @@ final class ConcreteType implements Type {
         return $this->viewAdapter;
     }
 
+    public function getViewAdapterMethodName() {
+
+        if (!$this->hasViewAdapter()) {
+            return null;
+        }
+
+        return $this->getMethodName($this->viewAdapter);
+
+    }
+
     public function hasMethod() {
         return !empty($this->method);
     }
 
     public function getMethod() {
         return $this->method;
+    }
+
+    private function getMethodName(Adapter $adapter) {
+        $fromName = $this->getName();
+        if ($adapter->hasFromType()) {
+            $fromName = $adapter->fromType()->getName();
+        }
+
+        $toName = $this->getName();
+        if ($adapter->hasToType()) {
+            $toName = $adapter->toType()->getName();
+        }
+
+        return 'from'.ucfirst($fromName).'To'.ucfirst($toName);
     }
 
 }

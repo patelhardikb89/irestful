@@ -15,7 +15,7 @@ final class ConcreteClassProperty implements Property {
 
     }
 
-    public function get() {
+    public function getName() {
         return $this->name;
     }
 

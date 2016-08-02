@@ -27,6 +27,18 @@ final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAda
 
     public function fromDataToParameter(array $data) {
 
+        $convert = function($name) {
+            $matches = [];
+            preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
+
+            foreach($matches[0] as $oneElement) {
+                $replacement = strtoupper(str_replace('_', '', $oneElement));
+                $name = str_replace($oneElement, $replacement, $name);
+            }
+
+            return lcfirst($name);
+        };
+
         if (!isset($data['name'])) {
             throw new ParameterException('The name keyname is mandatory in order to convert data to a Parameter object.');
         }
@@ -46,8 +58,9 @@ final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAda
             $typeData['namespace'] = $data['namespace'];
         }
 
+        $name = $convert($data['name']);
         $type = $this->typeAdapter->fromDataToType($typeData);
-        return new ConcreteClassInterfaceMethodParameter($data['name'], $type, $isOptional);
+        return new ConcreteClassInterfaceMethodParameter($name, $type, $isOptional);
 
     }
 

@@ -12,31 +12,16 @@
          bootstrap="./vendor/autoload.php">
 
     <testsuites>
-        <testsuite name="input-unit">
+        <testsuite name="unit">
             <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Inputs/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="input-functional">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Inputs/Tests/Functional</directory>
-        </testsuite>
-
-        <testsuite name="middle-unit">
             <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Middles/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="middle-functional">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Middles/Tests/Functional</directory>
-        </testsuite>
-
-        <testsuite name="output-unit">
             <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Outputs/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="output-functional">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Outputs/Tests/Functional</directory>
-        </testsuite>
-
-        <testsuite name="applications-unit">
             <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Applications/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="applications-functional">
+        <testsuite name="functional">
+            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Inputs/Tests/Functional</directory>
+            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Middles/Tests/Functional</directory>
+            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Outputs/Tests/Functional</directory>
             <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Applications/Tests/Functional</directory>
         </testsuite>
 

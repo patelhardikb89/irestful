@@ -17,16 +17,49 @@ final class ConcreteObjectPropertyAdapter implements PropertyAdapter {
         $output = [];
         foreach($data as $name => $type) {
 
-            $optionalPos = strrpos($name, '?');
-            $isOptional = (($optionalPos + 1) == strlen($name));
-            if ($isOptional) {
-                $name = substr($name, 0, $optionalPos);
+            $isOptional = false;
+            $isUnique = false;
+            $isKey = false;
+            $default = null;
+
+            $exploded = explode('|', $name);
+            $amountPieces = count($exploded);
+            if (count($exploded) >= 2) {
+
+                if ($amountPieces != 2) {
+                    throw new PropertyException('There is more than 1 pipe (|) in the given property name ('.$name.').  Only 1 is allowed.');
+                }
+
+                $name = $exploded[0];
+                if (strrpos($exploded[1], '?') !== false) {
+                    $isOptional = true;
+                }
+
+                if (strrpos($exploded[1], 'u') !== false) {
+                    $isUnique = true;
+                }
+
+                if (strrpos($exploded[1], 'k') !== false) {
+                    $isKey = true;
+                }
+
+                if (strrpos($exploded[1], 'd') !== false) {
+                    $defaultExploded = explode('=', $exploded[1]);
+                    if (count($defaultExploded) != 2) {
+                        throw new PropertyException('There is 2 equals (=) in the given property name ('.$name.').  Only 1 is allowed.');
+                    }
+
+                    $default = $defaultExploded[1];
+                }
             }
 
             $output[] = $this->fromDataToProperty([
                 'name' => $name,
                 'type' => $type,
-                'is_optional' => $isOptional
+                'is_optional' => $isOptional,
+                'is_unique' => $isUnique,
+                'is_key' => $isKey,
+                'default' => $default
             ]);
         }
 
@@ -48,10 +81,25 @@ final class ConcreteObjectPropertyAdapter implements PropertyAdapter {
             $isOptional = (bool) $data['is_optional'];
         }
 
+        $isUnique = false;
+        if (isset($data['is_unique'])) {
+            $isUnique = (bool) $data['is_unique'];
+        }
+
+        $isKey = false;
+        if (isset($data['is_key'])) {
+            $isKey = (bool) $data['is_key'];
+        }
+
+        $default = null;
+        if (isset($data['default'])) {
+            $default = $data['default'];
+        }
+
         try {
 
             $type = $this->typeAdapter->fromStringToType($data['type']);
-            return new ConcreteObjectProperty($data['name'], $type, $isOptional);
+            return new ConcreteObjectProperty($data['name'], $type, $isOptional, $isUnique, $isKey, $default);
 
         } catch (TypeException $exception) {
             throw new PropertyException('There was an exception while converting a string to a Type object.', $exception);

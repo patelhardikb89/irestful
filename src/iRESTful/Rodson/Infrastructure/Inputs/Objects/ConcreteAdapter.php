@@ -39,5 +39,4 @@ final class ConcreteAdapter implements Adapter {
     public function getMethod() {
         return $this->method;
     }
-
 }

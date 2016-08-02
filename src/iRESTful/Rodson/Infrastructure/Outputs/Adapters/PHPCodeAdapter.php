@@ -4,10 +4,14 @@ use iRESTful\Rodson\Domain\Outputs\Codes\Adapters\CodeAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\ObjectClass;
 use iRESTful\Rodson\Domain\Outputs\Codes\Paths\Adapters\PathAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;
+use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Parameter as ConstructorParameter;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Types\Type;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Infrastructure\Outputs\Objects\ConcreteOutputCode;
+use iRESTful\Rodson\Domain\Middles\Annotations\Classes\AnnotatedClass;
+use iRESTful\Rodson\Domain\Middles\Annotations\Annotation;
+use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Parameter as AnnotationParameter;
 
 final class PHPCodeAdapter implements CodeAdapter {
     private $pathAdapter;
@@ -15,7 +19,7 @@ final class PHPCodeAdapter implements CodeAdapter {
         $this->pathAdapter = $pathAdapter;
     }
 
-    public function fromClassToCodes(ObjectClass $class) {
+    public function fromAnnotatedClassToCodes(AnnotatedClass $annotatedClass) {
 
         $tab = '    ';
         $renderCodeLines = function(array $codeLines, $prefix = '') use(&$renderCodeLines, &$tab) {
@@ -60,7 +64,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $isOptional = $oneParameter->isOptional();
 
                 $element = trim($getType($type).' $'.$name);
-                if ($oneParameter->isOptional()) {
+                if ($isOptional) {
                     $element = $element.' = null';
                 }
 
@@ -71,7 +75,8 @@ final class PHPCodeAdapter implements CodeAdapter {
 
         };
 
-        $fromConstructorToCodeLines = function(Constructor $constructor) use(&$fromParametersToMethodSignatureCodeLine) {
+        $annotation = $annotatedClass->getAnnotation();
+        $fromConstructorToCodeLines = function(Constructor $constructor) use(&$fromParametersToMethodSignatureCodeLine, &$annotation) {
 
             $fromParametersToSignatureCodeLine = function(array $parameters) use(&$fromParametersToMethodSignatureCodeLine) {
 
@@ -89,7 +94,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $lines = [];
                 foreach($parameters as $oneParameter) {
                     $property = $oneParameter->getProperty();
-                    $propertyName = $property->get();
+                    $propertyName = $property->getName();
                     $lines[] = 'private $'.$propertyName.';';
                 }
 
@@ -104,7 +109,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                     $property = $oneParameter->getProperty();
                     $parameter = $oneParameter->getParameter();
 
-                    $propertyName = $property->get();
+                    $propertyName = $property->getName();
                     $parameterName = $parameter->getName();
 
                     $lines[] = '$this->'.$propertyName.' = $'.$parameterName.';';
@@ -114,6 +119,70 @@ final class PHPCodeAdapter implements CodeAdapter {
 
             };
 
+            $fromAnnotationToAnnotationCodeLines = function(Annotation $annotation) {
+
+                $fromAnnotationParameterToCodeLine = function(AnnotationParameter $parameter) {
+
+                    $flow = $parameter->getFlow();
+                    $flowString = '@'.$flow->getPropertyName().' -> '.$flow->getMethodChain()->getChain().' -> '.$flow->getKeyname().' ';
+
+                    $type = $parameter->getType();
+
+
+                    $converterString = '';
+                    if ($parameter->hasConverter()) {
+                        $converter = $parameter->getConverter();
+
+                        $databaseConverterString = '';
+                        if ($converter->hasDatabaseConverter()) {
+                            $databaseConverter = $converter->getDatabaseConverter();
+                            $interfaceName = $databaseConverter->getInterfaceName();
+                            $methodName = $databaseConverter->getMethodName();
+                            $databaseConverterString = $interfaceName.'::'.$methodName;
+                        }
+
+                        $viewConverterString = '';
+                        if ($converter->hasViewConverter()) {
+                            $viewConverter = $converter->getViewConverter();
+                            $interfaceName = $viewConverter->getInterfaceName();
+                            $methodName = $viewConverter->getMethodName();
+                            $viewConverterString = $interfaceName.'::'.$methodName;
+                        }
+
+                        if (!empty($databaseConverterString) && !empty($viewConverterString)) {
+                            $converterString = $databaseConverterString.' || '.$viewConverterString;
+                        }
+
+                        if (!empty($databaseConverterString)) {
+                            $converterString = $databaseConverterString;
+                        }
+
+                        $converterString = '** '.$converterString.' ';
+                    }
+
+                    $elementsTypeString = '';
+                    if ($parameter->hasElementsType()) {
+                        $elementsType = $parameter->getElementsType();
+                        $elementsTypeString = '** @elements-type -> '.$elementsType.' ';
+                    }
+
+                    return '*   '.$flowString.$elementsTypeString.$converterString;
+
+                };
+
+                $output = [
+                    '',
+                    '/**'
+                ];
+                $parameters = $annotation->getParameters();
+                foreach($parameters as $oneParameter) {
+                    $output[] = $fromAnnotationParameterToCodeLine($oneParameter);
+                }
+
+                $output[] = '*/';
+                return $output;
+            };
+
             $name = $constructor->getName();
             $parameters = $constructor->getParameters();
 
@@ -121,8 +190,14 @@ final class PHPCodeAdapter implements CodeAdapter {
             $propertiesAssignmentCodeLines = $fromParametersToPropertiesAssignementCodeLines($parameters);
             $signatureCodeLine = $fromParametersToSignatureCodeLine($parameters);
 
+            $annotationCodeLines = [];
+            if (!empty($annotation)) {
+                $annotationCodeLines = $fromAnnotationToAnnotationCodeLines($annotation);
+            }
+
             return array_merge(
                 $propertiesCodeLines,
+                $annotationCodeLines,
                 [
                     'public function '.$name.'('.$signatureCodeLine.') {',
                     $propertiesAssignmentCodeLines,
@@ -131,15 +206,13 @@ final class PHPCodeAdapter implements CodeAdapter {
                 ]);
         };
 
-        $fromGetterMethodsToCodeLines = function(array $getterMethods) {
+        $fromConstructorParametersToCodeLines = function(array $constructorParameters) {
+
             $methods = [];
-            foreach($getterMethods as $oneGetterMethod) {
-
-                $interfaceMethod = $oneGetterMethod->getInterfaceMethod();
-                $returnedProperty = $oneGetterMethod->getReturnedProperty();
-
-                $methodName = $interfaceMethod->getName();
-                $returnedPropertyName = $returnedProperty->get();
+            foreach($constructorParameters as $oneConstructorParameter) {
+                $method = $oneConstructorParameter->getMethod();
+                $methodName = $method->getName();
+                $returnedPropertyName = $oneConstructorParameter->getProperty()->getName();
 
                 $methods = array_merge($methods, [
                     'public function '.$methodName.'() {',
@@ -147,7 +220,6 @@ final class PHPCodeAdapter implements CodeAdapter {
                     '}',
                     ''
                 ]);
-
             }
 
             return $methods;
@@ -304,7 +376,9 @@ final class PHPCodeAdapter implements CodeAdapter {
             return $pathAdapter->fromRelativePathStringToPath($relativeFilePath);
         };
 
-        $createSourceCode = function(ObjectClass $class) use(&$fromConstructorToCodeLines, &$fromClassToUseNamespaces, &$fromGetterMethodsToCodeLines, &$fromCustomMethodsToCodeLines, &$renderCodeLines) {
+        $createSourceCode = function(AnnotatedClass $annotatedClass) use(&$fromConstructorToCodeLines, &$fromClassToUseNamespaces, &$fromConstructorParametersToCodeLines, &$fromCustomMethodsToCodeLines, &$renderCodeLines) {
+
+            $class = $annotatedClass->getClass();
             $name = $class->getName();
             $interface = $class->getInterface();
             $constructor = $class->getConstructor();
@@ -312,11 +386,8 @@ final class PHPCodeAdapter implements CodeAdapter {
             $constructorCodeLines = $fromConstructorToCodeLines($constructor);
             $useInterfaces = $fromClassToUseNamespaces($class);
 
-            $getterCodeLines = [];
-            if ($class->hasGetterMethods()) {
-                $getterMethods = $class->getGetterMethods();
-                $getterCodeLines = $fromGetterMethodsToCodeLines($getterMethods);
-            }
+            $parameters = $constructor->getParameters();
+            $getterCodeLines = $fromConstructorParametersToCodeLines($parameters);
 
             $customCodeLines = [];
             if ($class->hasCustomMethods()) {
@@ -327,10 +398,31 @@ final class PHPCodeAdapter implements CodeAdapter {
             $interfaceName = $interface->getName();
             $subClass = ($interface->isEntity()) ? 'AbstractEntity' : '';
 
+            $useInterfaceCode = '';
+            if (!empty($useInterfaces)) {
+                $useInterfaceCode = implode(PHP_EOL, $useInterfaces);
+            }
+
+            $classAnnotationCode = [];
+            if ($annotatedClass->hasAnnotation()) {
+                $annotation = $annotatedClass->getAnnotation();
+
+                $containerName = $annotation->getContainerName();
+                $classAnnotationCodeLines = [
+                    '/**',
+                    '*   @container -> '.$containerName,
+                    '*/'
+                ];
+
+                $classAnnotationCode = implode(PHP_EOL, $classAnnotationCodeLines);
+            }
+
             $classCodeLines = [
                 '<?php',
                 'namespace '.implode('\\', $class->getNamespace()->getPath()).';',
-                implode(PHP_EOL, $useInterfaces).PHP_EOL,
+                $useInterfaceCode,
+                '',
+                $classAnnotationCode,
                 'final class '.$name.' extends '.$subClass.' implements '.$interfaceName.' {',
                 $constructorCodeLines,
                 $getterCodeLines,
@@ -353,20 +445,21 @@ final class PHPCodeAdapter implements CodeAdapter {
 
         };
 
+        $class = $annotatedClass->getClass();
         $interface = $class->getInterface();
         $namespace = $class->getNamespace();
 
-        $classSourceCode = $createSourceCode($class);
+        $classSourceCode = $createSourceCode($annotatedClass);
         $path = $getPath($namespace);
 
         $interfaceCode = $createInterfaceCode($interface);
         return new ConcreteOutputCode($classSourceCode, $path, [$interfaceCode]);
     }
 
-    public function fromClassesToCodes(array $classes) {
+    public function fromAnotatedClassesToCodes(array $classes) {
         $output = [];
         foreach($classes as $oneClass) {
-            $output[] = $this->fromClassToCodes($oneClass);
+            $output[] = $this->fromAnnotatedClassToCodes($oneClass);
         }
 
         return $output;

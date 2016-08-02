@@ -10,7 +10,7 @@
             "properties": {
                 "pattern": "pattern",
                 "is_user_mandatory": "boolean",
-                "params?": "params[]"
+                "params|?": "params[]"
             },
             "methods": {
                 "has_method": "endpointHasMethod"
@@ -20,7 +20,7 @@
             "database": "pdo",
             "properties": {
                 "base_url": "base_url",
-                "endpoints?": "endpoint[]"
+                "endpoints|?": "endpoint[]"
             }
         },
         "params": {
@@ -36,8 +36,8 @@
             "properties": {
                 "keyname": "keyname",
                 "title": "string",
-                "description?": "string",
-                "roles?": "role[]"
+                "description|?": "string",
+                "roles|?": "role[]"
             }
         },
         "resource": {
@@ -45,21 +45,21 @@
             "properties": {
                 "endpoint": "endpoint",
                 "owner": "owner",
-                "shared_resources?": "shared_resource[]"
+                "shared_resources|?": "shared_resource[]"
             }
         },
         "shared_resource": {
             "database": "pdo",
             "properties": {
-                "permissions?": "permission[]",
-                "owners": "owner[]"
+                "permissions|?": "permission[]",
+                "owners|?": "owner[]"
             }
         },
         "owner": {
             "database": "pdo",
             "properties": {
                 "software": "software",
-                "user?": "user"
+                "user|?": "user"
             }
         },
         "software": {
@@ -67,7 +67,7 @@
             "properties": {
                 "name": "string",
                 "credentials": "credentials",
-                "roles?": "role[]"
+                "roles|?": "role[]"
             }
         },
         "user": {
@@ -75,15 +75,15 @@
             "properties": {
                 "name": "string",
                 "credentials": "credentials",
-                "roles?": "role[]"
+                "roles|?": "role[]"
             }
         },
         "role": {
             "database": "pdo",
             "properties": {
                 "title": "string",
-                "description?": "string",
-                "permissions?": "permission[]"
+                "description|?": "string",
+                "permissions|?": "permission[]"
             }
         },
         "permission": {
@@ -93,19 +93,19 @@
                 "can_read": "boolean",
                 "can_write": "boolean",
                 "can_delete": "boolean",
-                "description?": "string"
+                "description|?": "string"
             }
         },
         "pattern": {
             "properties": {
-                "regex_pattern?": "string",
-                "specific_uri?": "uri"
+                "regex_pattern|?": "string",
+                "specific_uri|?": "uri"
             }
         },
         "param_pattern": {
             "properties": {
-                "regex_pattern?": "string",
-                "specific_value?": "string_numeric"
+                "regex_pattern|?": "string",
+                "specific_value|?": "string_numeric"
             },
             "combos": [
                 "regex_pattern|specific_value"
@@ -115,7 +115,7 @@
             "properties": {
                 "username": "string",
                 "hashed_password": "string",
-                "password?": "string"
+                "password|?": "string"
             }
         }
     },

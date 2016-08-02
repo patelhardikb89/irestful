@@ -5,6 +5,8 @@ use iRESTful\Rodson\Infrastructure\Inputs\Factories\ConcreteRodsonRepositoryFact
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteClassAdapterFactory;
 use iRESTful\Rodson\Infrastructure\Outputs\Factories\PHPCodeAdapterFactory;
 use iRESTful\Rodson\Infrastructure\Outputs\Services\FileCodeService;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteAnnotatedClassAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteAnnotationAdapterFactory;
 
 final class PHPFileRodsonApplication implements RodsonApplication {
     private $baseNamespace;
@@ -32,16 +34,21 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $name = $rodson->getName();
 
         $baseNamespace = array_merge($this->baseNamespace, [$name]);
+
         $classAdapterFactory = new ConcreteClassAdapterFactory($baseNamespace);
         $classAdapter = $classAdapterFactory->create();
 
-        $classes = $classAdapter->fromRodsonToClasses($rodson);
+        $annotationAdapterFactory = new ConcreteAnnotationAdapterFactory($baseNamespace);
+        $annotationAdapter = $annotationAdapterFactory->create();
+
+        $annotatedClassAdapter = new ConcreteAnnotatedClassAdapter($classAdapter, $annotationAdapter);
+        $annotatedClasses = $annotatedClassAdapter->fromRodsonToAnnotatedClasses($rodson);
 
         $output = array_filter(explode('/', $outputFolderPath));
         $codeAdapterFactory = new PHPCodeAdapterFactory($output);
         $this->codeAdapter = $codeAdapterFactory->create();
 
-        $codes = $this->codeAdapter->fromClassesToCodes($classes);
+        $codes = $this->codeAdapter->fromAnotatedClassesToCodes($annotatedClasses);
 
         $this->service->saveMultiple($codes);
     }

@@ -6,23 +6,23 @@ use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;
 use iRESTful\Rodson\Domain\Middles\Classes\Exceptions\ClassException;
 use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
-use iRESTful\Rodson\Domain\Middles\Classes\Methods\Getters\GetterMethod;
+use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Input;
 
 final class ConcreteClass implements ObjectClass {
     private $name;
+    private $input;
     private $namespace;
     private $interface;
     private $constructor;
     private $customMethods;
-    private $getterMethods;
     private $subClasses;
     public function __construct(
         $name,
+        Input $input,
         ClassNamespace $namespace,
         ClassInterface $interface,
         Constructor $constructor,
         array $customMethods = null,
-        array $getterMethods = null,
         array $subClasses = null
     ) {
 
@@ -32,10 +32,6 @@ final class ConcreteClass implements ObjectClass {
 
         if (empty($customMethods)) {
             $customMethods = null;
-        }
-
-        if (empty($getterMethods)) {
-            $getterMethods = null;
         }
 
         if (empty($name) || !is_string($name)) {
@@ -60,25 +56,21 @@ final class ConcreteClass implements ObjectClass {
             }
         }
 
-        if (!empty($getterMethods)) {
-            foreach($getterMethods as $oneGetterMethod) {
-                if (!($oneGetterMethod instanceof GetterMethod)) {
-                    throw new ClassException('The getterMethods array must only contain GetterMethod objects.');
-                }
-            }
-        }
-
         $this->name = $name;
+        $this->input = $input;
         $this->namespace = $namespace;
         $this->interface = $interface;
         $this->constructor = $constructor;
         $this->customMethods = $customMethods;
-        $this->getterMethods = $getterMethods;
         $this->subClasses = $subClasses;
     }
 
     public function getName() {
         return $this->name;
+    }
+
+    public function getInput() {
+        return $this->input;
     }
 
     public function getNamespace() {
@@ -91,14 +83,6 @@ final class ConcreteClass implements ObjectClass {
 
     public function getConstructor() {
         return $this->constructor;
-    }
-
-    public function hasGetterMethods() {
-        return !empty($this->getterMethods);
-    }
-
-    public function getGetterMethods() {
-        return $this->getterMethods;
     }
 
     public function hasCustomMethods() {
