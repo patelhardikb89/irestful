@@ -1,11 +1,11 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Adapters\NamespaceAdapter;
-use iRESTful\Rodson\Infrastructure\Middles\Adapters\AbstractClassNamespaceAdapter;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\AbstractNamespaceAdapter;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 
-final class ConcreteClassInterfaceNamespaceAdapter extends AbstractClassNamespaceAdapter implements NamespaceAdapter {
+final class ConcreteClassInterfaceNamespaceAdapter extends AbstractNamespaceAdapter implements NamespaceAdapter {
 
     public function __construct(array $baseNamespace) {
         $baseNamespace = array_merge($baseNamespace, ['Domain']);

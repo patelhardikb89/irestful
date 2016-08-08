@@ -7,14 +7,17 @@ use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Exceptions\PropertyExceptio
 use iRESTful\Rodson\Domain\Inputs\Objects\Adapters\ObjectAdapter;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Objects\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Objects\Samples\Adapters\SampleAdapter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $methodAdapter;
     private $propertyAdapter;
+    private $sampleAdapter;
     private $databases;
-    public function __construct(MethodAdapter $methodAdapter, PropertyAdapter $propertyAdapter, array $databases) {
+    public function __construct(MethodAdapter $methodAdapter, PropertyAdapter $propertyAdapter, SampleAdapter $sampleAdapter, array $databases) {
         $this->methodAdapter = $methodAdapter;
         $this->propertyAdapter = $propertyAdapter;
+        $this->sampleAdapter = $sampleAdapter;
         $this->databases = $databases;
     }
 
@@ -53,8 +56,13 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
                 $methods = $this->methodAdapter->fromDataToMethods($data['methods']);
             }
 
+            $samples = null;
+            if (isset($data['samples'])) {
+                $samples = $this->sampleAdapter->fromDataToSamples($data['samples']);
+            }
+
             $properties = $this->propertyAdapter->fromDataToProperties($data['properties']);
-            return new ConcreteObject($data['name'], $properties, $database, $methods);
+            return new ConcreteObject($data['name'], $properties, $database, $methods, $samples);
 
         } catch (PropertyException $exception) {
             throw new ObjectException('There was an exception while converting data to Property objects.', $exception);

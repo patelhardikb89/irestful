@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Tests\Middles\Tests\Unit\Objects;
-use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassNamespace;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Exceptions\NamespaceException;
+use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteNamespace;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Exceptions\NamespaceException;
 
-final class ConcreteClassNamespaceTest extends \PHPUnit_Framework_TestCase {
+final class ConcreteNamespaceTest extends \PHPUnit_Framework_TestCase {
     private $namespace;
     public function setUp() {
         $this->namespace = [
@@ -18,7 +18,7 @@ final class ConcreteClassNamespaceTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_Success() {
 
-        $namespace = new ConcreteClassNamespace($this->namespace);
+        $namespace = new ConcreteNamespace($this->namespace);
 
         $this->assertEquals($this->namespace, $namespace->getAll());
 
@@ -29,7 +29,7 @@ final class ConcreteClassNamespaceTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteClassNamespace([]);
+            new ConcreteNamespace([]);
 
         } catch (NamespaceException $exception) {
             $asserted = true;
@@ -46,7 +46,7 @@ final class ConcreteClassNamespaceTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteClassNamespace($this->namespace);
+            new ConcreteNamespace($this->namespace);
 
         } catch (NamespaceException $exception) {
             $asserted = true;
@@ -63,7 +63,7 @@ final class ConcreteClassNamespaceTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteClassNamespace($this->namespace);
+            new ConcreteNamespace($this->namespace);
 
         } catch (NamespaceException $exception) {
             $asserted = true;

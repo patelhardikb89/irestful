@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Infrastructure\Middles\Factories;
 use iRESTful\Rodson\Domain\Middles\Classes\Adapters\Factories\ClassAdapterFactory;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInterfaceNamespaceAdapter;
-use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassClassNamespaceAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassNamespaceAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInterfaceAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInterfaceMethodAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassConstructorAdapter;
@@ -23,7 +23,7 @@ final class ConcreteClassAdapterFactory implements ClassAdapterFactory {
 
     public function create() {
         $interfaceNamespaceAdapter = new ConcreteClassInterfaceNamespaceAdapter($this->baseNamespace);
-        $classNamespaceAdapter = new ConcreteClassClassNamespaceAdapter($this->baseNamespace);
+        $classNamespaceAdapter = new ConcreteClassNamespaceAdapter($this->baseNamespace);
 
         $interfaceMethodParamaterTypeAdapter = new ConcreteClassInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteClassInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);

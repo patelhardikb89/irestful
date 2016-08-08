@@ -31,6 +31,7 @@ use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectPropertyTypeAda
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectMethodAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteAdapterTypeAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Factories\ConcretePrimitiveFactory;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectSampleAdapter;
 
 final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
     private $codeData;
@@ -107,12 +108,13 @@ final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
     private function getObjectAdapter(Code $code, array $types, array $primitives, array $objects) {
         $databases = $this->getDatabases();
 
+        $sampleAdapter = new ConcreteObjectSampleAdapter();
         $methodAdapter = new ConcreteCodeMethodAdapter($code);
         $objectMethodAdapter = new ConcreteObjectMethodAdapter($methodAdapter);
 
         $propertyTypeAdapter = new ConcreteObjectPropertyTypeAdapter($types, $primitives, $objects);
         $propertyAdapter = new ConcreteObjectPropertyAdapter($propertyTypeAdapter);
-        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $databases);
+        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $sampleAdapter, $databases);
     }
 
     private function getObjects(Code $code, array $types, array $primitives) {

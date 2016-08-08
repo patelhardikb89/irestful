@@ -10,7 +10,7 @@ final class ConcreteClassInterfaceTest extends \PHPUnit_Framework_TestCase {
     private $methods;
     public function setUp() {
         $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Method');
-        $this->namespaceMock = $this->getMock('iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace');
+        $this->namespaceMock = $this->getMock('iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace');
 
         $this->name = 'MyInterface';
         $this->methods = [

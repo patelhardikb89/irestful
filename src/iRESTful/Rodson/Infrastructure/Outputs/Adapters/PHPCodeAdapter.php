@@ -7,38 +7,24 @@ use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Parameter as ConstructorParameter;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Types\Type;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
+use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Infrastructure\Outputs\Objects\ConcreteOutputCode;
 use iRESTful\Rodson\Domain\Middles\Annotations\Classes\AnnotatedClass;
 use iRESTful\Rodson\Domain\Middles\Annotations\Annotation;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Parameter as AnnotationParameter;
+use iRESTful\Rodson\Domain\Middles\Configurations\Configuration;
+use iRESTful\Rodson\Domain\Middles\Tests\Functionals\Transforms\TransformTest;
+use iRESTful\Rodson\Domain\Middles\Samples\Sample;
 
 final class PHPCodeAdapter implements CodeAdapter {
     private $pathAdapter;
+    private $tab;
     public function __construct(PathAdapter $pathAdapter) {
         $this->pathAdapter = $pathAdapter;
+        $this->tab = '    ';
     }
 
     public function fromAnnotatedClassToCodes(AnnotatedClass $annotatedClass) {
-
-        $tab = '    ';
-        $renderCodeLines = function(array $codeLines, $prefix = '') use(&$renderCodeLines, &$tab) {
-
-            $output = '';
-            foreach($codeLines as $oneCodeLine) {
-
-                if (is_array($oneCodeLine)) {
-                    $currentTab = $prefix.$tab;
-                    $output .= $renderCodeLines($oneCodeLine, $currentTab);
-                    continue;
-                }
-
-                $output .= $prefix.$oneCodeLine.PHP_EOL;
-            }
-
-            return $output;
-
-        };
 
         $fromParametersToMethodSignatureCodeLine = function(array $parameters) {
 
@@ -407,7 +393,7 @@ final class PHPCodeAdapter implements CodeAdapter {
 
             return [
                 '<?php',
-                'namespace '.implode('\\', $namespace->getPath()).';',
+                'namespace '.$namespace->getPathAsString().';',
                 implode(PHP_EOL, $useNamespaces).PHP_EOL,
                 'interface '.$name.$baseInterface.' {',
                 $methodCodeLines,
@@ -417,13 +403,7 @@ final class PHPCodeAdapter implements CodeAdapter {
 
         };
 
-        $pathAdapter = $this->pathAdapter;
-        $getPath = function(ClassNamespace $namespace) use(&$pathAdapter) {
-            $relativeFilePath = implode('/', $namespace->getAll()).'.php';
-            return $pathAdapter->fromRelativePathStringToPath($relativeFilePath);
-        };
-
-        $createSourceCode = function(AnnotatedClass $annotatedClass) use(&$fromConstructorToCodeLines, &$fromClassToUseNamespaces, &$fromConstructorParametersToCodeLines, &$fromCustomMethodsToCodeLines, &$renderCodeLines) {
+        $createSourceCode = function(AnnotatedClass $annotatedClass) use(&$fromConstructorToCodeLines, &$fromClassToUseNamespaces, &$fromConstructorParametersToCodeLines, &$fromCustomMethodsToCodeLines) {
 
             $class = $annotatedClass->getClass();
             $name = $class->getName();
@@ -466,7 +446,7 @@ final class PHPCodeAdapter implements CodeAdapter {
 
             $classCodeLines = [
                 '<?php',
-                'namespace '.implode('\\', $class->getNamespace()->getPath()).';',
+                'namespace '.$class->getNamespace()->getPathAsString().';',
                 $useInterfaceCode,
                 '',
                 $classAnnotationCode,
@@ -477,29 +457,23 @@ final class PHPCodeAdapter implements CodeAdapter {
                 '}'
             ];
 
-            return $renderCodeLines($classCodeLines);
-        };
-
-        $createInterfaceCode = function(ClassInterface $interface) use(&$getPath, &$renderCodeLines, &$fromInterfaceToCodeLines) {
-
-            $interfaceCodeLines = $fromInterfaceToCodeLines($interface);
-            $sourceCode = $renderCodeLines($interfaceCodeLines);
-
-            $namespace = $interface->getNamespace();
-            $path = $getPath($namespace);
-
-            return new ConcreteOutputCode($sourceCode, $path);
-
+            return $classCodeLines;
         };
 
         $class = $annotatedClass->getClass();
         $interface = $class->getInterface();
         $namespace = $class->getNamespace();
 
-        $classSourceCode = $createSourceCode($annotatedClass);
-        $path = $getPath($namespace);
+        $classSourceCodeLines = $createSourceCode($annotatedClass);
+        $classSourceCode = $this->renderCodeLines($classSourceCodeLines);
+        $path = $this->getFilePathPath($namespace);
 
-        $interfaceCode = $createInterfaceCode($interface);
+        $interfaceCodeLines = $fromInterfaceToCodeLines($interface);
+        $interfaceSourceCode = $this->renderCodeLines($interfaceCodeLines);
+        $interfaceNamespace = $interface->getNamespace();
+        $interfacePath = $this->getFilePathPath($interfaceNamespace);
+        $interfaceCode = new ConcreteOutputCode($interfaceSourceCode, $interfacePath);
+
         return new ConcreteOutputCode($classSourceCode, $path, [$interfaceCode]);
     }
 
@@ -510,6 +484,253 @@ final class PHPCodeAdapter implements CodeAdapter {
         }
 
         return $output;
+    }
+
+    public function fromConfigurationToCode(Configuration $configuration) {
+
+        $getMapperCodeLines = function(array $mapper) {
+
+            $output = [];
+            foreach($mapper as $keyname => $element) {
+                $output[] = "'".$keyname."' => '".$element."'";
+            }
+
+            return explode(PHP_EOL, implode(','.PHP_EOL, $output));
+
+        };
+
+        $getTransformerCodeLines = function(array $elements) {
+            $mapper = [];
+            foreach($elements as $keyname => $element) {
+                $mapper[] = "'".$keyname."' => new \\".$element."(),";
+            }
+
+            $mapper[] = "'iRESTful\Objects\Libraries\Dates\Domain\Adapters\DateTimeAdapter' => ".'new \iRESTful\Objects\Libraries\Dates\Infrastructure\Adapters\ConcreteDateTimeAdapter($this->getTimezone())';
+            return $mapper;
+        };
+
+        $namespace = $configuration->getNamespace();
+        $containerClassMapper = $configuration->getContainerClassMapper();
+        $interfaceClassMapper = $configuration->getInterfaceClassMapper();
+        $adapterInterfaceClassMapper = $configuration->getAdapterInterfaceClassMapper();
+
+        $classCodeLines = [
+            '<?php',
+            'namespace '.$namespace->getPathAsString().';',
+            'use iRESTful\Objects\Entities\Entities\Configurations\EntityConfiguration;',
+            '',
+            'final class '.$namespace->getName().' implements EntityConfiguration {',
+            '',
+            [
+                'public function __construct() {',
+                    [
+                        ''
+                    ],
+                '}',
+                '',
+                'public function getDelimiter() {',
+                    [
+                        "return '".$configuration->getDelimiter()."';",
+                    ],
+                '}',
+                '',
+                'public function getTimezone() {',
+                    [
+                        "return '".$configuration->getTimezone()."';",
+                    ],
+                '}',
+                '',
+                'public function getContainerClassMapper() {',
+                    [
+                        'return [',
+                        $getMapperCodeLines($containerClassMapper),
+                        '];'
+                    ],
+                '}',
+                '',
+                'public function getInterfaceClassMapper() {',
+                    [
+                        'return [',
+                        $getMapperCodeLines($interfaceClassMapper),
+                        '];'
+                    ],
+                '}',
+                '',
+                'public function getTransformerObjects() {',
+                    [
+                        'return [',
+                        $getTransformerCodeLines($adapterInterfaceClassMapper),
+                        '];'
+                    ],
+                '}'
+            ],
+            '}'
+        ];
+
+        $path = $this->getFilePathPath($namespace);
+        $configurationCode = $this->renderCodeLines($classCodeLines);
+        return new ConcreteOutputCode($configurationCode, $path);
+    }
+
+    public function fromFunctionalTransformTestsToCodes(array $functionalTransformTests) {
+        $output = [];
+        foreach($functionalTransformTests as $oneFunctionalTransformTest) {
+            $output[] = $this->fromFunctionalTransformTestToCode($oneFunctionalTransformTest);
+        }
+
+        return $output;
+    }
+
+    public function fromFunctionalTransformTestToCode(TransformTest $functionalTransformTest) {
+
+        $namespace = $functionalTransformTest->getNamespace();
+        $configuration = $functionalTransformTest->getConfiguration();
+
+        $getHelpersCodeLines = function(array $samples) use(&$configuration) {
+
+            $configsName = $configuration->getNamespace()->getName();
+
+            $getOneData = function(Sample $sample) {
+
+                $getData = function(array $data) use(&$getData) {
+
+                    $lines = [];
+                    $keynames = array_keys($data);
+                    $lastKeyname = array_pop($keynames);
+                    foreach($data as $keyname => $element) {
+
+                        $delimiter = ($keyname != $lastKeyname) ? ',' : '';
+
+                        if (is_string($keyname)) {
+                            $keyname = "'".$keyname."'";
+                        }
+
+                        if (is_array($element)) {
+                            $lines[] = $keyname.' => [';
+                            $lines[] = $getData($element);
+                            $lines[] = ']'.$delimiter;
+                            continue;
+                        }
+
+                        if (is_numeric($element)) {
+                            $lines[] = $keyname.' => '.$element.$delimiter;
+                            continue;
+                        }
+
+                        $lines[] = $keyname." => '".$element."'".$delimiter;
+
+                    }
+
+                    return $lines;
+                };
+
+                return [
+                    "'container' => '".$sample->getContainerName()."',",
+                    "'data' => [",
+                    $getData($sample->getData()),
+                    ']'
+                ];
+            };
+
+            $getData = function(array $samples) use(&$getOneData) {
+                $output = [];
+                $amountSamples = count($samples);
+                foreach($samples as $index => $oneSample) {
+
+                    $delimiter = (($index + 1) >= $amountSamples) ? '' : ',';
+
+                    $output[] = '[';
+                    $output[] = $getOneData($oneSample);
+                    $output[] = ']'.$delimiter;
+                }
+
+                return $output;
+            };
+
+            return [
+                '$configs = new '.$configsName.'();',
+                '$data = [',
+                $getData($samples),
+                '];',
+                '',
+                '$this->helpers = [];',
+                'foreach($data as $oneData) {',
+                [
+                    '$this->helpers[] = new ConversionHelper($this, $configs, $oneData);'
+                ],
+                '}'
+            ];
+
+        };
+
+        $generateTestMethods = function($amountOfMethods) {
+
+            $output = [];
+            for($i = 0; $i < $amountOfMethods; $i++) {
+                $output[] = 'public function testConvert'.$i.'_Success() {';
+                $output[] = [
+                    '$this->helpers['.$i.']->execute();'
+                ];
+                $output[] = '}';
+                $output[] = '';
+            }
+
+            return $output;
+
+        };
+
+        $samples = $functionalTransformTest->getSamples();
+        $classCodeLines = [
+            '<?php',
+            'namespace '.$namespace->getPathAsString().';',
+            'use '.$configuration->getNamespace()->getAllAsString().';',
+            'use iRESTful\Objects\Entities\Entities\Tests\Helpers\ConversionHelper;',
+            '',
+            'final class '.$namespace->getName().' extends \PHPUnit_Framework_TestCase {',
+                [
+                    'private $helpers;',
+                    'public function setUp() {',
+                    $getHelpersCodeLines($samples),
+                    '}',
+                    '',
+                    'public function tearDown() {',
+                        [
+                            '$this->helpers = null;'
+                        ],
+                    '}',
+                ],
+                '',
+                $generateTestMethods(count($samples)),
+            '}'
+        ];
+
+
+
+        $path = $this->getFilePathPath($namespace);
+        $classCode = $this->renderCodeLines($classCodeLines);
+        return new ConcreteOutputCode($classCode, $path);
+
+    }
+
+    private function renderCodeLines(array $codeLines, $prefix = '') {
+        $output = '';
+        foreach($codeLines as $oneCodeLine) {
+
+            if (is_array($oneCodeLine)) {
+                $currentTab = $prefix.$this->tab;
+                $output .= $this->renderCodeLines($oneCodeLine, $currentTab);
+                continue;
+            }
+
+            $output .= $prefix.$oneCodeLine.PHP_EOL;
+        }
+
+        return $output;
+    }
+
+    private function getFilePathPath(ClassNamespace $namespace) {
+        $relativeFilePath = implode('/', $namespace->getAll()).'.php';
+        return $this->pathAdapter->fromRelativePathStringToPath($relativeFilePath);
     }
 
 }

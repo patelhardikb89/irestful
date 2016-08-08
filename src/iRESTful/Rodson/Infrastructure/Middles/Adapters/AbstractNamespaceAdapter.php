@@ -1,13 +1,13 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type as PropertyType;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Adapters\NamespaceAdapter;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Exceptions\NamespaceException;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Exceptions\NamespaceException;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
-use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassNamespace;
+use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteNamespace;
 
-abstract class AbstractClassNamespaceAdapter implements NamespaceAdapter {
+abstract class AbstractNamespaceAdapter implements NamespaceAdapter {
     private $baseNamespace;
     public function __construct(array $baseNamespace) {
         $this->baseNamespace = $baseNamespace;
@@ -43,7 +43,7 @@ abstract class AbstractClassNamespaceAdapter implements NamespaceAdapter {
 
     protected function fromDataToNamespace(array $data) {
         $merged = array_merge($this->baseNamespace, $data);
-        return new ConcreteClassNamespace($merged);
+        return new ConcreteNamespace($merged);
     }
 
     protected function convert($name) {

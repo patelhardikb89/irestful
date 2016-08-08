@@ -1,5 +1,5 @@
 <?php
-namespace iRESTful\Rodson\Domain\Middles\Classes\Namespaces;
+namespace iRESTful\Rodson\Domain\Middles\Namespaces;
 
 interface ClassNamespace {
     public function getName();

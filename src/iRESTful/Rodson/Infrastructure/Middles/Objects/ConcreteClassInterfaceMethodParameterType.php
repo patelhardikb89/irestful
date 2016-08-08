@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Types\Type;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
+use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 
 final class ConcreteClassInterfaceMethodParameterType implements Type {
     private $isArray;

@@ -4,7 +4,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\ObjectClass;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;
 use iRESTful\Rodson\Domain\Middles\Classes\Exceptions\ClassException;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
+use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
 use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Input;
 

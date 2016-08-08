@@ -7,7 +7,7 @@ use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassConstructorParameter;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Adapters\NamespaceAdapter;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Methods\Adapters\MethodAdapter;
 
 final class ConcreteClassConstructorParameterAdapter implements ConstructorParameterAdapter {

@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Exceptions\NamespaceException;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Exceptions\NamespaceException;
+use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 
-final class ConcreteClassNamespace implements ClassNamespace {
+final class ConcreteNamespace implements ClassNamespace {
     private $namespace;
     public function __construct(array $namespace) {
 
@@ -42,7 +42,7 @@ final class ConcreteClassNamespace implements ClassNamespace {
     }
 
     public function getPathAsString() {
-        return implode('\\', $this->namespace);
+        return implode('\\', $this->getPath());
     }
 
 }

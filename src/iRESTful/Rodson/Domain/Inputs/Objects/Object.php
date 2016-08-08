@@ -8,4 +8,6 @@ interface Object {
     public function getDatabase();
     public function hasMethods();
     public function getMethods();
+    public function hasSamples();
+    public function getSamples();
 }

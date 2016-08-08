@@ -3,7 +3,7 @@ namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Method;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Exceptions\InterfaceException;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\ClassNamespace;
+use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 
 final class ConcreteClassInterface implements ClassInterface {
     private $name;

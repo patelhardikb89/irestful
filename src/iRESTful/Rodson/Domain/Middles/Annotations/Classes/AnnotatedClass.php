@@ -5,4 +5,6 @@ interface AnnotatedClass {
     public function getClass();
     public function hasAnnotation();
     public function getAnnotation();
+    public function hasSamples();
+    public function getSamples();
 }

@@ -21,7 +21,7 @@ final class ConcreteAnnotationAdapter implements AnnotationAdapter {
 
             return $input->getObject()->getName();
         };
-        
+
         $name = $getName($class);
         $parameters = $this->parameterAdapter->fromClassToParameters($class);
         return new ConcreteAnnotation($parameters, $name);

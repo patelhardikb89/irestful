@@ -3,13 +3,30 @@ namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Annotations\Classes\AnnotatedClass;
 use iRESTful\Rodson\Domain\Middles\Classes\ObjectClass;
 use iRESTful\Rodson\Domain\Middles\Annotations\Annotation;
+use iRESTful\Rodson\Domain\Middles\Samples\Sample;
+use iRESTful\Rodson\Domain\Middles\Annotations\Classes\Exceptions\AnnotatedClassException;
 
 final class ConcreteAnnotatedClass implements AnnotatedClass {
     private $class;
     private $annotation;
-    public function __construct(ObjectClass $class, Annotation $annotation = null) {
+    private $samples;
+    public function __construct(ObjectClass $class, Annotation $annotation = null, array $samples = null) {
+
+        if (empty($samples)) {
+            $samples = null;
+        }
+
+        if (!empty($samples)) {
+            foreach($samples as $oneSample) {
+                if (!($oneSample instanceof Sample)) {
+                    throw new AnnotatedClassException('The samples array must only contain Sample objects.');
+                }
+            }
+        }
+
         $this->class = $class;
         $this->annotation = $annotation;
+        $this->samples = $samples;
     }
 
     public function getClass() {
@@ -22,6 +39,14 @@ final class ConcreteAnnotatedClass implements AnnotatedClass {
 
     public function getAnnotation() {
         return $this->annotation;
+    }
+
+    public function hasSamples() {
+        return !empty($this->samples);
+    }
+
+    public function getSamples() {
+        return $this->samples;
     }
 
 }

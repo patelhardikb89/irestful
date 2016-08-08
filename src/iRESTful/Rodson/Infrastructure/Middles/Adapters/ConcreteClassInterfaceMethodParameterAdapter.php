@@ -4,7 +4,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Adapter
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Exceptions\ParameterException;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Types\Adapters\TypeAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInterfaceMethodParameter;
-use iRESTful\Rodson\Domain\Middles\Classes\Namespaces\Adapters\NamespaceAdapter;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Types\Type;
 
 final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAdapter {
