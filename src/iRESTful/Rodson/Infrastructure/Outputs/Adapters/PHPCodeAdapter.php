@@ -217,11 +217,16 @@ final class PHPCodeAdapter implements CodeAdapter {
             };
 
             $name = $constructor->getName();
-            $parameters = $constructor->getParameters();
+            $signatureCodeLine = '';
+            $propertiesCodeLines = [];
+            $propertiesAssignmentCodeLines = [];
+            if ($constructor->hasParameters()) {
+                $parameters = $constructor->getParameters();
+                $propertiesCodeLines = $fromParametersToPropertiesCodeLines($parameters);
+                $propertiesAssignmentCodeLines = $fromParametersToPropertiesAssignementCodeLines($parameters);
+                $signatureCodeLine = $fromParametersToSignatureCodeLine($parameters);
+            }
 
-            $propertiesCodeLines = $fromParametersToPropertiesCodeLines($parameters);
-            $propertiesAssignmentCodeLines = $fromParametersToPropertiesAssignementCodeLines($parameters);
-            $signatureCodeLine = $fromParametersToSignatureCodeLine($parameters);
 
             $annotationCodeLines = [];
             if (!empty($annotation)) {
@@ -311,6 +316,10 @@ final class PHPCodeAdapter implements CodeAdapter {
 
                     return $output;
                 };
+
+                if (!$constructor->hasParameters()) {
+                    return [];
+                }
 
                 $parameters = $constructor->getParameters();
                 return $fromParametersToUseNamespaces($parameters);
@@ -403,7 +412,51 @@ final class PHPCodeAdapter implements CodeAdapter {
 
         };
 
-        $createSourceCode = function(AnnotatedClass $annotatedClass) use(&$fromConstructorToCodeLines, &$fromClassToUseNamespaces, &$fromConstructorParametersToCodeLines, &$fromCustomMethodsToCodeLines) {
+        $createClassSourceCode = function(ObjectClass $class) use(&$fromConstructorToCodeLines, &$fromClassToUseNamespaces, &$fromConstructorParametersToCodeLines, &$fromCustomMethodsToCodeLines) {
+
+            $name = $class->getName();
+            $interface = $class->getInterface();
+            $constructor = $class->getConstructor();
+
+            $constructorCodeLines = $fromConstructorToCodeLines($constructor);
+            $useInterfaces = $fromClassToUseNamespaces($class);
+
+            $getterCodeLines = [];
+            if ($constructor->hasParameters()) {
+                $parameters = $constructor->getParameters();
+                $getterCodeLines = $fromConstructorParametersToCodeLines($parameters);
+            }
+
+            $customCodeLines = [];
+            if ($class->hasCustomMethods()) {
+                $customMethods = $class->getCustomMethods();
+                $customCodeLines = $fromCustomMethodsToCodeLines($customMethods);
+            }
+
+            $interfaceName = $interface->getName();
+            $subClass = ($interface->isEntity()) ? 'AbstractEntity' : '';
+
+            $useInterfaceCode = '';
+            if (!empty($useInterfaces)) {
+                $useInterfaceCode = implode(PHP_EOL, $useInterfaces);
+            }
+
+            $classCodeLines = [
+                '<?php',
+                'namespace '.$class->getNamespace()->getPathAsString().';',
+                $useInterfaceCode,
+                '',
+                'final class '.$name.' extends '.$subClass.' implements '.$interfaceName.' {',
+                $constructorCodeLines,
+                $getterCodeLines,
+                $customCodeLines,
+                '}'
+            ];
+
+            return $classCodeLines;
+        };
+
+        $createAnnotatedClassSourceCode = function(AnnotatedClass $annotatedClass) use(&$fromConstructorToCodeLines, &$fromClassToUseNamespaces, &$fromConstructorParametersToCodeLines, &$fromCustomMethodsToCodeLines) {
 
             $class = $annotatedClass->getClass();
             $name = $class->getName();
@@ -413,8 +466,11 @@ final class PHPCodeAdapter implements CodeAdapter {
             $constructorCodeLines = $fromConstructorToCodeLines($constructor);
             $useInterfaces = $fromClassToUseNamespaces($class);
 
-            $parameters = $constructor->getParameters();
-            $getterCodeLines = $fromConstructorParametersToCodeLines($parameters);
+            $getterCodeLines = [];
+            if ($constructor->hasParameters()) {
+                $parameters = $constructor->getParameters();
+                $getterCodeLines = $fromConstructorParametersToCodeLines($parameters);
+            }
 
             $customCodeLines = [];
             if ($class->hasCustomMethods()) {
@@ -460,11 +516,38 @@ final class PHPCodeAdapter implements CodeAdapter {
             return $classCodeLines;
         };
 
+        $createSubClassesCodes = function(ObjectClass $class) use(&$createSubClassesCodes, &$createClassSourceCode) {
+
+            if (!$class->hasSubClasses()) {
+                return [];
+            }
+
+            $output = [];
+            $subClasses = $class->getSubClasses();
+            foreach($subClasses as $oneSubClass) {
+
+                $namespace = $oneSubClass->getNamespace();
+                $path = $this->getFilePathPath($namespace);
+
+                $classSourceCodeLines = $createClassSourceCode($oneSubClass);
+                $classSourceCode = $this->renderCodeLines($classSourceCodeLines);
+
+                $subSubClasses = $createSubClassesCodes($oneSubClass);
+                if (empty($subSubClasses)) {
+                    $subSubClasses = null;
+                }
+
+                $output[] = new ConcreteOutputCode($classSourceCode, $path, $subSubClasses);
+            }
+
+            return $output;
+        };
+
         $class = $annotatedClass->getClass();
         $interface = $class->getInterface();
         $namespace = $class->getNamespace();
 
-        $classSourceCodeLines = $createSourceCode($annotatedClass);
+        $classSourceCodeLines = $createAnnotatedClassSourceCode($annotatedClass);
         $classSourceCode = $this->renderCodeLines($classSourceCodeLines);
         $path = $this->getFilePathPath($namespace);
 
@@ -474,7 +557,10 @@ final class PHPCodeAdapter implements CodeAdapter {
         $interfacePath = $this->getFilePathPath($interfaceNamespace);
         $interfaceCode = new ConcreteOutputCode($interfaceSourceCode, $interfacePath);
 
-        return new ConcreteOutputCode($classSourceCode, $path, [$interfaceCode]);
+        $subClasses = $createSubClassesCodes($class);
+        $subClasses = array_merge($subClasses, [$interfaceCode]);
+
+        return new ConcreteOutputCode($classSourceCode, $path, $subClasses);
     }
 
     public function fromAnotatedClassesToCodes(array $classes) {

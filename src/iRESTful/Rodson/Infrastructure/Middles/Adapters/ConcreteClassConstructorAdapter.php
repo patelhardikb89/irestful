@@ -17,18 +17,18 @@ final class ConcreteClassConstructorAdapter implements ConstructorAdapter {
 
     public function fromObjectToConstructor(Object $object) {
         $parameters = $this->parameterAdapter->fromObjectToParameters($object);
-        return new ConcreteClassConstructor('__constructor', null, $parameters);
+        return new ConcreteClassConstructor('__construct', null, $parameters);
     }
 
     public function fromTypeToConstructor(Type $type) {
         $parameter = $this->parameterAdapter->fromTypeToParameter($type);
         $customMethod = $this->customMethodAdapter->fromTypeToCustomMethod($type);
-        return new ConcreteClassConstructor('__constructor', $customMethod, [$parameter]);
+        return new ConcreteClassConstructor('__construct', $customMethod, [$parameter]);
 
     }
 
     public function fromTypeToAdapterConstructor(Type $type) {
-        return new ConcreteClassConstructor('__constructor');
+        return new ConcreteClassConstructor('__construct');
     }
 
 }
