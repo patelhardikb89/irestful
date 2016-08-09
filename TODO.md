@@ -1,5 +1,4 @@
 * In the configuration class, the interfaceClassMapper must include objects and types.
-* Generate the adapter interfaces.
 * Custom methods must be in the interfaces.
 * The Types interfaces must be inside this namespace:  Domain\Types\MyName\MyName and adapters: Domain\Types\MyName\Adapters\MyNameAdapter)
 * When there is a method that returns a nullable array, make the method with an 's' (ex: getRoles()) in the interface.  Also, add the has* methods in both the interfaces and classes.

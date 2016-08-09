@@ -374,8 +374,9 @@ final class PHPCodeAdapter implements CodeAdapter {
 
                         $output = [];
                         foreach($parameters as $oneParameter) {
-                            if ($oneParameter->hasNamespace()) {
-                                $namespace = $oneParameter->getNamespace();
+                            $type = $oneParameter->getType();
+                            if ($type->hasNamespace()) {
+                                $namespace = $type->getNamespace();
                                 $output[] = 'use '.implode('\\', $namespace->getAll()).';';
                             }
                         }
@@ -536,7 +537,15 @@ final class PHPCodeAdapter implements CodeAdapter {
             return $classCodeLines;
         };
 
-        $createSubClassesCodes = function(ObjectClass $class) use(&$createSubClassesCodes, &$createClassSourceCode) {
+        $createInterfaceCodes = function(ClassInterface $interface) use(&$fromInterfaceToCodeLines) {
+            $interfaceCodeLines = $fromInterfaceToCodeLines($interface);
+            $interfaceSourceCode = $this->renderCodeLines($interfaceCodeLines);
+            $interfaceNamespace = $interface->getNamespace();
+            $interfacePath = $this->getFilePathPath($interfaceNamespace);
+            return new ConcreteOutputCode($interfaceSourceCode, $interfacePath);
+        };
+
+        $createSubClassesCodes = function(ObjectClass $class) use(&$createSubClassesCodes, &$createClassSourceCode, &$createInterfaceCodes) {
 
             if (!$class->hasSubClasses()) {
                 return [];
@@ -552,16 +561,19 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $classSourceCodeLines = $createClassSourceCode($oneSubClass);
                 $classSourceCode = $this->renderCodeLines($classSourceCodeLines);
 
-                $subSubClasses = $createSubClassesCodes($oneSubClass);
-                if (empty($subSubClasses)) {
-                    $subSubClasses = null;
-                }
+                $interface = $oneSubClass->getInterface();
+                $subCodes = [
+                    $createInterfaceCodes($interface)
+                ];
 
-                $output[] = new ConcreteOutputCode($classSourceCode, $path, $subSubClasses);
+                $subCodes = array_merge($subCodes, $createSubClassesCodes($oneSubClass));
+                $output[] = new ConcreteOutputCode($classSourceCode, $path, $subCodes);
             }
 
             return $output;
         };
+
+
 
         $class = $annotatedClass->getClass();
         $interface = $class->getInterface();
@@ -570,12 +582,7 @@ final class PHPCodeAdapter implements CodeAdapter {
         $classSourceCodeLines = $createAnnotatedClassSourceCode($annotatedClass);
         $classSourceCode = $this->renderCodeLines($classSourceCodeLines);
         $path = $this->getFilePathPath($namespace);
-
-        $interfaceCodeLines = $fromInterfaceToCodeLines($interface);
-        $interfaceSourceCode = $this->renderCodeLines($interfaceCodeLines);
-        $interfaceNamespace = $interface->getNamespace();
-        $interfacePath = $this->getFilePathPath($interfaceNamespace);
-        $interfaceCode = new ConcreteOutputCode($interfaceSourceCode, $interfacePath);
+        $interfaceCode = $createInterfaceCodes($interface);
 
         $subClasses = $createSubClassesCodes($class);
         $subClasses = array_merge($subClasses, [$interfaceCode]);
