@@ -504,18 +504,20 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $useInterfaceCode = implode(PHP_EOL, $useInterfaces);
             }
 
-            $classAnnotationCode = [];
+            $classAnnotationCode = '';
             if ($annotatedClass->hasAnnotation()) {
                 $annotation = $annotatedClass->getAnnotation();
+                if ($annotation->hasContainerName()) {
+                    $containerName = $annotation->getContainerName();
+                    $classAnnotationCodeLines = [
+                        '/**',
+                        '*   @container -> '.$containerName,
+                        '*/'
+                    ];
+                    $classAnnotationCode = implode(PHP_EOL, $classAnnotationCodeLines);
+                }
 
-                $containerName = $annotation->getContainerName();
-                $classAnnotationCodeLines = [
-                    '/**',
-                    '*   @container -> '.$containerName,
-                    '*/'
-                ];
 
-                $classAnnotationCode = implode(PHP_EOL, $classAnnotationCodeLines);
             }
 
             $classCodeLines = [

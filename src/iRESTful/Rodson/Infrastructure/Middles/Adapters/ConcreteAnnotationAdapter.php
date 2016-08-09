@@ -13,7 +13,7 @@ final class ConcreteAnnotationAdapter implements AnnotationAdapter {
 
     public function fromClassToAnnotation(ObjectClass $class) {
 
-        $getName = function(ObjectClass $class) {
+        $getContainerName = function(ObjectClass $class) {
             $input = $class->getInput();
             if (!$input->hasObject()) {
                 return null;
@@ -22,9 +22,13 @@ final class ConcreteAnnotationAdapter implements AnnotationAdapter {
             return $input->getObject()->getName();
         };
 
-        $name = $getName($class);
+        $containerName = null;
+        if ($class->getInterface()->isEntity()) {
+            $containerName = $getContainerName($class);
+        }
+
         $parameters = $this->parameterAdapter->fromClassToParameters($class);
-        return new ConcreteAnnotation($parameters, $name);
+        return new ConcreteAnnotation($parameters, $containerName);
     }
 
 }
