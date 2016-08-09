@@ -9,10 +9,13 @@ use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\Adapters\CustomMethodAdapter;
 
 final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
+    private $customMethodAdapter;
     private $parameterAdapter;
-    public function __construct(ParameterAdapter $parameterAdapter) {
+    public function __construct(CustomMethodAdapter $customMethodAdapter, ParameterAdapter $parameterAdapter) {
+        $this->customMethodAdapter = $customMethodAdapter;
         $this->parameterAdapter = $parameterAdapter;
     }
 
@@ -26,10 +29,10 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
         $getterMethods = $this->fromPropertiesToMethods($properties);
 
         $specificMethods = [];
-        /*if ($object->hasMethods()) {
-            $objectMethods = $object->getMethods();
+        if ($object->hasMethods()) {
+            $customMethods = $this->customMethodAdapter->fromObjectToCustomMethods($object);
             $specificMethods = $this->fromCustomMethodsToMethods($customMethods);
-        }*/
+        }
 
         return array_merge($getterMethods, $specificMethods);
     }

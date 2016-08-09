@@ -354,13 +354,21 @@ final class PHPCodeAdapter implements CodeAdapter {
 
         };
 
-        $fromInterfaceToCodeLines = function(ClassInterface $interface) {
+        $fromInterfaceToCodeLines = function(ClassInterface $interface) use(&$fromParametersToMethodSignatureCodeLine) {
 
-            $fromMethodsToCodeLines = function(array $methods) {
+            $fromMethodsToCodeLines = function(array $methods) use(&$fromParametersToMethodSignatureCodeLine) {
                 $output = [];
                 foreach($methods as $oneMethod) {
+
+                    $signature = '';
+                    if ($oneMethod->hasParameters()) {
+                        $parameters = $oneMethod->getParameters();
+                        $signature = $fromParametersToMethodSignatureCodeLine($parameters);
+                    }
+
+
                     $name = $oneMethod->getName();
-                    $output[] = 'public function '.$name.'();';
+                    $output[] = 'public function '.$name.'('.$signature.');';
                 }
 
                 return $output;

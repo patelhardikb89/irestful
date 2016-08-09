@@ -27,11 +27,14 @@ final class ConcreteClassAdapterFactory implements ClassAdapterFactory {
 
         $interfaceMethodParamaterTypeAdapter = new ConcreteClassInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteClassInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
-        $interfaceMethodAdapter = new ConcreteClassInterfaceMethodAdapter($interfaceMethodParameterAdapter);
-        $interfaceAdapter = new ConcreteClassInterfaceAdapter($interfaceNamespaceAdapter, $interfaceMethodAdapter);
 
         $classPropertyAdapter = new ConcreteClassPropertyAdapter();
         $classCustomMethodAdapter = new ConcreteClassMethodCustomAdapter($interfaceMethodParameterAdapter);
+
+        $interfaceMethodAdapter = new ConcreteClassInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);
+        $interfaceAdapter = new ConcreteClassInterfaceAdapter($interfaceNamespaceAdapter, $interfaceMethodAdapter);
+
+
 
 
         $classConstructorParameterMethodAdapter = new ConcreteClassConstructorParameterMethodAdapter();
