@@ -54,11 +54,7 @@ final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
         foreach($annotatedClasses as $oneAnnotatedClass) {
             $class = $oneAnnotatedClass->getClass();
             $interface = $class->getInterface();
-
-            if (!$interface->isEntity()) {
-                continue;
-            }
-
+            
             $interfaceName = $interface->getNamespace()->getAllAsString();
             $output[$interfaceName] = $class->getNamespace()->getAllAsString();
 

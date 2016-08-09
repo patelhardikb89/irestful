@@ -1,4 +1,3 @@
-* In the configuration class, the interfaceClassMapper must include objects and types.
 * Generate the composer.json file
 * Generate the phpunit.xml.dist file
 * Generate the Vagrantfile file
