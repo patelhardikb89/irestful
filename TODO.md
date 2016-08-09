@@ -1,5 +1,4 @@
 * In the configuration class, the interfaceClassMapper must include objects and types.
-* Add the UuidAdapter, in the transformerObjects, inside the configuration class.
 * Generate the adapter interfaces.
 * Custom methods must be in the interfaces.
 * The Types interfaces must be inside this namespace:  Domain\Types\MyName\MyName and adapters: Domain\Types\MyName\Adapters\MyNameAdapter)
