@@ -309,14 +309,16 @@ final class PHPCodeAdapter implements CodeAdapter {
         $fromClassToUseNamespaces = function(ObjectClass $class) {
 
             $fromInterfaceToUseNamespaces = function(ClassInterface $interface) {
+                $output = [
+                    'use '.$interface->getNamespace()->getAllAsString().';'
+                ];
+
                 if ($interface->isEntity()) {
-                    return [
-                        'use iRESTful\Objects\Entities\Entities\Infrastructure\Objects\AbstractEntity;',
-                        'use iRESTful\Objects\Libraries\Ids\Domain\Uuids\Uuid;'
-                    ];
+                    $output[] = 'use iRESTful\Objects\Entities\Entities\Infrastructure\Objects\AbstractEntity;';
+                    $output[] = 'use iRESTful\Objects\Libraries\Ids\Domain\Uuids\Uuid;';
                 }
 
-                return [];
+                return $output;
             };
 
             $fromConstructorToUseNamespaces = function(Constructor $constructor) {
