@@ -1,6 +1,5 @@
 * In the configuration class, the interfaceClassMapper must include objects and types.
 * Some interface methods contains method names with underscores.  They should all be camel cases.
-* When a class is not extending a sub class, do not add the 'extends' keyword.
 * Add the interface as a 'use namespace' in the classes.
 * Generate the composer.json file
 * Generate the phpunit.xml.dist file

@@ -461,7 +461,7 @@ final class PHPCodeAdapter implements CodeAdapter {
             }
 
             $interfaceName = $interface->getName();
-            $subClass = ($interface->isEntity()) ? 'AbstractEntity' : '';
+            $subClass = ($interface->isEntity()) ? ' extends AbstractEntity' : '';
 
             $useInterfaceCode = '';
             if (!empty($useInterfaces)) {
@@ -473,7 +473,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                 'namespace '.$class->getNamespace()->getPathAsString().';',
                 $useInterfaceCode,
                 '',
-                'final class '.$name.' extends '.$subClass.' implements '.$interfaceName.' {',
+                'final class '.$name.$subClass.' implements '.$interfaceName.' {',
                 $constructorCodeLines,
                 $getterCodeLines,
                 $customCodeLines,
@@ -506,7 +506,7 @@ final class PHPCodeAdapter implements CodeAdapter {
             }
 
             $interfaceName = $interface->getName();
-            $subClass = ($interface->isEntity()) ? 'AbstractEntity' : '';
+            $subClass = ($interface->isEntity()) ? ' extends AbstractEntity' : '';
 
             $useInterfaceCode = '';
             if (!empty($useInterfaces)) {
@@ -535,7 +535,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $useInterfaceCode,
                 '',
                 $classAnnotationCode,
-                'final class '.$name.' extends '.$subClass.' implements '.$interfaceName.' {',
+                'final class '.$name.$subClass.' implements '.$interfaceName.' {',
                 $constructorCodeLines,
                 $getterCodeLines,
                 $customCodeLines,
