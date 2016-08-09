@@ -29,14 +29,24 @@ final class ConcreteClassInterfaceNamespaceAdapter extends AbstractNamespaceAdap
         $typeName = $type->getName();
         $name = $this->convert($typeName);
 
-        return $this->fromDataToNamespace(['Types', $name]);
+        $folderName = $name;
+        if (substr($name, -1) != 's') {
+            $folderName = $folderName.'s';
+        }
+
+        return $this->fromDataToNamespace(['Types', $folderName, $name]);
     }
 
     public function fromTypeToAdapterNamespace(Type $type) {
         $typeName = $type->getName();
         $name = $this->convert($typeName);
 
-        return $this->fromDataToNamespace(['Types', $name, 'Adapters', $name.'Adapter']);
+        $folderName = $name;
+        if (substr($name, -1) != 's') {
+            $folderName = $folderName.'s';
+        }
+
+        return $this->fromDataToNamespace(['Types', $folderName, 'Adapters', $name.'Adapter']);
     }
 
 }
