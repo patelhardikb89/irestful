@@ -43,7 +43,7 @@ final class Authenticated {
     }
 
     public static function fromStringToBaseUrl($value) {
-        return new ConcreteBaseUrl($value);
+        return $value;
     }
 
     public static function fromStringToUri($string) {

@@ -92,11 +92,11 @@ final class PHPCodeAdapter implements CodeAdapter {
 
                 $validatePrimitive = function($name, $primitive, $isOptional) {
 
-                    $fn = 'is_string';
                     if ($primitive == 'boolean') {
-                        $fn = 'is_boolean';
+                        return [];
                     }
 
+                    $fn = 'is_string';
                     if ($primitive == 'integer') {
                         $fn = 'is_integer';
                     }
@@ -144,6 +144,15 @@ final class PHPCodeAdapter implements CodeAdapter {
 
                     $propertyName = $property->getName();
                     $parameterName = $parameter->getName();
+                    $parameterType = $parameter->getType();
+
+                    if ($parameterType->hasPrimitive()) {
+                        $primitive = $parameterType->getPrimitive();
+                        if ($primitive == 'boolean') {
+                            $lines[] = '$this->'.$propertyName.' = (bool) $'.$parameterName.';';
+                            continue;
+                        }
+                    }
 
                     $lines[] = '$this->'.$propertyName.' = $'.$parameterName.';';
                 }
