@@ -611,7 +611,8 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $mapper[] = "'".$keyname."' => new \\".$element."(),";
             }
 
-            $mapper[] = "'iRESTful\Objects\Libraries\Dates\Domain\Adapters\DateTimeAdapter' => ".'new \iRESTful\Objects\Libraries\Dates\Infrastructure\Adapters\ConcreteDateTimeAdapter($this->getTimezone())';
+            $mapper[] = "'iRESTful\Objects\Libraries\Dates\Domain\Adapters\DateTimeAdapter' => ".'new \iRESTful\Objects\Libraries\Dates\Infrastructure\Adapters\ConcreteDateTimeAdapter($this->getTimezone()),';
+            $mapper[] = "'iRESTful\Objects\Libraries\Ids\Domain\Uuids\Adapters\UuidAdapter' => ".'new \iRESTful\Objects\Libraries\Ids\Infrastructure\Adapters\ConcreteUuidAdapter()';
             return $mapper;
         };
 
