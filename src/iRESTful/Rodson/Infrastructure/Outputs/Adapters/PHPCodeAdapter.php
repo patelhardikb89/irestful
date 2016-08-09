@@ -62,13 +62,18 @@ final class PHPCodeAdapter implements CodeAdapter {
         };
 
         $annotation = $annotatedClass->getAnnotation();
-        $fromConstructorToCodeLines = function(Constructor $constructor) use(&$fromParametersToMethodSignatureCodeLine, &$annotation) {
+        $interface = $annotatedClass->getClass()->getInterface();
+        $fromConstructorToCodeLines = function(Constructor $constructor) use(&$fromParametersToMethodSignatureCodeLine, &$annotation, &$interface) {
 
-            $fromParametersToSignatureCodeLine = function(array $parameters) use(&$fromParametersToMethodSignatureCodeLine) {
+            $fromParametersToSignatureCodeLine = function(array $parameters) use(&$fromParametersToMethodSignatureCodeLine, &$interface) {
 
                 $output = [];
                 foreach($parameters as $oneParameter) {
                     $output[] = $oneParameter->getParameter();
+                }
+
+                if ($interface->isEntity()) {
+                    return 'Uuid $uuid, \DateTime $createdOn, '.$fromParametersToMethodSignatureCodeLine($output);
                 }
 
                 return $fromParametersToMethodSignatureCodeLine($output);
@@ -88,7 +93,7 @@ final class PHPCodeAdapter implements CodeAdapter {
 
             };
 
-            $fromParametersToPropertiesAssignementCodeLines = function(array $parameters) {
+            $fromParametersToPropertiesAssignementCodeLines = function(array $parameters) use(&$interface) {
 
                 $validatePrimitive = function($name, $primitive, $isOptional) {
 
@@ -136,6 +141,10 @@ final class PHPCodeAdapter implements CodeAdapter {
                         $isOptional = $parameter->isOptional();
                         $lines = array_merge($lines, $validatePrimitive($parameterName, $primitive, $isOptional));
                     }
+                }
+
+                if ($interface->isEntity()) {
+                    $lines[] = 'parent::__construct($uuid, $createdOn);';
                 }
 
                 foreach($parameters as $oneParameter) {

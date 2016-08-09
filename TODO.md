@@ -1,4 +1,3 @@
-* The entities must have the Uuid and \DateTime passed to its construct.  It must also pass these 2 elements to its parent classes.
 * In the ConcreteParamPattern generated class, the StringNumeric should have an adapter annotation.
 * Objects (non-entities) should not have a container.
 * In the configuration class, the interfaceClassMapper must include objects and types.
