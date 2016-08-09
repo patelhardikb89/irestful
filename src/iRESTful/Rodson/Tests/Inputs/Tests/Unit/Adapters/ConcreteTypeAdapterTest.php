@@ -43,7 +43,13 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $this->multipleData = [
             $this->name => [
-                'database_type' => $this->databaseTypeData
+                'database_type' => $this->databaseTypeData,
+                'adapters' => [
+                    'database_to_object' => [
+                        'from' => 'string',
+                        'to' => 'uri'
+                    ]
+                ]
             ]
         ];
 
@@ -62,6 +68,10 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
             'name' => $this->name,
             'database_type' => $this->databaseTypeData,
             'adapters' => [
+                'database_to_object' => [
+                    'from' => 'string',
+                    'to' => 'uri'
+                ],
                 'object_to_view' => [
                     'from' => 'uri',
                     'to' => 'string'
@@ -72,7 +82,13 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
         $this->dataWithMethod = [
             'name' => $this->name,
             'database_type' => $this->databaseTypeData,
-            'method' => 'myMethod'
+            'method' => 'myMethod',
+            'adapters' => [
+                'database_to_object' => [
+                    'from' => 'string',
+                    'to' => 'uri'
+                ]
+            ]
         ];
 
         $this->dataWithAll = [
@@ -110,28 +126,10 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $this->databaseTypeAdapterHelper->expectsFromDataToDatabaseType_Success($this->databaseTypeMock, $this->databaseTypeData);
 
-        $type = $this->adapter->fromDataToType($this->data);
-
-        $this->assertEquals($this->name, $type->getName());
-        $this->assertEquals($this->databaseTypeMock, $type->getDatabaseType());
-        $this->assertFalse($type->hasDatabaseAdapter());
-        $this->assertNull($type->getDatabaseAdapter());
-        $this->assertFalse($type->hasViewAdapter());
-        $this->assertNull($type->getViewAdapter());
-        $this->assertFalse($type->hasMethod());
-        $this->assertNull($type->getMethod());
-
-    }
-
-    public function testFromDataToType_withDatabaseAdapter_Success() {
-
-        $this->databaseTypeAdapterHelper->expectsFromDataToDatabaseType_Success($this->databaseTypeMock, $this->databaseTypeData);
-
         $type = $this->adapter->fromDataToType($this->dataWithDatabaseAdapter);
 
         $this->assertEquals($this->name, $type->getName());
         $this->assertEquals($this->databaseTypeMock, $type->getDatabaseType());
-        $this->assertTrue($type->hasDatabaseAdapter());
         $this->assertEquals($this->adapterMock, $type->getDatabaseAdapter());
         $this->assertFalse($type->hasViewAdapter());
         $this->assertNull($type->getViewAdapter());
@@ -140,42 +138,7 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToType_withViewAdapter_Success() {
-
-        $this->databaseTypeAdapterHelper->expectsFromDataToDatabaseType_Success($this->databaseTypeMock, $this->databaseTypeData);
-
-        $type = $this->adapter->fromDataToType($this->dataWithViewAdapter);
-
-        $this->assertEquals($this->name, $type->getName());
-        $this->assertEquals($this->databaseTypeMock, $type->getDatabaseType());
-        $this->assertFalse($type->hasDatabaseAdapter());
-        $this->assertNull($type->getDatabaseAdapter());
-        $this->assertTrue($type->hasViewAdapter());
-        $this->assertEquals($this->adapterMock, $type->getViewAdapter());
-        $this->assertFalse($type->hasMethod());
-        $this->assertNull($type->getMethod());
-
-    }
-
-    public function testFromDataToType_withMethod_Success() {
-
-        $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->dataWithMethod['method']);
-        $this->databaseTypeAdapterHelper->expectsFromDataToDatabaseType_Success($this->databaseTypeMock, $this->databaseTypeData);
-
-        $type = $this->adapter->fromDataToType($this->dataWithMethod);
-
-        $this->assertEquals($this->name, $type->getName());
-        $this->assertEquals($this->databaseTypeMock, $type->getDatabaseType());
-        $this->assertFalse($type->hasDatabaseAdapter());
-        $this->assertNull($type->getDatabaseAdapter());
-        $this->assertFalse($type->hasViewAdapter());
-        $this->assertNull($type->getViewAdapter());
-        $this->assertTrue($type->hasMethod());
-        $this->assertEquals($this->methodMock, $type->getMethod());
-
-    }
-
-    public function testFromDataToType_withDatabaseAdapter_withViewAdapter_withMethod_Success() {
+    public function testFromDataToType_withViewAdapter_withMethod_Success() {
 
         $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->dataWithAll['method']);
         $this->databaseTypeAdapterHelper->expectsFromDataToDatabaseType_Success($this->databaseTypeMock, $this->databaseTypeData);
@@ -184,7 +147,6 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($this->name, $type->getName());
         $this->assertEquals($this->databaseTypeMock, $type->getDatabaseType());
-        $this->assertTrue($type->hasDatabaseAdapter());
         $this->assertEquals($this->adapterMock, $type->getDatabaseAdapter());
         $this->assertTrue($type->hasViewAdapter());
         $this->assertEquals($this->adapterMock, $type->getViewAdapter());
@@ -378,8 +340,7 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($this->name, $types[$this->name]->getName());
         $this->assertEquals($this->databaseTypeMock, $types[$this->name]->getDatabaseType());
-        $this->assertFalse($types[$this->name]->hasDatabaseAdapter());
-        $this->assertNull($types[$this->name]->getDatabaseAdapter());
+        $this->assertEquals($this->adapterMock, $type->getDatabaseAdapter());
         $this->assertFalse($types[$this->name]->hasViewAdapter());
         $this->assertNull($types[$this->name]->getViewAdapter());
         $this->assertFalse($types[$this->name]->hasMethod());

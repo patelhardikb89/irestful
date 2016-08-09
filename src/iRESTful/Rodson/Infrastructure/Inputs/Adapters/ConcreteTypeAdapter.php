@@ -81,12 +81,11 @@ final class ConcreteTypeAdapter implements TypeAdapter {
             throw new TypeException('The database_type keyname is mandatory in order to convert data to a Type object.');
         }
 
-        try {
+        if (!isset($data['adapters']['database_to_object'])) {
+            throw new TypeException('The adapters->database_to_object keyname is mandatory in order to convert data to a Type object.  The name of the Type is: '.$data['name']);
+        }
 
-            $databaseAdapter = null;
-            if (isset($data['adapters']['database_to_object'])) {
-                $databaseAdapter = $getAdapter($data['name'], $data['adapters']['database_to_object']);
-            }
+        try {
 
             $viewAdapter = null;
             if (isset($data['adapters']['object_to_view'])) {
@@ -98,6 +97,7 @@ final class ConcreteTypeAdapter implements TypeAdapter {
                 $method = $this->methodAdapter->fromStringToMethod($data['method']);
             }
 
+            $databaseAdapter = $getAdapter($data['name'], $data['adapters']['database_to_object']);
             $databaseType = $this->databaseTypeAdapter->fromDataToDatabaseType($data['database_type']);
             return new ConcreteType($data['name'], $databaseType, $databaseAdapter, $viewAdapter, $method);
 

@@ -58,6 +58,10 @@ final class Authenticated {
 
     }
 
+    public static function fromStringToStringNumeric($string) {
+
+    }
+
     public static function match(array $params) {
 
     }

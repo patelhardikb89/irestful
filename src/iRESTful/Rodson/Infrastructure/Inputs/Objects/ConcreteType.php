@@ -13,7 +13,7 @@ final class ConcreteType implements Type {
     private $databaseAdapter;
     private $viewAdapter;
     private $method;
-    public function __construct($name, DatabaseType $databaseType, Adapter $databaseAdapter = null, Adapter $viewAdapter = null, Method $method = null) {
+    public function __construct($name, DatabaseType $databaseType, Adapter $databaseAdapter, Adapter $viewAdapter = null, Method $method = null) {
 
         if (empty($name) || !is_string($name)) {
             throw new TypeException('The name must be a non-empty string.');
@@ -34,22 +34,12 @@ final class ConcreteType implements Type {
         return $this->databaseType;
     }
 
-    public function hasDatabaseAdapter() {
-        return !empty($this->databaseAdapter);
-    }
-
     public function getDatabaseAdapter() {
         return $this->databaseAdapter;
     }
 
     public function getDatabaseAdapterMethodName() {
-
-        if (!$this->hasDatabaseAdapter()) {
-            return null;
-        }
-
         return $this->getMethodName($this->databaseAdapter);
-
     }
 
     public function hasViewAdapter() {

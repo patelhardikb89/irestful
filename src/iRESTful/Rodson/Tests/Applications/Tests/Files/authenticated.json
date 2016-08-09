@@ -259,6 +259,11 @@
             "from": "string",
             "to": "keyname",
             "method": "fromStringToKeyname"
+        },
+        {
+            "from": "string",
+            "to": "string_numeric",
+            "method": "fromStringToStringNumeric"
         }
     ],
     "databases": {
@@ -278,7 +283,13 @@
                 "name": "string",
                 "max": 255
             },
-            "method": "validateStringNumeric"
+            "method": "validateStringNumeric",
+            "adapters": {
+                "database_to_object": {
+                    "from": "string",
+                    "to": "string_numeric"
+                }
+            }
         },
         "base_url": {
             "database_type": {

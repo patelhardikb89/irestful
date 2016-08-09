@@ -38,12 +38,11 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
     public function fromTypeToAdapterCustomMethods(Type $type) {
 
-        $customMethods = [];
-        if ($type->hasDatabaseAdapter()) {
-            $databaseAdapterMethod = $type->getDatabaseAdapter()->getMethod();
-            $databaseAdapterName = $type->getDatabaseAdapterMethodName();
-            $customMethods[] = $this->createClassMethodCustom($databaseAdapterName, $databaseAdapterMethod);
-        }
+        $databaseAdapterMethod = $type->getDatabaseAdapter()->getMethod();
+        $databaseAdapterName = $type->getDatabaseAdapterMethodName();
+        $customMethods = [
+            $this->createClassMethodCustom($databaseAdapterName, $databaseAdapterMethod)
+        ];
 
         if ($type->hasViewAdapter()) {
             $viewAdapterMethod = $type->getViewAdapter()->getMethod();

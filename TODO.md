@@ -1,4 +1,3 @@
-* In the ConcreteParamPattern generated class, the StringNumeric should have an adapter annotation.
 * Objects (non-entities) should not have a container.
 * In the configuration class, the interfaceClassMapper must include objects and types.
 * Add the UuidAdapter, in the transformerObjects, inside the configuration class.

@@ -13,20 +13,12 @@ final class ConcreteAnnotationParameterConverterAdapter implements ConverterAdap
 
     public function fromTypeToConverter(Type $type) {
 
-        $databaseConverter = null;
-        if ($type->hasDatabaseAdapter()) {
-            $databaseConverter = $this->singleConverterAdapter->fromTypeToDatabaseSingleConverter($type);
-        }
-
         $viewConverter = null;
         if ($type->hasViewAdapter()) {
             $viewConverter = $this->singleConverterAdapter->fromTypeToViewSingleConverter($type);
         }
 
-        if (empty($databaseConverter) && empty($viewConverter)) {
-            return null;
-        }
-
+        $databaseConverter = $this->singleConverterAdapter->fromTypeToDatabaseSingleConverter($type);
         return new ConcreteAnnotationParameterConverter($databaseConverter, $viewConverter);
 
     }

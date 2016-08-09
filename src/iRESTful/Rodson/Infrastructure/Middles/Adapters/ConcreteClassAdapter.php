@@ -124,12 +124,8 @@ final class ConcreteClassAdapter implements ClassAdapter {
             $customMethods = [$customMethod];
         }
 
-        $subClasses = [];
-        if ($type->hasViewAdapter() || $type->hasDatabaseAdapter()) {
-            $subClasses[] = $this->fromTypeToAdapterClass($type);
-        }
-
         $name = $namespace->getName();
+        $subClasses[] = $this->fromTypeToAdapterClass($type);
         return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor, $customMethods, $subClasses);
     }
 

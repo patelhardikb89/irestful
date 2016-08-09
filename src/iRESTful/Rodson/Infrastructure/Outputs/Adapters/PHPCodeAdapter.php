@@ -808,8 +808,6 @@ final class PHPCodeAdapter implements CodeAdapter {
             '}'
         ];
 
-
-
         $path = $this->getFilePathPath($namespace);
         $classCode = $this->renderCodeLines($classCodeLines);
         return new ConcreteOutputCode($classCode, $path);

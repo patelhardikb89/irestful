@@ -12,11 +12,6 @@ final class ConcreteAnnotationParameterConverterSingleAdapter implements SingleC
     }
 
     public function fromTypeToDatabaseSingleConverter(Type $type) {
-
-        if (!$type->hasDatabaseAdapter()) {
-            //throws
-        }
-
         $methodName = $type->getDatabaseAdapterMethodName();
         $namespace = $this->namespaceAdapter->fromTypeToAdapterNamespace($type);
         $interfaceName = $namespace->getAllAsString();
