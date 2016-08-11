@@ -39,7 +39,7 @@ final class ConcreteClassAdapter implements ClassAdapter {
 
         $objectClasses = $this->fromObjectsToClasses($objects);
         $objectTypeClasses = $this->fromObjectsToTypeClasses($objects);
-        $controllerClasses = [];//$this->fromControllersToClasses($controllers);
+        $controllerClasses = $this->fromControllersToClasses($controllers);
 
         return array_merge($objectClasses, $objectTypeClasses, $controllerClasses);
     }
@@ -131,10 +131,25 @@ final class ConcreteClassAdapter implements ClassAdapter {
 
     private function fromControllerToClass(Controller $controller) {
 
+        print_r($controller);
+        die();
+
+        $namespace = $this->namespaceAdapter->fromControllerToNamespace($controller);
+        $interface = $this->interfaceAdapter->fromControllerToInterface($controller);
+        $constructor = $this->constructorAdapter->fromControllerToConstructor($controller);
+        $classInput = $this->inputAdapter->fromControllerToInput($controller);
+
+        $name = $namespace->getName();
+        return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor);
     }
 
     private function fromControllersToClasses(array $controllers) {
+        $output = [];
+        foreach($controllers as $oneController) {
+            $output[] = $this->fromControllerToClass($oneController);
+        }
 
+        return $output;
     }
 
     private function fromTypeToAdapterClass(Type $type) {

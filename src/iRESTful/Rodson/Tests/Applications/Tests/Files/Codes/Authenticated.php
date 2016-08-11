@@ -62,6 +62,10 @@ final class Authenticated {
 
     }
 
+    public static function fromJsonToData($json) {
+
+    }
+
     public static function match(array $params) {
 
     }

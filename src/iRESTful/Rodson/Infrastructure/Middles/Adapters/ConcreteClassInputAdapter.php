@@ -4,11 +4,16 @@ use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Adapters\InputAdapter;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInput;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
 
 final class ConcreteClassInputAdapter implements InputAdapter {
 
     public function __construct() {
 
+    }
+
+    public function fromControllerToInput(Controller $controller) {
+        return new ConcreteClassInput(null, null, $controller);
     }
 
     public function fromObjectToInput(Object $object) {

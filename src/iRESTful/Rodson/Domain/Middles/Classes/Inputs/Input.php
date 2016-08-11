@@ -6,4 +6,6 @@ interface Input {
     public function getType();
     public function hasObject();
     public function getObject();
+    public function hasController();
+    public function getController();
 }

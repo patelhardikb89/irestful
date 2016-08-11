@@ -227,17 +227,86 @@
         }
     },
     "controllers": {
-        "/\/[a-z]+/s": {
+        "retrieve": {
+            "pattern": "/\\/[a-z]+/s",
             "input": "input",
+            "constants": {
+                "role_title": "This is a role"
+            },
+            "http_requests": {
+                "retrieve_from_github": {
+                    "command": "retrieve http://github.com/myuri:80",
+                    "parameters": {
+                        "query": {
+                            "api_key": "[github_api_key]",
+                            "name": "input->name",
+                            "another": "my_value"
+                        }
+                    },
+                    "view": "json"
+                },
+                "insert_user_in_github": {
+                    "command": "insert http://github.com/myuri:80",
+                    "parameters": {
+                        "query": {
+                            "another": "my_value"
+                        },
+                        "request": {
+                            "name": "input->name"
+                        }
+                    },
+                    "headers": {
+                        "api_key": "[github_api_key]"
+                    },
+                    "view": "json"
+                },
+                "delete_user_in_github": {
+                    "command": "delete http://github.com/myuri:80",
+                    "parameters": {
+                        "query": {
+                            "another": "my_value"
+                        },
+                        "request": {
+                            "name": "input->name"
+                        }
+                    },
+                    "headers": {
+                        "api_key": "[github_api_key]"
+                    },
+                    "view": "json"
+                }
+            },
             "instructions": [
+                "githubData = execute retrieve_from_github",
+                "github = from githubData to github",
                 "role = retrieve role by uuid:input->uuid",
-                "return from role:role to data"
+                "roleData = from role to data",
+                "githubData = from github to data",
+                "return merge roleData, githubData",
+
+                "execute insert_user_in_github",
+                "execute delete_user_in_github",
+
+
+                "roles = retrieve role from input->min to input->max",
+                "anotherRole = retrieve role by title:constants->role_title",
+                "multipleRoles = retrieve multiple role by uuid:input->uuids",
+
+                "role = from input to role",
+                "insert role",
+                "delete role",
+
+                "roles = from input to multiple role",
+                "insert roles",
+                "delete roles",
+
+                "newRole = from input to role",
+                "oldRole = retrieve role by uuid:input->uuid",
+                "updatedRole = update oldRole using newRole",
+                "insert updatedRole"
             ],
             "view": "json"
         }
-    },
-    "views": {
-        "json": "viewJson"
     },
     "adapters": [
         {

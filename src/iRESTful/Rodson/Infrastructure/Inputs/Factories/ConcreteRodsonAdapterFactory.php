@@ -16,14 +16,12 @@ use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteDatabaseTypeFloatAdap
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteDatabaseTypeIntegerAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteDatabaseTypeStringAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteCodeMethodAdapter;
-use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteViewAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteCodeAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteCodeLanguageAdapter;
 use iRESTful\Rodson\Domain\Inputs\Codes\Code;
 use iRESTful\Rodson\Domain\Inputs\Codes\Exceptions\CodeException;
 use iRESTful\Rodson\Domain\Inputs\Databases\Exceptions\DatabaseException;
-use iRESTful\Rodson\Domain\Inputs\Views\Exceptions\ViewException;
 use iRESTful\Rodson\Domain\Inputs\Adapters\Exceptions\AdapterException;
 use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
 use iRESTful\Rodson\Domain\Inputs\Exceptions\RodsonException;
@@ -32,20 +30,26 @@ use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectMethodAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteAdapterTypeAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Factories\ConcretePrimitiveFactory;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectSampleAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerHttpRequestAdapterAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerHttpRequestCommandAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerHttpRequestCommandActionAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerHttpRequestCommandUrlAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerHttpRequestViewAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteValueAdapterAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerViewTemplateAdapter;
+use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerViewAdapter;
 
 final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
     private $codeData;
     private $adaptersData;
     private $databasesData;
     private $typesData;
-    private $viewsData;
     private $objectsData;
-    public function __construct(array $codeData, array $adaptersData, array $databasesData, array $typesData, array $viewsData, array $objectsData) {
+    public function __construct(array $codeData, array $adaptersData, array $databasesData, array $typesData, array $objectsData) {
         $this->codeData = $codeData;
         $this->adaptersData = $adaptersData;
         $this->databasesData = $databasesData;
         $this->typesData = $typesData;
-        $this->viewsData = $viewsData;
         $this->objectsData = $objectsData;
     }
 
@@ -63,23 +67,17 @@ final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
         return $databaseAdapter->fromDataToDatabases($this->databasesData);
     }
 
-    private function getViews(Code $code) {
+    private function getAdapters(Code $code, array $types, array $primitives) {
         $methodAdapter = new ConcreteCodeMethodAdapter($code);
-        $viewAdapter = new ConcreteViewAdapter($methodAdapter);
-        return $viewAdapter->fromDataToViews($this->viewsData);
+        $adapterTypeAdapter = new ConcreteAdapterTypeAdapter();
+        $adapterAdapter = new ConcreteAdapterAdapter($adapterTypeAdapter, $methodAdapter, $types, $primitives);
+        return $adapterAdapter->fromDataToAdapters($this->adaptersData);
     }
 
     private function getTypes(Code $code, array $primitives) {
 
-        $adaptersData = $this->adaptersData;
         $typesData = $this->typesData;
         $methodAdapter = new ConcreteCodeMethodAdapter($code);
-
-        $getAdapters = function(array $types) use(&$primitives, &$adaptersData, &$methodAdapter) {
-            $adapterTypeAdapter = new ConcreteAdapterTypeAdapter();
-            $adapterAdapter = new ConcreteAdapterAdapter($adapterTypeAdapter, $methodAdapter, $types, $primitives);
-            return $adapterAdapter->fromDataToAdapters($adaptersData);
-        };
 
         $getTypeAdapter = function(array $adapters) use(&$methodAdapter) {
             $binaryAdapter = new ConcreteDatabaseTypeBinaryAdapter();
@@ -101,7 +99,7 @@ final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
         };
 
         $types = $getValidTypes();
-        $adapters = $getAdapters($types);
+        $adapters = $this->getAdapters($code, $types, $primitives);
         return $getTypes($adapters);
     }
 
@@ -148,18 +146,23 @@ final class ConcreteRodsonAdapterFactory implements RodsonAdapterFactory {
             $code = $this->getCode();
             $types = $this->getTypes($code, $primitives);
             $objects = $this->getObjects($code, $types, $primitives);
-            $views = $this->getViews($code);
 
+            $valueAdapterAdapter = new ConcreteValueAdapterAdapter();
+            $controllerHttpRequestCommandActionAdapter = new ConcreteControllerHttpRequestCommandActionAdapter();
+            $controllerHttpRequestCommandUrlAdapter = new ConcreteControllerHttpRequestCommandUrlAdapter();
+            $controllerHttpRequestCommandAdapter = new ConcreteControllerHttpRequestCommandAdapter($controllerHttpRequestCommandActionAdapter, $controllerHttpRequestCommandUrlAdapter);
+            $controllerHttpRequestViewAdapter = new ConcreteControllerHttpRequestViewAdapter();
+            $controllerHttpRequestAdapterAdapter = new ConcreteControllerHttpRequestAdapterAdapter($controllerHttpRequestCommandAdapter, $controllerHttpRequestViewAdapter, $valueAdapterAdapter);
+            $controllerViewTemplateAdapter = new ConcreteControllerViewTemplateAdapter();
+            $controllerViewAdapter = new ConcreteControllerViewAdapter($controllerViewTemplateAdapter);
+            $controllerAdapter = new ConcreteControllerAdapter($controllerViewAdapter, $controllerHttpRequestAdapterAdapter);
             $objectAdapter = $this->getObjectAdapter($code, $types, $primitives, $objects);
-            $controllerAdapter = new ConcreteControllerAdapter($views);
             return new ConcreteRodsonAdapter($objectAdapter, $controllerAdapter);
 
         } catch (CodeException $exception) {
             throw new RodsonException('There was an exception while converting data to a Code object.', $exception);
         } catch (DatabaseException $exception) {
             throw new RodsonException('There was an exception while converting data to Database objects.', $exception);
-        } catch (ViewException $exception) {
-            throw new RodsonException('There was an exception while converting data to View objects.', $exception);
         } catch (AdapterException $exception) {
             throw new RodsonException('There was an exception while converting data to Adapter objects.', $exception);
         } catch (TypeException $exception) {

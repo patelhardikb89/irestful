@@ -6,11 +6,16 @@ use iRESTful\Rodson\Domain\Middles\Namespaces\Exceptions\NamespaceException;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteNamespace;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
 
 abstract class AbstractNamespaceAdapter implements NamespaceAdapter {
     private $baseNamespace;
     public function __construct(array $baseNamespace) {
         $this->baseNamespace = $baseNamespace;
+    }
+
+    public function fromControllerToNamespace(Controller $controller) {
+        throw new NamespaceException('The fromControllerToNamespace method must be defined in every classes that extends the AbstractNamespaceAdapter class.');
     }
 
     public function fromObjectToNamespace(Object $object) {

@@ -10,6 +10,7 @@ use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\Adapters\CustomMethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
 
 final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
     private $customMethodAdapter;
@@ -98,6 +99,17 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
         }
 
         return new ConcreteClassInterfaceMethod($name, $parameters);
+    }
+
+    public function fromControllerToMethod(Controller $controller) {
+
+        $name = $controller->getName();
+        $parameter =  $this->parameterAdapter->fromDataToParameter([
+            'name' => $controller->getInputName(),
+            'is_array' => true
+        ]);
+        
+        return new ConcreteClassInterfaceMethod($name, [$parameter]);
     }
 
 }

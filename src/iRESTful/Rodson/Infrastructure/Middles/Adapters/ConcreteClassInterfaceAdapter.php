@@ -6,6 +6,7 @@ use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInterface;
+use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
 
 final class ConcreteClassInterfaceAdapter implements InterfaceAdapter {
     private $namespaceAdapter;
@@ -13,6 +14,14 @@ final class ConcreteClassInterfaceAdapter implements InterfaceAdapter {
     public function __construct(NamespaceAdapter $namespaceAdapter, MethodAdapter $methodAdapter) {
         $this->namespaceAdapter = $namespaceAdapter;
         $this->methodAdapter = $methodAdapter;
+    }
+
+    public function fromControllerToInterface(Controller $controller) {
+        $method = $this->methodAdapter->fromControllerToMethod($controller);
+        $namespace = $this->namespaceAdapter->fromControllerToNamespace($controller);
+
+        $name = $namespace->getName();
+        return new ConcreteClassInterface($name, [$method], $namespace, false);
     }
 
     public function fromObjectToInterface(Object $object) {

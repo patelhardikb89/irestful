@@ -28,15 +28,11 @@ final class ConcreteRodsonAdapterFactoryAdapter implements RodsonAdapterFactoryA
             throw new RodsonException('The types keyname is mandatory in order to convert data to a RodsonAdapterFactory object.');
         }
 
-        if (!isset($data['views']) || !is_array($data['views'])) {
-            throw new RodsonException('The views keyname is mandatory in order to convert data to a RodsonAdapterFactory object.');
-        }
-
         if (!isset($data['objects']) || !is_array($data['objects'])) {
             throw new RodsonException('The objects keyname is mandatory in order to convert data to a RodsonAdapterFactory object.');
         }
 
-        return new ConcreteRodsonAdapterFactory($data['code'], $data['adapters'], $data['databases'], $data['types'], $data['views'], $data['objects']);
+        return new ConcreteRodsonAdapterFactory($data['code'], $data['adapters'], $data['databases'], $data['types'], $data['objects']);
 
     }
 
