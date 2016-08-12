@@ -7,6 +7,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Exceptions\ClassException;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
 use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Input;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Assignment;
 
 final class ConcreteClass implements ObjectClass {
     private $name;
@@ -16,6 +17,7 @@ final class ConcreteClass implements ObjectClass {
     private $constructor;
     private $customMethods;
     private $subClasses;
+    private $assignment;
     public function __construct(
         $name,
         Input $input,
@@ -23,7 +25,8 @@ final class ConcreteClass implements ObjectClass {
         ClassInterface $interface,
         Constructor $constructor,
         array $customMethods = null,
-        array $subClasses = null
+        array $subClasses = null,
+        Assignment $assignment = null
     ) {
 
         if (empty($subClasses)) {
@@ -56,12 +59,21 @@ final class ConcreteClass implements ObjectClass {
             }
         }
 
+        if (!empty($customMethods) && !empty($assignment)) {
+            throw new ClassException('The customMethods and assignment cannot be both non-empty.');
+        }
+
+        if (!empty($instruction) && ($assignment->isReturned())) {
+            throw new ClassException('The class assignment must be a returned assignment.');
+        }
+
         $this->name = $name;
         $this->input = $input;
         $this->namespace = $namespace;
         $this->interface = $interface;
         $this->constructor = $constructor;
         $this->customMethods = $customMethods;
+        $this->assignment = $assignment;
         $this->subClasses = $subClasses;
     }
 
@@ -91,6 +103,14 @@ final class ConcreteClass implements ObjectClass {
 
     public function getCustomMethods() {
         return $this->customMethods;
+    }
+
+    public function hasAssignment() {
+        return !empty($this->assignment);
+    }
+
+    public function getAssignment() {
+        return $this->assignment;
     }
 
     public function hasSubClasses() {

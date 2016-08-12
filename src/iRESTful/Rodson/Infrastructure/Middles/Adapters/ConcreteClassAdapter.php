@@ -11,6 +11,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\Adapters\CustomMethod
 use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Adapters\InputAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClass;
 use iRESTful\Rodson\Domain\Inputs\Rodson;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Adapters\AssignmentAdapter;
 
 final class ConcreteClassAdapter implements ClassAdapter {
     private $namespaceAdapter;
@@ -18,18 +19,21 @@ final class ConcreteClassAdapter implements ClassAdapter {
     private $constructorAdapter;
     private $customMethodAdapter;
     private $inputAdapter;
+    private $assignmentAdapter;
     public function __construct(
         NamespaceAdapter $namespaceAdapter,
         InterfaceAdapter $interfaceAdapter,
         ConstructorAdapter $constructorAdapter,
         CustomMethodAdapter $customMethodAdapter,
-        InputAdapter $inputAdapter
+        InputAdapter $inputAdapter,
+        AssignmentAdapter $assignmentAdapter
     ) {
         $this->namespaceAdapter = $namespaceAdapter;
         $this->interfaceAdapter = $interfaceAdapter;
         $this->constructorAdapter = $constructorAdapter;
         $this->customMethodAdapter = $customMethodAdapter;
         $this->inputAdapter = $inputAdapter;
+        $this->assignmentAdapter = $assignmentAdapter;
     }
 
     public function fromRodsonToClasses(Rodson $rodson) {
@@ -131,16 +135,14 @@ final class ConcreteClassAdapter implements ClassAdapter {
 
     private function fromControllerToClass(Controller $controller) {
 
-        print_r($controller);
-        die();
-
         $namespace = $this->namespaceAdapter->fromControllerToNamespace($controller);
         $interface = $this->interfaceAdapter->fromControllerToInterface($controller);
         $constructor = $this->constructorAdapter->fromControllerToConstructor($controller);
         $classInput = $this->inputAdapter->fromControllerToInput($controller);
+        $assignment = $this->assignmentAdapter->fromControllerToAssignment($controller);
 
         $name = $namespace->getName();
-        return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor);
+        return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor, null, null, $assignment);
     }
 
     private function fromControllersToClasses(array $controllers) {

@@ -9,6 +9,8 @@ interface ObjectClass {
     public function getConstructor();
     public function hasCustomMethods();
     public function getCustomMethods();
+    public function hasAssignment();
+    public function getAssignment();
     public function hasSubClasses();
     public function getSubClasses();
 }

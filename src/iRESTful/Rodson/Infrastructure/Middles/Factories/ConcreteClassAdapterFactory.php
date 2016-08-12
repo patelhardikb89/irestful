@@ -14,6 +14,7 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassConstructorParameterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassConstructorParameterMethodAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInputAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionAssignmentAdapter;
 
 final class ConcreteClassAdapterFactory implements ClassAdapterFactory {
     private $baseNamespace;
@@ -41,9 +42,18 @@ final class ConcreteClassAdapterFactory implements ClassAdapterFactory {
         $constructorParameterAdapter = new ConcreteClassConstructorParameterAdapter($interfaceNamespaceAdapter, $classPropertyAdapter, $interfaceMethodParameterAdapter, $classConstructorParameterMethodAdapter);
         $constructorAdapter = new ConcreteClassConstructorAdapter($constructorParameterAdapter, $classCustomMethodAdapter);
 
+        $classInstructionAssignmentAdapter = new ConcreteClassInstructionAssignmentAdapter();
+
         $classInputAdapter = new ConcreteClassInputAdapter();
 
-        return new ConcreteClassAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $classCustomMethodAdapter, $classInputAdapter);
+        return new ConcreteClassAdapter(
+            $classNamespaceAdapter,
+            $interfaceAdapter,
+            $constructorAdapter,
+            $classCustomMethodAdapter,
+            $classInputAdapter,
+            $classInstructionAssignmentAdapter
+        );
     }
 
 }
