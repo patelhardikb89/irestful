@@ -27,11 +27,11 @@ final class ConcreteValueAdapter implements ValueAdapter {
             $name = substr($string, $pos + 2);
             if ($prefix == 'constants') {
 
-                if (!isset($this->constants[$prefix])) {
-                    throw new ValueException('The given constant ('.$prefix.') is not valid.');
+                if (!isset($this->constants[$name])) {
+                    throw new ValueException('The given constant ('.$name.') is not valid.');
                 }
 
-                return new ConcreteValue(null, null, $this->constants[$prefix]);
+                return new ConcreteValue(null, null, $this->constants[$name]);
 
             }
 

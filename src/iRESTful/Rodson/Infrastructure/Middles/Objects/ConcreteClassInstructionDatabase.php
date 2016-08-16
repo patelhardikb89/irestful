@@ -2,7 +2,6 @@
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Database;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Retrieval;
-use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Retrieval;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Action;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Exceptions\DatabaseException;
 

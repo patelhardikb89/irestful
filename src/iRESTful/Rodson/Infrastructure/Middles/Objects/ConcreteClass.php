@@ -7,7 +7,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Exceptions\ClassException;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
 use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Input;
-use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Assignment;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Instruction;
 
 final class ConcreteClass implements ObjectClass {
     private $name;
@@ -17,7 +17,7 @@ final class ConcreteClass implements ObjectClass {
     private $constructor;
     private $customMethods;
     private $subClasses;
-    private $assignment;
+    private $instruction;
     public function __construct(
         $name,
         Input $input,
@@ -26,7 +26,7 @@ final class ConcreteClass implements ObjectClass {
         Constructor $constructor,
         array $customMethods = null,
         array $subClasses = null,
-        Assignment $assignment = null
+        Instruction $instruction = null
     ) {
 
         if (empty($subClasses)) {
@@ -59,12 +59,8 @@ final class ConcreteClass implements ObjectClass {
             }
         }
 
-        if (!empty($customMethods) && !empty($assignment)) {
-            throw new ClassException('The customMethods and assignment cannot be both non-empty.');
-        }
-
-        if (!empty($instruction) && ($assignment->isReturned())) {
-            throw new ClassException('The class assignment must be a returned assignment.');
+        if (!empty($customMethods) && !empty($instruction)) {
+            throw new ClassException('The customMethods and instruction cannot be both non-empty.');
         }
 
         $this->name = $name;
@@ -73,7 +69,7 @@ final class ConcreteClass implements ObjectClass {
         $this->interface = $interface;
         $this->constructor = $constructor;
         $this->customMethods = $customMethods;
-        $this->assignment = $assignment;
+        $this->instruction = $instruction;
         $this->subClasses = $subClasses;
     }
 
@@ -105,12 +101,12 @@ final class ConcreteClass implements ObjectClass {
         return $this->customMethods;
     }
 
-    public function hasAssignment() {
-        return !empty($this->assignment);
+    public function hasInstruction() {
+        return !empty($this->instruction);
     }
 
-    public function getAssignment() {
-        return $this->assignment;
+    public function getInstruction() {
+        return $this->instruction;
     }
 
     public function hasSubClasses() {

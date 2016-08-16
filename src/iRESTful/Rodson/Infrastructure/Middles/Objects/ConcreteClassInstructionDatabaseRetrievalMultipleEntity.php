@@ -8,42 +8,18 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Mul
 
 final class ConcreteClassInstructionDatabaseRetrievalMultipleEntity implements MultipleEntity {
     private $class;
-    private $uuidValues;
-    private $keynames;
-    public function __construct(ObjectClass $class, array $uuidValues = null, array $keynames = null) {
+    private $uuidValue;
+    private $keyname;
+    public function __construct(ObjectClass $class, Value $uuidValue = null, Keyname $keyname = null) {
 
-        if (empty($uuidValues)) {
-            $uuidValues = null;
-        }
-
-        if (empty($keynames)) {
-            $keynames = null;
-        }
-
-        $amount = (empty($uuidValues) ? 0 : 1) + (empty($keynames) ? 0 : 1);
+        $amount = (empty($uuidValue) ? 0 : 1) + (empty($keyname) ? 0 : 1);
         if ($amount != 1) {
-            throw new MultipleEntityException('One of these must be non-empty: uuidValues, keynames.  '.$amount.' given.');
-        }
-
-        if (!empty($uuidValues)) {
-            foreach($uuidValues as $oneUuidValue) {
-                if (!($oneUuidValue instanceof Value)) {
-                    throw new MultipleEntityException('The uuidValues array must contain Value objects if non-empty.');
-                }
-            }
-        }
-
-        if (!empty($keynames)) {
-            foreach($keynames as $oneKeyname) {
-                if (!($oneKeyname instanceof Keyname)) {
-                    throw new MultipleEntityException('The keynames array must contain Keyname objects if non-empty.');
-                }
-            }
+            throw new MultipleEntityException('One of these must be non-empty: uuidValue, keyname.  '.$amount.' given.');
         }
 
         $this->class = $class;
-        $this->uuidValues = $uuidValues;
-        $this->keynames = $keynames;
+        $this->uuidValue = $uuidValue;
+        $this->keyname = $keyname;
 
     }
 
@@ -51,20 +27,20 @@ final class ConcreteClassInstructionDatabaseRetrievalMultipleEntity implements M
         return $this->class;
     }
 
-    public function hasUuidValues() {
-        return !empty($this->uuidValues);
+    public function hasUuidValue() {
+        return !empty($this->uuidValue);
     }
 
-    public function getUuidValues() {
-        return $this->uuidValues;
+    public function getUuidValue() {
+        return $this->uuidValue;
     }
 
-    public function hasKeynames() {
-        return !empty($this->keynames);
+    public function hasKeyname() {
+        return !empty($this->keyname);
     }
 
-    public function getKeynames() {
-        return $this->keynames;
+    public function getKeyname() {
+        return $this->keyname;
     }
 
 }

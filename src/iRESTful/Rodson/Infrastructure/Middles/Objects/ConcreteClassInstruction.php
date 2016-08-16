@@ -1,25 +1,23 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Instruction;
-use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Database;
-use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\Conversion;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Assignment;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Exceptions\InstructionException;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Action;
 
 final class ConcreteClassInstruction implements Instruction {
-    private $database;
-    private $conversion;
     private $assignment;
     private $mergedAssignments;
-    public function __construct(Database $database = null, Conversion $conversion = null, Assignment $assignment = null, array $mergedAssignments = null) {
+    private $action;
+    public function __construct(Assignment $assignment = null, array $mergedAssignments = null, Action $action = null) {
 
         if (empty($mergedAssignments)) {
             $mergedAssignments = null;
         }
 
-        $amount = (empty($database) ? 0 : 1) + (empty($conversion) ? 0 : 1) + (empty($assignment) ? 0 : 1) + (empty($mergedAssignments) ? 0 : 1);
+        $amount = (empty($assignment) ? 0 : 1) + (empty($action) ? 0 : 1) + (empty($mergedAssignments) ? 0 : 1);
         if ($amount != 1) {
-            throw new InstructionException('One of these must be non-empty: database, coversion, assignment, mergedAssignments.  '.$amount.' given.');
+            throw new InstructionException('One of these must be non-empty: action, assignment, mergedAssignments.  '.$amount.' given.');
         }
 
         if (!empty($mergedAssignments)) {
@@ -30,27 +28,9 @@ final class ConcreteClassInstruction implements Instruction {
             }
         }
 
-        $this->database = $database;
-        $this->conversion = $conversion;
         $this->assignment = $assignment;
         $this->mergedAssignments = $mergedAssignments;
-
-    }
-
-    public function hasDatabase() {
-        return !empty($this->database);
-    }
-
-    public function getDatabase() {
-        return $this->database;
-    }
-
-    public function hasConversion() {
-        return !empty($this->conversion);
-    }
-
-    public function getConversion() {
-        return $this->conversion;
+        $this->action = $action;
     }
 
     public function hasMergeAssignments() {
@@ -67,6 +47,14 @@ final class ConcreteClassInstruction implements Instruction {
 
     public function getAssignment() {
         return $this->assignment;
+    }
+
+    public function hasAction() {
+        return !empty($this->action);
+    }
+
+    public function getAction() {
+        return $this->action;
     }
 
 }

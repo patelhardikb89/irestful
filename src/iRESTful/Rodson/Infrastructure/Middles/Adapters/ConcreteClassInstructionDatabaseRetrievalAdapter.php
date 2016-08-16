@@ -1,0 +1,71 @@
+<?php
+namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Adapters\RetrievalAdapter;
+use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\HttpRequest;
+use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInstructionDatabaseRetrieval;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Entities\Adapters\EntityAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\Adapters\EntityPartialSetAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\Adapters\MultipleEntityAdapter;
+
+final class ConcreteClassInstructionDatabaseRetrievalAdapter implements RetrievalAdapter {
+    private $entityAdapter;
+    private $entityPartialSetAdapter;
+    private $multipleEntityAdapter;
+    public function __construct(EntityAdapter $entityAdapter, EntityPartialSetAdapter $entityPartialSetAdapter, MultipleEntityAdapter $multipleEntityAdapter) {
+        $this->entityAdapter = $entityAdapter;
+        $this->entityPartialSetAdapter = $entityPartialSetAdapter;
+        $this->multipleEntityAdapter = $multipleEntityAdapter;
+    }
+
+    public function fromStringToRetrieval($string) {
+
+        $matches = [];
+        preg_match_all('/([a-z]+) by ([a-z]+)\:([^ ]+)/s', $string, $matches);
+        if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
+            $entity = $this->entityAdapter->fromDataToEntity([
+                'object_name' => $matches[1][0],
+                'property' => [
+                    'name' => $matches[2][0],
+                    'value' => $matches[3][0]
+                ]
+            ]);
+
+            return new ConcreteClassInstructionDatabaseRetrieval(null, $entity);
+        }
+
+        $matches = [];
+        preg_match_all('/([a-z]+) from ([a-z\-\>]+) to ([a-z\-\>]+)/s', $string, $matches);
+        if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
+            $entityPartialSet = $this->entityPartialSetAdapter->fromDataToEntityPartialSet([
+                'object_name' => $matches[1][0],
+                'minimum' => $matches[2][0],
+                'maximum' => $matches[3][0]
+            ]);
+
+            return new ConcreteClassInstructionDatabaseRetrieval(null, null, null, $entityPartialSet);
+        }
+
+        $matches = [];
+        preg_match_all('/multiple ([a-z]+) by ([a-z]+)\:([^ ]+)/s', $string, $matches);
+        if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
+            $multipleEntity = $this->multipleEntityAdapter->fromDataToMultipleEntity([
+                'object_name' => $matches[1][0],
+                'property' => [
+                    'name' => $matches[2][0],
+                    'value' => $matches[3][0]
+                ]
+            ]);
+
+            return new ConcreteClassInstructionDatabaseRetrieval(null, null, $multipleEntity);
+        }
+
+        print_r([$string, 'ConcreteClassInstructionDatabaseRetrievalAdapter->fromStringToRetrieval']);
+        die();
+
+    }
+
+    public function fromHttpRequestToRetrieval(HttpRequest $httpRequest) {
+        return new ConcreteClassInstructionDatabaseRetrieval($httpRequest);
+    }
+
+}

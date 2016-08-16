@@ -3,5 +3,5 @@ namespace iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrieva
 
 interface Keyname {
     public function getName();
-    publci function getValue();
+    public function getValue();
 }

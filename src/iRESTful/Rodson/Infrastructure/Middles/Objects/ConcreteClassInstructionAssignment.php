@@ -6,43 +6,37 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\Conversion;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Exeptions\AssignmentException;
 
 final class ConcreteClassInstructionAssignment implements Assignment {
-    private $isReturned;
     private $variableName;
     private $database;
     private $conversion;
-    public function __construct($isReturned, $variableName = null, Database $database = null, Conversion $conversion = null) {
+    private $mergedAssignments;
+    public function __construct($variableName, Database $database = null, Conversion $conversion = null, array $mergedAssignments = null) {
 
-        if (empty($variableName)) {
-            $variableName = null;
+        if (empty($mergedAssignments)) {
+            $mergedAssignments = null;
         }
 
-        if (!empty($variableName) && !is_string($variableName)) {
-            throw new AssignmentException('The variableName must be a string if non-empty.');
+        if (empty($variableName) || !is_string($variableName)) {
+            throw new AssignmentException('The variableName must be a non-empty string.');
         }
 
-        $isReturned = (bool) $isReturned;
-        $amount = ($isReturned ? 1 : 0) + (empty($variableName) ? 0 : 1);
+        $amount = (empty($mergedAssignments) ? 0 : 1) + (empty($database) ? 0 : 1) + (empty($conversion) ? 0 : 1);
         if ($amount != 1) {
-            throw new AssignmentException('At least one of these must be true/non-empty: isReturned, variableName.  '.$amount.' given.');
+            throw new AssignmentException('At least one of these must be non-empty: mergedAssignments, database, conversion.  '.$amount.' given.');
         }
 
-        $amount = (empty($database) ? 0 : 1) + (empty($conversion) ? 0 : 1);
-        if ($amount != 1) {
-            throw new AssignmentException('At least one of these must be non-empty: database, conversion.  '.$amount.' given.')
+        if (!empty($mergedAssignments)) {
+            foreach($mergedAssignments as $oneMergedAssignment) {
+                if (!($oneMergedAssignment instanceof Assignment)) {
+                    throw new AssignmentException('The mergedAssignments array must only contain Assignment objects.');
+                }
+            }
         }
 
-        $this->isReturned = $isReturned;
         $this->variableName = $variableName;
         $this->database = $database;
         $this->conversion = $conversion;
-    }
-
-    public function isReturned() {
-        return $this->isReturned;
-    }
-
-    public function hasVariableName() {
-        return !empty($this->variableName);
+        $this->mergedAssignments = $mergedAssignments;
     }
 
     public function getVariableName() {
@@ -63,6 +57,14 @@ final class ConcreteClassInstructionAssignment implements Assignment {
 
     public function getConversion() {
         return $this->conversion;
+    }
+
+    public function hasMergedAssignment() {
+        return !empty($this->mergedAssignments);
+    }
+
+    public function getMergedAssignment() {
+        return $this->mergedAssignments;
     }
 
 }

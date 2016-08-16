@@ -1,5 +1,5 @@
 <?php
-namespace iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Exeptions;
+namespace iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Exceptions;
 
 final class AssignmentException extends \Exception {
     const CODE = 1;

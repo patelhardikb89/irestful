@@ -3,8 +3,8 @@ namespace iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrieva
 
 interface MultipleEntity {
     public function getClass();
-    public function hasUuidValues();
-    public function getUuidValues();
-    public function hasKeynames();
-    public function getKeynames();
+    public function hasUuidValue();
+    public function getUuidValue();
+    public function hasKeyname();
+    public function getKeyname();
 }

@@ -278,11 +278,11 @@
             },
             "instructions": [
                 "githubData = execute retrieve_from_github",
-                "github = from githubData to github",
+                "github = from githubData to endpoint",
                 "role = retrieve role by uuid:input->uuid",
                 "roleData = from role to data",
                 "githubData = from github to data",
-                "return merge roleData, githubData",
+                "merged = merge roleData, githubData",
 
                 "execute insert_user_in_github",
                 "execute delete_user_in_github",
@@ -303,7 +303,8 @@
                 "newRole = from input to role",
                 "oldRole = retrieve role by uuid:input->uuid",
                 "updatedRole = update oldRole using newRole",
-                "insert updatedRole"
+                "insert updatedRole",
+                "return merged"
             ],
             "view": "json"
         }

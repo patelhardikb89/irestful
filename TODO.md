@@ -1,3 +1,4 @@
+* Validate that assignment variable names do not have the same name as an http request (for controllers).
 * Generate class code for controller classes.
 * Use Twig to generate all the code
 * Generate the composer.json file

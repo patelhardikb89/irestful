@@ -19,6 +19,13 @@ final class ConcreteClassInstructionDatabaseRetrieval implements Retrieval {
             throw new RetrievalException('One of these must be non-empty: httpRequest, entity, multipleEntity, entityPartialSet.  '.$amount.' given.');
         }
 
+        if (!empty($httpRequest)) {
+            $action = $httpRequest->getCommand()->getAction();
+            if (!$action->isRetrieval()) {
+                throw new ActionException('The given HttpRequest object is invalid for a retrieval.  It must be contain a retrieval action.');
+            }
+        }
+
         $this->httpRequest = $httpRequest;
         $this->entity = $entity;
         $this->multipleEntity = $multipleEntity;
