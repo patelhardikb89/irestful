@@ -142,9 +142,6 @@ final class ConcreteClassAdapter implements ClassAdapter {
         $classInput = $this->inputAdapter->fromControllerToInput($controller);
         $instructions = $this->instructionAdapterAdapter->fromClassesToInstructionAdapter($classes)->fromControllerToInstructions($controller);
 
-        print_r([$instructions, 'fromControllerToClass']);
-        die();
-
         $name = $namespace->getName();
         return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor, null, null, $instructions);
     }

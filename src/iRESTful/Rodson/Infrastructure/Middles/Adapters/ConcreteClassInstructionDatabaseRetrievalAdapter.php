@@ -6,12 +6,17 @@ use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInstructionDatab
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Entities\Adapters\EntityAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\Adapters\EntityPartialSetAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\Adapters\MultipleEntityAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Exceptions\RetrievalException;
 
 final class ConcreteClassInstructionDatabaseRetrievalAdapter implements RetrievalAdapter {
     private $entityAdapter;
     private $entityPartialSetAdapter;
     private $multipleEntityAdapter;
-    public function __construct(EntityAdapter $entityAdapter, EntityPartialSetAdapter $entityPartialSetAdapter, MultipleEntityAdapter $multipleEntityAdapter) {
+    public function __construct(
+        EntityAdapter $entityAdapter,
+        EntityPartialSetAdapter $entityPartialSetAdapter,
+        MultipleEntityAdapter $multipleEntityAdapter
+    ) {
         $this->entityAdapter = $entityAdapter;
         $this->entityPartialSetAdapter = $entityPartialSetAdapter;
         $this->multipleEntityAdapter = $multipleEntityAdapter;
@@ -59,8 +64,7 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapter implements Retrieva
             return new ConcreteClassInstructionDatabaseRetrieval(null, null, $multipleEntity);
         }
 
-        print_r([$string, 'ConcreteClassInstructionDatabaseRetrievalAdapter->fromStringToRetrieval']);
-        die();
+        throw new RetrievalException('The given retrieval command ('.$string.') is invalid.');
 
     }
 

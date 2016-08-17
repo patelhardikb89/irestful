@@ -38,7 +38,8 @@ final class ConcreteClassInstructionDatabaseAdapter implements DatabaseAdapter {
                 return new ConcreteClassInstructionDatabase($retrieval);
             }
 
-            //action
+            $action = $this->actionAdapter->fromStringToAction($string);
+            return new ConcreteClassInstructionDatabase(null, $action);
         }
 
         if (strpos($string, 'retrieve ') === 0) {
@@ -47,13 +48,8 @@ final class ConcreteClassInstructionDatabaseAdapter implements DatabaseAdapter {
             return new ConcreteClassInstructionDatabase($retrieval);
         }
 
-
-        print_r([$string, 'ConcreteClassInstructionDatabaseAdapter->fromStringToDatabase']);
-        die();
-
-
-        print_r([$this->httpRequests, $string, 'ConcreteClassInstructionDatabaseAdapter->fromStringToDatabase']);
-        die();
+        $action = $this->actionAdapter->fromStringToAction($string);
+        return new ConcreteClassInstructionDatabase(null, $action);
 
     }
 

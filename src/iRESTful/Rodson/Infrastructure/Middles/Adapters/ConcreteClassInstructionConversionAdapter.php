@@ -16,10 +16,8 @@ final class ConcreteClassInstructionConversionAdapter implements ConversionAdapt
         $this->previousAssignments = $previousAssignments;
         $this->inputName = $inputName;
     }
-
+    
     public function fromStringToConversion($string) {
-
-        $string = 'from data to multiple role';
 
         $matches = [];
         preg_match_all('/from ([^ ]+) to (.+)/s', $string, $matches);
@@ -35,9 +33,6 @@ final class ConcreteClassInstructionConversionAdapter implements ConversionAdapt
 
             return new ConcreteClassInstructionConversion($from, $to);
         }
-
-        print_r([$string, 'ConcreteClassInstructionConversionAdapter->fromStringToConversion']);
-        die();
 
         throw new ConversionException('THe given command ('.$string.') does not reference a valid Conversion object.');
     }

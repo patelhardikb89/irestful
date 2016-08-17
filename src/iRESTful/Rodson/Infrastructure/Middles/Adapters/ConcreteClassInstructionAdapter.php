@@ -55,7 +55,8 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
                     $merge[] = $assignments[$oneVariable];
                 }
 
-                return new ConcreteClassInstruction(null, $merge);
+                $returnedInstructions[] = new ConcreteClassInstruction(null, $merge);
+                continue;
             }
 
             if (
@@ -71,6 +72,11 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
                 continue;
             }
 
+            if ($isReturned && isset($assignments[$oneInstruction])) {
+                $returnedInstructions[] = new ConcreteClassInstruction($assignments[$oneInstruction]);
+                continue;
+            }
+
             $assignment = $this->assignmentAdapterAdapter->fromDataToAssignmentAdapter([
                 'classes' => $this->classes,
                 'controller' => $controller,
@@ -80,7 +86,7 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
 
             if ($isReturned) {
                 $returnedInstructions[] = new ConcreteClassInstruction($assignment);
-                return $returnedInstructions;
+                continue;
             }
 
             $variableName = $assignment->getVariableName();

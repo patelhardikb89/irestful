@@ -10,7 +10,11 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapterAdapter implements R
     private $entityAdapterAdapter;
     private $entityPartialSetAdapterAdapter;
     private $multipleEntityAdapterAdapter;
-    public function __construct(EntityAdapterAdapter $entityAdapterAdapter, EntityPartialSetAdapterAdapter $entityPartialSetAdapterAdapter, MultipleEntityAdapterAdapter $multipleEntityAdapterAdapter) {
+    public function __construct(
+        EntityAdapterAdapter $entityAdapterAdapter,
+        EntityPartialSetAdapterAdapter $entityPartialSetAdapterAdapter,
+        MultipleEntityAdapterAdapter $multipleEntityAdapterAdapter
+    ) {
         $this->entityAdapterAdapter = $entityAdapterAdapter;
         $this->entityPartialSetAdapterAdapter = $entityPartialSetAdapterAdapter;
         $this->multipleEntityAdapterAdapter = $multipleEntityAdapterAdapter;

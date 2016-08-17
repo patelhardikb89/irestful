@@ -15,12 +15,7 @@ final class ConcreteClassInstructionDatabaseActionUpdateAdapterAdapter implement
             $previousAssignments = $data['previous_assignments'];
         }
 
-        $httpRequests = null;
-        if (isset($data['http_requests'])) {
-            $previousAssignments = $data['http_requests'];
-        }
-
-        return new ConcreteClassInstructionDatabaseActionUpdateAdapter($previousAssignments, $httpRequests);
+        return new ConcreteClassInstructionDatabaseActionUpdateAdapter($previousAssignments);
     }
 
 }

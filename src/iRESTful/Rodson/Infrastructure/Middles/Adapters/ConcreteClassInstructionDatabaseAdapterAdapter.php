@@ -23,7 +23,7 @@ final class ConcreteClassInstructionDatabaseAdapterAdapter implements DatabaseAd
         if (!isset($data['classes'])) {
             throw new DatabaseException('The classes keyname is mandatory in order to convert data to a DatabaseAdapter.');
         }
-        
+
         $previousAssignments = [];
         if (isset($data['previous_assignments'])) {
             $previousAssignments = $data['previous_assignments'];

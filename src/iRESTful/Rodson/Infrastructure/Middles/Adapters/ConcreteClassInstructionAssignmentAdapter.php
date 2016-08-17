@@ -31,11 +31,11 @@ final class ConcreteClassInstructionAssignmentAdapter implements AssignmentAdapt
         $this->classes = $classes;
         $this->previousAssignments = $previousAssignments;
     }
-
+    
     public function fromStringToAssignment($string) {
 
         if (strpos($string, ' = ') === false) {
-            throw new AssignmentException('THe command ('.$string.') must contain an equal sign with space in prefix and suffix ( = ) in order to be an assignment.');
+            throw new AssignmentException('The command ('.$string.') must contain an equal sign with space in prefix and suffix ( = ) in order to be an assignment.');
         }
 
         $exploded = explode(' = ', $string);

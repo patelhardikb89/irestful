@@ -58,8 +58,7 @@ final class ConcreteClassInstructionDatabaseActionAdapter implements ActionAdapt
             return new ConcreteClassInstructionDatabaseAction(null, null, null, $delete);
         }
 
-        print_r([$string, 'ConcreteClassInstructionDatabaseActionAdapter->fromStringToAction']);
-        die();
+        throw new ActionException('The given action command ('.$string.') is invalid.');
     }
 
 }

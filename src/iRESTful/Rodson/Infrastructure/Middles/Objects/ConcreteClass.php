@@ -17,7 +17,7 @@ final class ConcreteClass implements ObjectClass {
     private $constructor;
     private $customMethods;
     private $subClasses;
-    private $instruction;
+    private $instructions;
     public function __construct(
         $name,
         Input $input,
@@ -26,7 +26,7 @@ final class ConcreteClass implements ObjectClass {
         Constructor $constructor,
         array $customMethods = null,
         array $subClasses = null,
-        Instruction $instruction = null
+        array $instructions = null
     ) {
 
         if (empty($subClasses)) {
@@ -35,6 +35,10 @@ final class ConcreteClass implements ObjectClass {
 
         if (empty($customMethods)) {
             $customMethods = null;
+        }
+
+        if (empty($instructions)) {
+            $instructions = null;
         }
 
         if (empty($name) || !is_string($name)) {
@@ -59,6 +63,14 @@ final class ConcreteClass implements ObjectClass {
             }
         }
 
+        if (!empty($instructions)) {
+            foreach($instructions as $oneInstruction) {
+                if (!($oneInstruction instanceof Instruction)) {
+                    throw new ClassException('The instructions array must only contain Instruction objects.');
+                }
+            }
+        }
+
         if (!empty($customMethods) && !empty($instruction)) {
             throw new ClassException('The customMethods and instruction cannot be both non-empty.');
         }
@@ -69,7 +81,7 @@ final class ConcreteClass implements ObjectClass {
         $this->interface = $interface;
         $this->constructor = $constructor;
         $this->customMethods = $customMethods;
-        $this->instruction = $instruction;
+        $this->instructions = $instructions;
         $this->subClasses = $subClasses;
     }
 
@@ -101,12 +113,12 @@ final class ConcreteClass implements ObjectClass {
         return $this->customMethods;
     }
 
-    public function hasInstruction() {
-        return !empty($this->instruction);
+    public function hasInstructions() {
+        return !empty($this->instructions);
     }
 
-    public function getInstruction() {
-        return $this->instruction;
+    public function getInstructions() {
+        return $this->instructions;
     }
 
     public function hasSubClasses() {
