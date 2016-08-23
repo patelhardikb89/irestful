@@ -8,13 +8,20 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Adapte
 final class ConcreteClassInstructionAdapterAdapter implements InstructionAdapterAdapter {
     private $actionAdapterAdapter;
     private $assignmentAdapterAdapter;
-    public function __construct(ActionAdapterAdapter $actionAdapterAdapter, AssignmentAdapterAdapter $assignmentAdapterAdapter) {
+    public function __construct(
+        ActionAdapterAdapter $actionAdapterAdapter,
+        AssignmentAdapterAdapter $assignmentAdapterAdapter
+    ) {
         $this->actionAdapterAdapter = $actionAdapterAdapter;
         $this->assignmentAdapterAdapter = $assignmentAdapterAdapter;
     }
 
     public function fromClassesToInstructionAdapter(array $classes) {
-        return new ConcreteClassInstructionAdapter($this->actionAdapterAdapter, $this->assignmentAdapterAdapter, $classes);
+        return new ConcreteClassInstructionAdapter(
+            $this->actionAdapterAdapter,
+            $this->assignmentAdapterAdapter,
+            $classes
+        );
     }
 
 }

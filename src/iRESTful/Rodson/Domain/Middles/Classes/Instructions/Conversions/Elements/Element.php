@@ -9,4 +9,5 @@ interface Element {
     public function getClass();
     public function hasAssignment();
     public function getAssignment();
+    public function getData();
 }

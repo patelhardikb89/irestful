@@ -47,4 +47,17 @@ final class ConcreteDatabaseTypeString implements String {
     public function getMaxCharacterSize() {
         return $this->maximumCharacterSize;
     }
+
+    public function getData() {
+        $output = [];
+        if ($this->hasSpecificCharacterSize()) {
+            $output['specific'] = $this->getSpecificCharacterSize();
+        }
+
+        if ($this->hasMaxCharacterSize()) {
+            $output['max'] = $this->getMaxCharacterSize();
+        }
+
+        return $output;
+    }
 }

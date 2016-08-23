@@ -19,7 +19,7 @@ final class ConcreteClassInterfaceMethodParameter implements Parameter {
         $this->isOptional = (bool) $isOptional;
 
     }
-    
+
     public function getName() {
         return $this->name;
     }
@@ -30,6 +30,15 @@ final class ConcreteClassInterfaceMethodParameter implements Parameter {
 
     public function isOptional() {
         return $this->isOptional;
+    }
+
+    public function getData() {
+
+        return [
+            'name' => $this->getName(),
+            'type' => $this->getType()->getData(),
+            'is_optional' => $this->isOptional()
+        ];
     }
 
 }

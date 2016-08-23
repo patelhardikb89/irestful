@@ -38,4 +38,17 @@ final class ConcreteClassInstructionDatabaseActionInsert implements Insert {
     public function getAssignments() {
         return $this->assignments;
     }
+
+    public function getData() {
+        $output = [];
+        if ($this->hasAssignment()) {
+            $output['assignment'] = $this->getAssignment()->getData();
+        }
+
+        if ($this->hasAssignments()) {
+            $output['assignments'] = $this->getAssignments()->getData();
+        }
+
+        return $output;
+    }
 }

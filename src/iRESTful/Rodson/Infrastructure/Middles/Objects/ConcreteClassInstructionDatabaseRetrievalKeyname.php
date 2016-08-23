@@ -26,4 +26,11 @@ final class ConcreteClassInstructionDatabaseRetrievalKeyname implements Keyname 
         return $this->value;
     }
 
+    public function getData() {
+        return [
+            'name' => $this->getName(),
+            'value' => $this->getValue()->getData()
+        ];
+    }
+
 }

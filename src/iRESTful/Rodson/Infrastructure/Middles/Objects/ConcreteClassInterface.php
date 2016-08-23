@@ -10,11 +10,7 @@ final class ConcreteClassInterface implements ClassInterface {
     private $methods;
     private $namespace;
     private $isEntity;
-    public function __construct($name, array $methods, ClassNamespace $namespace, $isEntity) {
-
-        if (empty($name) || !is_string($name)) {
-            throw new InterfaceException('The name must be a non-empty string.');
-        }
+    public function __construct(array $methods, ClassNamespace $namespace, $isEntity) {
 
         if (empty($methods)) {
             throw new InterfaceException('The methods array cannot be empty.');
@@ -28,14 +24,9 @@ final class ConcreteClassInterface implements ClassInterface {
 
         }
 
-        $this->name = $name;
         $this->methods = $methods;
         $this->namespace = $namespace;
         $this->isEntity = (bool) $isEntity;
-    }
-
-    public function getName() {
-        return $this->name;
     }
 
     public function getMethods() {
@@ -48,5 +39,19 @@ final class ConcreteClassInterface implements ClassInterface {
 
     public function isEntity() {
         return $this->isEntity;
+    }
+
+    public function getData() {
+
+        $methods = $this->getMethods();
+        array_walk($methods, function(&$element, $index) {
+            $element = $element->getData();
+        });
+
+        return [
+            'namespace' => $this->getNamespace()->getData(),
+            'methods' => $methods,
+            'is_entity' => $this->isEntity()
+        ];
     }
 }

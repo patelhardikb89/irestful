@@ -65,4 +65,26 @@ final class ConcreteClassInstructionDatabaseRetrieval implements Retrieval {
         return $this->entityPartialSet;
     }
 
+    public function getData() {
+        $output = [];
+        if ($this->hasHttpRequest()) {
+            $output['http_request'] = $this->getHttpRequest()->getData();
+        }
+
+        if ($this->hasEntity()) {
+            $output['entity'] = $this->getEntity()->getData();
+        }
+
+        if ($this->hasMultipleEntities()) {
+            $output['entities'] = $this->getMultipleEntities()->getData();
+        }
+
+        if ($this->hasEntityPartialSet()) {
+            $output['entity_partial_set'] = $this->getEntityPartialSet()->getData();
+        }
+
+        return $output;
+
+    }
+
 }

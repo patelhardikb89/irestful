@@ -6,4 +6,5 @@ interface Url {
     public function getEndpoint();
     public function hasPort();
     public function getPort();
+    public function getData();
 }

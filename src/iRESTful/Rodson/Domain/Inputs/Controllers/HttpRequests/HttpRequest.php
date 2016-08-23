@@ -10,4 +10,5 @@ interface HttpRequest {
     public function getRequestParameters();
     public function hasHeaders();
     public function getHeaders();
+    public function getData();
 }

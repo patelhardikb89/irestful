@@ -49,4 +49,21 @@ final class ConcreteValue implements Value {
         return $this->direct;
     }
 
+    public function getData() {
+        $output = [];
+        if ($this->hasInputVariable()) {
+            $output['input_variable'] = $this->getInputVariable();
+        }
+
+        if ($this->hasEnvironmentVariable()) {
+            $output['environment_variable'] = $this->getEnvironmentVariable();
+        }
+
+        if ($this->hasDirect()) {
+            $output['value'] = $this->getDirect();
+        }
+
+        return $output;
+    }
+
 }

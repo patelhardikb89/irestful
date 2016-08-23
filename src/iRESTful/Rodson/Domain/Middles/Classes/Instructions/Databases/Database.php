@@ -8,4 +8,5 @@ interface Database {
     public function getAction();
     public function hasActions();
     public function getActions();
+    public function getData();
 }

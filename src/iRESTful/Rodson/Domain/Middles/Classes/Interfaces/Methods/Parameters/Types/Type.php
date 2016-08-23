@@ -7,4 +7,5 @@ interface Type {
     public function getNamespace();
     public function hasPrimitive();
     public function getPrimitive();
+    public function getData();
 }

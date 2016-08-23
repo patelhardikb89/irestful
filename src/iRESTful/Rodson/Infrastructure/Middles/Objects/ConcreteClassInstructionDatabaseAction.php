@@ -65,4 +65,26 @@ final class ConcreteClassInstructionDatabaseAction implements Action {
         return $this->delete;
     }
 
+    public function getData() {
+
+        $output = [];
+        if ($this->hasHttpRequest()) {
+            $output['http_request'] = $this->getHttpRequest()->getData();
+        }
+
+        if ($this->hasInsert()) {
+            $output['insert'] = $this->getInsert()->getData();
+        }
+
+        if ($this->hasUpdate()) {
+            $output['update'] = $this->getUpdate()->getData();
+        }
+
+        if ($this->hasDelete()) {
+            $output['delete'] = $this->getDelete()->getData();
+        }
+
+        return $output;
+    }
+
 }

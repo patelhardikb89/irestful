@@ -8,4 +8,5 @@ interface Configuration {
     public function getContainerClassMapper();
     public function getInterfaceClassMapper();
     public function getAdapterInterfaceClassMapper();
+    public function getData();
 }

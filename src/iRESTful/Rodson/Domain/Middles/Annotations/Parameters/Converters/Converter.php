@@ -6,4 +6,5 @@ interface Converter {
     public function getDatabaseConverter();
     public function hasViewConverter();
     public function getViewConverter();
+    public function getData();
 }

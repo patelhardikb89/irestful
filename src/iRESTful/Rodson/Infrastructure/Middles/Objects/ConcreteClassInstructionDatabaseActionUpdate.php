@@ -19,4 +19,11 @@ final class ConcreteClassInstructionDatabaseActionUpdate implements Update {
         return $this->updated;
     }
 
+    public function getData() {
+        return [
+            'source' => $this->getSource()->getData(),
+            'updated' => $this->getUpdated()->getData()
+        ];
+    }
+
 }

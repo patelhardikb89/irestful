@@ -101,4 +101,40 @@ final class ConcreteControllerHttpRequest implements HttpRequest {
         return $this->headers;
     }
 
+    public function getData() {
+        $output = [
+            'command' => $this->getCommand()->getData(),
+            'view' => $this->view->getData()
+        ];
+
+        if ($this->hasQueryParameters()) {
+            $queryParameters = $this->getQueryParameters();
+            array_walk($queryParameters, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['query_parameters'] = $queryParameters;
+        }
+
+        if ($this->hasRequestParameters()) {
+            $requestParameters = $this->getRequestParameters();
+            array_walk($requestParameters, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['request_parameters'] = $requestParameters;
+        }
+
+        if ($this->hasHeaders()) {
+            $headers = $this->getHeaders();
+            array_walk($headers, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['headers'] = $headers;
+        }
+
+        return $output;
+    }
+
 }

@@ -56,4 +56,23 @@ final class ConcreteClassInstructionConversionElement implements Element {
         return $this->assignment;
     }
 
+    public function getData() {
+        $output = [
+            'is_data' => $this->isData(),
+            'is_input' => $this->isInput(),
+            'is_multiple' => $this->isMultiple()
+        ];
+
+        if ($this->hasClass()) {
+            $output['class'] = $this->getClass()->getData();
+        }
+
+        if ($this->hasAssignment()) {
+            $output['assignment'] = $this->getAssignment()->getData();
+        }
+
+        return $output;
+
+    }
+
 }

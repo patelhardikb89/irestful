@@ -6,4 +6,5 @@ interface Insert {
     public function getAssignment();
     public function hasAssignments();
     public function getAssignments();
+    public function getData();
 }

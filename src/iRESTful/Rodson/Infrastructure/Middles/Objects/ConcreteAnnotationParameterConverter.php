@@ -33,4 +33,18 @@ final class ConcreteAnnotationParameterConverter implements Converter {
         return $this->viewConverter;
     }
 
+    public function getData() {
+        $output = [];
+        if ($this->hasDatabaseConverter()) {
+            $output['database'] = $this->getDatabaseConverter()->getData();
+        }
+
+        if ($this->hasViewConverter()) {
+            $output['view'] = $this->getViewConverter()->getData();
+        }
+
+        return $output;
+
+    }
+
 }

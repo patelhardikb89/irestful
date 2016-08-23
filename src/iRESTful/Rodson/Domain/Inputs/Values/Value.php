@@ -8,4 +8,5 @@ interface Value {
     public function getEnvironmentVariable();
     public function hasDirect();
     public function getDirect();
+    public function getData();
 }

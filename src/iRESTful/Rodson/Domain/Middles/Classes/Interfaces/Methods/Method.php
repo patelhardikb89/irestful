@@ -5,4 +5,5 @@ interface Method {
     public function getName();
     public function hasParameters();
     public function getParameters();
+    public function getData();
 }

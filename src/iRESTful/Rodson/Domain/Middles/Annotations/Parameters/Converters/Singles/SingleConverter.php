@@ -4,4 +4,5 @@ namespace iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Converters\Singl
 interface SingleConverter {
     public function getInterfaceName();
     public function getMethodName();
+    public function getData();
 }

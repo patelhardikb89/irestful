@@ -36,7 +36,7 @@ final class ConcreteFunctionalTransformTestAdapter implements TransformTestAdapt
 
     private function fromAnnotatedClassToTransformTest(AnnotatedClass $annotatedClass) {
 
-        $name = $annotatedClass->getClass()->getInterface()->getName().'Test';
+        $name = $annotatedClass->getClass()->getInterface()->getNamespace()->getName().'Test';
         $namespace = new ConcreteNamespace(array_merge($this->baseNamespaces, [
             'Tests',
             'Tests',

@@ -37,4 +37,11 @@ final class ConcreteDatabaseTypeFloat implements Float {
         return $this->precision;
     }
 
+    public function getData() {
+        return [
+            'digits' => $this->getDigitsAmount(),
+            'precision' => $this->getPrecision()
+        ];
+    }
+
 }

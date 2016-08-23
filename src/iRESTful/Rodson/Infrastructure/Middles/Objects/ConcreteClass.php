@@ -129,4 +129,43 @@ final class ConcreteClass implements ObjectClass {
         return $this->subClasses;
     }
 
+    public function getData() {
+
+        $output = [
+            'name' => $this->getName(),
+            'namespace' => $this->getNamespace()->getData(),
+            'interface' => $this->getInterface()->getData(),
+            'constructor' =>  $this->getConstructor()->getData()
+        ];
+
+        if ($this->hasCustomMethods()) {
+            $customMethods = $this->getCustomMethods();
+            array_walk($customMethods, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['custom_methods'] = $customMethods;
+        }
+
+        if ($this->hasInstructions()) {
+            $instructions = $this->getInstructions();
+            array_walk($instructions, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['instructions'] = $instructions;
+        }
+
+        if ($this->hasSubClasses()) {
+            $subClasses = $this->getSubClasses();
+            array_walk($subClasses, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['sub_classes'] = $subClasses;
+        }
+
+        return $output;
+    }
+
 }

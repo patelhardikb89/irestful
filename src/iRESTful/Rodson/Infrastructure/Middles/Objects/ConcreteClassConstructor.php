@@ -49,4 +49,25 @@ final class ConcreteClassConstructor implements Constructor {
         return $this->parameters;
     }
 
+    public function getData() {
+        $output = [
+            'name' => $this->getName()
+        ];
+
+        if ($this->hasCustomMethod()) {
+            $output['custom_method'] = $this->getCustomMethod()->getData();
+        }
+
+        if ($this->hasParameters()) {
+            $parameters = $this->getParameters();
+            array_walk($parameters, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['parameters'] = $parameters;
+        }
+
+        return $output;
+    }
+
 }

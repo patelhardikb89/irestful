@@ -20,8 +20,7 @@ final class ConcreteClassInterfaceAdapter implements InterfaceAdapter {
         $method = $this->methodAdapter->fromControllerToMethod($controller);
         $namespace = $this->namespaceAdapter->fromControllerToNamespace($controller);
 
-        $name = $namespace->getName();
-        return new ConcreteClassInterface($name, [$method], $namespace, false);
+        return new ConcreteClassInterface([$method], $namespace, false);
     }
 
     public function fromObjectToInterface(Object $object) {
@@ -30,8 +29,7 @@ final class ConcreteClassInterfaceAdapter implements InterfaceAdapter {
         $methods = $this->methodAdapter->fromObjectToMethods($object);
         $namespace = $this->namespaceAdapter->fromObjectToNamespace($object);
 
-        $name = $namespace->getName();
-        return new ConcreteClassInterface($name, $methods, $namespace, $isEntity);
+        return new ConcreteClassInterface($methods, $namespace, $isEntity);
     }
 
     public function fromTypeToInterface(Type $type) {
@@ -39,8 +37,7 @@ final class ConcreteClassInterfaceAdapter implements InterfaceAdapter {
         $method = $this->methodAdapter->fromTypeToMethod($type);
         $namespace = $this->namespaceAdapter->fromTypeToNamespace($type);
 
-        $name = $namespace->getName();
-        return new ConcreteClassInterface($name, [$method], $namespace, false);
+        return new ConcreteClassInterface([$method], $namespace, false);
 
     }
 
@@ -49,8 +46,7 @@ final class ConcreteClassInterfaceAdapter implements InterfaceAdapter {
         $methods = $this->methodAdapter->fromTypeToAdapterMethods($type);
         $namespace = $this->namespaceAdapter->fromTypeToAdapterNamespace($type);
 
-        $name = $namespace->getName();
-        return new ConcreteClassInterface($name, $methods, $namespace, false);
+        return new ConcreteClassInterface($methods, $namespace, false);
     }
 
 }

@@ -5,4 +5,5 @@ interface Method {
     public function getName();
     public function hasSubMethod();
     public function getSubMethod();
+    public function getData();
 }

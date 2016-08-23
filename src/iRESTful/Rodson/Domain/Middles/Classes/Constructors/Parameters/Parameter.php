@@ -5,4 +5,5 @@ interface Parameter {
     public function getProperty();
     public function getParameter();
     public function getMethod();
+    public function getData();
 }

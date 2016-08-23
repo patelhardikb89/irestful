@@ -35,4 +35,19 @@ final class ConcreteAnnotationParameterType implements Type {
         return $this->default;
     }
 
+    public function getData() {
+
+        $output = [
+            'is_unique' => $this->isUnique(),
+            'is_key' => $this->isKey(),
+            'database_type' => $this->getDatabaseType()->getData()
+        ];
+
+        if ($this->hasDefault()) {
+            $output['default'] = $this->getDefault();
+        }
+
+        return $output;
+    }
+
 }

@@ -48,4 +48,17 @@ final class ConcreteDatabaseTypeBinary implements Binary {
         return $this->maxBitSize;
     }
 
+    public function getData() {
+        $output = [];
+        if ($this->hasSpecificBitSize()) {
+            $output['specific'] = $this->getSpecificBitSize();
+        }
+
+        if ($this->hasMaxBitSize()) {
+            $output['max'] = $this->getMaxBitSize();
+        }
+
+        return $output;
+    }
+
 }

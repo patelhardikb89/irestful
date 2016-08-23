@@ -5,4 +5,5 @@ interface TransformTest {
     public function getNamespace();
     public function getSamples();
     public function getConfiguration();
+    public function getData();
 }

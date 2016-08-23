@@ -5,4 +5,5 @@ interface Flow {
     public function getPropertyName();
     public function getMethodChain();
     public function getKeyname();
+    public function getData();
 }

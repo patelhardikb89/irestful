@@ -57,4 +57,26 @@ final class ConcreteClassInstruction implements Instruction {
         return $this->action;
     }
 
+    public function getData() {
+        $output = [];
+        if ($this->hasMergeAssignments()) {
+            $mergedAssignments = $this->getMergeAssignments();
+            array_walk($mergedAssignments, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['merged_assignments'] = $mergedAssignments;
+        }
+
+        if ($this->hasAssignment()) {
+            $output['assignment'] = $this->getAssignment()->getData();
+        }
+
+        if ($this->hasAction()) {
+            $output['action'] = $this->getAction()->getData();
+        }
+
+        return $output;
+    }
+
 }

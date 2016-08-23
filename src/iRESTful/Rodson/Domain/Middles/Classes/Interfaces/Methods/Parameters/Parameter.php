@@ -5,4 +5,5 @@ interface Parameter {
     public function getName();
     public function getType();
     public function isOptional();
+    public function getData();
 }

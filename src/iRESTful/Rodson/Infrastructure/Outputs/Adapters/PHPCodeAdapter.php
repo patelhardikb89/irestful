@@ -421,7 +421,7 @@ final class PHPCodeAdapter implements CodeAdapter {
 
             };
 
-            $name = $interface->getName();
+            $name = $interface->getNamespace()->getName();
             $methods = $interface->getMethods();
             $namespace = $interface->getNamespace();
 
@@ -462,7 +462,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $customCodeLines = $fromCustomMethodsToCodeLines($customMethods);
             }
 
-            $interfaceName = $interface->getName();
+            $interfaceName = $interface->getNamespace()->getName();
             $subClass = ($interface->isEntity()) ? ' extends AbstractEntity' : '';
 
             $useInterfaceCode = '';
@@ -507,7 +507,7 @@ final class PHPCodeAdapter implements CodeAdapter {
                 $customCodeLines = $fromCustomMethodsToCodeLines($customMethods);
             }
 
-            $interfaceName = $interface->getName();
+            $interfaceName = $interface->getNamespace()->getName();
             $subClass = ($interface->isEntity()) ? ' extends AbstractEntity' : '';
 
             $useInterfaceCode = '';

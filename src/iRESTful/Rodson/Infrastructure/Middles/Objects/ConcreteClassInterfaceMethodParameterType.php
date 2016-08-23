@@ -38,4 +38,21 @@ final class ConcreteClassInterfaceMethodParameterType implements Type {
         return $this->primitive;
     }
 
+    public function getData() {
+        
+        $output = [
+            'is_array' => $this->isArray()
+        ];
+
+        if ($this->hasNamespace()) {
+            $output['namespace'] = $this->getNamespace()->getData();
+        }
+
+        if ($this->hasPrimitive()) {
+            $output['primitive'] = $this->getPrimitive();
+        }
+
+        return $output;
+    }
+
 }

@@ -49,4 +49,26 @@ final class ConcreteAnnotatedClass implements AnnotatedClass {
         return $this->samples;
     }
 
+    public function getData() {
+
+        $output = [
+            'class' => $this->getClass()->getData()
+        ];
+
+        if ($this->hasAnnotation()) {
+            $output['annotation'] = $this->getAnnotation()->getData();
+        }
+
+        if ($this->hasSamples()) {
+            $samples = $this->getSamples();
+            array_walk($samples, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['samples'] = $samples;
+        }
+
+        return $output;
+    }
+
 }

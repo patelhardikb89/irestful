@@ -7,4 +7,5 @@ interface Type {
     public function getDatabaseType();
     public function hasDefault();
     public function getDefault();
+    public function getData();
 }

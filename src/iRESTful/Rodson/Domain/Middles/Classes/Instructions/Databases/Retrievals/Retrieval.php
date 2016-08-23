@@ -10,4 +10,5 @@ interface Retrieval {
     public function getMultipleEntities();
     public function hasEntityPartialSet();
     public function getEntityPartialSet();
+    public function getData();
 }

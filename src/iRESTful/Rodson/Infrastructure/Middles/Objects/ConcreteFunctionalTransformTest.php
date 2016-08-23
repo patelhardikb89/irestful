@@ -40,4 +40,18 @@ final class ConcreteFunctionalTransformTest implements TransformTest {
         return $this->configuration;
     }
 
+    public function getData() {
+
+        $samples = $this->getSamples();
+        array_walk($samples, function(&$element, $index) {
+            $element = $element->getData();
+        });
+
+        return [
+            'namespace' => $this->getNamespace()->getData(),
+            'samples' => $samples,
+            'configuration' => $this->getConfiguration()->getData()
+        ];
+    }
+
 }

@@ -29,4 +29,11 @@ final class ConcreteAnnotationParameterConverterSingle implements SingleConverte
         return $this->methodName;
     }
 
+    public function getData() {
+        return [
+            'interface' => $this->getInterfaceName(),
+            'method' => $this->getMethodName()
+        ];
+    }
+
 }

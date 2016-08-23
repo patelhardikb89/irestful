@@ -6,4 +6,5 @@ interface Action {
     public function isInsert();
     public function isUpdate();
     public function isDelete();
+    public function getData();
 }

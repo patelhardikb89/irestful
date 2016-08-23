@@ -8,4 +8,5 @@ interface Instruction {
     public function getAssignment();
     public function hasAction();
     public function getAction();
+    public function getData();
 }

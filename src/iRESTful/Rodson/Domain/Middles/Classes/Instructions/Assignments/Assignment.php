@@ -7,6 +7,7 @@ interface Assignment {
     public function getDatabase();
     public function hasConversion();
     public function getConversion();
-    public function hasMergedAssignment();
-    public function getMergedAssignment();
+    public function hasMergedAssignments();
+    public function getMergedAssignments();
+    public function getData();
 }

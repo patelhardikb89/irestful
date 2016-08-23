@@ -7,4 +7,5 @@ interface CustomMethod {
     public function getSourceCodeLines();
     public function hasParameters();
     public function getParameters();
+    public function getData();
 }

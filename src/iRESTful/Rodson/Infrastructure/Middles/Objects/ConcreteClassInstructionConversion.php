@@ -19,4 +19,11 @@ final class ConcreteClassInstructionConversion implements Conversion {
         return $this->to;
     }
 
+    public function getData() {
+        return [
+            'from' => $this->from()->getData(),
+            'to' => $this->to()->getData()
+        ];
+    }
+
 }

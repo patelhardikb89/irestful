@@ -38,4 +38,13 @@ final class ConcreteControllerHttpRequestCommandAction implements Action {
         return $this->isDelete;
     }
 
+    public function getData() {
+        return [
+            'is_retrieval' => $this->isRetrieval(),
+            'is_insert' => $this->isInsert(),
+            'is_update' => $this->isUpdate(),
+            'is_delete' => $this->isDelete()
+        ];
+    }
+
 }

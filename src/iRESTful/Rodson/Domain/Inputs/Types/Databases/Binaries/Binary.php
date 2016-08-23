@@ -6,4 +6,5 @@ interface Binary {
     public function getSpecificBitSize();
     public function hasMaxBitSize();
     public function getMaxBitSize();
+    public function getData();
 }

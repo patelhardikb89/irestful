@@ -7,4 +7,5 @@ interface Constructor {
     public function getCustomMethod();
     public function hasParameters();
     public function getParameters();
+    public function getData();
 }

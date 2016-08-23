@@ -41,4 +41,22 @@ final class ConcreteAnnotationParameter implements Parameter {
         return $this->elementsType;
     }
 
+    public function getData() {
+
+        $output = [
+            'flow' => $this->getFlow()->getData(),
+            'type' => $this->getType()->getData()
+        ];
+
+        if ($this->hasConverter()) {
+            $output['converter'] = $this->getConverter()->getData();
+        }
+
+        if ($this->hasElementsType()) {
+            $output['elements_type'] = $this->getElementsType();
+        }
+
+        return $output;
+    }
+
 }

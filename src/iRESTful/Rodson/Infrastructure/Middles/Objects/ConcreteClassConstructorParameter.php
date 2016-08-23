@@ -27,4 +27,12 @@ final class ConcreteClassConstructorParameter implements ConstructorParameter {
         return $this->method;
     }
 
+    public function getData() {
+        return [
+            'property' => $this->getProperty()->getName(),
+            'parameter' => $this->getParameter()->getData(),
+            'method' => $this->getMethod()->getData()
+        ];
+    }
+
 }

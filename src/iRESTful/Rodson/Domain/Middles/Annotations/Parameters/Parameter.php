@@ -8,4 +8,5 @@ interface Parameter {
     public function getConverter();
     public function hasElementsType();
     public function getElementsType();
+    public function getData();
 }

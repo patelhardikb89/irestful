@@ -7,4 +7,5 @@ interface Entity {
     public function getUuidValue();
     public function hasKeyname();
     public function getKeyname();
+    public function getData();
 }

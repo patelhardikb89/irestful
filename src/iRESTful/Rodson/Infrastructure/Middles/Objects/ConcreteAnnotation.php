@@ -46,4 +46,22 @@ final class ConcreteAnnotation implements Annotation {
         return $this->containerName;
     }
 
+    public function getData() {
+
+        $parameters = $this->getParameters();
+        array_walk($parameters, function(&$element, $index) {
+            $element = $element->getData();
+        });
+
+        $output = [
+            'parameters' => $parameters
+        ];
+
+        if ($this->hasContainerName()) {
+            $output['container'] = $this->getContainerName();
+        }
+
+        return $output;
+    }
+
 }

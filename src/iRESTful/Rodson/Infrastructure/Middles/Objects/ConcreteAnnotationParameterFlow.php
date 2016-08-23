@@ -36,4 +36,12 @@ final class ConcreteAnnotationParameterFlow implements Flow {
         return $this->keyname;
     }
 
+    public function getData() {
+        return [
+            'property_name' => $this->getPropertyName(),
+            'keyname' => $this->getKeyname(),
+            'method_chain' => $this->getMethodChain()->getChain()
+        ];
+    }
+
 }

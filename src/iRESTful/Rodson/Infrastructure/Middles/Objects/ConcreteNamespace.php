@@ -45,4 +45,12 @@ final class ConcreteNamespace implements ClassNamespace {
         return implode('\\', $this->getPath());
     }
 
+    public function getData() {
+        return [
+            'name' => $this->getName(),
+            'path' => $this->getPathAsString(),
+            'all' => $this->getAllAsString()
+        ];
+    }
+
 }

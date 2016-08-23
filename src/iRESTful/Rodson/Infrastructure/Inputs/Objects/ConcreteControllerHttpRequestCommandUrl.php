@@ -47,4 +47,17 @@ final class ConcreteControllerHttpRequestCommandUrl implements Url {
         return $this->port;
     }
 
+    public function getData() {
+        $output = [
+            'base_url' => $this->getBaseUrl(),
+            'endpoint' => $this->getEndpoint()
+        ];
+
+        if ($this->hasPort()) {
+            $output['port'] = $this->port;
+        }
+
+        return $output;
+    }
+
 }

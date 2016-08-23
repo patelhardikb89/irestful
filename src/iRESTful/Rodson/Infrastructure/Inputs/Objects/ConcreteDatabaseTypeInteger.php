@@ -23,4 +23,10 @@ final class ConcreteDatabaseTypeInteger implements Integer {
         return $this->maximumBitSize;
     }
 
+    public function getData() {
+        return [
+            'max' => $this->getMaximumBitSize()
+        ];
+    }
+
 }

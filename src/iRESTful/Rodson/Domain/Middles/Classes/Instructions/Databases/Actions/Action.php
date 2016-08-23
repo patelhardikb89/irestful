@@ -10,4 +10,5 @@ interface Action {
     public function getUpdate();
     public function hasDelete();
     public function getDelete();
+    public function getData();
 }

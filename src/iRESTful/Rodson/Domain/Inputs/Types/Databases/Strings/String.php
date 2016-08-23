@@ -6,4 +6,5 @@ interface String {
     public function getSpecificCharacterSize();
     public function hasMaxCharacterSize();
     public function getMaxCharacterSize();
+    public function getData();
 }

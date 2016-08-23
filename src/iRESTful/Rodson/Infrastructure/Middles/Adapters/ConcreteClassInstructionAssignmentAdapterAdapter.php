@@ -4,6 +4,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Adapters\Ada
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Adapters\Adapters\DatabaseAdapterAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\Adapters\Adapters\ConversionAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionAssignmentAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Exceptions\AssignmentException;
 
 final class ConcreteClassInstructionAssignmentAdapterAdapter implements AssignmentAdapterAdapter {
     private $databaseAdapterAdapter;
@@ -16,15 +17,15 @@ final class ConcreteClassInstructionAssignmentAdapterAdapter implements Assignme
     public function fromDataToAssignmentAdapter(array $data) {
 
         if (!isset($data['classes'])) {
-            //throws
+            throw new AssignmentException('The classes keyname is mandatory in order to convert data to an AssignmentAdapter.');
         }
 
         if (!isset($data['controller'])) {
-            //throws
+            throw new AssignmentException('The controller keyname is mandatory in order to convert data to an AssignmentAdapter.');
         }
 
         if (!isset($data['input'])) {
-            //throws
+            throw new AssignmentException('The input keyname is mandatory in order to convert data to an AssignmentAdapter.');
         }
 
         $previousAssignments = null;

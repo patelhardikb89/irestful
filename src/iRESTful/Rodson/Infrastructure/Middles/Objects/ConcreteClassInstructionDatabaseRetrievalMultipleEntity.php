@@ -43,4 +43,20 @@ final class ConcreteClassInstructionDatabaseRetrievalMultipleEntity implements M
         return $this->keyname;
     }
 
+    public function getData() {
+        $output = [
+            'class' => $this->getClass()->getData()
+        ];
+
+        if ($this->hasUuidValue()) {
+            $output['uuid'] = $this->getUuidValue()->getData();
+        }
+
+        if ($this->hasKeyname()) {
+            $output['keyname'] = $this->getKeyname()->getData();
+        }
+
+        return $output;
+    }
+
 }

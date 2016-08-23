@@ -31,4 +31,16 @@ final class ConcreteClassConstructorParameterMethod implements Method {
     public function getSubMethod() {
         return $this->subMethod;
     }
+
+    public function getData() {
+        $output = [
+            'name' => $this->getName()
+        ];
+
+        if ($this->hasSubMethod()) {
+            $output['sub_method'] = $this->getSubMethod()->getData();
+        }
+
+        return $output;
+    }
 }

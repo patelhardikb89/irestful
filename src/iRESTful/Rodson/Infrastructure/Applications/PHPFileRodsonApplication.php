@@ -11,6 +11,7 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSampleAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteConfigurationNamespaceFactory;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteFunctionalTransformTestAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassNamespaceAdapter;
 
 final class PHPFileRodsonApplication implements RodsonApplication {
     private $baseNamespace;
@@ -53,7 +54,11 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $configurationAdapter = new ConcreteConfigurationAdapter($configurationNamespaceFactory, '___', 'America/Montreal');
         $configuration = $configurationAdapter->fromAnnotatedClassesToConfiguration($annotatedClasses);
 
-        $functionalTransformTestAdapter = new ConcreteFunctionalTransformTestAdapter($baseNamespace, $configuration);
+        $functionalTransformTestAdapter = new ConcreteFunctionalTransformTestAdapter(
+            $baseNamespace,
+            $configuration
+        );
+
         $functionalTransformTests = $functionalTransformTestAdapter->fromAnnotatedClassesToTransformTests($annotatedClasses);
 
         $output = array_filter(explode('/', $outputFolderPath));

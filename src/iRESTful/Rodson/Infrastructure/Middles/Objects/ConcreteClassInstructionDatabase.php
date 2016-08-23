@@ -50,4 +50,26 @@ final class ConcreteClassInstructionDatabase implements Database {
         return $this->actions;
     }
 
+    public function getData() {
+        $output = [];
+        if ($this->hasRetrieval()) {
+            $output['retrieval'] = $this->getRetrieval()->getData();
+        }
+
+        if ($this->hasAction()) {
+            $output['action'] = $this->getAction()->getData();
+        }
+
+        if ($this->hasActions()) {
+            $actions = $this->getActions();
+            array_walk($actions, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['actions'] = $actions;
+        }
+
+        return $output;
+    }
+
 }

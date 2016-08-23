@@ -44,4 +44,20 @@ final class ConcreteConfiguration implements Configuration {
         return $this->adapterInterfaceClassMapper;
     }
 
+    public function getData() {
+
+        return [
+            'namespace' => $this->getNamespace()->getData(),
+            'delimiter' => $this->getDelimiter(),
+            'timezone' => $this->getTimezone(),
+            'mappers' => [
+                'containers' => $this->getContainerClassMapper(),
+                'interfaces' => [
+                    'objects' => $this->getInterfaceClassMapper(),
+                    'adapters' => $this->getAdapterInterfaceClassMapper()
+                ]
+            ]
+        ];
+    }
+
 }

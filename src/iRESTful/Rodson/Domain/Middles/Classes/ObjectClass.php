@@ -13,4 +13,5 @@ interface ObjectClass {
     public function getInstructions();
     public function hasSubClasses();
     public function getSubClasses();
+    public function getData();
 }

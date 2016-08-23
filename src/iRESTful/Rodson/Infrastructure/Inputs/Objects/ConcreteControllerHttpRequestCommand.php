@@ -20,4 +20,11 @@ final class ConcreteControllerHttpRequestCommand implements Command {
         return $this->url;
     }
 
+    public function getData() {
+        return [
+            'action' => $this->action->getData(),
+            'url' => $this->url->getData()
+        ];
+    }
+
 }

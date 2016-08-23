@@ -6,4 +6,5 @@ interface Delete {
     public function getAssignment();
     public function hasAssignments();
     public function getAssignments();
+    public function getData();
 }

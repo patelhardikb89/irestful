@@ -1,6 +1,7 @@
+* Create the ConcreteCodeAdapter that take templates and convert data to code.  Use Twig.
+* Delete the PHPCodeAdapter and replace it by the ConcreteCodeAdapter
 * Validate that assignment variable names do not have the same name as an http request (for controllers).
 * Generate class code for controller classes.
-* Use Twig to generate all the code
 * Generate the composer.json file
 * Generate the phpunit.xml.dist file
 * Generate the Vagrantfile file

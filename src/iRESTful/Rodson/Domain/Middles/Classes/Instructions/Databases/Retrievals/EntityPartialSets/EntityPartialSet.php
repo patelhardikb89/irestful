@@ -5,4 +5,5 @@ interface EntityPartialSet {
     public function getClass();
     public function getMinimumValue();
     public function getMaximumValue();
+    public function getData();
 }

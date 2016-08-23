@@ -20,4 +20,10 @@ final class ConcreteControllerHttpRequestView implements View {
         return $this->isJson;
     }
 
+    public function getData() {
+        return [
+            'is_json' => $this->isJson()
+        ];
+    }
+
 }

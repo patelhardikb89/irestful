@@ -26,4 +26,14 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSet implements
         return $this->maximumValue;
     }
 
+    public function getData() {
+        return [
+            'class' => $this->getClass()->getData(),
+            'value' => [
+                'minimum' => $this->getMinimumValue(),
+                'maximum' => $this->getMaximumValue()
+            ]
+        ];
+    }
+
 }

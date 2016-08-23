@@ -59,12 +59,38 @@ final class ConcreteClassInstructionAssignment implements Assignment {
         return $this->conversion;
     }
 
-    public function hasMergedAssignment() {
+    public function hasMergedAssignments() {
         return !empty($this->mergedAssignments);
     }
 
-    public function getMergedAssignment() {
+    public function getMergedAssignments() {
         return $this->mergedAssignments;
+    }
+
+    public function getData() {
+        $output = [
+            'variable' => $this->getVariableName()
+        ];
+
+        if ($this->hasDatabase()) {
+            $output['database'] = $this->getDatabase()->getData();
+        }
+
+        if ($this->hasConversion()) {
+            $output['conversion'] = $this->getConversion()->getData();
+        }
+
+        if ($this->hasMergedAssignments()) {
+            $mergedAssignments = $this->getMergedAssignments();
+            array_walk($mergedAssignments, function(&$element, $index) {
+                $element = $element->getData();
+            });
+
+            $output['merged_assignments'] = $mergedAssignments;
+        }
+
+        return $output;
+
     }
 
 }

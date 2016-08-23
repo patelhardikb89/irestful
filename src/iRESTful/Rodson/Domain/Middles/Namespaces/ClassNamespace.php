@@ -7,4 +7,5 @@ interface ClassNamespace {
     public function getAll();
     public function getAllAsString();
     public function getPathAsString();
+    public function getData();
 }

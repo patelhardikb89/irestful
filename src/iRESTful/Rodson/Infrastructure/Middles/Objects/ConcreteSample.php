@@ -25,8 +25,15 @@ final class ConcreteSample implements Sample {
         return $this->containerName;
     }
 
-    public function getData() {
+    public function getSampleData() {
         return $this->data;
+    }
+
+    public function getData() {
+        return [
+            'container' => $this->getContainerName(),
+            'data' => $this->getSampleData()
+        ];
     }
 
 }

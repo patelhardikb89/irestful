@@ -11,4 +11,5 @@ interface DatabaseType {
     public function getInteger();
     public function hasString();
     public function getString();
+    public function getData();
 }
