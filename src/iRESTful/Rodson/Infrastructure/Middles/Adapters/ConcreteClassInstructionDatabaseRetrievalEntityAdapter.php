@@ -5,38 +5,19 @@ use iRESTful\Rodson\Domain\Inputs\Values\Adapters\ValueAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Entities\Exceptions\EntityException;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInstructionDatabaseRetrievalEntity;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Adapters\KeynameAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Adapters\ContainerAdapter;
 
 final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements EntityAdapter {
     private $keynameAdapter;
     private $valueAdapter;
-    private $annotatedClasses;
-    public function __construct(KeynameAdapter $keynameAdapter, ValueAdapter $valueAdapter, array $annotatedClasses) {
+    private $containerAdapter;
+    public function __construct(KeynameAdapter $keynameAdapter, ValueAdapter $valueAdapter, ContainerAdapter $containerAdapter) {
         $this->keynameAdapter = $keynameAdapter;
         $this->valueAdapter = $valueAdapter;
-        $this->annotatedClasses = $annotatedClasses;
+        $this->containerAdapter = $containerAdapter;
     }
 
     public function fromDataToEntity(array $data) {
-
-        $annotatedClasses = $this->annotatedClasses;
-        $getAnnotatedClassByObjectName = function($objectName) use(&$annotatedClasses) {
-
-            foreach($annotatedClasses as $oneAnnotatedClass) {
-                $oneClass = $oneAnnotatedClass->getClass();
-                $input = $oneClass->getInput();
-                if (!$input->hasObject()) {
-                    continue;
-                }
-
-                $object = $input->getObject();
-                if ($object->getName() == $objectName) {
-                    return $oneAnnotatedClass;
-                }
-            }
-
-            return null;
-
-        };
 
         if (!isset($data['object_name'])) {
             throw new EntityException('The object_name keyname is mandatory in order to convert data to an Entity object.');
@@ -50,17 +31,12 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements En
             throw new EntityException('The property->value keyname is mandatory in order to convert data to an Entity object.');
         }
 
-
-        $annotatedClass = $getAnnotatedClassByObjectName($data['object_name']);
-        if (empty($annotatedClass)) {
-            throw new EntityException('The given object_name ('.$data['object_name'].') does not reference any class.');
-        }
-
         if ($data['property']['name'] == 'uuid') {
             $value = $this->valueAdapter->fromStringToValue($data['property']['value']);
             return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, $value);
         }
 
+        $annotatedClass = $this->containerAdapter->fromStringToContainer($data['object_name']);
         $keyname = $this->keynameAdapter->fromDataToKeyname($data['property']);
         return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, null, $keyname);
 

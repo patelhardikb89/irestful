@@ -27,6 +27,7 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassConstructorPara
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassConstructorAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassNamespaceAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteValueAdapterAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionContainerAdapterAdapter;
 
 final class ConcreteClassControllerAdapterAdapter implements ControllerAdapterAdapter {
     private $baseNamespace;
@@ -36,16 +37,19 @@ final class ConcreteClassControllerAdapterAdapter implements ControllerAdapterAd
 
     public function fromAnnotatedClassesToControllerAdapter(array $annotatedClasses) {
 
+        //container:
+        $valueAdapterAdapter = new ConcreteValueAdapterAdapter();
+        $classInstructionContainerAdapterAdapter = new ConcreteClassInstructionContainerAdapterAdapter($valueAdapterAdapter);
+
         //instructions
         $classInstructionConversionFromAdapterAdapter = new ConcreteClassInstructionConversionFromAdapterAdapter();
-        $classInstructionConversionToAdapterAdapter = new ConcreteClassInstructionConversionToAdapterAdapter();
+        $classInstructionConversionToAdapterAdapter = new ConcreteClassInstructionConversionToAdapterAdapter($classInstructionContainerAdapterAdapter);
         $classInstructionConversionAdapterAdapter = new ConcreteClassInstructionConversionAdapterAdapter($classInstructionConversionFromAdapterAdapter, $classInstructionConversionToAdapterAdapter);
 
-        $valueAdapterAdapter = new ConcreteValueAdapterAdapter();
         $classInstructionDatabaseRetrievalKeynameAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalKeynameAdapterAdapter($valueAdapterAdapter);
-        $classInstructionDatabaseRetrievalEntityAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalEntityAdapterAdapter($classInstructionDatabaseRetrievalKeynameAdapterAdapter, $valueAdapterAdapter);
-        $classInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter($valueAdapterAdapter);
-        $classInstructionDatabaseRetrievalMultipleEntityAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapter($classInstructionDatabaseRetrievalKeynameAdapterAdapter, $valueAdapterAdapter);
+        $classInstructionDatabaseRetrievalEntityAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalEntityAdapterAdapter($classInstructionDatabaseRetrievalKeynameAdapterAdapter, $valueAdapterAdapter, $classInstructionContainerAdapterAdapter);
+        $classInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter($valueAdapterAdapter, $classInstructionContainerAdapterAdapter);
+        $classInstructionDatabaseRetrievalMultipleEntityAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapter($classInstructionDatabaseRetrievalKeynameAdapterAdapter, $valueAdapterAdapter, $classInstructionContainerAdapterAdapter);
 
         $classInstructionDatabaseRetrievalAdapterAdapter = new ConcreteClassInstructionDatabaseRetrievalAdapterAdapter(
             $classInstructionDatabaseRetrievalEntityAdapterAdapter,

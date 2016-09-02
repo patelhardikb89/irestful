@@ -232,8 +232,8 @@
             "pattern": "retrieve /$container$/partials",
             "input": "input",
             "instructions": [
-                "roles = retrieve role index input->index amount input->amount",
-                "output = from roles to data",
+                "entitySet = retrieve input->container index input->index amount input->amount",
+                "output = from entitySet to data",
                 "return output"
             ],
             "view": "json"
@@ -242,8 +242,8 @@
             "pattern": "retrieve /$container$",
             "input": "input",
             "instructions": [
-                "roles = retrieve multiple role by uuid:input->uuids",
-                "output = from roles to data",
+                "entities = retrieve multiple input->container by uuid:input->uuids",
+                "output = from entities to data",
                 "return output"
             ],
             "view": "json"
@@ -252,8 +252,8 @@
             "pattern": "retrieve /$container$/$name$/$value",
             "input": "input",
             "instructions": [
-                "role = retrieve role by input->name:input->value",
-                "output = from role to data",
+                "entity = retrieve input->container by input->name:input->value",
+                "output = from entity to data",
                 "return output"
             ],
             "view": "json"
@@ -262,8 +262,8 @@
             "pattern": "retrieve /$role|container$\/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
             "input": "input",
             "instructions": [
-                "role = retrieve role by uuid:input->uuid",
-                "output = from role to data",
+                "entity = retrieve input->container by uuid:input->uuid",
+                "output = from entity to data",
                 "return output"
             ],
             "view": "json"
@@ -272,8 +272,8 @@
             "pattern": "update /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|original_uuid$",
             "input": "input",
             "instructions": [
-                "original = retrieve role by uuid:input->uuid",
-                "updated = from input to role",
+                "original = retrieve input->container by uuid:input->uuid",
+                "updated = from input to input->container",
                 "update original using updated",
                 "output = from updated to data",
                 "return output"
@@ -284,9 +284,9 @@
             "pattern": "insert /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
             "input": "input",
             "instructions": [
-                "role = retrieve role by uuid:input->uuid",
-                "delete role",
-                "output = from role to data",
+                "entity = retrieve input->container by uuid:input->uuid",
+                "delete entity",
+                "output = from entity to data",
                 "return output"
             ],
             "view": "json"
@@ -295,9 +295,9 @@
             "pattern": "insert /$container$",
             "input": "input",
             "instructions": [
-                "role = from input to role",
-                "insert role",
-                "output = from role to data",
+                "entity = from input to input->container",
+                "insert entity",
+                "output = from input->container to data",
                 "return output"
             ],
             "view": "json"
@@ -306,9 +306,9 @@
             "pattern": "insert /$container$/$name$/$value",
             "input": "input",
             "instructions": [
-                "roles = from input to multiple role",
-                "insert roles",
-                "output = from roles to data",
+                "entities = from input to multiple input->container",
+                "insert entities",
+                "output = from entities to data",
                 "return output"
             ],
             "view": "json"

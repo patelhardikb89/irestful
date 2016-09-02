@@ -27,6 +27,7 @@ use iRESTful\Rodson\Domain\Inputs\Values\Value;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\MultipleEntity;
 use iRESTful\Rodson\Domain\Middles\Annotations\Classes\AnnotatedClass;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Container;
 
 final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     private $parameterAdapter;
@@ -159,10 +160,22 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
         return $annotation->getContainerName();
     }
 
+    private function getContainerNameFromContainer(Container $container) {
+        if ($container->hasAnnotatedClass()) {
+            $annotatedClass = $container->getAnnotatedClass();
+            $containerName = $this->getContainerNameFromAnnotatedClass($annotatedClass);
+            return "'".$containerName."'";
+        }
+
+        $value = $container->getValue();
+        return $this->getCodeFromValue($value);
+    }
+
     private function generateCodeLinesFromEntity(Entity $entity) {
 
-        $annotatedClass = $entity->getAnnotatedClass();
-        $containerName = $this->getContainerNameFromAnnotatedClass($annotatedClass);
+        $container = $entity->getContainer();
+        $containerName = $this->getContainerNameFromContainer($container);
+
 
         if ($entity->hasUuidValue()) {
             $uuidValue = $entity->getUuidValue();
@@ -171,7 +184,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
             return [
                 '$this->entityRepositoryFactory->create()->retrieve([',
                 [
-                    "'container' => '".$containerName."'",
+                    "'container' => ".$containerName,
                     "'uuid' => ".$uuidCode
                 ],
                 ']);'
@@ -203,15 +216,16 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     }
 
     private function generateCodeLinesFromMultipleEntity(MultipleEntity $multipleEntity) {
-        $annotatedClass = $multipleEntity->getAnnotatedClass();
-        $containerName = $this->getContainerNameFromAnnotatedClass($annotatedClass);
+
+        $container = $multipleEntity->getContainer();
+        $containerName = $this->getContainerNameFromContainer($container);
 
         if ($multipleEntity->hasUuidValue()) {
             $uuidValue = $multipleEntity->getUuidValue();
             return [
                 '$this->entitySetRepositoryFactory->create()->retrieve([',
                 [
-                    "'container' => '".$containerName."'",
+                    "'container' => ".$containerName,
                     "'uuids' => ".$this->getCodeFromValue($uuidValue)
                 ],
                 ']);'
@@ -243,8 +257,8 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
     private function generateCodeLinesFromEntityPartialSet(EntityPartialSet $entityPartialSet) {
 
-        $annotatedClass = $entityPartialSet->getAnnotatedClass();
-        $containerName = $this->getContainerNameFromAnnotatedClass($annotatedClass);
+        $container = $entityPartialSet->getContainer();
+        $containerName = $this->getContainerNameFromContainer($container);
 
         $index = $entityPartialSet->getIndexValue();
         $amount = $entityPartialSet->getAmountValue();

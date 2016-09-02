@@ -1,21 +1,21 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
-use iRESTful\Rodson\Domain\Middles\Annotations\Classes\AnnotatedClass;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Container;
 use iRESTful\Rodson\Domain\Inputs\Values\Value;
 
 final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSet implements EntityPartialSet {
-    private $annotatedClass;
+    private $container;
     private $indexValue;
     private $amountValue;
-    public function __construct(AnnotatedClass $annotatedClass, Value $indexValue, Value $amountValue) {
-        $this->annotatedClass = $annotatedClass;
+    public function __construct(Container $container, Value $indexValue, Value $amountValue) {
+        $this->container = $container;
         $this->indexValue = $indexValue;
         $this->amountValue = $amountValue;
     }
 
-    public function getAnnotatedClass() {
-        return $this->annotatedClass;
+    public function getContainer() {
+        return $this->container;
     }
 
     public function getIndexValue() {

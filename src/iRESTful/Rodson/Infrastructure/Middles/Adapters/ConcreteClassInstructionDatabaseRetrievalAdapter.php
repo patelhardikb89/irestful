@@ -39,7 +39,7 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapter implements Retrieva
         }
 
         $matches = [];
-        preg_match_all('/([a-z]+) index ([a-z\-\>]+) amount ([a-z\-\>]+)/s', $string, $matches);
+        preg_match_all('/([^ ]+) index ([a-z\-\>]+) amount ([a-z\-\>]+)/s', $string, $matches);
         if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
             $entityPartialSet = $this->entityPartialSetAdapter->fromDataToEntityPartialSet([
                 'object_name' => $matches[1][0],

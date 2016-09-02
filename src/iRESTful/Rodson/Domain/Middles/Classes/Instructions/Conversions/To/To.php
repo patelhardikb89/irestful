@@ -5,7 +5,7 @@ interface To {
     public function isData();
     public function isMultiple();
     public function isPartialSet();
-    public function hasAnnotatedClass();
-    public function getAnnotatedClass();
+    public function hasContainer();
+    public function getContainer();
     public function getData();
 }

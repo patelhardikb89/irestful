@@ -4,11 +4,14 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Ent
 use iRESTful\Rodson\Domain\Inputs\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\Exceptions\EntityPartialSetException;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Adapters\Adapters\ContainerAdapterAdapter;
 
 final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter implements EntityPartialSetAdapterAdapter {
     private $valueAdapterAdapter;
-    public function __construct(ValueAdapterAdapter $valueAdapterAdapter) {
+    private $containerAdapterAdapter;
+    public function __construct(ValueAdapterAdapter $valueAdapterAdapter, ContainerAdapterAdapter $containerAdapterAdapter) {
         $this->valueAdapterAdapter = $valueAdapterAdapter;
+        $this->containerAdapterAdapter = $containerAdapterAdapter;
     }
 
     public function fromDataToEntityPartialSetAdapter(array $data) {
@@ -22,7 +25,8 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapterAdap
             'constants' => $constants
         ]);
 
-        return new ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter($valueAdapter, $data['annotated_classes']);
+        $containerAdapter = $this->containerAdapterAdapter->fromDataToContainerAdapter($data);
+        return new ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter($valueAdapter, $containerAdapter);
     }
 
 }

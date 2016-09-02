@@ -5,17 +5,24 @@ use iRESTful\Rodson\Domain\Inputs\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Adapters\Adapters\KeynameAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\Exceptions\MultipleEntityException;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Adapters\Adapters\ContainerAdapterAdapter;
 
 final class ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapter implements MultipleEntityAdapterAdapter {
     private $keynameAdapterAdapter;
     private $valueAdapterAdapter;
-    public function __construct(KeynameAdapterAdapter $keynameAdapterAdapter, ValueAdapterAdapter $valueAdapterAdapter) {
+    private $containerAdapterAdapter;
+    public function __construct(
+        KeynameAdapterAdapter $keynameAdapterAdapter,
+        ValueAdapterAdapter $valueAdapterAdapter,
+        ContainerAdapterAdapter $containerAdapterAdapter
+    ) {
         $this->keynameAdapterAdapter = $keynameAdapterAdapter;
         $this->valueAdapterAdapter = $valueAdapterAdapter;
+        $this->containerAdapterAdapter = $containerAdapterAdapter;
     }
 
     public function fromDataToMultipleEntityAdapter(array $data) {
-        
+
         if (!isset($data['annotated_classes'])) {
             throw new MultipleEntityException('The annotated_classes keyname is mandatory in order to convert data to an EntityAdapter object.');
         }
@@ -29,7 +36,8 @@ final class ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapte
             'constants' => $constants
         ]);
 
-        return new ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter($keynameAdapter, $valueAdapter, $data['annotated_classes']);
+        $containerAdapter = $this->containerAdapterAdapter->fromDataToContainerAdapter($data);
+        return new ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter($keynameAdapter, $valueAdapter, $containerAdapter);
     }
 
 }
