@@ -21,6 +21,21 @@ final class ConcreteClassInstructionDatabaseActionInsertAdapter implements Inser
             return new ConcreteClassInstructionDatabaseActionInsert($this->previousAssignments[$string]);
         }
 
+        if (strpos($string, ', ') !== false) {
+            $assignments = [];
+            $exploded = explode(', ', $string);
+            foreach($exploded as $oneVariable) {
+
+                if (!isset($this->previousAssignments[$oneVariable])) {
+                    throw new InsertException('The given insert action command reference a variable ('.$oneVariable.') that is not defined.');
+                }
+
+                $assignments[] = $this->previousAssignments[$oneVariable];
+            }
+
+            return new ConcreteClassInstructionDatabaseActionInsert(null, $assignments);
+        }
+
         throw new InsertException('The given insert action command reference a variable ('.$string.') that is not defined.');
     }
 

@@ -26,7 +26,7 @@ final class ConcreteClassInstructionDatabaseAdapter implements DatabaseAdapter {
     }
 
     public function fromStringToDatabase($string) {
-
+        
         if (strpos($string, 'execute ') === 0) {
             $keyname = trim(substr($string, strlen('execute ')));
             if (!isset($this->httpRequests[$keyname])) {

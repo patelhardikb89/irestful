@@ -1,37 +1,37 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
-use iRESTful\Rodson\Domain\Middles\Classes\ObjectClass;
+use iRESTful\Rodson\Domain\Middles\Annotations\Classes\AnnotatedClass;
 use iRESTful\Rodson\Domain\Inputs\Values\Value;
 
 final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSet implements EntityPartialSet {
-    private $class;
-    private $minimumValue;
-    private $maximumValue;
-    public function __construct(ObjectClass $class, Value $minimumValue, Value $maximumValue) {
-        $this->class = $class;
-        $this->minimumValue = $minimumValue;
-        $this->maximumValue = $maximumValue;
+    private $annotatedClass;
+    private $indexValue;
+    private $amountValue;
+    public function __construct(AnnotatedClass $annotatedClass, Value $indexValue, Value $amountValue) {
+        $this->annotatedClass = $annotatedClass;
+        $this->indexValue = $indexValue;
+        $this->amountValue = $amountValue;
     }
 
-    public function getClass() {
-        return $this->class;
+    public function getAnnotatedClass() {
+        return $this->annotatedClass;
     }
 
-    public function getMinimumValue() {
-        return $this->minimumValue;
+    public function getIndexValue() {
+        return $this->indexValue;
     }
 
-    public function getMaximumValue() {
-        return $this->maximumValue;
+    public function getAmountValue() {
+        return $this->amountValue;
     }
 
     public function getData() {
         return [
             'class' => $this->getClass()->getData(),
             'value' => [
-                'minimum' => $this->getMinimumValue(),
-                'maximum' => $this->getMaximumValue()
+                'minimum' => $this->getIndexValue(),
+                'maximum' => $this->getAmountValue()
             ]
         ];
     }

@@ -11,7 +11,6 @@ use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\Adapters\CustomMethod
 use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Adapters\InputAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClass;
 use iRESTful\Rodson\Domain\Inputs\Rodson;
-use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Adapters\Adapters\InstructionAdapterAdapter;
 
 final class ConcreteClassAdapter implements ClassAdapter {
     private $namespaceAdapter;
@@ -19,34 +18,28 @@ final class ConcreteClassAdapter implements ClassAdapter {
     private $constructorAdapter;
     private $customMethodAdapter;
     private $inputAdapter;
-    private $instructionAdapterAdapter;
     public function __construct(
         NamespaceAdapter $namespaceAdapter,
         InterfaceAdapter $interfaceAdapter,
         ConstructorAdapter $constructorAdapter,
         CustomMethodAdapter $customMethodAdapter,
-        InputAdapter $inputAdapter,
-        InstructionAdapterAdapter $instructionAdapterAdapter
+        InputAdapter $inputAdapter
     ) {
         $this->namespaceAdapter = $namespaceAdapter;
         $this->interfaceAdapter = $interfaceAdapter;
         $this->constructorAdapter = $constructorAdapter;
         $this->customMethodAdapter = $customMethodAdapter;
         $this->inputAdapter = $inputAdapter;
-        $this->instructionAdapterAdapter = $instructionAdapterAdapter;
     }
 
     public function fromRodsonToClasses(Rodson $rodson) {
 
         $objects = $rodson->getObjects();
-        $controllers = $rodson->getControllers();
+        //$controllers = $rodson->getControllers();
 
         $objectClasses = $this->fromObjectsToClasses($objects);
         $objectTypeClasses = $this->fromObjectsToTypeClasses($objects);
-        $merged = array_merge($objectClasses, $objectTypeClasses);
-
-        $controllerClasses = $this->fromControllersToClasses($controllers, $merged);
-        return array_merge($merged, $controllerClasses);
+        return array_merge($objectClasses, $objectTypeClasses);
     }
 
     private function fromObjectsToTypeClasses(array $objects) {
@@ -134,13 +127,13 @@ final class ConcreteClassAdapter implements ClassAdapter {
         return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor, $customMethods, $subClasses);
     }
 
-    private function fromControllerToClass(Controller $controller, array $classes) {
+    /*private function fromControllerToClass(Controller $controller, array $classes) {
 
         $namespace = $this->namespaceAdapter->fromControllerToNamespace($controller);
         $interface = $this->interfaceAdapter->fromControllerToInterface($controller);
-        $constructor = $this->constructorAdapter->fromControllerToConstructor($controller);
         $classInput = $this->inputAdapter->fromControllerToInput($controller);
         $instructions = $this->instructionAdapterAdapter->fromClassesToInstructionAdapter($classes)->fromControllerToInstructions($controller);
+        $constructor = $this->constructorAdapter->fromInstructionsToConstructor($instructions);
 
         $name = $namespace->getName();
         return new ConcreteClass($name, $classInput, $namespace, $interface, $constructor, null, null, $instructions);
@@ -153,7 +146,7 @@ final class ConcreteClassAdapter implements ClassAdapter {
         }
 
         return $output;
-    }
+    }*/
 
     private function fromTypeToAdapterClass(Type $type) {
         $namespace = $this->namespaceAdapter->fromTypeToAdapterNamespace($type);

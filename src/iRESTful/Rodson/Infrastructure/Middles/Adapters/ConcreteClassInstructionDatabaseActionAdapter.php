@@ -39,7 +39,7 @@ final class ConcreteClassInstructionDatabaseActionAdapter implements ActionAdapt
 
             return new ConcreteClassInstructionDatabaseAction($this->httpRequests[$keyname]);
         }
-
+        
         if (strpos($string, 'insert ') === 0) {
             $command = substr($string, strlen('insert '));
             $insert = $this->insertAdapter->fromStringToInsert($command);

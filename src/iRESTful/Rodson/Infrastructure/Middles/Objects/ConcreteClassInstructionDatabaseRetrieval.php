@@ -25,7 +25,7 @@ final class ConcreteClassInstructionDatabaseRetrieval implements Retrieval {
                 throw new ActionException('The given HttpRequest object is invalid for a retrieval.  It must be contain a retrieval action.');
             }
         }
-
+        
         $this->httpRequest = $httpRequest;
         $this->entity = $entity;
         $this->multipleEntity = $multipleEntity;

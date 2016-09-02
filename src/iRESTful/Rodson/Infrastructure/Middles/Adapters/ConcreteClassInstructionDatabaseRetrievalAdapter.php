@@ -25,7 +25,7 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapter implements Retrieva
     public function fromStringToRetrieval($string) {
 
         $matches = [];
-        preg_match_all('/([a-z]+) by ([a-z]+)\:([^ ]+)/s', $string, $matches);
+        preg_match_all('/([a-z]+) by ([^:]+)\:([^ ]+)/s', $string, $matches);
         if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
             $entity = $this->entityAdapter->fromDataToEntity([
                 'object_name' => $matches[1][0],
@@ -39,19 +39,19 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapter implements Retrieva
         }
 
         $matches = [];
-        preg_match_all('/([a-z]+) from ([a-z\-\>]+) to ([a-z\-\>]+)/s', $string, $matches);
+        preg_match_all('/([a-z]+) index ([a-z\-\>]+) amount ([a-z\-\>]+)/s', $string, $matches);
         if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
             $entityPartialSet = $this->entityPartialSetAdapter->fromDataToEntityPartialSet([
                 'object_name' => $matches[1][0],
-                'minimum' => $matches[2][0],
-                'maximum' => $matches[3][0]
+                'index' => $matches[2][0],
+                'amount' => $matches[3][0]
             ]);
 
             return new ConcreteClassInstructionDatabaseRetrieval(null, null, null, $entityPartialSet);
         }
 
         $matches = [];
-        preg_match_all('/multiple ([a-z]+) by ([a-z]+)\:([^ ]+)/s', $string, $matches);
+        preg_match_all('/multiple ([a-z]+) by ([^:]+)\:([^ ]+)/s', $string, $matches);
         if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
             $multipleEntity = $this->multipleEntityAdapter->fromDataToMultipleEntity([
                 'object_name' => $matches[1][0],

@@ -1,12 +1,11 @@
 <?php
-namespace iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\Elements;
+namespace iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\From;
 
-interface Element {
+interface From {
     public function isData();
     public function isInput();
     public function isMultiple();
-    public function hasClass();
-    public function getClass();
+    public function isNowMultiple();
     public function hasAssignment();
     public function getAssignment();
     public function getData();

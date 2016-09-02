@@ -3,6 +3,7 @@ namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\Adapters\Adapters\EntityPartialSetAdapterAdapter;
 use iRESTful\Rodson\Domain\Inputs\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\Exceptions\EntityPartialSetException;
 
 final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter implements EntityPartialSetAdapterAdapter {
     private $valueAdapterAdapter;
@@ -11,19 +12,17 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapterAdap
     }
 
     public function fromDataToEntityPartialSetAdapter(array $data) {
-        if (!isset($data['constants'])) {
-            throw new EntityException('The constants keyname is mandatory in order to convert data to an EntityAdapter object.');
+
+        if (!isset($data['annotated_classes'])) {
+            throw new EntityPartialSetException('The annotated_classes keyname is mandatory in order to convert data to an EntityAdapter object.');
         }
 
-        if (!isset($data['classes'])) {
-            throw new EntityException('The classes keyname is mandatory in order to convert data to an EntityAdapter object.');
-        }
-
+        $constants = empty($data['constants']) ? [] : $data['constants'];
         $valueAdapter = $this->valueAdapterAdapter->fromDataToValueAdapter([
-            'constants' => $data['constants']
+            'constants' => $constants
         ]);
 
-        return new ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter($valueAdapter, $data['classes']);
+        return new ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter($valueAdapter, $data['annotated_classes']);
     }
 
 }

@@ -7,12 +7,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Key
 final class ConcreteClassInstructionDatabaseRetrievalKeyname implements Keyname {
     private $name;
     private $value;
-    public function __construct($name, Value $value) {
-
-        if (empty($name) || !is_string($name)) {
-            throw new KeynameException('The name must be a non-empty string.');
-        }
-
+    public function __construct(Value $name, Value $value) {
         $this->name = $name;
         $this->value = $value;
 

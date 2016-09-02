@@ -7,11 +7,63 @@ use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteNamespace;
 use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Action;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\Conversion;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Retrieval;
 
 abstract class AbstractNamespaceAdapter implements NamespaceAdapter {
     private $baseNamespace;
     public function __construct(array $baseNamespace) {
         $this->baseNamespace = $baseNamespace;
+    }
+
+    public function fromRetrievalToNamespace(Retrieval $retrieval) {
+        $name = '';
+
+        if ($retrieval->hasHttpRequest()) {
+            $name = 'iRESTful\Objects\Libraries\Https\Applications\Factories\Adapters\HttpApplicationFactoryAdapter';
+        }
+
+        if ($retrieval->hasEntity()) {
+            $name = 'iRESTful\Objects\Entities\Entities\Domain\Repositories\Factories\EntityRepositoryFactory';
+        }
+
+        if ($retrieval->hasMultipleEntities()) {
+            $name = 'iRESTful\Objects\Entities\Entities\Domain\Sets\Repositories\Factories\EntitySetRepositoryFactory';
+        }
+
+        if ($retrieval->hasEntityPartialSet()) {
+            $name = 'iRESTful\Objects\Entities\Entities\Domain\Sets\Partials\Repositories\Factories\EntityPartialSetRepositoryFactory';
+        }
+
+        if (empty($name)) {
+            throw new NamespaceException('The given Retrieval object did not have a valid retrieval method.');
+        }
+
+        $exploded = explode('\\', $name);
+        return new ConcreteNamespace($exploded);
+    }
+
+    public function fromConversionToNamespace(Conversion $conversion) {
+        $name = 'iRESTful\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory';
+        $exploded = explode('\\', $name);
+        return new ConcreteNamespace($exploded);
+    }
+
+    public function fromActionToNamespace(Action $action) {
+        if ($action->hasHttpRequest()) {
+            $name = 'iRESTful\Objects\Libraries\Https\Applications\Factories\Adapters\HttpApplicationFactoryAdapter';
+            $exploded = explode('\\', $name);
+            return new ConcreteNamespace($exploded);
+        }
+
+        if ($action->hasInsert() || $action->hasUpdate() || $action->hasDelete()) {
+            $name = 'iRESTful\Objects\Entities\Entities\Domain\Services\Factories\EntityServiceFactory';
+            $exploded = explode('\\', $name);
+            return new ConcreteNamespace($exploded);
+        }
+
+        throw new NamespaceException('The given Action object did not contain a valid action.');
     }
 
     public function fromControllerToNamespace(Controller $controller) {

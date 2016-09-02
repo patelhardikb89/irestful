@@ -12,6 +12,7 @@
     "require": {
       "php": ">=5.5",
       "phpunit/phpunit": "4.0.5",
+      "twig/twig": "v1.24.1",
       "steve-rodrigue/objects": "dev-master"
     },
     "autoload": {

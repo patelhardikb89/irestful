@@ -6,7 +6,5 @@ interface Database {
     public function getRetrieval();
     public function hasAction();
     public function getAction();
-    public function hasActions();
-    public function getActions();
     public function getData();
 }

@@ -7,18 +7,19 @@ use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInstructionDatab
 
 final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter implements EntityPartialSetAdapter {
     private $valueAdapter;
-    private $classes;
-    public function __construct(ValueAdapter $valueAdapter, array $classes) {
+    private $annotatedClasses;
+    public function __construct(ValueAdapter $valueAdapter, array $annotatedClasses) {
         $this->valueAdapter = $valueAdapter;
-        $this->classes = $classes;
+        $this->annotatedClasses = $annotatedClasses;
     }
 
     public function fromDataToEntityPartialSet(array $data) {
 
-        $classes = $this->classes;
-        $getClassByObjectName = function($objectName) use(&$classes) {
+        $annotatedClasses = $this->annotatedClasses;
+        $getAnnotatedClassByObjectName = function($objectName) use(&$annotatedClasses) {
 
-            foreach($classes as $oneClass) {
+            foreach($annotatedClasses as $oneAnnotatedClass) {
+                $oneClass = $oneAnnotatedClass->getClass();
                 $input = $oneClass->getInput();
                 if (!$input->hasObject()) {
                     continue;
@@ -26,7 +27,7 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter imp
 
                 $object = $input->getObject();
                 if ($object->getName() == $objectName) {
-                    return $oneClass;
+                    return $oneAnnotatedClass;
                 }
             }
 
@@ -38,18 +39,18 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSetAdapter imp
             throw new EntityPartialSetException('The object_name keyname is mandatory in order to convert data to an EntityPartialSet object.');
         }
 
-        if (!isset($data['minimum'])) {
-            throw new EntityPartialSetException('The minimum keyname is mandatory in order to convert data to an EntityPartialSet object.');
+        if (!isset($data['index'])) {
+            throw new EntityPartialSetException('The index keyname is mandatory in order to convert data to an EntityPartialSet object.');
         }
 
-        if (!isset($data['maximum'])) {
-            throw new EntityPartialSetException('The maximum keyname is mandatory in order to convert data to an EntityPartialSet object.');
+        if (!isset($data['amount'])) {
+            throw new EntityPartialSetException('The amount keyname is mandatory in order to convert data to an EntityPartialSet object.');
         }
 
-        $class = $getClassByObjectName($data['object_name']);
-        $minimum = $this->valueAdapter->fromStringToValue($data['minimum']);
-        $maximum = $this->valueAdapter->fromStringToValue($data['maximum']);
-        return new ConcreteClassInstructionDatabaseRetrievalEntityPartialSet($class, $minimum, $maximum);
+        $annotatedClass = $getAnnotatedClassByObjectName($data['object_name']);
+        $index = $this->valueAdapter->fromStringToValue($data['index']);
+        $amount = $this->valueAdapter->fromStringToValue($data['amount']);
+        return new ConcreteClassInstructionDatabaseRetrievalEntityPartialSet($annotatedClass, $index, $amount);
     }
 
 }

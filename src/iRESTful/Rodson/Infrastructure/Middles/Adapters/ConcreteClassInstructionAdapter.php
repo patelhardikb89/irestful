@@ -10,15 +10,15 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Adapte
 final class ConcreteClassInstructionAdapter implements InstructionAdapter {
     private $actionAdapterAdapter;
     private $assignmentAdapterAdapter;
-    private $classes;
+    private $annotatedClasses;
     public function __construct(
         ActionAdapterAdapter $actionAdapterAdapter,
         AssignmentAdapterAdapter $assignmentAdapterAdapter,
-        array $classes
+        array $annotatedClasses
     ) {
         $this->actionAdapterAdapter = $actionAdapterAdapter;
         $this->assignmentAdapterAdapter = $assignmentAdapterAdapter;
-        $this->classes = $classes;
+        $this->annotatedClasses = $annotatedClasses;
     }
 
     public function fromControllerToInstructions(Controller $controller) {
@@ -56,11 +56,17 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
                 }
 
                 $returnedInstructions[] = new ConcreteClassInstruction(null, $merge);
-                continue;
+                return $returnedInstructions;
+            }
+
+            if ($isReturned && isset($assignments[$oneInstruction])) {
+                //$returnedInstructions[] = new ConcreteClassInstruction($assignments[$oneInstruction]);
+                return $returnedInstructions;
             }
 
             if (
                 (strpos($oneInstruction, 'insert ') === 0) ||
+                (strpos($oneInstruction, 'update ') === 0) ||
                 (strpos($oneInstruction, 'delete ') === 0) ||
                 (strpos($oneInstruction, 'execute ') === 0)
             ) {
@@ -72,28 +78,23 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
                 continue;
             }
 
-            if ($isReturned && isset($assignments[$oneInstruction])) {
-                $returnedInstructions[] = new ConcreteClassInstruction($assignments[$oneInstruction]);
-                continue;
-            }
-
             $assignment = $this->assignmentAdapterAdapter->fromDataToAssignmentAdapter([
-                'classes' => $this->classes,
+                'annotated_classes' => $this->annotatedClasses,
                 'controller' => $controller,
                 'previous_assignments' => $assignments,
                 'input' => $inputName
             ])->fromStringToAssignment($oneInstruction);
 
-            if ($isReturned) {
-                $returnedInstructions[] = new ConcreteClassInstruction($assignment);
-                continue;
-            }
-
             $variableName = $assignment->getVariableName();
             $assignments[$variableName] = $assignment;
+            $returnedInstructions[] = new ConcreteClassInstruction($assignment);
+            
+            if ($isReturned) {
+                return $returnedInstructions;
+            }
         }
 
-        return $returnedInstructions;
+        throw new InstructionException('There was no return clause in the instructions.');
 
     }
 

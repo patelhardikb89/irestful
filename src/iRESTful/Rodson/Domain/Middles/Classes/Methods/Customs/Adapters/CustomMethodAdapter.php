@@ -5,6 +5,7 @@ use iRESTful\Rodson\Domain\Inputs\Types\Type;
 use iRESTful\Rodson\Domain\Inputs\Objects\Object;
 
 interface CustomMethodAdapter {
+    public function fromInstructionsToCustomMethod(array $instructions);
     public function fromObjectToCustomMethods(Object $object);
     public function fromTypeToCustomMethod(Type $type);
     public function fromTypeToAdapterCustomMethods(Type $type);

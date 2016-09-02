@@ -16,11 +16,11 @@ final class ConcreteClassInstructionAdapterAdapter implements InstructionAdapter
         $this->assignmentAdapterAdapter = $assignmentAdapterAdapter;
     }
 
-    public function fromClassesToInstructionAdapter(array $classes) {
+    public function fromAnnotatedClassesToInstructionAdapter(array $annotatedClasses) {
         return new ConcreteClassInstructionAdapter(
             $this->actionAdapterAdapter,
             $this->assignmentAdapterAdapter,
-            $classes
+            $annotatedClasses
         );
     }
 

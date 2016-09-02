@@ -227,84 +227,88 @@
         }
     },
     "controllers": {
-        "retrieve": {
-            "pattern": "/\\/[a-z]+/s",
+        "retrieve_partial_set": {
+            "pattern": "retrieve /$container$/partials",
             "input": "input",
-            "constants": {
-                "role_title": "This is a role"
-            },
-            "http_requests": {
-                "retrieve_from_github": {
-                    "command": "retrieve http://github.com/myuri:80",
-                    "parameters": {
-                        "query": {
-                            "api_key": "[github_api_key]",
-                            "name": "input->name",
-                            "another": "my_value"
-                        }
-                    },
-                    "view": "json"
-                },
-                "insert_user_in_github": {
-                    "command": "insert http://github.com/myuri:80",
-                    "parameters": {
-                        "query": {
-                            "another": "my_value"
-                        },
-                        "request": {
-                            "name": "input->name"
-                        }
-                    },
-                    "headers": {
-                        "api_key": "[github_api_key]"
-                    },
-                    "view": "json"
-                },
-                "delete_user_in_github": {
-                    "command": "delete http://github.com/myuri:80",
-                    "parameters": {
-                        "query": {
-                            "another": "my_value"
-                        },
-                        "request": {
-                            "name": "input->name"
-                        }
-                    },
-                    "headers": {
-                        "api_key": "[github_api_key]"
-                    },
-                    "view": "json"
-                }
-            },
             "instructions": [
-                "githubData = execute retrieve_from_github",
-                "github = from githubData to endpoint",
+                "roles = retrieve role index input->index amount input->amount",
+                "output = from roles to data",
+                "return output"
+            ],
+            "view": "json"
+        },
+        "retrieve_set": {
+            "pattern": "retrieve /$container$",
+            "input": "input",
+            "instructions": [
+                "roles = retrieve multiple role by uuid:input->uuids",
+                "output = from roles to data",
+                "return output"
+            ],
+            "view": "json"
+        },
+        "retrieve_by_keyname": {
+            "pattern": "retrieve /$container$/$name$/$value",
+            "input": "input",
+            "instructions": [
+                "role = retrieve role by input->name:input->value",
+                "output = from role to data",
+                "return output"
+            ],
+            "view": "json"
+        },
+        "retrieve_by_uuid": {
+            "pattern": "retrieve /$role|container$\/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+            "input": "input",
+            "instructions": [
                 "role = retrieve role by uuid:input->uuid",
-                "roleData = from role to data",
-                "githubData = from github to data",
-                "merged = merge roleData, githubData",
-
-                "execute insert_user_in_github",
-                "execute delete_user_in_github",
-
-
-                "roles = retrieve role from input->min to input->max",
-                "anotherRole = retrieve role by title:constants->role_title",
-                "multipleRoles = retrieve multiple role by uuid:input->uuids",
-
+                "output = from role to data",
+                "return output"
+            ],
+            "view": "json"
+        },
+        "update": {
+            "pattern": "update /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|original_uuid$",
+            "input": "input",
+            "instructions": [
+                "original = retrieve role by uuid:input->uuid",
+                "updated = from input to role",
+                "update original using updated",
+                "output = from updated to data",
+                "return output"
+            ],
+            "view": "json"
+        },
+        "delete": {
+            "pattern": "insert /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+            "input": "input",
+            "instructions": [
+                "role = retrieve role by uuid:input->uuid",
+                "delete role",
+                "output = from role to data",
+                "return output"
+            ],
+            "view": "json"
+        },
+        "insert": {
+            "pattern": "insert /$container$",
+            "input": "input",
+            "instructions": [
                 "role = from input to role",
                 "insert role",
-                "delete role",
-
+                "output = from role to data",
+                "return output"
+            ],
+            "view": "json"
+        },
+        "insert_in_bulk": {
+            "pattern": "insert /$container$/$name$/$value",
+            "input": "input",
+            "instructions": [
                 "roles = from input to multiple role",
                 "insert roles",
-                "delete roles",
-
-                "newRole = from input to role",
-                "oldRole = retrieve role by uuid:input->uuid",
-                "updatedRole = update oldRole using newRole",
-                "insert updatedRole",
-                "return merged"
+                "output = from roles to data",
+                "return output"
             ],
             "view": "json"
         }

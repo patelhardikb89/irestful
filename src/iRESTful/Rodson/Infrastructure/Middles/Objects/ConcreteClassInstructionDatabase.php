@@ -8,21 +8,15 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Exceptions\Dat
 final class ConcreteClassInstructionDatabase implements Database {
     private $retrieval;
     private $action;
-    private $actions;
-    public function __construct(Retrieval $retrieval = null, Action $action = null, array $actions = null) {
+    public function __construct(Retrieval $retrieval = null, Action $action = null) {
 
-        if (empty($actions)) {
-            $actions = null;
-        }
-
-        $amount = (empty($retrieval) ? 0 : 1) + (empty($action) ? 0 : 1) + (empty($actions) ? 0 : 1);
+        $amount = (empty($retrieval) ? 0 : 1) + (empty($action) ? 0 : 1);
         if ($amount != 1) {
-            throw new DatabaseException('One of these must be non-empty: retrieval, action, actions.  '.$amount.' given.');
+            throw new DatabaseException('One of these must be non-empty: retrieval, action.  '.$amount.' given.');
         }
 
         $this->retrieval = $retrieval;
         $this->action = $action;
-        $this->actions = $actions;
 
     }
 
@@ -42,14 +36,6 @@ final class ConcreteClassInstructionDatabase implements Database {
         return $this->action;
     }
 
-    public function hasActions() {
-        return !empty($this->actions);
-    }
-
-    public function getActions() {
-        return $this->actions;
-    }
-
     public function getData() {
         $output = [];
         if ($this->hasRetrieval()) {
@@ -58,15 +44,6 @@ final class ConcreteClassInstructionDatabase implements Database {
 
         if ($this->hasAction()) {
             $output['action'] = $this->getAction()->getData();
-        }
-
-        if ($this->hasActions()) {
-            $actions = $this->getActions();
-            array_walk($actions, function(&$element, $index) {
-                $element = $element->getData();
-            });
-
-            $output['actions'] = $actions;
         }
 
         return $output;

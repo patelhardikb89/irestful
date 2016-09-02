@@ -8,7 +8,7 @@ final class PHPFileRodsonApplicationTest extends \PHPUnit_Framework_TestCase {
     private $outputFolderPath;
     public function setUp() {
 
-        $this->application = new PHPFileRodsonApplication(['iRESTful']);
+        $this->application = new PHPFileRodsonApplication(['iRESTful'], '/vagrant/templates/code/php');
 
         $this->filePath = realpath(__DIR__.'/../../Files/authenticated.json');
         $this->outputFolderPath = realpath(__DIR__.'/../../Files/Output');

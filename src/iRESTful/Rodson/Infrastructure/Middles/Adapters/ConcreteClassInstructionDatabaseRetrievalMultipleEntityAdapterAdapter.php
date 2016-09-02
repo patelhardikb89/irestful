@@ -4,6 +4,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Mul
 use iRESTful\Rodson\Domain\Inputs\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Adapters\Adapters\KeynameAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\Exceptions\MultipleEntityException;
 
 final class ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapter implements MultipleEntityAdapterAdapter {
     private $keynameAdapterAdapter;
@@ -14,23 +15,21 @@ final class ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapte
     }
 
     public function fromDataToMultipleEntityAdapter(array $data) {
-        if (!isset($data['constants'])) {
-            throw new EntityException('The constants keyname is mandatory in order to convert data to an EntityAdapter object.');
+        
+        if (!isset($data['annotated_classes'])) {
+            throw new MultipleEntityException('The annotated_classes keyname is mandatory in order to convert data to an EntityAdapter object.');
         }
 
-        if (!isset($data['classes'])) {
-            throw new EntityException('The classes keyname is mandatory in order to convert data to an EntityAdapter object.');
-        }
-
+        $constants = empty($data['constants']) ? [] : $data['constants'];
         $valueAdapter = $this->valueAdapterAdapter->fromDataToValueAdapter([
-            'constants' => $data['constants']
+            'constants' => $constants
         ]);
 
         $keynameAdapter = $this->keynameAdapterAdapter->fromDataToKeynameAdapter([
-            'constants' => $data['constants']
+            'constants' => $constants
         ]);
 
-        return new ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter($keynameAdapter, $valueAdapter, $data['classes']);
+        return new ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter($keynameAdapter, $valueAdapter, $data['annotated_classes']);
     }
 
 }

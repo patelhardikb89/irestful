@@ -15,24 +15,21 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityAdapterAdapter implem
     }
 
     public function fromDataToEntityAdapter(array $data) {
-
-        if (!isset($data['constants'])) {
-            throw new EntityException('The constants keyname is mandatory in order to convert data to an EntityAdapter object.');
+        
+        if (!isset($data['annotated_classes'])) {
+            throw new EntityException('The annotated_classes keyname is mandatory in order to convert data to an EntityAdapter object.');
         }
 
-        if (!isset($data['classes'])) {
-            throw new EntityException('The classes keyname is mandatory in order to convert data to an EntityAdapter object.');
-        }
-
+        $constants = !empty($data['constants']) ? [] : $data['constants'];
         $valueAdapter = $this->valueAdapterAdapter->fromDataToValueAdapter([
-            'constants' => $data['constants']
+            'constants' => $constants
         ]);
 
         $keynameAdapter = $this->keynameAdapterAdapter->fromDataToKeynameAdapter([
-            'constants' => $data['constants']
+            'constants' => $constants
         ]);
 
-        return new ConcreteClassInstructionDatabaseRetrievalEntityAdapter($keynameAdapter, $valueAdapter, $data['classes']);
+        return new ConcreteClassInstructionDatabaseRetrievalEntityAdapter($keynameAdapter, $valueAdapter, $data['annotated_classes']);
 
     }
 

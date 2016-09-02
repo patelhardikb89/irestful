@@ -20,8 +20,8 @@ final class ConcreteClassMethodCustom implements CustomMethod {
 
         if (!empty($sourceCodeLines)) {
             foreach($sourceCodeLines as $oneSourceCodeLine) {
-                if (empty($oneSourceCodeLine) || !is_string($oneSourceCodeLine)) {
-                    throw new CustomMethodException('The sourceCodeLines array must only contain non-empty strings.');
+                if (!empty($oneSourceCodeLine) && !is_string($oneSourceCodeLine)) {
+                    throw new CustomMethodException('The sourceCodeLines array must only contain string lines.');
                 }
             }
         }
@@ -74,7 +74,7 @@ final class ConcreteClassMethodCustom implements CustomMethod {
             array_walk($parameters, function(&$element, $index) {
                 $element = $element->getData();
             });
-            
+
             $output['parameters'] = $parameters;
         }
 

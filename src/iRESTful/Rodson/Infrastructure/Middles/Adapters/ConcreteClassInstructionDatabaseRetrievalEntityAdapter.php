@@ -9,19 +9,20 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Key
 final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements EntityAdapter {
     private $keynameAdapter;
     private $valueAdapter;
-    private $classes;
-    public function __construct(KeynameAdapter $keynameAdapter, ValueAdapter $valueAdapter, array $classes) {
+    private $annotatedClasses;
+    public function __construct(KeynameAdapter $keynameAdapter, ValueAdapter $valueAdapter, array $annotatedClasses) {
         $this->keynameAdapter = $keynameAdapter;
         $this->valueAdapter = $valueAdapter;
-        $this->classes = $classes;
+        $this->annotatedClasses = $annotatedClasses;
     }
 
     public function fromDataToEntity(array $data) {
 
-        $classes = $this->classes;
-        $getClassByObjectName = function($objectName) use(&$classes) {
+        $annotatedClasses = $this->annotatedClasses;
+        $getAnnotatedClassByObjectName = function($objectName) use(&$annotatedClasses) {
 
-            foreach($classes as $oneClass) {
+            foreach($annotatedClasses as $oneAnnotatedClass) {
+                $oneClass = $oneAnnotatedClass->getClass();
                 $input = $oneClass->getInput();
                 if (!$input->hasObject()) {
                     continue;
@@ -29,7 +30,7 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements En
 
                 $object = $input->getObject();
                 if ($object->getName() == $objectName) {
-                    return $oneClass;
+                    return $oneAnnotatedClass;
                 }
             }
 
@@ -50,18 +51,18 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements En
         }
 
 
-        $class = $getClassByObjectName($data['object_name']);
-        if (empty($class)) {
+        $annotatedClass = $getAnnotatedClassByObjectName($data['object_name']);
+        if (empty($annotatedClass)) {
             throw new EntityException('The given object_name ('.$data['object_name'].') does not reference any class.');
         }
 
         if ($data['property']['name'] == 'uuid') {
-            $value = $this->valueAdapter->fromStringToValue($data['property']['name']);
-            return new ConcreteClassInstructionDatabaseRetrievalEntity($class, $value);
+            $value = $this->valueAdapter->fromStringToValue($data['property']['value']);
+            return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, $value);
         }
 
         $keyname = $this->keynameAdapter->fromDataToKeyname($data['property']);
-        return new ConcreteClassInstructionDatabaseRetrievalEntity($class, null, $keyname);
+        return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, null, $keyname);
 
 
     }

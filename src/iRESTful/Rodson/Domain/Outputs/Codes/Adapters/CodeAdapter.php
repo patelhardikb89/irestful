@@ -8,6 +8,6 @@ interface CodeAdapter {
     public function fromConfigurationToCode(Configuration $configuration);
     public function fromAnnotatedClassToCodes(AnnotatedClass $annotatedClass);
     public function fromAnotatedClassesToCodes(array $annotatedClasses);
-    public function fromFunctionalTransformTestsToCodes(array $functionalTransformTests);
     public function fromFunctionalTransformTestToCode(TransformTest $functionalTransformTest);
+    public function fromFunctionalTransformTestsToCodes(array $functionalTransformTests);
 }
