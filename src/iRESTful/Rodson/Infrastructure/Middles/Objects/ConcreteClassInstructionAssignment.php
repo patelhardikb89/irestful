@@ -67,6 +67,40 @@ final class ConcreteClassInstructionAssignment implements Assignment {
         return $this->mergedAssignments;
     }
 
+    public function isMultipleEntities() {
+        if ($this->hasDatabase()) {
+            return $this->getDatabase()->getRetrieval()->hasMultipleEntities();
+        }
+
+        if ($this->hasMergedAssignments()) {
+            return true;
+        }
+
+        $from = $this->getConversion()->from();
+        if (!$from->hasAssignment()) {
+            return false;
+        }
+
+        return $from->getAssignment()->isMultipleEntities();
+    }
+
+    public function isPartialEntitySet() {
+        if ($this->hasDatabase()) {
+            return $this->getDatabase()->getRetrieval()->hasEntityPartialSet();
+        }
+
+        if ($this->hasMergedAssignments()) {
+            return false;
+        }
+
+        $from = $this->getConversion()->from();
+        if (!$from->hasAssignment()) {
+            return false;
+        }
+
+        return $from->getAssignment()->isPartialEntitySet();
+    }
+
     public function getData() {
         $output = [
             'variable' => $this->getVariableName()

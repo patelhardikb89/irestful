@@ -227,6 +227,7 @@
         }
     },
     "controllers": {
+
         "retrieve_partial_set": {
             "pattern": "retrieve /$container$/partials",
             "input": "input",

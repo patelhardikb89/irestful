@@ -28,75 +28,11 @@ final class ConcreteClassInstructionConversionFromAdapter implements FromAdapter
             return null;
 
         };
-
-        $getIsData = function(Assignment $assignment = null) {
-
-            if (empty($assignment)) {
-                return true;
-            }
-
-            if ($assignment->hasDatabase()) {
-                $database = $assignment->getDatabase();
-                if (!$database->hasRetrieval()) {
-                    //throws
-                }
-
-                $retrieval = $database->getRetrieval();
-                if ($retrieval->hasHttpRequest()) {
-                    return true;
-                }
-
-                return false;
-            }
-
-            if ($assignment->hasMergedAssignments()) {
-                return true;
-            }
-
-            if ($assignment->hasConversion()) {
-                return $assignment->getConversion()->to()->isData();
-            }
-
-            //throws
-
-        };
-
-        $getIsMultiple = function(Assignment $assignment = null) {
-            if (empty($assignment)) {
-                return false;
-            }
-
-            if ($assignment->hasDatabase()) {
-                $database = $assignment->getDatabase();
-                if (!$database->hasRetrieval()) {
-                    //throws
-                }
-
-                $retrieval = $database->getRetrieval();
-                if ($retrieval->hasMultipleEntities()) {
-                    return true;
-                }
-
-                return false;
-            }
-
-            if ($assignment->hasMergedAssignments()) {
-                return true;
-            }
-
-            if ($assignment->hasConversion()) {
-                return $assignment->getConversion()->to()->isMultiple();
-            }
-
-            //throws
-        };
-
+        
         $assignment = $getAssignmentByVariableName($string);
-        $isData = $getIsData($assignment);
-        $isMultiple = $getIsMultiple($assignment);
         $isInput = ($this->inputName == $string);
 
-        return new ConcreteClassInstructionConversionFrom($isData, $isInput, $isMultiple, $assignment);
+        return new ConcreteClassInstructionConversionFrom($isInput, $assignment);
     }
 
 }

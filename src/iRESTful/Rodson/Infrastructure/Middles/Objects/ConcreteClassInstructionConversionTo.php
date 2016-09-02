@@ -7,8 +7,9 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\To\Exception
 final class ConcreteClassInstructionConversionTo implements To {
     private $isData;
     private $isMultiple;
+    private $isPartialSet;
     private $annotatedClass;
-    public function __construct($isData, $isMultiple, AnnotatedClass $annotatedClass = null) {
+    public function __construct($isData, $isMultiple, $isPartialSet, AnnotatedClass $annotatedClass = null) {
 
         $isData = (bool) $isData;
         $amount = ($isData ? 1 : 0) + (empty($annotatedClass) ? 0 : 1);
@@ -18,6 +19,7 @@ final class ConcreteClassInstructionConversionTo implements To {
 
         $this->isData = $isData;
         $this->isMultiple = (bool) $isMultiple;
+        $this->isPartialSet = (bool) $isPartialSet;
         $this->annotatedClass = $annotatedClass;
     }
 
@@ -27,6 +29,10 @@ final class ConcreteClassInstructionConversionTo implements To {
 
     public function isMultiple() {
         return $this->isMultiple;
+    }
+
+    public function isPartialSet() {
+        return $this->isPartialSet;
     }
 
     public function hasAnnotatedClass() {

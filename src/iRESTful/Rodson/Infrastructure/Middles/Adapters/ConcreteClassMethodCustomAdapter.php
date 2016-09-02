@@ -396,22 +396,36 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
                 return '$this->entityAdapterFactory->create()->fromDataToEntities($input);';
             }
 
+            if ($to->isPartialSet()) {
+                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet($input);';
+            }
+
             return '$this->entityAdapterFactory->create()->fromDataToEntity($input);';
         }
 
         if ($from->hasAssignment() && $to->isData()) {
-            $variableName = $from->getAssignment()->getVariableName();
-            if ($from->isMultiple()) {
+            $assignment = $from->getAssignment();
+            $variableName = $assignment->getVariableName();
+            if ($assignment->isMultipleEntities()) {
                 return '$this->entityAdapterFactory->create()->fromEntitiesToData($'.$variableName.');';
+            }
+
+            if ($assignment->isPartialEntitySet()) {
+                return '$this->entityAdapterFactory->create()->fromEntityPartialSetToData($'.$variableName.');';
             }
 
             return '$this->entityAdapterFactory->create()->fromEntityToData($'.$variableName.');';
         }
 
         if ($from->isData() && $to->hasAnnotatedClass() && $from->hasAssignment()) {
-            $variableName = $from->getAssignment()->getVariableName();
-            if ($from->isMultiple()) {
+            $assignment = $from->getAssignment();
+            $variableName = $assignment->getVariableName();
+            if ($assignment->isMultipleEntities()) {
                 return '$this->entityAdapterFactory->create()->fromDataToEntities($'.$variableName.');';
+            }
+
+            if ($assignment->isPartialEntitySet()) {
+                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet($'.$variableName.');';
             }
 
             return '$this->entityAdapterFactory->create()->fromDataToEntity($'.$variableName.');';

@@ -39,13 +39,21 @@ final class ConcreteClassInstructionConversionToAdapter implements ToAdapter {
             $isMultiple = true;
         }
 
+        $isPartialSet = false;
+        $matches = [];
+        preg_match_all('/partial ([^ ]+) list/s', $string, $matches);
+        if (isset($matches[0][0]) && ($matches[0][0] == $string)) {
+            $string = $matches[1][0];
+            $isPartialSet = true;
+        }
+
         $isData = false;
         if ($string == 'data') {
             $isData = true;
         }
 
         $annotatedClass = $getAnnotatedClassByObjectName($string);
-        return new ConcreteClassInstructionConversionTo($isData, $isMultiple, $annotatedClass);
+        return new ConcreteClassInstructionConversionTo($isData, $isMultiple, $isPartialSet, $annotatedClass);
     }
 
 }

@@ -21,15 +21,6 @@ final class ConcreteClassInstructionConversionAdapter implements ConversionAdapt
         if (($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && !empty($matches[1][0]) && !empty($matches[2][0])) {
             $from = $this->fromAdapter->fromStringToFrom($matches[1][0]);
             $to = $this->toAdapter->fromStringToTo($matches[2][0]);
-
-            if (!$from->isMultiple() && $to->isMultiple()) {
-                if (!$from->isInput()) {
-                    throw new ConversionException("The use of the 'multiple' keyword when the from is not the input is illegal.  The conversion string was: ".$string);
-                }
-
-                $from->isNowMultiple();
-            }
-
             return new ConcreteClassInstructionConversion($from, $to);
         }
 
