@@ -6,14 +6,9 @@ use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Parameter;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Exceptions\ConstructorException;
 
 final class ConcreteClassConstructor implements Constructor {
-    private $name;
     private $customMethod;
     private $parameters;
-    public function __construct($name, CustomMethod $customMethod = null, array $parameters = null) {
-
-        if (empty($name) || !is_string($name)) {
-            throw new ConstructorException('The name must be a non-empty string.');
-        }
+    public function __construct(CustomMethod $customMethod = null, array $parameters = null) {
 
         if (!empty($parameters)) {
             foreach($parameters as $oneParameter) {
@@ -23,14 +18,9 @@ final class ConcreteClassConstructor implements Constructor {
             }
         }
 
-        $this->name = $name;
         $this->customMethod = $customMethod;
         $this->parameters = $parameters;
 
-    }
-
-    public function getName() {
-        return $this->name;
     }
 
     public function hasCustomMethod() {
@@ -50,10 +40,8 @@ final class ConcreteClassConstructor implements Constructor {
     }
 
     public function getData() {
-        $output = [
-            'name' => $this->getName()
-        ];
 
+        $output = [];
         if ($this->hasCustomMethod()) {
             $output['custom_method'] = $this->getCustomMethod()->getData();
         }
