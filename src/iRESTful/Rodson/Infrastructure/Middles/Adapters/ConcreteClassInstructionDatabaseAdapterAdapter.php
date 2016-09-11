@@ -20,8 +20,8 @@ final class ConcreteClassInstructionDatabaseAdapterAdapter implements DatabaseAd
             throw new DatabaseException('The controller keyname is mandatory in order to convert data to a DatabaseAdapter.');
         }
 
-        if (!isset($data['annotated_classes'])) {
-            throw new DatabaseException('The annotated_classes keyname is mandatory in order to convert data to a DatabaseAdapter.');
+        if (!isset($data['annotated_entities'])) {
+            throw new DatabaseException('The annotated_entities keyname is mandatory in order to convert data to a DatabaseAdapter.');
         }
 
         $previousAssignments = [];
@@ -38,10 +38,10 @@ final class ConcreteClassInstructionDatabaseAdapterAdapter implements DatabaseAd
         if ($data['controller']->hasConstants()) {
             $constants = $data['controller']->getConstants();
         }
-        
+
         $retrievalAdapter = $this->retrievalAdapterAdapter->fromDataToRetrievalAdapter([
             'constants' => $constants,
-            'annotated_classes' => $data['annotated_classes']
+            'annotated_entities' => $data['annotated_entities']
         ]);
 
         $actionAdapter = $this->actionAdapterAdapter->fromDataToActionAdapter([

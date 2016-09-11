@@ -25,7 +25,7 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapter implements Retrieva
     public function fromStringToRetrieval($string) {
 
         $matches = [];
-        preg_match_all('/([a-z]+) by ([^:]+)\:([^ ]+)/s', $string, $matches);
+        preg_match_all('/([^ ]+) by ([^:]+)\:([^ ]+)/s', $string, $matches);
         if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
             $entity = $this->entityAdapter->fromDataToEntity([
                 'object_name' => $matches[1][0],
@@ -39,7 +39,7 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapter implements Retrieva
         }
 
         $matches = [];
-        preg_match_all('/([^ ]+) index ([a-z\-\>]+) amount ([a-z\-\>]+)/s', $string, $matches);
+        preg_match_all('/([^ ]+) index ([^ ]+) amount ([^ ]+)/s', $string, $matches);
         if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
             $entityPartialSet = $this->entityPartialSetAdapter->fromDataToEntityPartialSet([
                 'object_name' => $matches[1][0],
@@ -51,7 +51,7 @@ final class ConcreteClassInstructionDatabaseRetrievalAdapter implements Retrieva
         }
 
         $matches = [];
-        preg_match_all('/multiple ([a-z]+) by ([^:]+)\:([^ ]+)/s', $string, $matches);
+        preg_match_all('/multiple ([^ ]+) by ([^:]+)\:([^ ]+)/s', $string, $matches);
         if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0])) {
             $multipleEntity = $this->multipleEntityAdapter->fromDataToMultipleEntity([
                 'object_name' => $matches[1][0],

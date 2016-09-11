@@ -10,15 +10,15 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Adapte
 final class ConcreteClassInstructionAdapter implements InstructionAdapter {
     private $actionAdapterAdapter;
     private $assignmentAdapterAdapter;
-    private $annotatedClasses;
+    private $annotatedEntities;
     public function __construct(
         ActionAdapterAdapter $actionAdapterAdapter,
         AssignmentAdapterAdapter $assignmentAdapterAdapter,
-        array $annotatedClasses
+        array $annotatedEntities
     ) {
         $this->actionAdapterAdapter = $actionAdapterAdapter;
         $this->assignmentAdapterAdapter = $assignmentAdapterAdapter;
-        $this->annotatedClasses = $annotatedClasses;
+        $this->annotatedEntities = $annotatedEntities;
     }
 
     public function fromControllerToInstructions(Controller $controller) {
@@ -60,7 +60,6 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
             }
 
             if ($isReturned && isset($assignments[$oneInstruction])) {
-                //$returnedInstructions[] = new ConcreteClassInstruction($assignments[$oneInstruction]);
                 return $returnedInstructions;
             }
 
@@ -79,7 +78,7 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
             }
 
             $assignment = $this->assignmentAdapterAdapter->fromDataToAssignmentAdapter([
-                'annotated_classes' => $this->annotatedClasses,
+                'annotated_entities' => $this->annotatedEntities,
                 'controller' => $controller,
                 'previous_assignments' => $assignments,
                 'input' => $inputName
@@ -88,7 +87,7 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
             $variableName = $assignment->getVariableName();
             $assignments[$variableName] = $assignment;
             $returnedInstructions[] = new ConcreteClassInstruction($assignment);
-            
+
             if ($isReturned) {
                 return $returnedInstructions;
             }

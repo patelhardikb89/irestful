@@ -10,6 +10,15 @@ final class ConcreteSampleAdapter implements SampleAdapter {
 
     }
 
+    public function fromDataToSamples(array $data) {
+        $output = [];
+        foreach($data as $oneData) {
+            $output[] = $this->fromDataToSample($oneData);
+        }
+
+        return $output;
+    }
+
     public function fromDataToSample(array $data) {
 
         if (!isset($data['container'])) {

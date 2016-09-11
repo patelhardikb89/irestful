@@ -4,7 +4,6 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Mul
 use iRESTful\Rodson\Domain\Inputs\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Adapters\Adapters\KeynameAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter;
-use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\Exceptions\MultipleEntityException;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Adapters\Adapters\ContainerAdapterAdapter;
 
 final class ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapter implements MultipleEntityAdapterAdapter {
@@ -22,10 +21,6 @@ final class ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapterAdapte
     }
 
     public function fromDataToMultipleEntityAdapter(array $data) {
-
-        if (!isset($data['annotated_classes'])) {
-            throw new MultipleEntityException('The annotated_classes keyname is mandatory in order to convert data to an EntityAdapter object.');
-        }
 
         $constants = empty($data['constants']) ? [] : $data['constants'];
         $valueAdapter = $this->valueAdapterAdapter->fromDataToValueAdapter([

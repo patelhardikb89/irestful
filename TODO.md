@@ -1,14 +1,11 @@
-* Create the ConcreteCodeAdapter that take templates and convert data to code.  Use Twig.
-* Delete the PHPCodeAdapter and replace it by the ConcreteCodeAdapter
 * Validate that assignment variable names do not have the same name as an http request (for controllers).
-* Generate class code for controller classes.
 * Generate the composer.json file
 * Generate the phpunit.xml.dist file
-* Generate the nginx file, for the right platform.
 * Make sure to modify the variable names when adding code in classes.
 * Make sure only a small subset of php functions are whitelisted in the custom methods.
 * Standardize the way we create namespaces.
 * Remove the constructor name.
+* For each type of classes (adapters, domain, controllers), make a different class with its own adapter.
 
 * When there is a method that returns a nullable array, make the method with an 's' (ex: getRoles()) in the interface.  Also, add the has* methods in both the interfaces and classes.
 * Custom methods have underscores in classes.  They should all be camel cases.

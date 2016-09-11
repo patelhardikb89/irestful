@@ -5,14 +5,13 @@ use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteNamespace;
 
 final class ConcreteConfigurationNamespaceFactory implements NamespaceFactory {
     private $baseNamespace;
-    private $name;
-    public function __construct(array $baseNamespace, $name) {
+    public function __construct(array $baseNamespace) {
         $this->baseNamespace = $baseNamespace;
-        $this->name = $name;
     }
 
     public function create() {
-        $merged = array_merge($this->baseNamespace, ['Infrastructure', 'Configurations', $this->name.'Configuration']);
+        $name = $this->baseNamespace[count($this->baseNamespace) - 1].'Configuration';
+        $merged = array_merge($this->baseNamespace, ['Infrastructure', 'Configurations', $name]);
         return new ConcreteNamespace($merged);
     }
 

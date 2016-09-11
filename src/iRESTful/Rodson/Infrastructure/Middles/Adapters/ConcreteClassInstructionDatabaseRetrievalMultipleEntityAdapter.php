@@ -31,12 +31,12 @@ final class ConcreteClassInstructionDatabaseRetrievalMultipleEntityAdapter imple
             throw new MultipleEntityException('The property->value keyname is mandatory in order to convert data to a MultipleEntity object.');
         }
 
+        $container = $this->containerAdapter->fromStringToContainer($data['object_name']);
         if ($data['property']['name'] == 'uuid') {
             $value = $this->valueAdapter->fromStringToValue($data['property']['name']);
-            return new ConcreteClassInstructionDatabaseRetrievalMultipleEntity($annotatedClass, $value);
+            return new ConcreteClassInstructionDatabaseRetrievalMultipleEntity($container, $value);
         }
 
-        $container = $this->containerAdapter->fromStringToContainer($data['object_name']);
         $keyname = $this->keynameAdapter->fromDataToKeyname($data['property']);
         return new ConcreteClassInstructionDatabaseRetrievalMultipleEntity($container, null, $keyname);
     }

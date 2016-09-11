@@ -16,8 +16,8 @@ final class ConcreteClassInstructionAssignmentAdapterAdapter implements Assignme
 
     public function fromDataToAssignmentAdapter(array $data) {
 
-        if (!isset($data['annotated_classes'])) {
-            throw new AssignmentException('The annotated_classes keyname is mandatory in order to convert data to an AssignmentAdapter.');
+        if (!isset($data['annotated_entities'])) {
+            throw new AssignmentException('The annotated_entities keyname is mandatory in order to convert data to an AssignmentAdapter.');
         }
 
         if (!isset($data['controller'])) {
@@ -35,7 +35,7 @@ final class ConcreteClassInstructionAssignmentAdapterAdapter implements Assignme
 
         $databaseAdapter = $this->databaseAdapterAdapter->fromDataToDatabaseAdapter([
             'controller' => $data['controller'],
-            'annotated_classes' => $data['annotated_classes'],
+            'annotated_entities' => $data['annotated_entities'],
             'previous_assignments' => $previousAssignments
         ]);
 
@@ -43,7 +43,7 @@ final class ConcreteClassInstructionAssignmentAdapterAdapter implements Assignme
             $databaseAdapter,
             $this->conversionAdapterAdapter,
             $data['input'],
-            $data['annotated_classes'],
+            $data['annotated_entities'],
             $previousAssignments
         );
     }

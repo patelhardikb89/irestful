@@ -6,27 +6,21 @@ use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInstructionConta
 
 final class ConcreteClassInstructionContainerAdapter implements ContainerAdapter {
     private $valueAdapter;
-    private $annotatedClasses;
-    public function __construct(ValueAdapter $valueAdapter, array $annotatedClasses) {
+    private $annotatedEntities;
+    public function __construct(ValueAdapter $valueAdapter, array $annotatedEntities) {
         $this->valueAdapter = $valueAdapter;
-        $this->annotatedClasses = $annotatedClasses;
+        $this->annotatedEntities = $annotatedEntities;
     }
 
     public function fromStringToContainer($string) {
 
-        $annotatedClasses = $this->annotatedClasses;
-        $getAnnotatedClassByObjectName = function($objectName) use(&$annotatedClasses) {
+        $annotatedEntities = $this->annotatedEntities;
+        $getAnnotatedEntityByObjectName = function($objectName) use(&$annotatedEntities) {
 
-            foreach($annotatedClasses as $oneAnnotatedClass) {
-                $oneClass = $oneAnnotatedClass->getClass();
-                $input = $oneClass->getInput();
-                if (!$input->hasObject()) {
-                    continue;
-                }
-
-                $object = $input->getObject();
+            foreach($annotatedEntities as $oneAnnotatedEntity) {
+                $object = $oneAnnotatedEntity->getEntity()->getObject();
                 if ($object->getName() == $objectName) {
-                    return $oneAnnotatedClass;
+                    return $oneAnnotatedEntity;
                 }
             }
 
@@ -35,12 +29,12 @@ final class ConcreteClassInstructionContainerAdapter implements ContainerAdapter
         };
 
         $value = null;
-        $annotatedClass = $getAnnotatedClassByObjectName($string);
-        if (empty($annotatedClass)) {
+        $annotatedEntity = $getAnnotatedEntityByObjectName($string);
+        if (empty($annotatedEntity)) {
             $value = $this->valueAdapter->fromStringToValue($string);
         }
 
-        return new ConcreteClassInstructionContainer($value, $annotatedClass);
+        return new ConcreteClassInstructionContainer($value, $annotatedEntity);
     }
 
 }

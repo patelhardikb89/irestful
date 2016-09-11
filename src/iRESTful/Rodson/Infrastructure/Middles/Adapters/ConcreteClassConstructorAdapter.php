@@ -18,11 +18,7 @@ final class ConcreteClassConstructorAdapter implements ConstructorAdapter {
     public function fromInstructionsToConstructor(array $instructions) {
         $parameters = $this->parameterAdapter->fromInstructionsToParameters($instructions);
         $customMethod = $this->customMethodAdapter->fromInstructionsToCustomMethod($instructions);
-
-        print_r([$customMethod, 'fromInstructionsToConstructor']);
-        die();
-
-        //return new ConcreteClassConstructor('__construct', $customMethod, $parameters);
+        return new ConcreteClassConstructor('__construct', $customMethod, $parameters);
     }
 
     public function fromObjectToConstructor(Object $object) {

@@ -14,7 +14,12 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
     private $propertyAdapter;
     private $sampleAdapter;
     private $databases;
-    public function __construct(MethodAdapter $methodAdapter, PropertyAdapter $propertyAdapter, SampleAdapter $sampleAdapter, array $databases) {
+    public function __construct(
+        MethodAdapter $methodAdapter,
+        PropertyAdapter $propertyAdapter,
+        SampleAdapter $sampleAdapter,
+        array $databases
+    ) {
         $this->methodAdapter = $methodAdapter;
         $this->propertyAdapter = $propertyAdapter;
         $this->sampleAdapter = $sampleAdapter;

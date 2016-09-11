@@ -31,12 +31,12 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements En
             throw new EntityException('The property->value keyname is mandatory in order to convert data to an Entity object.');
         }
 
+        $annotatedClass = $this->containerAdapter->fromStringToContainer($data['object_name']);
         if ($data['property']['name'] == 'uuid') {
             $value = $this->valueAdapter->fromStringToValue($data['property']['value']);
             return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, $value);
         }
-
-        $annotatedClass = $this->containerAdapter->fromStringToContainer($data['object_name']);
+        
         $keyname = $this->keynameAdapter->fromDataToKeyname($data['property']);
         return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, null, $keyname);
 

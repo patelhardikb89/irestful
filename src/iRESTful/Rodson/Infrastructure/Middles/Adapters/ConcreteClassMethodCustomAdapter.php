@@ -25,7 +25,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Ret
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Entities\Entity;
 use iRESTful\Rodson\Domain\Inputs\Values\Value;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\MultipleEntity;
-use iRESTful\Rodson\Domain\Middles\Annotations\Classes\AnnotatedClass;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Annotations\AnnotatedEntity;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Container;
 
@@ -38,7 +38,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     private function getCodeFromValue(Value $value) {
         if ($value->hasInputVariable()) {
             $variableName = $value->getInputVariable();
-            return 'isset($input["'.$variableName.'"]) ? $input["'.$variableName.'"] : null';
+            return '$input["'.$variableName.'"]';
         }
 
         if ($value->hasEnvironmentVariable()) {
@@ -146,24 +146,10 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
         return $output;
     }
 
-    private function getContainerNameFromAnnotatedClass(AnnotatedClass $annotatedClass) {
-
-        if (!$annotatedClass->hasAnnotation()) {
-            //throws
-        }
-
-        $annotation = $annotatedClass->getAnnotation();
-        if (!$annotation->hasContainerName()) {
-            //throws
-        }
-
-        return $annotation->getContainerName();
-    }
-
     private function getContainerNameFromContainer(Container $container) {
-        if ($container->hasAnnotatedClass()) {
-            $annotatedClass = $container->getAnnotatedClass();
-            $containerName = $this->getContainerNameFromAnnotatedClass($annotatedClass);
+        if ($container->hasAnnotatedEntity()) {
+            $annotatedEntity = $container->getAnnotatedEntity();
+            $containerName = $annotatedEntity->getAnnotation()->getContainerName();
             return "'".$containerName."'";
         }
 
@@ -404,17 +390,28 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
         $from = $conversion->from();
         $to = $conversion->to();
 
-        if ($from->isInput() && $to->hasAnnotatedClass()) {
+        if ($from->isInput() && $to->hasContainer()) {
+
+            $input = '$input';
+            $container = $to->getContainer();
+            if ($container->hasValue()) {
+                $value = $container->getValue();
+
+                $input = $this->generateArrayCode([
+                    'container' => $value,
+                    'data' => 'input'
+                ]);
+            }
 
             if ($to->isMultiple()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntities($input);';
+                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.');';
             }
 
             if ($to->isPartialSet()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet($input);';
+                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.');';
             }
 
-            return '$this->entityAdapterFactory->create()->fromDataToEntity($input);';
+            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.');';
         }
 
         if ($from->hasAssignment() && $to->isData()) {
@@ -431,18 +428,31 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
             return '$this->entityAdapterFactory->create()->fromEntityToData($'.$variableName.');';
         }
 
-        if ($from->isData() && $to->hasAnnotatedClass() && $from->hasAssignment()) {
+        if ($from->isData() && $to->hasContainer() && $from->hasAssignment()) {
+
             $assignment = $from->getAssignment();
-            $variableName = $assignment->getVariableName();
+            $input = $assignment->getVariableName();
+
+            $container = $to->getContainer();
+            if ($container->hasValue()) {
+                $value = $container->getValue();
+
+                $input = $this->generateArrayCode([
+                    'container' => $value,
+                    'data' => $input
+                ]);
+            }
+
+
             if ($assignment->isMultipleEntities()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntities($'.$variableName.');';
+                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.');';
             }
 
             if ($assignment->isPartialEntitySet()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet($'.$variableName.');';
+                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.');';
             }
 
-            return '$this->entityAdapterFactory->create()->fromDataToEntity($'.$variableName.');';
+            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.');';
         }
 
         //throws

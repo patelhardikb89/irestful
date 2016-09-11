@@ -2,14 +2,15 @@
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Adapters\ParameterAdapter;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Flows\Adapters\FlowAdapter;
-use iRESTful\Rodson\Domain\Middles\Classes\ObjectClass;
 use iRESTful\Rodson\Domain\Middles\Classes\Properties\Property;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Converters\Adapters\ConverterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteAnnotationParameter;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Parameter as ConstructorParameter;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Types\Adapters\TypeAdapter;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Exceptions\ParameterException;
-use iRESTful\Rodson\Domain\Middles\Classes\Inputs\Input;
+use iRESTful\Rodson\Domain\Inputs\Objects\Object as InputObject;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Entity;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Object;
 
 final class ConcreteAnnotationParameterAdapter implements ParameterAdapter {
     private $flowAdapter;
@@ -25,19 +26,17 @@ final class ConcreteAnnotationParameterAdapter implements ParameterAdapter {
         $this->typeAdapter = $typeAdapter;
     }
 
-    public function fromClassToParameters(ObjectClass $class) {
-
-        $constructor = $class->getConstructor();
+    public function fromEntityToParameters(Entity $entity) {
+        $constructor = $entity->getConstructor();
         if (!$constructor->hasParameters()) {
-            throw new ParameterException('The given class does not have parameters to its constructor.  Therefore, does not have AnnotationParameter objects.');
+            throw new ParameterException('The given entity does not have parameters to its constructor.  Therefore, does not have AnnotationParameter objects.');
         }
 
-        $output = [];
-        $input = $class->getInput();
-        $parameters = $class->getConstructor()->getParameters();
+        $object = $entity->getObject();
+        $parameters = $entity->getConstructor()->getParameters();
         foreach($parameters as $oneParameter) {
 
-            $oneOutput = $this->fromConstructorParameterToParameter($oneParameter, $input);
+            $oneOutput = $this->fromConstructorParameterToParameter($oneParameter, $object);
             if (!empty($oneOutput)) {
                 $output[] = $oneOutput;
             }
@@ -48,9 +47,30 @@ final class ConcreteAnnotationParameterAdapter implements ParameterAdapter {
 
     }
 
-    private function fromConstructorParameterToParameter(ConstructorParameter $constructorParameter, Input $input) {
+    public function fromObjectToParameters(Object $object) {
+        $constructor = $object->getConstructor();
+        if (!$constructor->hasParameters()) {
+            throw new ParameterException('The given object does not have parameters to its constructor.  Therefore, does not have AnnotationParameter objects.');
+        }
 
-        $fromClassPropertyToObjectProperty = function(Property $property) use(&$input) {
+        $inputObject = $object->getObject();
+        $parameters = $object->getConstructor()->getParameters();
+        foreach($parameters as $oneParameter) {
+
+            $oneOutput = $this->fromConstructorParameterToParameter($oneParameter, $inputObject);
+            if (!empty($oneOutput)) {
+                $output[] = $oneOutput;
+            }
+
+        }
+
+        return $output;
+
+    }
+
+    private function fromConstructorParameterToParameter(ConstructorParameter $constructorParameter, InputObject $object) {
+
+        $fromClassPropertyToObjectProperty = function(Property $property) use(&$object) {
 
             $convert = function($name) {
 
@@ -67,7 +87,7 @@ final class ConcreteAnnotationParameterAdapter implements ParameterAdapter {
             };
 
             $propertyName = $property->getName();
-            $objectProperties = $input->getObject()->getProperties();
+            $objectProperties = $object->getProperties();
             foreach($objectProperties as $oneObjectProperty) {
                 $objectPropertyName = $convert($oneObjectProperty->getName());
                 if ($propertyName == $objectPropertyName) {
@@ -78,10 +98,6 @@ final class ConcreteAnnotationParameterAdapter implements ParameterAdapter {
             //throws
 
         };
-
-        if (!$input->hasObject()) {
-            return null;
-        }
 
         $classProperty = $constructorParameter->getProperty();
         $objectProperty = $fromClassPropertyToObjectProperty($classProperty);

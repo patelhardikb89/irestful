@@ -14,8 +14,8 @@ final class ConcreteClassInstructionContainerAdapterAdapter implements Container
 
     public function fromDataToContainerAdapter(array $data) {
 
-        if (!isset($data['annotated_classes'])) {
-            throw new ContainerException('The annotated_classes keyname is mandatory in order to convert data to a ContainerAdapter.');
+        if (!isset($data['annotated_entities'])) {
+            throw new ContainerException('The annotated_entities keyname is mandatory in order to convert data to a ContainerAdapter.');
         }
 
         $constants = empty($data['constants']) ? [] : $data['constants'];
@@ -23,7 +23,7 @@ final class ConcreteClassInstructionContainerAdapterAdapter implements Container
             'constants' => $constants
         ]);
 
-        return new ConcreteClassInstructionContainerAdapter($valueAdapter, $data['annotated_classes']);
+        return new ConcreteClassInstructionContainerAdapter($valueAdapter, $data['annotated_entities']);
 
     }
 

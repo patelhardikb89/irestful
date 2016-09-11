@@ -7,11 +7,7 @@ use iRESTful\Rodson\Domain\Middles\Annotations\Exceptions\AnnotationException;
 final class ConcreteAnnotation implements Annotation {
     private $parameters;
     private $containerName;
-    public function __construct(array $parameters, $containerName = null) {
-
-        if (empty($containerName)) {
-            $containerName = '';
-        }
+    public function __construct($containerName, array $parameters) {
 
         if (empty($parameters)) {
             throw new AnnotationException('There must be at least 1 Parameter object.');
@@ -25,8 +21,8 @@ final class ConcreteAnnotation implements Annotation {
             }
         }
 
-        if (!empty($containerName) && !is_string($containerName)) {
-            throw new AnnotationException('The containerName must be a string if non-empty.');
+        if (empty($containerName) || !is_string($containerName)) {
+            throw new AnnotationException('The containerName must be a non-empty string.');
         }
 
         $this->parameters = $parameters;
@@ -34,16 +30,12 @@ final class ConcreteAnnotation implements Annotation {
 
     }
 
-    public function getParameters() {
-        return $this->parameters;
-    }
-
-    public function hasContainerName() {
-        return !empty($this->containerName);
-    }
-
     public function getContainerName() {
         return $this->containerName;
+    }
+
+    public function getParameters() {
+        return $this->parameters;
     }
 
     public function getData() {
@@ -53,15 +45,10 @@ final class ConcreteAnnotation implements Annotation {
             $element = $element->getData();
         });
 
-        $output = [
+        return [
+            'container' => $this->getContainerName(),
             'parameters' => $parameters
         ];
-
-        if ($this->hasContainerName()) {
-            $output['container'] = $this->getContainerName();
-        }
-
-        return $output;
     }
 
 }

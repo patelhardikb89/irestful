@@ -30,6 +30,10 @@ final class ConcreteObject implements Object {
             throw new ObjectException('There must be at least 1 property.');
         }
 
+        if (empty($samples) && !empty($database)) {
+            throw new ObjectException('The object ('.$name.') contains a database, but no samples.  Every object that contains a database must also contain samples.');
+        }
+
         foreach($properties as $index => $oneProperty) {
 
             if (!is_integer($index)) {
@@ -42,18 +46,18 @@ final class ConcreteObject implements Object {
 
         }
 
-        if (!empty($methods)) {
-            foreach($methods as $oneMethod) {
-                if (!($oneMethod instanceof Method)) {
-                    throw new ObjectException('The methods array must only contain Method objects.');
-                }
-            }
-        }
-
         if (!empty($samples)) {
             foreach($samples as $oneSample) {
                 if (!($oneSample instanceof Sample)) {
                     throw new ObjectException('The samples array must only contain Sample objects.');
+                }
+            }
+        }
+
+        if (!empty($methods)) {
+            foreach($methods as $oneMethod) {
+                if (!($oneMethod instanceof Method)) {
+                    throw new ObjectException('The methods array must only contain Method objects.');
                 }
             }
         }
@@ -74,6 +78,14 @@ final class ConcreteObject implements Object {
         return $this->properties;
     }
 
+    public function hasSamples() {
+        return !empty($this->samples);
+    }
+
+    public function getSamples() {
+        return $this->samples;
+    }
+
     public function hasDatabase() {
         return !empty($this->database);
     }
@@ -90,12 +102,17 @@ final class ConcreteObject implements Object {
         return $this->methods;
     }
 
-    public function hasSamples() {
-        return !empty($this->samples);
-    }
+    public function getTypes() {
+        $types = [];
+        $properties = $this->getProperties();
+        foreach($properties as $oneProperty) {
+            $propertyType = $oneProperty->getType();
+            if ($propertyType->hasType()) {
+                $types[] = $propertyType->getType();
+            }
+        }
 
-    public function getSamples() {
-        return $this->samples;
+        return $types;
     }
 
 }

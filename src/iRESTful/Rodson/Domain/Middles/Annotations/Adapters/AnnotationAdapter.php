@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Domain\Middles\Annotations\Adapters;
-use iRESTful\Rodson\Domain\Middles\Classes\ObjectClass;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Entity;
 
 interface AnnotationAdapter {
-    public function fromClassToAnnotation(ObjectClass $class);
+    public function fromEntityToAnnotation(Entity $entity);
 }

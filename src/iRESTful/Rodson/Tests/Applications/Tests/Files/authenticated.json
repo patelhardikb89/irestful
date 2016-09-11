@@ -153,21 +153,101 @@
                 "endpoint": "endpoint",
                 "owner": "owner",
                 "shared_resources|?": "shared_resource[]"
-            }
+            },
+            "samples": [
+                {
+                    "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                    "endpoint": {
+                        "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                        "is_user_mandatory": false,
+                        "pattern___regex_pattern": null,
+                        "pattern___specific_uri": "/my/value",
+                        "params": null,
+                        "created_on": 1470346929
+                    },
+                    "owner": {
+                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "software": {
+                            "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                            "name": "my_software_name",
+                            "credentials": "some hash",
+                            "roles": null,
+                            "created_on": 1470347205
+                        },
+                        "user": {
+                            "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                            "name": "my_username",
+                            "credentials": "some hask",
+                            "roles": null,
+                            "created_on": 1470347205
+                        },
+                        "created_on": 1470347205
+                    },
+                    "shared_resources": null,
+                    "created_on": 1470347205
+                }
+            ]
         },
         "shared_resource": {
             "database": "pdo",
             "properties": {
                 "permissions|?": "permission[]",
                 "owners|?": "owner[]"
-            }
+            },
+            "samples": [
+                {
+                    "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                    "permissions": null,
+                    "owners": [
+                        {
+                            "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                            "software": {
+                                "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                                "name": "my_software_name",
+                                "credentials": "some hash",
+                                "roles": null,
+                                "created_on": 1470347205
+                            },
+                            "user": {
+                                "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                                "name": "my_username",
+                                "credentials": "some hask",
+                                "roles": null,
+                                "created_on": 1470347205
+                            },
+                            "created_on": 1470347205
+                        }
+                    ],
+                    "created_on": 1470347205
+                }
+            ]
         },
         "owner": {
             "database": "pdo",
             "properties": {
                 "software": "software",
                 "user|?": "user"
-            }
+            },
+            "samples": [
+                {
+                    "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                    "software": {
+                        "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                        "name": "my_software_name",
+                        "credentials": "some hash",
+                        "roles": null,
+                        "created_on": 1470347205
+                    },
+                    "user": {
+                        "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                        "name": "my_username",
+                        "credentials": "some hask",
+                        "roles": null,
+                        "created_on": 1470347205
+                    },
+                    "created_on": 1470347205
+                }
+            ]
         },
         "software": {
             "database": "pdo",
@@ -175,7 +255,16 @@
                 "name": "string",
                 "credentials": "credentials",
                 "roles|?": "role[]"
-            }
+            },
+            "samples": [
+                {
+                    "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                    "name": "my_software_name",
+                    "credentials": "some hash",
+                    "roles": null,
+                    "created_on": 1470347205
+                }
+            ]
         },
         "user": {
             "database": "pdo",
@@ -183,7 +272,16 @@
                 "name": "string",
                 "credentials": "credentials",
                 "roles|?": "role[]"
-            }
+            },
+            "samples": [
+                {
+                    "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                    "name": "my_username",
+                    "credentials": "some hask",
+                    "roles": null,
+                    "created_on": 1470347205
+                }
+            ]
         },
         "role": {
             "database": "pdo",
@@ -191,7 +289,26 @@
                 "title": "string",
                 "description|?": "string",
                 "permissions|?": "permission[]"
-            }
+            },
+            "samples": [
+                {
+                    "uuid": "2d7145b5-634d-4760-97fa-b2aaf283ad3b",
+                    "title": "This is an updated role",
+                    "description": "This is an updated role description.",
+                    "permissions": [
+                        {
+                            "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                            "title": "This is just a title",
+                            "description": "This is just a description",
+                            "can_read": true,
+                            "can_write": false,
+                            "can_delete": false,
+                            "created_on": 1470347205
+                        }
+                    ],
+                    "created_on": 1470347205
+                }
+            ]
         },
         "permission": {
             "database": "pdo",
@@ -201,7 +318,18 @@
                 "can_write": "boolean",
                 "can_delete": "boolean",
                 "description|?": "string"
-            }
+            },
+            "samples": [
+                {
+                    "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                    "title": "This is just a title",
+                    "description": "This is just a description",
+                    "can_read": true,
+                    "can_write": false,
+                    "can_delete": false,
+                    "created_on": 1470347205
+                }
+            ]
         },
         "pattern": {
             "properties": {
@@ -297,7 +425,7 @@
             "instructions": [
                 "entity = from input to input->container",
                 "insert entity",
-                "output = from input->container to data",
+                "output = from entity to data",
                 "return output"
             ],
             "view": "json"

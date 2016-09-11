@@ -42,10 +42,6 @@ final class ConcreteClassConstructorParameter implements ConstructorParameter {
             $output['method'] = $this->getMethod()->getData();
         }
 
-        if ($this->hasNamespaceDependency()) {
-            $output['namespace_dependency'] = $this->getNamespaceDependency()->getData();
-        }
-
         return $output;
     }
 

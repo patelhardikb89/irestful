@@ -16,8 +16,8 @@ final class ConcreteClassInstructionConversionAdapterAdapter implements Conversi
 
     public function fromDataToConversionAdapter(array $data) {
 
-        if (!isset($data['annotated_classes'])) {
-            throw new ConversionException('The annotated_classes keyname is mandatory in order to convert data to a ConversionAdapter object.');
+        if (!isset($data['annotated_entities'])) {
+            throw new ConversionException('The annotated_entities keyname is mandatory in order to convert data to a ConversionAdapter object.');
         }
 
         if (!isset($data['input'])) {
@@ -34,7 +34,7 @@ final class ConcreteClassInstructionConversionAdapterAdapter implements Conversi
         ]);
 
         $toAdapter = $this->toAdapterAdapter->fromDataToToAdapter([
-            'annotated_classes' => $data['annotated_classes']
+            'annotated_entities' => $data['annotated_entities']
         ]);
 
         return new ConcreteClassInstructionConversionAdapter($fromAdapter, $toAdapter);
