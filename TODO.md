@@ -4,7 +4,6 @@
 * Make sure to modify the variable names when adding code in classes.
 * Make sure only a small subset of php functions are whitelisted in the custom methods.
 * Standardize the way we create namespaces.
-* For each type of classes (adapters, domain, controllers), make a different class with its own adapter.
 
 * When there is a method that returns a nullable array, make the method with an 's' (ex: getRoles()) in the interface.  Also, add the has* methods in both the interfaces and classes.
 * Custom methods have underscores in classes.  They should all be camel cases.
