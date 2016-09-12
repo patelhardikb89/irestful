@@ -3,7 +3,7 @@
 namespace {{namespace.path}};
 use iRESTful\Objects\Entities\Entities\Configurations\EntityConfiguration;
 
-{% import "returned_hashmap.php" as returned %}
+{% import "includes/returned.hashmap.php" as returned %}
 final class {{namespace.name}} implements EntityConfiguration {
 
     public function __construct() {

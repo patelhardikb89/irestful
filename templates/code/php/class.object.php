@@ -1,18 +1,19 @@
 {% autoescape false %}
-{% import "imports.class.php" as fn %}
+{% import "includes/imports.class.php" as fn %}
 <?php
-namespace {{class.namespace.path}};
-use {{class.interface.namespace.all}};
+namespace {{object.namespace.path}};
+use {{object.interface.namespace.all}};
 
-final class {{class.namespace.name}} implements {{class.interface.namespace.name}} {
+final class {{object.namespace.name}} implements {{object.interface.namespace.name}} {
+    {{ fn.generateClassProperties(object.constructor.parameters) }}
 
     {{ fn.generateConstructorAnnotations(annotation) }}
-    public function __construct({{- fn.generateConstructorSignature(class.constructor.parameters) }}) {
-        {{ fn.generateAssignment(class.constructor.parameters) }}
+    public function __construct({{- fn.generateConstructorSignature(object.constructor.parameters) }}) {
+        {{ fn.generateAssignment(object.constructor.parameters) }}
     }
 
-    {{ fn.generateGetters(class.constructor.parameters) }}
-    {{ fn.generateCustomMethods(class.custom_methods) }}
+    {{ fn.generateGetters(object.constructor.parameters) }}
+    {{ fn.generateCustomMethods(object.custom_methods) }}
 
 }
 {% endautoescape %}

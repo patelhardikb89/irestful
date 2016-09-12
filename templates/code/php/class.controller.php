@@ -1,14 +1,22 @@
 {% autoescape false %}
-{% import "imports.class.php" as fn %}
+{% import "includes/imports.class.php" as fn %}
 <?php
-namespace {{class.namespace.path}};
-use {{class.interface.namespace.all}};
+namespace {{namespace.path}};
+use {{interface.namespace.all}};
 
-final class {{class.namespace.name}} implements {{class.interface.namespace.name}} {
+{% for oneParameter in constructor.parameters %}
+    {% if oneParameter.parameter.type.namespace.all %}
+        use {{oneParameter.parameter.type.namespace.all}};
+    {% endif %}
+{% endfor %}
 
-    public function __construct({{- fn.generateConstructorSignature(class.constructor.parameters, true) }}) {
-        {{ fn.generateAssignment(class.constructor.parameters) }}
+final class {{namespace.name}} implements {{interface.namespace.name}} {
+
+    public function __construct({{- fn.generateConstructorSignature(constructor.parameters) }}) {
+        {{ fn.generateAssignment(constructor.parameters) }}
     }
+
+    {{ fn.generateCustomMethod(custom_method) }}
 
 }
 {% endautoescape %}

@@ -1,7 +1,7 @@
 <?php
 {%- macro generateSignatureVariable(oneParameter, isLast) -%}
     {%- if oneParameter.type.is_array -%}
-        {%- if oneParameter.type.is_optional -%}
+        {%- if oneParameter.is_optional -%}
             {{- 'array $' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}
         {%- else -%}
             {{- 'array $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
@@ -33,10 +33,18 @@
     {%- endif -%}
 {%- endmacro -%}
 
+{%- macro generateClassProperties(parameters) -%}
+    {%- if parameters|length > 0 -%}
+        {%- for oneParameter in parameters -%}
+            private ${{oneParameter.property}};
+        {% endfor %}
+    {%- endif -%}
+{%- endmacro -%}
+
 {%- macro generateAssignment(parameters) -%}
     {%- if parameters|length > 0 -%}
         {%- for oneParameter in parameters -%}
-            $this->{{oneParameter.property}} = {{ oneParameter.parameter.name -}};
+            $this->{{oneParameter.property}} = ${{ oneParameter.parameter.name -}};
         {% endfor %}
     {%- endif -%}
 {%- endmacro -%}
@@ -51,15 +59,20 @@
     {%- endif -%}
 {% endmacro %}
 
+{% macro generateCustomMethod(customMethod) %}
+    {%- import _self as fn -%}
+    public function {{customMethod.name}}({{- fn.generateSignature(customMethod.parameters) -}}) {
+        {% for oneSourceCodeLine in customMethod.source_code_lines %}
+            {{- oneSourceCodeLine|replace({'$current->': '$this->'})|raw }}
+        {% endfor -%}
+    }
+{% endmacro %}
+
 {% macro generateCustomMethods(customMethods) %}
     {%- import _self as fn -%}
     {%- if customMethods|length > 0 -%}
         {% for oneCustomMethod in customMethods %}
-            public function {{oneCustomMethod.name}}({{- fn.generateSignature(oneCustomMethod.parameters) -}}) {
-                {% for oneSourceCodeLine in oneCustomMethod.source_code_lines %}
-                    {{- oneSourceCodeLine|replace({'$current->': '$this->'})|raw }}
-                {% endfor -%}
-            }
+            {{ fn.generateCustomMethod(oneCustomMethod) }}
         {% endfor -%}
     {%- endif -%}
 {% endmacro %}
