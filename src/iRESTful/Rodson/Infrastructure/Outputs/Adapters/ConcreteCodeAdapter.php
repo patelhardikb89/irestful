@@ -17,6 +17,7 @@ use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Adapter;
 use iRESTful\Rodson\Domain\Middles\Composers\Composer;
 use iRESTful\Rodson\Domain\Middles\VagrantFiles\VagrantFile;
+use iRESTful\Rodson\Domain\Middles\PHPUnits\PHPUnit;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
@@ -24,6 +25,13 @@ final class ConcreteCodeAdapter implements CodeAdapter {
     public function __construct(PathAdapter $pathAdapter, Template $template) {
         $this->pathAdapter = $pathAdapter;
         $this->template = $template;
+    }
+
+    public function fromPHPUnitToCode(PHPUnit $phpunit) {
+        $data = $phpunit->getData();
+        $code = $this->template->render('phpunit.xml.dist.twig', $data);
+        $path =  $this->pathAdapter->fromRelativePathStringToPath('phpunit.xml.dist');
+        return new ConcreteOutputCode($code, $path);
     }
 
     public function fromVagrantFileToCode(VagrantFile $vagrantFile) {
