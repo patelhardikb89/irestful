@@ -16,6 +16,7 @@ use iRESTful\Rodson\Domain\Outputs\Codes\Exceptions\CodeException;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Adapter;
 use iRESTful\Rodson\Domain\Middles\Composers\Composer;
+use iRESTful\Rodson\Domain\Middles\VagrantFiles\VagrantFile;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
@@ -23,6 +24,13 @@ final class ConcreteCodeAdapter implements CodeAdapter {
     public function __construct(PathAdapter $pathAdapter, Template $template) {
         $this->pathAdapter = $pathAdapter;
         $this->template = $template;
+    }
+
+    public function fromVagrantFileToCode(VagrantFile $vagrantFile) {
+        $data = $vagrantFile->getData();
+        $code = $this->template->render('vagrantfile.twig', $data);
+        $path =  $this->pathAdapter->fromRelativePathStringToPath('Vagrantfile');
+        return new ConcreteOutputCode($code, $path);
     }
 
     public function fromComposerToCode(Composer $composer) {

@@ -11,6 +11,10 @@ final class ConcreteOutputCodeFileAdapter implements FileAdapter {
 
     public function fromFileStringToFile($file) {
 
+        if (strpos($file, '.') === false) {
+            return new ConcreteOutputCodeFile($file);
+        }
+
         $exploded = explode('.', $file);
         $extension = array_pop($exploded);
         $name = implode('.', $exploded);

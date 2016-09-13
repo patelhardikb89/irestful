@@ -18,6 +18,7 @@ use iRESTful\Rodson\Infrastructure\Outputs\Adapters\ConcreteOutputCodeFileAdapte
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassControllerAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassEntityAnnotatedAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteComposerAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteVagrantFileAdapter;
 
 final class PHPFileRodsonApplication implements RodsonApplication {
     private $baseNamespace;
@@ -62,6 +63,9 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $composerAdapter = new ConcreteComposerAdapter($this->baseFolder);
         $composer = $composerAdapter->fromRodsonToComposer($rodson);
 
+        $vagrantFileAdapter = new ConcreteVagrantFileAdapter();
+        $vagrantFile = $vagrantFileAdapter->fromRodsonToVagrantFile($rodson);
+
         $output = array_filter(explode('/', $outputFolderPath));
         $twigTemplateFactory = new TwigTemplateFactory($this->templateFolder, $this->cacheFolder);
 
@@ -72,9 +76,10 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $codeAdapter = new ConcreteCodeAdapter($pathAdapter, $template);
         $classCodes = $codeAdapter->fromClassesToCodes($classes);
         $composerCode = $codeAdapter->fromComposerToCode($composer);
+        $vagrantFileCode = $codeAdapter->fromVagrantFileToCode($vagrantFile);
 
         $service = new FileCodeService();
-        $service->saveMultiple(array_merge($classCodes, [$composerCode]));
+        $service->saveMultiple(array_merge($classCodes, [$composerCode], [$vagrantFileCode]));
     }
 
 }
