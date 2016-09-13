@@ -1,6 +1,6 @@
 * Validate that assignment variable names do not have the same name as an http request (for controllers).
-* Generate the composer.json file
 * Generate the phpunit.xml.dist file
+* Generate the VagrantFile.
 * Make sure to modify the variable names when adding code in classes.
 * Make sure only a small subset of php functions are whitelisted in the custom methods.
 * Standardize the way we create namespaces.

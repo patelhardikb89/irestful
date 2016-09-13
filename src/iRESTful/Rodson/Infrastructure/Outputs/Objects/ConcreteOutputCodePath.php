@@ -14,16 +14,14 @@ final class ConcreteOutputCodePath implements Path {
             throw new PathException('The basePath cannot be empty.');
         }
 
-        if (empty($relativePath)) {
-            throw new PathException('The relativePath cannot be empty.');
-        }
+        if (!empty($relativePath)) {
+            foreach($relativePath as $oneFolder) {
 
-        foreach($relativePath as $oneFolder) {
+                if (empty($oneFolder) || !is_string($oneFolder)) {
+                    throw new PathException('The relativePath array must only contain strings.');
+                }
 
-            if (empty($oneFolder) || !is_string($oneFolder)) {
-                throw new PathException('The relativePath array must only contain strings.');
             }
-
         }
 
         foreach($basePath as $oneFolder) {

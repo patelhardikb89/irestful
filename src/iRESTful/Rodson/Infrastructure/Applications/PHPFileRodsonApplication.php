@@ -17,14 +17,17 @@ use iRESTful\Rodson\Infrastructure\Outputs\Adapters\ConcreteOutputCodePathAdapte
 use iRESTful\Rodson\Infrastructure\Outputs\Adapters\ConcreteOutputCodeFileAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassControllerAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassEntityAnnotatedAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteComposerAdapter;
 
 final class PHPFileRodsonApplication implements RodsonApplication {
     private $baseNamespace;
     private $templateFolder;
     private $cacheFolder;
-    public function __construct($templateFolder, $cacheFolder = null) {
+    private $baseFolder;
+    public function __construct($templateFolder, $cacheFolder = null, $baseFolder = 'src') {
         $this->templateFolder = $templateFolder;
         $this->cacheFolder = $cacheFolder;
+        $this->baseFolder = $baseFolder;
     }
 
     public function executeByFolder($folderPath, $outputFolderPath) {
@@ -39,13 +42,13 @@ final class PHPFileRodsonApplication implements RodsonApplication {
 
         $name = $rodson->getName();
         $baseNamespace = [
-            'src',
+            $this->baseFolder,
             $name->getOrganizationName(),
             $name->getProjectName()
         ];
 
         $classAdapterFactory = new ConcreteSpecificClassAdapterFactory([
-                'src',
+                $this->baseFolder,
                 $name->getOrganizationName(),
                 $name->getProjectName()
             ],
@@ -56,6 +59,9 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $classAdapter = $classAdapterFactory->create();
         $classes = $classAdapter->fromRodsonToClasses($rodson);
 
+        $composerAdapter = new ConcreteComposerAdapter($this->baseFolder);
+        $composer = $composerAdapter->fromRodsonToComposer($rodson);
+
         $output = array_filter(explode('/', $outputFolderPath));
         $twigTemplateFactory = new TwigTemplateFactory($this->templateFolder, $this->cacheFolder);
 
@@ -64,10 +70,11 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $pathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $output);
 
         $codeAdapter = new ConcreteCodeAdapter($pathAdapter, $template);
-        $codes = $codeAdapter->fromClassesToCode($classes);
+        $classCodes = $codeAdapter->fromClassesToCodes($classes);
+        $composerCode = $codeAdapter->fromComposerToCode($composer);
 
         $service = new FileCodeService();
-        $service->saveMultiple($codes);
+        $service->saveMultiple(array_merge($classCodes, [$composerCode]));
     }
 
 }

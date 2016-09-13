@@ -15,6 +15,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Types\Tests\Transforms\Transform;
 use iRESTful\Rodson\Domain\Outputs\Codes\Exceptions\CodeException;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Middles\Composers\Composer;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
@@ -24,7 +25,14 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $this->template = $template;
     }
 
-    public function fromClassesToCode(array $classes) {
+    public function fromComposerToCode(Composer $composer) {
+        $data = $composer->getData();
+        $code = $this->template->render('composer.json.twig', $data);
+        $path =  $this->pathAdapter->fromRelativePathStringToPath('composer.json');
+        return new ConcreteOutputCode($code, $path);
+    }
+
+    public function fromClassesToCodes(array $classes) {
         $output = [];
         foreach($classes as $index => $oneClass) {
             $codes = $this->fromClassToCodes($oneClass);

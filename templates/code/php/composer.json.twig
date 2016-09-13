@@ -1,0 +1,27 @@
+{
+    "name": "{{name}}",
+    "type": "{{type}}",
+    "homepage": "{{homepage}}",
+    "license": "{{license}}",
+    
+    {% if authors|length > 0 %}
+    "authors": [
+        {%- for oneAuthor in authors -%}
+            {
+                "name": "{{oneAuthor.name}}",
+                "email": "{{oneAuthor.email}}"
+            }{{- loop.last ? '' : ',' -}}
+
+        {%- endfor -%}
+    ],
+    {% endif %}
+
+    "require": {
+      "php": ">=5.5",
+      "phpunit/phpunit": "4.0.5",
+      "steve-rodrigue/objects": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "{{base_namespace}}": "{{base_folder}}" }
+    }
+}

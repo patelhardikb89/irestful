@@ -10,6 +10,10 @@ final class ConcreteName implements Name {
         $this->organizationName = $organizationName;
     }
 
+    public function getName() {
+        return $this->organizationName.'/'.$this->projectName;
+    }
+
     public function getProjectName() {
         return $this->projectName;
     }

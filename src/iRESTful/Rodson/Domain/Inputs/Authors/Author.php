@@ -6,4 +6,5 @@ interface Author {
     public function getEmail();
     public function hasUrl();
     public function getUrl();
+    public function getData();
 }

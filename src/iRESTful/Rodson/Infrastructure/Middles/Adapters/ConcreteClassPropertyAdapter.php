@@ -24,7 +24,7 @@ final class ConcreteClassPropertyAdapter implements PropertyAdapter {
             return lcfirst($name);
 
         };
-        
+
         $name = $convert($name);
         return new ConcreteClassProperty($name);
     }

@@ -30,4 +30,17 @@ final class ConcreteAuthor implements Author {
         return $this->url;
     }
 
+    public function getData() {
+        $output = [
+            'name' => $this->name,
+            'email' => $this->email->get()
+        ];
+
+        if ($this->hasUrl()) {
+            $output['url'] = $this->url->get();
+        }
+
+        return $output;
+    }
+
 }
