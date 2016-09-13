@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Adapters\ControllerAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Adapters\ControllerAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteController;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Adapters\ViewAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Adapters\Adapters\HttpRequestAdapterAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Adapters\ViewAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Adapters\Adapters\HttpRequestAdapterAdapter;
 
 final class ConcreteControllerAdapter implements ControllerAdapter {
     private $viewAdapter;

@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Actions\Adapters\ActionAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Actions\Adapters\ActionAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteControllerHttpRequestCommandAction;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Actions\Exceptions\ActionException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Actions\Exceptions\ActionException;
 
 final class ConcreteControllerHttpRequestCommandActionAdapter implements ActionAdapter {
 

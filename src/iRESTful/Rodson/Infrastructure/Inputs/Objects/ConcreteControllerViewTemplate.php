@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Templates\Template;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Templates\Exceptions\TemplateException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Templates\Template;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Templates\Exceptions\TemplateException;
 
 final class ConcreteControllerViewTemplate implements Template {
     private $path;

@@ -1,205 +1,183 @@
 {
-    "name": "authenticated",
-    "code": {
-        "language": "PHP",
-        "class": "iRESTful\\Rodson\\Tests\\Applications\\Tests\\Files\\Codes\\Authenticated"
-    },
-    "objects": {
-        "endpoint": {
-            "database": "pdo",
-            "properties": {
-                "pattern": "pattern",
-                "is_user_mandatory": "boolean",
-                "params|?": "params[]"
-            },
-            "methods": {
-                "has_method": "endpointHasMethod"
-            },
-            "samples": [
-                {
-                    "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
-                    "is_user_mandatory": false,
-                    "pattern___regex_pattern": null,
-                    "pattern___specific_uri": "/my/value",
-                    "params": [
-                        {
-                            "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
-                            "name": "my_second_param",
-                            "pattern___regex_pattern": "[a-z0-9]+",
-                            "pattern___specific_value": null,
-                            "is_mandatory": true,
-                            "created_on": 1470346899
-                        },
-                        {
-                            "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
-                            "name": "my_param",
-                            "pattern___regex_pattern": null,
-                            "pattern___specific_value": "my value",
-                            "is_mandatory": false,
-                            "created_on": 1470346920
-                        }
-                    ],
-                    "created_on": 1470346929
-                }
-            ]
+    "name": "iRESTful/Authenticated",
+    "type": "library",
+    "url": "http://irestful.com/projects/authenticated",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Rodrigue",
+            "email": "stev.rodr@gmail.com",
+            "url": "http://irestful.com"
+        }
+    ],
+    "project": {
+        "code": {
+            "language": "PHP",
+            "class": "Authenticated",
+            "file": "Codes/Authenticated.php"
         },
-        "api": {
-            "database": "pdo",
-            "properties": {
-                "base_url": "base_url",
-                "endpoints|?": "endpoint[]"
-            },
-            "samples": [
-                {
-                    "uuid": "10010456-29ab-401f-93bc-946cd3fd750a",
-                    "base_url": "http://apis.irestful.com",
-                    "endpoints": [
-                        {
-                            "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
-                            "is_user_mandatory": false,
-                            "pattern___regex_pattern": null,
-                            "pattern___specific_uri": "/my/value",
-                            "params": [
-                                {
-                                    "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
-                                    "name": "my_second_param",
-                                    "pattern___regex_pattern": "[a-z0-9]+",
-                                    "pattern___specific_value": null,
-                                    "is_mandatory": true,
-                                    "created_on": 1470347043
-                                },
-                                {
-                                    "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
-                                    "name": "my_param",
-                                    "pattern___regex_pattern": null,
-                                    "pattern___specific_value": "my value",
-                                    "is_mandatory": false,
-                                    "created_on": 1470347061
-                                }
-                            ],
-                            "created_on": 1470347072
-                        }
-                    ],
-                    "created_on": 1470347090
-                }
-            ]
-        },
-        "params": {
-            "database": "pdo",
-            "properties": {
-                "name": "string",
-                "pattern": "param_pattern",
-                "is_mandatory": "boolean"
-            },
-            "samples": [
-                {
-                    "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
-                    "name": "my_second_param",
-                    "pattern___regex_pattern": "[a-z0-9]+",
-                    "pattern___specific_value": null,
-                    "is_mandatory": true,
-                    "created_on": 1470347043
+        "objects": {
+            "endpoint": {
+                "database": "pdo",
+                "properties": {
+                    "pattern": "pattern",
+                    "is_user_mandatory": "boolean",
+                    "params|?": "params[]"
                 },
-                {
-                    "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
-                    "name": "my_param",
-                    "pattern___regex_pattern": null,
-                    "pattern___specific_value": "my value",
-                    "is_mandatory": false,
-                    "created_on": 1470347061
-                }
-            ]
-        },
-        "registration": {
-            "database": "pdo",
-            "properties": {
-                "keyname": "keyname",
-                "title": "string",
-                "description|?": "string",
-                "roles|?": "role[]"
-            },
-            "samples": [
-                {
-                    "uuid": "5b3ed235-5d8d-4702-9b92-532003e3bf96",
-        			"keyname": "another_registration",
-        			"title": "This is a another registration",
-        			"description": "This is the description of the another registration",
-        			"roles": [
-                        {
-                            "uuid": "6b7926c6-24df-4626-845c-4e6886231b81",
-                			"title": "This is a second role",
-                			"description": "This is a second role description.",
-                			"permissions": [
-                                {
-                                    "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
-                                    "title": "This is just a title",
-                                    "description": "This is just a description",
-                                    "can_read": true,
-                                    "can_write": false,
-                                    "can_delete": false,
-                                    "created_on": 1470347181
-                                }
-                            ],
-                			"created_on": 1470347195
-                        }
-                    ],
-        			"created_on": 1470347205
-                }
-            ]
-        },
-        "resource": {
-            "database": "pdo",
-            "properties": {
-                "endpoint": "endpoint",
-                "owner": "owner",
-                "shared_resources|?": "shared_resource[]"
-            },
-            "samples": [
-                {
-                    "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
-                    "endpoint": {
+                "methods": {
+                    "has_method": "endpointHasMethod"
+                },
+                "samples": [
+                    {
                         "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
                         "is_user_mandatory": false,
                         "pattern___regex_pattern": null,
                         "pattern___specific_uri": "/my/value",
-                        "params": null,
+                        "params": [
+                            {
+                                "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
+                                "name": "my_second_param",
+                                "pattern___regex_pattern": "[a-z0-9]+",
+                                "pattern___specific_value": null,
+                                "is_mandatory": true,
+                                "created_on": 1470346899
+                            },
+                            {
+                                "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
+                                "name": "my_param",
+                                "pattern___regex_pattern": null,
+                                "pattern___specific_value": "my value",
+                                "is_mandatory": false,
+                                "created_on": 1470346920
+                            }
+                        ],
                         "created_on": 1470346929
-                    },
-                    "owner": {
-                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
-                        "software": {
-                            "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
-                            "name": "my_software_name",
-                            "credentials": "some hash",
-                            "roles": null,
-                            "created_on": 1470347205
-                        },
-                        "user": {
-                            "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
-                            "name": "my_username",
-                            "credentials": "some hask",
-                            "roles": null,
-                            "created_on": 1470347205
-                        },
-                        "created_on": 1470347205
-                    },
-                    "shared_resources": null,
-                    "created_on": 1470347205
-                }
-            ]
-        },
-        "shared_resource": {
-            "database": "pdo",
-            "properties": {
-                "permissions|?": "permission[]",
-                "owners|?": "owner[]"
+                    }
+                ]
             },
-            "samples": [
-                {
-                    "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
-                    "permissions": null,
-                    "owners": [
-                        {
+            "api": {
+                "database": "pdo",
+                "properties": {
+                    "base_url": "base_url",
+                    "endpoints|?": "endpoint[]"
+                },
+                "samples": [
+                    {
+                        "uuid": "10010456-29ab-401f-93bc-946cd3fd750a",
+                        "base_url": "http://apis.irestful.com",
+                        "endpoints": [
+                            {
+                                "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                                "is_user_mandatory": false,
+                                "pattern___regex_pattern": null,
+                                "pattern___specific_uri": "/my/value",
+                                "params": [
+                                    {
+                                        "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
+                                        "name": "my_second_param",
+                                        "pattern___regex_pattern": "[a-z0-9]+",
+                                        "pattern___specific_value": null,
+                                        "is_mandatory": true,
+                                        "created_on": 1470347043
+                                    },
+                                    {
+                                        "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
+                                        "name": "my_param",
+                                        "pattern___regex_pattern": null,
+                                        "pattern___specific_value": "my value",
+                                        "is_mandatory": false,
+                                        "created_on": 1470347061
+                                    }
+                                ],
+                                "created_on": 1470347072
+                            }
+                        ],
+                        "created_on": 1470347090
+                    }
+                ]
+            },
+            "params": {
+                "database": "pdo",
+                "properties": {
+                    "name": "string",
+                    "pattern": "param_pattern",
+                    "is_mandatory": "boolean"
+                },
+                "samples": [
+                    {
+                        "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
+                        "name": "my_second_param",
+                        "pattern___regex_pattern": "[a-z0-9]+",
+                        "pattern___specific_value": null,
+                        "is_mandatory": true,
+                        "created_on": 1470347043
+                    },
+                    {
+                        "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
+                        "name": "my_param",
+                        "pattern___regex_pattern": null,
+                        "pattern___specific_value": "my value",
+                        "is_mandatory": false,
+                        "created_on": 1470347061
+                    }
+                ]
+            },
+            "registration": {
+                "database": "pdo",
+                "properties": {
+                    "keyname": "keyname",
+                    "title": "string",
+                    "description|?": "string",
+                    "roles|?": "role[]"
+                },
+                "samples": [
+                    {
+                        "uuid": "5b3ed235-5d8d-4702-9b92-532003e3bf96",
+            			"keyname": "another_registration",
+            			"title": "This is a another registration",
+            			"description": "This is the description of the another registration",
+            			"roles": [
+                            {
+                                "uuid": "6b7926c6-24df-4626-845c-4e6886231b81",
+                    			"title": "This is a second role",
+                    			"description": "This is a second role description.",
+                    			"permissions": [
+                                    {
+                                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                                        "title": "This is just a title",
+                                        "description": "This is just a description",
+                                        "can_read": true,
+                                        "can_write": false,
+                                        "can_delete": false,
+                                        "created_on": 1470347181
+                                    }
+                                ],
+                    			"created_on": 1470347195
+                            }
+                        ],
+            			"created_on": 1470347205
+                    }
+                ]
+            },
+            "resource": {
+                "database": "pdo",
+                "properties": {
+                    "endpoint": "endpoint",
+                    "owner": "owner",
+                    "shared_resources|?": "shared_resource[]"
+                },
+                "samples": [
+                    {
+                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "endpoint": {
+                            "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                            "is_user_mandatory": false,
+                            "pattern___regex_pattern": null,
+                            "pattern___specific_uri": "/my/value",
+                            "params": null,
+                            "created_on": 1470346929
+                        },
+                        "owner": {
                             "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
                             "software": {
                                 "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
@@ -216,333 +194,367 @@
                                 "created_on": 1470347205
                             },
                             "created_on": 1470347205
-                        }
-                    ],
-                    "created_on": 1470347205
-                }
-            ]
-        },
-        "owner": {
-            "database": "pdo",
-            "properties": {
-                "software": "software",
-                "user|?": "user"
+                        },
+                        "shared_resources": null,
+                        "created_on": 1470347205
+                    }
+                ]
             },
-            "samples": [
-                {
-                    "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
-                    "software": {
+            "shared_resource": {
+                "database": "pdo",
+                "properties": {
+                    "permissions|?": "permission[]",
+                    "owners|?": "owner[]"
+                },
+                "samples": [
+                    {
+                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "permissions": null,
+                        "owners": [
+                            {
+                                "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                                "software": {
+                                    "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                                    "name": "my_software_name",
+                                    "credentials": "some hash",
+                                    "roles": null,
+                                    "created_on": 1470347205
+                                },
+                                "user": {
+                                    "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                                    "name": "my_username",
+                                    "credentials": "some hask",
+                                    "roles": null,
+                                    "created_on": 1470347205
+                                },
+                                "created_on": 1470347205
+                            }
+                        ],
+                        "created_on": 1470347205
+                    }
+                ]
+            },
+            "owner": {
+                "database": "pdo",
+                "properties": {
+                    "software": "software",
+                    "user|?": "user"
+                },
+                "samples": [
+                    {
+                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "software": {
+                            "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                            "name": "my_software_name",
+                            "credentials": "some hash",
+                            "roles": null,
+                            "created_on": 1470347205
+                        },
+                        "user": {
+                            "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                            "name": "my_username",
+                            "credentials": "some hask",
+                            "roles": null,
+                            "created_on": 1470347205
+                        },
+                        "created_on": 1470347205
+                    }
+                ]
+            },
+            "software": {
+                "database": "pdo",
+                "properties": {
+                    "name": "string",
+                    "credentials": "credentials",
+                    "roles|?": "role[]"
+                },
+                "samples": [
+                    {
                         "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
                         "name": "my_software_name",
                         "credentials": "some hash",
                         "roles": null,
                         "created_on": 1470347205
-                    },
-                    "user": {
+                    }
+                ]
+            },
+            "user": {
+                "database": "pdo",
+                "properties": {
+                    "name": "string",
+                    "credentials": "credentials",
+                    "roles|?": "role[]"
+                },
+                "samples": [
+                    {
                         "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
                         "name": "my_username",
                         "credentials": "some hask",
                         "roles": null,
                         "created_on": 1470347205
-                    },
-                    "created_on": 1470347205
-                }
-            ]
-        },
-        "software": {
-            "database": "pdo",
-            "properties": {
-                "name": "string",
-                "credentials": "credentials",
-                "roles|?": "role[]"
+                    }
+                ]
             },
-            "samples": [
-                {
-                    "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
-                    "name": "my_software_name",
-                    "credentials": "some hash",
-                    "roles": null,
-                    "created_on": 1470347205
-                }
-            ]
-        },
-        "user": {
-            "database": "pdo",
-            "properties": {
-                "name": "string",
-                "credentials": "credentials",
-                "roles|?": "role[]"
+            "role": {
+                "database": "pdo",
+                "properties": {
+                    "title": "string",
+                    "description|?": "string",
+                    "permissions|?": "permission[]"
+                },
+                "samples": [
+                    {
+                        "uuid": "2d7145b5-634d-4760-97fa-b2aaf283ad3b",
+                        "title": "This is an updated role",
+                        "description": "This is an updated role description.",
+                        "permissions": [
+                            {
+                                "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                                "title": "This is just a title",
+                                "description": "This is just a description",
+                                "can_read": true,
+                                "can_write": false,
+                                "can_delete": false,
+                                "created_on": 1470347205
+                            }
+                        ],
+                        "created_on": 1470347205
+                    }
+                ]
             },
-            "samples": [
-                {
-                    "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
-                    "name": "my_username",
-                    "credentials": "some hask",
-                    "roles": null,
-                    "created_on": 1470347205
-                }
-            ]
-        },
-        "role": {
-            "database": "pdo",
-            "properties": {
-                "title": "string",
-                "description|?": "string",
-                "permissions|?": "permission[]"
+            "permission": {
+                "database": "pdo",
+                "properties": {
+                    "title": "string",
+                    "can_read": "boolean",
+                    "can_write": "boolean",
+                    "can_delete": "boolean",
+                    "description|?": "string"
+                },
+                "samples": [
+                    {
+                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "title": "This is just a title",
+                        "description": "This is just a description",
+                        "can_read": true,
+                        "can_write": false,
+                        "can_delete": false,
+                        "created_on": 1470347205
+                    }
+                ]
             },
-            "samples": [
-                {
-                    "uuid": "2d7145b5-634d-4760-97fa-b2aaf283ad3b",
-                    "title": "This is an updated role",
-                    "description": "This is an updated role description.",
-                    "permissions": [
-                        {
-                            "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
-                            "title": "This is just a title",
-                            "description": "This is just a description",
-                            "can_read": true,
-                            "can_write": false,
-                            "can_delete": false,
-                            "created_on": 1470347205
-                        }
-                    ],
-                    "created_on": 1470347205
+            "pattern": {
+                "properties": {
+                    "regex_pattern|?": "string",
+                    "specific_uri|?": "uri"
                 }
-            ]
-        },
-        "permission": {
-            "database": "pdo",
-            "properties": {
-                "title": "string",
-                "can_read": "boolean",
-                "can_write": "boolean",
-                "can_delete": "boolean",
-                "description|?": "string"
             },
-            "samples": [
-                {
-                    "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
-                    "title": "This is just a title",
-                    "description": "This is just a description",
-                    "can_read": true,
-                    "can_write": false,
-                    "can_delete": false,
-                    "created_on": 1470347205
-                }
-            ]
-        },
-        "pattern": {
-            "properties": {
-                "regex_pattern|?": "string",
-                "specific_uri|?": "uri"
-            }
-        },
-        "param_pattern": {
-            "properties": {
-                "regex_pattern|?": "string",
-                "specific_value|?": "string_numeric"
+            "param_pattern": {
+                "properties": {
+                    "regex_pattern|?": "string",
+                    "specific_value|?": "string_numeric"
+                },
+                "combos": [
+                    "regex_pattern|specific_value"
+                ]
             },
-            "combos": [
-                "regex_pattern|specific_value"
-            ]
-        },
-        "credentials": {
-            "properties": {
-                "username": "string",
-                "hashed_password": "string",
-                "password|?": "string"
-            }
-        }
-    },
-    "controllers": {
-
-        "retrieve_partial_set": {
-            "pattern": "retrieve /$container$/partials",
-            "input": "input",
-            "instructions": [
-                "entitySet = retrieve input->container index input->index amount input->amount",
-                "output = from entitySet to data",
-                "return output"
-            ],
-            "view": "json"
-        },
-        "retrieve_set": {
-            "pattern": "retrieve /$container$",
-            "input": "input",
-            "instructions": [
-                "entities = retrieve multiple input->container by uuid:input->uuids",
-                "output = from entities to data",
-                "return output"
-            ],
-            "view": "json"
-        },
-        "retrieve_by_keyname": {
-            "pattern": "retrieve /$container$/$name$/$value",
-            "input": "input",
-            "instructions": [
-                "entity = retrieve input->container by input->name:input->value",
-                "output = from entity to data",
-                "return output"
-            ],
-            "view": "json"
-        },
-        "retrieve_by_uuid": {
-            "pattern": "retrieve /$role|container$\/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
-            "input": "input",
-            "instructions": [
-                "entity = retrieve input->container by uuid:input->uuid",
-                "output = from entity to data",
-                "return output"
-            ],
-            "view": "json"
-        },
-        "update": {
-            "pattern": "update /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|original_uuid$",
-            "input": "input",
-            "instructions": [
-                "original = retrieve input->container by uuid:input->uuid",
-                "updated = from input to input->container",
-                "update original using updated",
-                "output = from updated to data",
-                "return output"
-            ],
-            "view": "json"
-        },
-        "delete": {
-            "pattern": "insert /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
-            "input": "input",
-            "instructions": [
-                "entity = retrieve input->container by uuid:input->uuid",
-                "delete entity",
-                "output = from entity to data",
-                "return output"
-            ],
-            "view": "json"
-        },
-        "insert": {
-            "pattern": "insert /$container$",
-            "input": "input",
-            "instructions": [
-                "entity = from input to input->container",
-                "insert entity",
-                "output = from entity to data",
-                "return output"
-            ],
-            "view": "json"
-        },
-        "insert_in_bulk": {
-            "pattern": "insert /$container$/$name$/$value",
-            "input": "input",
-            "instructions": [
-                "entities = from input to multiple input->container",
-                "insert entities",
-                "output = from entities to data",
-                "return output"
-            ],
-            "view": "json"
-        }
-    },
-    "adapters": [
-        {
-            "from": "string",
-            "to": "base_url",
-            "method": "fromStringToBaseUrl"
-        },
-        {
-            "from": "string",
-            "to": "uri",
-            "method": "fromStringToUri"
-        },
-        {
-            "from": "string",
-            "to": "hashed_password",
-            "method": "fromStringToHashedPassword"
-        },
-        {
-            "from": "string",
-            "to": "keyname",
-            "method": "fromStringToKeyname"
-        },
-        {
-            "from": "string",
-            "to": "string_numeric",
-            "method": "fromStringToStringNumeric"
-        }
-    ],
-    "databases": {
-        "pdo": {
-            "type": "relational",
-            "driver": "[db-driver]",
-            "hostname": "[db-hostname]",
             "credentials": {
-                "username": "[db-username]",
-                "password": "[db-password]"
-            }
-        }
-    },
-    "types": {
-        "string_numeric": {
-            "database_type": {
-                "name": "string",
-                "max": 255
-            },
-            "method": "validateStringNumeric",
-            "adapters": {
-                "database_to_object": {
-                    "from": "string",
-                    "to": "string_numeric"
+                "properties": {
+                    "username": "string",
+                    "hashed_password": "string",
+                    "password|?": "string"
                 }
             }
         },
-        "base_url": {
-            "database_type": {
-                "name": "string",
-                "max": 255
+        "controllers": {
+            "retrieve_partial_set": {
+                "pattern": "retrieve /$container$/partials",
+                "input": "input",
+                "instructions": [
+                    "entitySet = retrieve input->container index input->index amount input->amount",
+                    "output = from entitySet to data",
+                    "return output"
+                ],
+                "view": "json"
             },
-            "method": "validateBaseUrl",
-            "adapters": {
-                "database_to_object": {
-                    "from": "string",
-                    "to": "base_url"
+            "retrieve_set": {
+                "pattern": "retrieve /$container$",
+                "input": "input",
+                "instructions": [
+                    "entities = retrieve multiple input->container by uuid:input->uuids",
+                    "output = from entities to data",
+                    "return output"
+                ],
+                "view": "json"
+            },
+            "retrieve_by_keyname": {
+                "pattern": "retrieve /$container$/$name$/$value",
+                "input": "input",
+                "instructions": [
+                    "entity = retrieve input->container by input->name:input->value",
+                    "output = from entity to data",
+                    "return output"
+                ],
+                "view": "json"
+            },
+            "retrieve_by_uuid": {
+                "pattern": "retrieve /$role|container$\/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+                "input": "input",
+                "instructions": [
+                    "entity = retrieve input->container by uuid:input->uuid",
+                    "output = from entity to data",
+                    "return output"
+                ],
+                "view": "json"
+            },
+            "update": {
+                "pattern": "update /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|original_uuid$",
+                "input": "input",
+                "instructions": [
+                    "original = retrieve input->container by uuid:input->uuid",
+                    "updated = from input to input->container",
+                    "update original using updated",
+                    "output = from updated to data",
+                    "return output"
+                ],
+                "view": "json"
+            },
+            "delete": {
+                "pattern": "insert /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+                "input": "input",
+                "instructions": [
+                    "entity = retrieve input->container by uuid:input->uuid",
+                    "delete entity",
+                    "output = from entity to data",
+                    "return output"
+                ],
+                "view": "json"
+            },
+            "insert": {
+                "pattern": "insert /$container$",
+                "input": "input",
+                "instructions": [
+                    "entity = from input to input->container",
+                    "insert entity",
+                    "output = from entity to data",
+                    "return output"
+                ],
+                "view": "json"
+            },
+            "insert_in_bulk": {
+                "pattern": "insert /$container$/$name$/$value",
+                "input": "input",
+                "instructions": [
+                    "entities = from input to multiple input->container",
+                    "insert entities",
+                    "output = from entities to data",
+                    "return output"
+                ],
+                "view": "json"
+            }
+        },
+        "converters": [
+            {
+                "from": "string",
+                "to": "base_url",
+                "method": "fromStringToBaseUrl"
+            },
+            {
+                "from": "string",
+                "to": "uri",
+                "method": "fromStringToUri"
+            },
+            {
+                "from": "string",
+                "to": "hashed_password",
+                "method": "fromStringToHashedPassword"
+            },
+            {
+                "from": "string",
+                "to": "keyname",
+                "method": "fromStringToKeyname"
+            },
+            {
+                "from": "string",
+                "to": "string_numeric",
+                "method": "fromStringToStringNumeric"
+            }
+        ],
+        "databases": {
+            "pdo": {
+                "type": "relational",
+                "driver": "[db-driver]",
+                "hostname": "[db-hostname]",
+                "credentials": {
+                    "username": "[db-username]",
+                    "password": "[db-password]"
                 }
             }
         },
-        "uri": {
-            "database_type": {
-                "name": "string",
-                "max": 255
-            },
-            "method": "validateUri",
-            "adapters": {
-                "database_to_object": {
-                    "from": "string",
-                    "to": "uri"
+        "types": {
+            "string_numeric": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateStringNumeric",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "string_numeric"
+                    }
                 }
-            }
-        },
-        "keyname": {
-            "database_type": {
-                "name": "string",
-                "max": 255
             },
-            "method": "validateKeyname",
-            "adapters": {
-                "database_to_object": {
-                    "from": "string",
-                    "to": "keyname"
+            "base_url": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateBaseUrl",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "base_url"
+                    }
                 }
-            }
-        },
-        "hashed_password": {
-            "database_type": {
-                "name": "string",
-                "max": 255
             },
-            "method": "validateHashedPassword",
-            "adapters": {
-                "database_to_object": {
-                    "from": "string",
-                    "to": "hashed_password"
+            "uri": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateUri",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "uri"
+                    }
+                }
+            },
+            "keyname": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateKeyname",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "keyname"
+                    }
+                }
+            },
+            "hashed_password": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateHashedPassword",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "hashed_password"
+                    }
                 }
             }
         }

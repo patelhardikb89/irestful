@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Types\Type;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\DatabaseType;
 
 final class ConcreteAnnotationParameterType implements Type {
     private $isUnique;

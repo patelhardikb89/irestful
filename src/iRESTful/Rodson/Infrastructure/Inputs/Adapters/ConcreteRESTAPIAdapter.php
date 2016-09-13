@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Adapters\RESTAPIAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Adapters\CredentialsAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Adapters\RESTAPIAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Adapters\CredentialsAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteRESTAPI;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Exceptions\CredentialsException;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Exceptions\RESTAPIException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Exceptions\CredentialsException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Exceptions\RESTAPIException;
 
 final class ConcreteRESTAPIAdapter implements RESTAPIAdapter {
     private $credentialsAdapter;

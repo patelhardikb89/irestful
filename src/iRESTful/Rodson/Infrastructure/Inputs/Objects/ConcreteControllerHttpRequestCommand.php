@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Command;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Actions\Action;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Urls\Url;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Command;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Actions\Action;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Urls\Url;
 
 final class ConcreteControllerHttpRequestCommand implements Command {
     private $action;

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteControllerAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Exceptions\ControllerException;
 
 final class ConcreteControllerAdapterTest extends \PHPUnit_Framework_TestCase {
     private $viewMock;
@@ -12,7 +12,7 @@ final class ConcreteControllerAdapterTest extends \PHPUnit_Framework_TestCase {
     private $multipleData;
     private $adapter;
     public function setUp() {
-        $this->viewMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Views\View');
+        $this->viewMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Views\View');
 
         $this->views = [
             'json' => $this->viewMock

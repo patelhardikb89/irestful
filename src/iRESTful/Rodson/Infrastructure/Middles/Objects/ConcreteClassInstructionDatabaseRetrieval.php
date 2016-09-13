@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Retrieval;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\HttpRequest;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\HttpRequest;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Entities\Entity;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Multiples\MultipleEntity;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;

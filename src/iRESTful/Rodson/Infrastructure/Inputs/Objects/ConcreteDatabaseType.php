@@ -1,11 +1,11 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Binary;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Float;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Integer;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\String;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Exceptions\DatabaseTypeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\DatabaseType;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Binaries\Binary;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Floats\Float;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Integer;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\String;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Exceptions\DatabaseTypeException;
 
 final class ConcreteDatabaseType implements DatabaseType {
     private $hasBoolean;

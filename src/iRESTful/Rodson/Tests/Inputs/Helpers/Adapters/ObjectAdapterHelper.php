@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Adapters\ObjectAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Adapters\ObjectAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Exceptions\ObjectException;
 
 final class ObjectAdapterHelper {
     private $phpunit;

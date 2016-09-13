@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Object;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object as InputObject;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object as InputObject;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;

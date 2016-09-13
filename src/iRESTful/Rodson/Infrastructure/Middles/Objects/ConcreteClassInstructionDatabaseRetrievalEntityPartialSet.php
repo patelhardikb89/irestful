@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Container;
-use iRESTful\Rodson\Domain\Inputs\Values\Value;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Value;
 
 final class ConcreteClassInstructionDatabaseRetrievalEntityPartialSet implements EntityPartialSet {
     private $container;

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Objects\Samples\Sample;
-use iRESTful\Rodson\Domain\Inputs\Objects\Samples\Exceptions\SampleException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Samples\Sample;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Samples\Exceptions\SampleException;
 
 final class ConcreteObjectSample implements Sample {
     private $data;

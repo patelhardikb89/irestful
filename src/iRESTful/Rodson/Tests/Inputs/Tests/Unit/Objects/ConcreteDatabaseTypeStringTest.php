@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseTypeString;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Exceptions\StringException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\Exceptions\StringException;
 
 final class ConcreteDatabaseTypeStringTest extends \PHPUnit_Framework_TestCase {
     private $specificCharacterSize;

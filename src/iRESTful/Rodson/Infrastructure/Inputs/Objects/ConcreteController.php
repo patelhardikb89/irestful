@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\View;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\HttpRequest;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Controller;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\View;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\HttpRequest;
 
 final class ConcreteController implements Controller {
     private $name;

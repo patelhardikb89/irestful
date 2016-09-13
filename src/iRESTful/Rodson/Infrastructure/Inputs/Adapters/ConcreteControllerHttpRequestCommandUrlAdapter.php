@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Urls\Adapters\UrlAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Urls\Exceptions\UrlException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Urls\Adapters\UrlAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Urls\Exceptions\UrlException;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteControllerHttpRequestCommandUrl;
 
 final class ConcreteControllerHttpRequestCommandUrlAdapter implements UrlAdapter {

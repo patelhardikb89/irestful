@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Adapters\RelationalDatabaseAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\RelationalDatabase;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Exceptions\RelationalDatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Adapters\RelationalDatabaseAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\RelationalDatabase;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Exceptions\RelationalDatabaseException;
 
 final class RelationalDatabaseAdapterHelper {
     private $phpunit;

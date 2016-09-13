@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Adapters\StringAdapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\String;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Exceptions\StringException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\Adapters\StringAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\String;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\Exceptions\StringException;
 
 final class StringAdapterHelper {
     private $phpunit;

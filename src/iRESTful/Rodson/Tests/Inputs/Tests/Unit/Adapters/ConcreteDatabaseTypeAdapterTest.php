@@ -5,7 +5,7 @@ use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\BinaryAdapterHelper;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\FloatAdapterHelper;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\IntegerAdapterHelper;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\StringAdapterHelper;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Exceptions\DatabaseTypeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Exceptions\DatabaseTypeException;
 
 final class ConcreteDatabaseTypeAdapterTest extends \PHPUnit_Framework_TestCase {
     private $binaryAdapterMock;
@@ -27,14 +27,14 @@ final class ConcreteDatabaseTypeAdapterTest extends \PHPUnit_Framework_TestCase 
     private $integerAdapterHelper;
     private $stringAdapterHelper;
     public function setUp() {
-        $this->binaryAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Adapters\BinaryAdapter');
-        $this->binaryMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Binary');
-        $this->floatAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Adapters\FloatAdapter');
-        $this->floatMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Float');
-        $this->integerAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Adapters\IntegerAdapter');
-        $this->integerMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Integer');
-        $this->stringAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Adapters\StringAdapter');
-        $this->stringMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\String');
+        $this->binaryAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Binaries\Adapters\BinaryAdapter');
+        $this->binaryMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Binaries\Binary');
+        $this->floatAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Floats\Adapters\FloatAdapter');
+        $this->floatMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Floats\Float');
+        $this->integerAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Adapters\IntegerAdapter');
+        $this->integerMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Integer');
+        $this->stringAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\Adapters\StringAdapter');
+        $this->stringMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\String');
 
         $this->dataWithBinary = [
             'name' => 'binary',

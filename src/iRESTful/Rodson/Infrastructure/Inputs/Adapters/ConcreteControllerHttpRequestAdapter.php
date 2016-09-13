@@ -1,11 +1,11 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Adapters\HttpRequestAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Adapters\CommandAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Views\Adapters\ViewAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Adapters\HttpRequestAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Adapters\CommandAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Views\Adapters\ViewAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteControllerHttpRequest;
-use iRESTful\Rodson\Domain\Inputs\Values\Adapters\ValueAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Exceptions\HttpRequestException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Adapters\ValueAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Exceptions\HttpRequestException;
 
 final class ConcreteControllerHttpRequestAdapter implements HttpRequestAdapter {
     private $commandAdapter;

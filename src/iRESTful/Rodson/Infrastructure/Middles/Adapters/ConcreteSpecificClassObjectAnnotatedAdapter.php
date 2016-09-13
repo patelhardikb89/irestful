@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Annotations\Adapters\AnnotatedObjectAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Adapters\ObjectAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteSpecificClassObjectAnnotated;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Adapters\ParameterAdapter;

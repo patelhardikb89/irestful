@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\View;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Templates\Template;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Exceptions\ViewException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\View;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Templates\Template;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Exceptions\ViewException;
 
 final class ConcreteControllerView implements View {
     private $isJson;

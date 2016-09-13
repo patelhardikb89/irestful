@@ -2,20 +2,20 @@
 namespace iRESTful\Rodson\Infrastructure\Inputs\Repositories;
 use iRESTful\Rodson\Domain\Inputs\Repositories\RodsonRepository;
 use iRESTful\Rodson\Domain\Inputs\Repositories\Criterias\Adapters\RodsonRetrieverCriteriaAdapter;
-use iRESTful\Rodson\Domain\Inputs\Adapters\Factories\Adapters\RodsonAdapterFactoryAdapter;
+use iRESTful\Rodson\Domain\Inputs\Adapters\RodsonAdapter;
 use iRESTful\Rodson\Domain\Inputs\Exceptions\RodsonException;
 
 final class ConcreteRodsonRepository implements RodsonRepository {
-    private $adapterFactoryAdapter;
+    private $adapter;
     private $criteriaAdapter;
-    public function __construct(RodsonAdapterFactoryAdapter $adapterFactoryAdapter, RodsonRetrieverCriteriaAdapter $criteriaAdapter) {
-        $this->adapterFactoryAdapter = $adapterFactoryAdapter;
+    public function __construct(RodsonAdapter $adapter, RodsonRetrieverCriteriaAdapter $criteriaAdapter) {
+        $this->adapter = $adapter;
         $this->criteriaAdapter = $criteriaAdapter;
     }
 
-    public function retrieve(array $data) {
+    public function retrieve($filePath) {
 
-        $criteria = $this->criteriaAdapter->fromDataToRodsonRetrieverCriteria($data);
+        $criteria = $this->criteriaAdapter->fromFilePathToRodsonRetrieverCriteria($filePath);
         if (!$criteria->hasFilePath()) {
             throw new RodsonException('The RodsonRetrieverCriteria does not contain any valid retrieval criteria.');
         }
@@ -31,8 +31,10 @@ final class ConcreteRodsonRepository implements RodsonRepository {
             throw new RodsonException('The given filePath ('.$filePath.') is not a valid json document.');
         }
 
-        $adapter = $this->adapterFactoryAdapter->fromDataToRodsonAdapterFactory($data)->create();
-        return $adapter->fromDataToRodson($data);
+        $parts = explode('/', $filePath);
+        array_pop($parts);
+        $data['base_directory'] = implode('/', $parts);
+        return $this->adapter->fromDataToRodson($data);
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Urls\Url;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Urls\Exceptions\UrlException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Urls\Url;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Urls\Exceptions\UrlException;
 
 final class ConcreteControllerHttpRequestCommandUrl implements Url {
     private $baseUrl;

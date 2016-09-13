@@ -5,7 +5,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Insert
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Updates\Update;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Deletes\Delete;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Actions\Exceptions\ActionException;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\HttpRequest;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\HttpRequest;
 
 final class ConcreteClassInstructionDatabaseAction implements Action {
     private $httpRequest;

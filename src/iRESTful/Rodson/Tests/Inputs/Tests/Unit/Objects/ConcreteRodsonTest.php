@@ -13,8 +13,8 @@ final class ConcreteRodsonTest extends \PHPUnit_Framework_TestCase {
     private $controllers;
     public function setUp() {
         $this->rodsonMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Rodson');
-        $this->objectMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Object');
-        $this->controllerMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Controllers\Controller');
+        $this->objectMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object');
+        $this->controllerMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Controller');
 
         $this->name = 'MyProject';
 

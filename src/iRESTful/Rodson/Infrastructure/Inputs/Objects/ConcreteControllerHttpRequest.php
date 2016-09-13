@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\HttpRequest;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Command;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Views\View;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Exceptions\HttpRequestException;
-use iRESTful\Rodson\Domain\Inputs\Values\Value;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\HttpRequest;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Command;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Views\View;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Exceptions\HttpRequestException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Value;
 
 final class ConcreteControllerHttpRequest implements HttpRequest {
     private $command;

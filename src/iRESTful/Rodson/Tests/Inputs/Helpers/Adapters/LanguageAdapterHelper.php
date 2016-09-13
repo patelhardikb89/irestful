@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Adapters\LanguageAdapter;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Language;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Exceptions\LanguageException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Adapters\LanguageAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Language;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Exceptions\LanguageException;
 
 final class LanguageAdapterHelper {
     private $phpunit;

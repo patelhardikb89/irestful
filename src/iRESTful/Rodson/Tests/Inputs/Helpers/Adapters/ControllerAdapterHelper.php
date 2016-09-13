@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Adapters\ControllerAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Exceptions\ControllerException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Adapters\ControllerAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Exceptions\ControllerException;
 
 final class ControllerAdapterHelper {
     private $phpunit;

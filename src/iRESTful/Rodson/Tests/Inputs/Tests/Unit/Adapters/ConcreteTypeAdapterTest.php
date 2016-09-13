@@ -3,7 +3,7 @@ namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteTypeAdapter;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\DatabaseTypeAdapterHelper;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\MethodAdapterHelper;
-use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Exceptions\TypeException;
 
 final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
     private $databaseTypeAdapterMock;
@@ -24,11 +24,11 @@ final class ConcreteTypeAdapterTest extends \PHPUnit_Framework_TestCase {
     private $databaseTypeAdapterHelper;
     private $methodAdapterHelper;
     public function setUp() {
-        $this->databaseTypeAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Adapters\DatabaseTypeAdapter');
-        $this->databaseTypeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType');
-        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter');
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method');
-        $this->adapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Adapters\Adapter');
+        $this->databaseTypeAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Adapters\DatabaseTypeAdapter');
+        $this->databaseTypeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\DatabaseType');
+        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Adapters\MethodAdapter');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Method');
+        $this->adapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Converters\Adapter');
 
         $this->name = 'uri';
 

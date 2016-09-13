@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteObjectAdapter;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\PropertyAdapterHelper;
-use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Exceptions\ObjectException;
 
 final class ConcreteObjectAdapterTest extends \PHPUnit_Framework_TestCase {
     private $methodAdapterMock;
@@ -18,10 +18,10 @@ final class ConcreteObjectAdapterTest extends \PHPUnit_Framework_TestCase {
     private $adapter;
     private $propertyAdapterHelper;
     public function setUp() {
-        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Methods\Adapters\MethodAdapter');
-        $this->propertyAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Properties\Adapters\PropertyAdapter');
-        $this->propertyMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property');
-        $this->databaseMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Database');
+        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Objects\Methods\Adapters\MethodAdapter');
+        $this->propertyAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Adapters\PropertyAdapter');
+        $this->propertyMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Property');
+        $this->databaseMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Database');
 
         $this->name = 'my_object';
 

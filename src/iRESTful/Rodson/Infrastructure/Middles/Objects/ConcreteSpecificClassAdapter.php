@@ -1,12 +1,12 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Adapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
-use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Exceptions\AdapterException;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Exceptions\ConverterException;
 
 final class ConcreteSpecificClassAdapter implements Adapter {
     private $type;
@@ -23,12 +23,12 @@ final class ConcreteSpecificClassAdapter implements Adapter {
     ) {
 
         if (empty($customMethods)) {
-            throw new AdapterException('The customMethods array cannot be empty.');
+            throw new ConverterException('The customMethods array cannot be empty.');
         }
 
         foreach($customMethods as $oneCustomMethod) {
             if (!($oneCustomMethod instanceof CustomMethod)) {
-                throw new AdapterException('The customMethods array must only contain CustomMethod objects.');
+                throw new ConverterException('The customMethods array must only contain CustomMethod objects.');
             }
         }
 

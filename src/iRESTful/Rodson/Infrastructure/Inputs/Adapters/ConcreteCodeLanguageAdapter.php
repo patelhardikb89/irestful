@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Adapters\LanguageAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Adapters\LanguageAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteCodeLanguage;
 
 final class ConcreteCodeLanguageAdapter implements LanguageAdapter {

@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Values\Adapters\Adapters\ValueAdapterAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteValueAdapter;
-use iRESTful\Rodson\Domain\Inputs\Values\Exceptions\ValueException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Exceptions\ValueException;
 
 final class ConcreteValueAdapterAdapter implements ValueAdapterAdapter {
 

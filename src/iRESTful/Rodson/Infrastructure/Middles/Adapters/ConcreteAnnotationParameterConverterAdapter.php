@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Converters\Adapters\ConverterAdapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Converters\Singles\Adapters\SingleConverterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteAnnotationParameterConverter;
 

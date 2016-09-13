@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Adapters\EntityAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
 use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Adapters\InterfaceAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Adapters\ConstructorAdapter;

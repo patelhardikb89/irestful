@@ -3,7 +3,7 @@ namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\RelationalDatabaseAdapterHelper;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\RESTAPIAdapterHelper;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteDatabaseAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\Exceptions\DatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Exceptions\DatabaseException;
 
 final class ConcreteDatabaseAdapterTest extends \PHPUnit_Framework_TestCase {
     private $relationalDatabaseAdapterMock;
@@ -18,10 +18,10 @@ final class ConcreteDatabaseAdapterTest extends \PHPUnit_Framework_TestCase {
     private $relationalDatabaseAdapterHelper;
     private $restAPIAdapterHelper;
     public function setUp() {
-        $this->relationalDatabaseAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Adapters\RelationalDatabaseAdapter');
-        $this->relationalDatabaseMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Relationals\RelationalDatabase');
-        $this->restAPIAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Adapters\RESTAPIAdapter');
-        $this->restAPIMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\RESTAPI');
+        $this->relationalDatabaseAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Adapters\RelationalDatabaseAdapter');
+        $this->relationalDatabaseMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\RelationalDatabase');
+        $this->restAPIAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Adapters\RESTAPIAdapter');
+        $this->restAPIMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\RESTAPI');
 
         $this->name = 'some_name';
 

@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Converters\Singles\Adapters\SingleConverterAdapter;
 use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteAnnotationParameterConverterSingle;
 
 final class ConcreteAnnotationParameterConverterSingleAdapter implements SingleConverterAdapter {

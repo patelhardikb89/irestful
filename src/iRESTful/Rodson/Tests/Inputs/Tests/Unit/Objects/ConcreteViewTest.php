@@ -1,13 +1,13 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteView;
-use iRESTful\Rodson\Domain\Inputs\Views\Exceptions\ViewException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Views\Exceptions\ViewException;
 
 final class ConcreteViewTest extends \PHPUnit_Framework_TestCase {
     private $methodMock;
     private $name;
     public function setUp() {
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Method');
 
         $this->name = 'MyView';
     }

@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Objects;
-use iRESTful\Rodson\Domain\Inputs\Codes\Code;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Code;
 
 final class CodeHelper {
     private $phpunit;

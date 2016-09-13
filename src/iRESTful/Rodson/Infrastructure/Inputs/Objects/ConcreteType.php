@@ -1,11 +1,11 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
-use iRESTful\Rodson\Domain\Inputs\Types\Exceptions\TypeException;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\DatabaseType;
-use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
-use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
-use iRESTful\Rodson\Domain\Inputs\Adapters\Types\Type as AdapterType;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\DatabaseType;
+use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Converter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Types\Type as ConverterType;
 
 final class ConcreteType implements Type {
     private $name;
@@ -13,7 +13,7 @@ final class ConcreteType implements Type {
     private $databaseAdapter;
     private $viewAdapter;
     private $method;
-    public function __construct($name, DatabaseType $databaseType, Adapter $databaseAdapter, Adapter $viewAdapter = null, Method $method = null) {
+    public function __construct($name, DatabaseType $databaseType, Converter $databaseAdapter, Converter $viewAdapter = null, Method $method = null) {
 
         if (empty($name) || !is_string($name)) {
             throw new TypeException('The name must be a non-empty string.');
@@ -68,9 +68,9 @@ final class ConcreteType implements Type {
         return $this->method;
     }
 
-    private function getMethodName(Adapter $adapter) {
+    private function getMethodName(Converter $converter) {
 
-        $getAdapterTypeName = function(AdapterType $type) {
+        $getConverterTypeName = function(ConverterType $type) {
             if ($type->hasType()) {
                 return $type->getType()->getName();
             }
@@ -79,15 +79,15 @@ final class ConcreteType implements Type {
         };
 
         $fromName = $this->getName();
-        if ($adapter->hasFromType()) {
-            $fromType = $adapter->fromType();
-            $fromName = $getAdapterTypeName($fromType);
+        if ($converter->hasFromType()) {
+            $fromType = $converter->fromType();
+            $fromName = $getConverterTypeName($fromType);
         }
 
         $toName = $this->getName();
-        if ($adapter->hasToType()) {
-            $toType = $adapter->toType();
-            $toName = $getAdapterTypeName($toType);
+        if ($converter->hasToType()) {
+            $toType = $converter->toType();
+            $toName = $getConverterTypeName($toType);
         }
 
         return 'from'.ucfirst($fromName).'To'.ucfirst($toName);

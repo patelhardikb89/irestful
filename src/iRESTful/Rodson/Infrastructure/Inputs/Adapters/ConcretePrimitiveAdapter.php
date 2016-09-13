@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Primitives\Adapters\PrimitiveAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Primitives\Adapters\PrimitiveAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcretePrimitive;
-use iRESTful\Rodson\Domain\Inputs\Primitives\Exceptions\PrimitiveException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Primitives\Exceptions\PrimitiveException;
 
 final class ConcretePrimitiveAdapter implements PrimitiveAdapter {
 

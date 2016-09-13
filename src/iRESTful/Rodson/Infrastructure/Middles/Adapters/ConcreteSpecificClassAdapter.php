@@ -46,8 +46,9 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
 
         $output = [];
 
-        $objects = $rodson->getObjects();
-        $controllers = $rodson->getControllers();
+        $project = $rodson->getProject();
+        $objects = $project->getObjects();
+        $controllers = $project->getControllers();
         $types = $getTypes($objects);
 
         $annotatedObjects = $this->annotatedObjectAdapter->fromObjectsToAnnotatedObjects($objects);

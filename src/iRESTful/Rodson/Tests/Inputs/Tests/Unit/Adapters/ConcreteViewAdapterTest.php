@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteViewAdapter;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\MethodAdapterHelper;
-use iRESTful\Rodson\Domain\Inputs\Views\Exceptions\ViewException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Views\Exceptions\ViewException;
 
 final class ConcreteViewAdapterTest extends \PHPUnit_Framework_TestCase {
     private $methodAdapterMock;
@@ -13,8 +13,8 @@ final class ConcreteViewAdapterTest extends \PHPUnit_Framework_TestCase {
     private $adapter;
     private $methodAdapterHelper;
     public function setUp() {
-        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter');
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method');
+        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Adapters\MethodAdapter');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Method');
 
         $this->name = 'my_view';
         $this->methodName = 'myMethod';

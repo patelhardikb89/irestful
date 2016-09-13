@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteRelationalDatabaseAdapter;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\CredentialsAdapterHelper;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Exceptions\RelationalDatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Exceptions\RelationalDatabaseException;
 
 final class ConcreteRelationalDatabaseAdapterTest extends \PHPUnit_Framework_TestCase {
     private $credentialsAdapterMock;
@@ -15,8 +15,8 @@ final class ConcreteRelationalDatabaseAdapterTest extends \PHPUnit_Framework_Tes
     private $adapter;
     private $credentialsAdapterHelper;
     public function setUp() {
-        $this->credentialsAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Adapters\CredentialsAdapter');
-        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Credentials');
+        $this->credentialsAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Adapters\CredentialsAdapter');
+        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Credentials');
 
         $this->driver = 'mysql';
         $this->hostName = '127.0.0.1';

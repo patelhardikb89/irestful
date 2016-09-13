@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseType;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Exceptions\DatabaseTypeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Exceptions\DatabaseTypeException;
 
 final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
     private $binaryMock;
@@ -9,10 +9,10 @@ final class ConcreteDatabaseTypeTest extends \PHPUnit_Framework_TestCase {
     private $integerMock;
     private $stringMock;
     public function setUp() {
-        $this->binaryMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Binary');
-        $this->floatMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Float');
-        $this->integerMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Integer');
-        $this->stringMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\String');
+        $this->binaryMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Binaries\Binary');
+        $this->floatMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Floats\Float');
+        $this->integerMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Integer');
+        $this->stringMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\String');
     }
 
     public function tearDown() {

@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
-use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
-use iRESTful\Rodson\Domain\Inputs\Databases\Database;
-use iRESTful\Rodson\Domain\Inputs\Objects\Methods\Method;
-use iRESTful\Rodson\Domain\Inputs\Objects\Samples\Sample;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Database;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Samples\Sample;
 
 final class ConcreteObject implements Object {
     private $name;
@@ -40,7 +40,7 @@ final class ConcreteObject implements Object {
                 throw new ObjectException('The indexes of the properties array must be integers.');
             }
 
-            if (!($oneProperty instanceof \iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property)) {
+            if (!($oneProperty instanceof \iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Property)) {
                 throw new ObjectException('The properties array must only contain Property objects.');
             }
 

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseTypeInteger;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Exceptions\IntegerException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Exceptions\IntegerException;
 
 final class ConcreteDatabaseTypeIntegerTest extends \PHPUnit_Framework_TestCase {
     private $maximumBitSize;

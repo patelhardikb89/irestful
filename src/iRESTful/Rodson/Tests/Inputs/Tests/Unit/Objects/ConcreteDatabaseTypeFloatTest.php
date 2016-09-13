@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseTypeFloat;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Exceptions\FloatException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Floats\Exceptions\FloatException;
 
 final class ConcreteDatabaseTypeFloatTest extends \PHPUnit_Framework_TestCase {
     private $digitAmount;

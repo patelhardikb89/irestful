@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Adapters\IntegerAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Adapters\IntegerAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseTypeInteger;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Exceptions\IntegerException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Exceptions\IntegerException;
 
 final class ConcreteDatabaseTypeIntegerAdapter implements IntegerAdapter {
 

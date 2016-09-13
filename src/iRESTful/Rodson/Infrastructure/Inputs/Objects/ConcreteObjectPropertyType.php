@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Type as PropertyType;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
-use iRESTful\Rodson\Domain\Inputs\Primitives\Primitive;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Types\Type as PropertyType;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Primitives\Primitive;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Types\Exceptions\TypeException;
 
 final class ConcreteObjectPropertyType implements PropertyType {
     private $isArray;

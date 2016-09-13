@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Adapters\CredentialsAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Adapters\CredentialsAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseCredentials;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Exceptions\CredentialsException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Exceptions\CredentialsException;
 
 final class ConcreteDatabaseCredentialsAdapter implements CredentialsAdapter {
 

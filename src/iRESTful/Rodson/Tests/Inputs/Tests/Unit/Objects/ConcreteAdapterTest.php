@@ -1,14 +1,14 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteAdapter;
-use iRESTful\Rodson\Domain\Inputs\Adapters\Exceptions\AdapterException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Exceptions\ConverterException;
 
 final class ConcreteAdapterTest extends \PHPUnit_Framework_TestCase {
     private $typeMock;
     private $methodMock;
     public function setUp() {
-        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Type');
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method');
+        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Type');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Method');
     }
 
     public function tearDown() {
@@ -52,14 +52,14 @@ final class ConcreteAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testCreate_withoutTypes_throwsAdapterException() {
+    public function testCreate_withoutTypes_throwsConverterException() {
 
         $asserted = false;
         try {
 
             new ConcreteAdapter($this->methodMock);
 
-        } catch (AdapterException $exception) {
+        } catch (ConverterException $exception) {
             $asserted = true;
         }
 

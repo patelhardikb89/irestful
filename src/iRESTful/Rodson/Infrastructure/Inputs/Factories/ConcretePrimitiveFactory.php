@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Factories;
-use iRESTful\Rodson\Domain\Inputs\Primitives\Factories\PrimitiveFactory;
+use iRESTful\Rodson\Domain\Inputs\Projects\Primitives\Factories\PrimitiveFactory;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcretePrimitive;
 
 final class ConcretePrimitiveFactory implements PrimitiveFactory {

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Adapters\PropertyAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Exceptions\PropertyException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Adapters\PropertyAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Exceptions\PropertyException;
 
 final class PropertyAdapterHelper {
     private $phpunit;

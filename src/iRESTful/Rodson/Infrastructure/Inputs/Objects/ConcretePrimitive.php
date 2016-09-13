@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Primitives\Primitive;
-use iRESTful\Rodson\Domain\Inputs\Primitives\Exceptions\PrimitiveException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Primitives\Primitive;
+use iRESTful\Rodson\Domain\Inputs\Projects\Primitives\Exceptions\PrimitiveException;
 
 final class ConcretePrimitive implements Primitive {
     private $isString;

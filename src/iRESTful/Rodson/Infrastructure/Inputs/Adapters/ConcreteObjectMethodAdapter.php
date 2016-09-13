@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Methods\Adapters\MethodAdapter;
-use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter as CodeMethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Adapters\MethodAdapter as CodeMethodAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteObjectMethod;
-use iRESTful\Rodson\Domain\Inputs\Objects\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Methods\Exceptions\MethodException;
 
 final class ConcreteObjectMethodAdapter implements MethodAdapter {
     private $codeMethodAdapter;

@@ -1,13 +1,13 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Adapters\PropertyAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Adapters\PropertyAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteObject;
-use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Exceptions\PropertyException;
-use iRESTful\Rodson\Domain\Inputs\Objects\Adapters\ObjectAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
-use iRESTful\Rodson\Domain\Inputs\Objects\Methods\Adapters\MethodAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Samples\Adapters\SampleAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Exceptions\PropertyException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Adapters\ObjectAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Samples\Adapters\SampleAdapter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $methodAdapter;

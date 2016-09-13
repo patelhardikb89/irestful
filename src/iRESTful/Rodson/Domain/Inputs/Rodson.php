@@ -3,8 +3,9 @@ namespace iRESTful\Rodson\Domain\Inputs;
 
 interface Rodson {
     public function getName();
-    public function getObjects();
-    public function getControllers();
-    public function hasParents();
-    public function getParents();
+    public function getType();
+    public function getUrl();
+    public function getLicense();
+    public function getAuthors();
+    public function getProject();
 }

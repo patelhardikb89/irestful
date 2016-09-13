@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteAdapterAdapter;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\MethodAdapterHelper;
-use iRESTful\Rodson\Domain\Inputs\Adapters\Exceptions\AdapterException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Exceptions\ConverterException;
 
 final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
     private $methodAdapterMock;
@@ -14,9 +14,9 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
     private $adapter;
     private $methodAdapterHelper;
     public function setUp() {
-        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Adapters\MethodAdapter');
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method');
-        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Types\Type');
+        $this->methodAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Adapters\MethodAdapter');
+        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Method');
+        $this->typeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Types\Type');
 
         $this->methodName = 'myMethod';
 
@@ -40,11 +40,11 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapter_Success() {
+    public function testFromDataToConverter_Success() {
 
         $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->methodName);
 
-        $adapter = $this->adapter->fromDataToAdapter($this->data);
+        $adapter = $this->adapter->fromDataToConverter($this->data);
 
         $this->assertEquals($this->typeMock, $adapter->fromType());
         $this->assertEquals($this->typeMock, $adapter->toType());
@@ -52,13 +52,13 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapter_withFromNameNotFoundInTypes_Success() {
+    public function testFromDataToConverter_withFromNameNotFoundInTypes_Success() {
 
         $this->data['from'] = 'invalid';
 
         $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->methodName);
 
-        $adapter = $this->adapter->fromDataToAdapter($this->data);
+        $adapter = $this->adapter->fromDataToConverter($this->data);
 
         $this->assertFalse($adapter->hasFromType());
         $this->assertNull($adapter->fromType());
@@ -68,13 +68,13 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapter_withoutFromType_Success() {
+    public function testFromDataToConverter_withoutFromType_Success() {
 
         unset($this->data['from']);
 
         $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->methodName);
 
-        $adapter = $this->adapter->fromDataToAdapter($this->data);
+        $adapter = $this->adapter->fromDataToConverter($this->data);
 
         $this->assertFalse($adapter->hasFromType());
         $this->assertNull($adapter->fromType());
@@ -84,13 +84,13 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapter_withToNameNotFoundInTypes_Success() {
+    public function testFromDataToConverter_withToNameNotFoundInTypes_Success() {
 
         $this->data['to'] = 'invalid';
 
         $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->methodName);
 
-        $adapter = $this->adapter->fromDataToAdapter($this->data);
+        $adapter = $this->adapter->fromDataToConverter($this->data);
 
         $this->assertTrue($adapter->hasFromType());
         $this->assertEquals($this->typeMock, $adapter->fromType());
@@ -100,13 +100,13 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapter_withoutToType_Success() {
+    public function testFromDataToConverter_withoutToType_Success() {
 
         unset($this->data['to']);
 
         $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->methodName);
 
-        $adapter = $this->adapter->fromDataToAdapter($this->data);
+        $adapter = $this->adapter->fromDataToConverter($this->data);
 
         $this->assertTrue($adapter->hasFromType());
         $this->assertEquals($this->typeMock, $adapter->fromType());
@@ -116,16 +116,16 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapter_throwsMethodException_throwsAdapterException() {
+    public function testFromDataToConverter_throwsMethodException_throwsConverterException() {
 
         $this->methodAdapterHelper->expectsFromStringToMethod_throwsMethodException($this->methodName);
 
         $asserted = false;
         try {
 
-            $this->adapter->fromDataToAdapter($this->data);
+            $this->adapter->fromDataToConverter($this->data);
 
-        } catch (AdapterException $exception) {
+        } catch (ConverterException $exception) {
             $asserted = true;
         }
 
@@ -133,16 +133,16 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapter_withoutMethod_throwsAdapterException() {
+    public function testFromDataToConverter_withoutMethod_throwsConverterException() {
 
         unset($this->data['method']);
 
         $asserted = false;
         try {
 
-            $this->adapter->fromDataToAdapter($this->data);
+            $this->adapter->fromDataToConverter($this->data);
 
-        } catch (AdapterException $exception) {
+        } catch (ConverterException $exception) {
             $asserted = true;
         }
 
@@ -150,11 +150,11 @@ final class ConcreteAdapterAdapterTest extends \PHPUnit_Framework_TestCase {
 
     }
 
-    public function testFromDataToAdapters_Success() {
+    public function testFromDataToConverters_Success() {
 
         $this->methodAdapterHelper->expectsFromStringToMethod_Success($this->methodMock, $this->methodName);
 
-        $adapters = $this->adapter->fromDataToAdapters([$this->data]);
+        $adapters = $this->adapter->fromDataToConverters([$this->data]);
 
         $keyname = 'from_'.$this->data['from'].'_to_'.$this->data['to'];
         $this->assertEquals($this->typeMock, $adapters[$keyname]->fromType());

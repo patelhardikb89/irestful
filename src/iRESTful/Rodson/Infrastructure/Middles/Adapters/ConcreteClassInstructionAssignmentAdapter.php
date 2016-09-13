@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Assignments\Adapters\AssignmentAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Controller;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Adapters\DatabaseAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Conversions\Adapters\Adapters\ConversionAdapterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInstructionAssignment;

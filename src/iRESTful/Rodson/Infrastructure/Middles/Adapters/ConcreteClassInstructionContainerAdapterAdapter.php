@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Adapters\Adapters\ContainerAdapterAdapter;
-use iRESTful\Rodson\Domain\Inputs\Values\Adapters\ValueAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Adapters\ValueAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassInstructionContainerAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Exceptions\ContainerException;
-use iRESTful\Rodson\Domain\Inputs\Values\Adapters\Adapters\ValueAdapterAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Adapters\Adapters\ValueAdapterAdapter;
 
 final class ConcreteClassInstructionContainerAdapterAdapter implements ContainerAdapterAdapter {
     private $valueAdapterAdapter;

@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Methods\Method;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
 
 interface CustomMethodAdapter {
     public function fromInstructionsToCustomMethod(array $instructions);

@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Adapters\ViewAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Templates\Adapters\TemplateAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Adapters\ViewAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Templates\Adapters\TemplateAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteControllerView;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Views\Exceptions\ViewException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Views\Exceptions\ViewException;
 
 final class ConcreteControllerViewAdapter implements ViewAdapter {
     private $templateAdapter;

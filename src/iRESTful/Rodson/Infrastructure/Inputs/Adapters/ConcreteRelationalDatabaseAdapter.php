@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Adapters\RelationalDatabaseAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Adapters\CredentialsAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Exceptions\RelationalDatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Adapters\RelationalDatabaseAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Adapters\CredentialsAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Exceptions\RelationalDatabaseException;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteRelationalDatabase;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Exceptions\CredentialsException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Exceptions\CredentialsException;
 
 final class ConcreteRelationalDatabaseAdapter implements RelationalDatabaseAdapter {
     private $credentialsAdapter;

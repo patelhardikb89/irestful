@@ -1,6 +1,4 @@
 <?php
-namespace iRESTful\Rodson\Tests\Applications\Tests\Files\Codes;
-
 final class Authenticated {
 
     public static function validateString($string) {

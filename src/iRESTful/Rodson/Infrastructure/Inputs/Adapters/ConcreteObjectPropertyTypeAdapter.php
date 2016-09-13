@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Adapters\TypeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Types\Adapters\TypeAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteObjectPropertyType;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Types\Exceptions\TypeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Types\Exceptions\TypeException;
 
 final class ConcreteObjectPropertyTypeAdapter implements TypeAdapter {
     private $types;

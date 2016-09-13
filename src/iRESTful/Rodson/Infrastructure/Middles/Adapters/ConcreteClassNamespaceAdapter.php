@@ -2,9 +2,9 @@
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\AbstractNamespaceAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Controller;
 
 final class ConcreteClassNamespaceAdapter extends AbstractNamespaceAdapter implements NamespaceAdapter {
 

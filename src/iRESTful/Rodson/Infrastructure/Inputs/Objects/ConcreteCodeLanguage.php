@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Language;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Exceptions\LanguageException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Language;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Exceptions\LanguageException;
 
 final class ConcreteCodeLanguage implements Language {
     private $language;

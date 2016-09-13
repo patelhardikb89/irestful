@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Credentials;
-use iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Exceptions\CredentialsException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Credentials;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Exceptions\CredentialsException;
 
 final class ConcreteDatabaseCredentials implements Credentials {
     private $username;

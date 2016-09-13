@@ -1,15 +1,17 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Codes\Adapters\CodeAdapter;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Adapters\LanguageAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Adapters\CodeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Adapters\LanguageAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteCode;
-use iRESTful\Rodson\Domain\Inputs\Codes\Exceptions\CodeException;
-use iRESTful\Rodson\Domain\Inputs\Codes\Languages\Exceptions\LanguageException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Exceptions\CodeException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Languages\Exceptions\LanguageException;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $languageAdapter;
-    public function __construct(LanguageAdapter $languageAdapter) {
+    private $baseDirectory;
+    public function __construct(LanguageAdapter $languageAdapter, $baseDirectory) {
         $this->languageAdapter = $languageAdapter;
+        $this->baseDirectory = $baseDirectory;
     }
 
     public function fromDataToCode(array $data) {
@@ -22,8 +24,18 @@ final class ConcreteCodeAdapter implements CodeAdapter {
             throw new CodeException('The class keyname is mandatory in order to convert data to a Code object.');
         }
 
+        if (!isset($data['file'])) {
+            throw new CodeException('The file keyname is mandatory in order to convert data to a Code object.');
+        }
+
         try {
 
+            $file = $this->baseDirectory.'/'.$data['file'];
+            if (!file_exists($file)) {
+                throw new CodeException('The given file ('.$data['file'].') does not exists.  The base directory was: '.$this->baseDirectory.' - The absolute file path was supposed to be: '.$file);
+            }
+
+            include_once($file);
             $language = $this->languageAdapter->fromStringToLanguage($data['language']);
             return new ConcreteCode($language, $data['class']);
 

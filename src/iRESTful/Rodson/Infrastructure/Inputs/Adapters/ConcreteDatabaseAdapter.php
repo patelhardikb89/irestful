@@ -1,13 +1,13 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Databases\Adapters\DatabaseAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Adapters\RelationalDatabaseAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\RelationalDatabase;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Adapters\RESTAPIAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Adapters\DatabaseAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Adapters\RelationalDatabaseAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\RelationalDatabase;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Adapters\RESTAPIAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabase;
-use iRESTful\Rodson\Domain\Inputs\Databases\Exceptions\DatabaseException;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Exceptions\RelationalDatabaseException;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Exceptions\RESTAPIException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Exceptions\DatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Exceptions\RelationalDatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Exceptions\RESTAPIException;
 
 final class ConcreteDatabaseAdapter implements DatabaseAdapter {
     private $relationalDatabaseAdapter;

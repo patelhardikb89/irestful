@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Property;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassConstructorParameterMethod;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Methods\Adapters\MethodAdapter;
 

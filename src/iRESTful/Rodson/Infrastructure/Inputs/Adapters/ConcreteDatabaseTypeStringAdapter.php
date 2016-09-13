@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Adapters\StringAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\Adapters\StringAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseTypeString;
 
 final class ConcreteDatabaseTypeStringAdapter implements StringAdapter {

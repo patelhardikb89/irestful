@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Method;
-use iRESTful\Rodson\Domain\Inputs\Codes\Code;
-use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Method;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Code;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Exceptions\MethodException;
 
 final class ConcreteCodeMethod implements Method {
     private $code;

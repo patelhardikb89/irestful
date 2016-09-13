@@ -8,7 +8,7 @@ use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteAnnotationParameter;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Parameters\Parameter as ConstructorParameter;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Types\Adapters\TypeAdapter;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Exceptions\ParameterException;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object as InputObject;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object as InputObject;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Entity;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Object;
 

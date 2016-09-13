@@ -5,7 +5,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Excepti
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Types\Adapters\TypeAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInterfaceMethodParameter;
 use iRESTful\Rodson\Domain\Middles\Namespaces\Adapters\NamespaceAdapter;
-use iRESTful\Rodson\Domain\Inputs\Adapters\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Types\Type;
 
 final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAdapter {
     private $namespaceAdapter;

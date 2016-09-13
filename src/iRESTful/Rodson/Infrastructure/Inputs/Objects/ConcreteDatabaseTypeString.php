@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\String;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Strings\Exceptions\StringException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\String;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Strings\Exceptions\StringException;
 
 final class ConcreteDatabaseTypeString implements String {
     private $specificCharacterSize;

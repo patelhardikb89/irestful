@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Adapters\KeynameAdapter;
-use iRESTful\Rodson\Domain\Inputs\Values\Adapters\ValueAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Adapters\ValueAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInstructionDatabaseRetrievalKeyname;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Exceptions\KeynameException;
 

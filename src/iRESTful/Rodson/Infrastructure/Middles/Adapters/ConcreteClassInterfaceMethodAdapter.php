@@ -4,13 +4,13 @@ use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Adapters\MethodAda
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInterfaceMethod;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
-use iRESTful\Rodson\Domain\Inputs\Adapters\Adapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
+use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Converter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Property;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Exceptions\MethodException;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\Adapters\CustomMethodAdapter;
-use iRESTful\Rodson\Domain\Inputs\Controllers\Controller;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\Controller;
 
 final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
     private $customMethodAdapter;
@@ -45,8 +45,8 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
     public function fromTypeToAdapterMethods(Type $type) {
 
         $parameterAdapter = $this->parameterAdapter;
-        $createMethod = function($name, Type $type, Adapter $adapter) use(&$parameterAdapter) {
-            $parameterType = ($adapter->hasFromType()) ? $adapter->fromType() : $type;
+        $createMethod = function($name, Type $type, Converter $converter) use(&$parameterAdapter) {
+            $parameterType = ($converter->hasFromType()) ? $converter->fromType() : $type;
             $parameter = $parameterAdapter->fromTypeToParameter($parameterType);
             return new ConcreteClassInterfaceMethod($name, [$parameter]);
         };
@@ -108,7 +108,7 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
             'name' => $controller->getInputName(),
             'is_array' => true
         ]);
-        
+
         return new ConcreteClassInterfaceMethod($name, [$parameter]);
     }
 

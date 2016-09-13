@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Adapters;
 use iRESTful\Rodson\Infrastructure\Inputs\Adapters\ConcreteRESTAPIAdapter;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Adapters\CredentialsAdapterHelper;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Exceptions\RESTAPIException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Exceptions\RESTAPIException;
 
 final class ConcreteRESTAPIAdapterTest extends \PHPUnit_Framework_TestCase {
     private $credentialsAdapterMock;
@@ -17,8 +17,8 @@ final class ConcreteRESTAPIAdapterTest extends \PHPUnit_Framework_TestCase {
     private $adapter;
     private $credentialsAdapterHelper;
     public function setUp() {
-        $this->credentialsAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Adapters\CredentialsAdapter');
-        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Credentials');
+        $this->credentialsAdapterMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Adapters\CredentialsAdapter');
+        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Credentials');
 
         $this->baseUrl = 'http://api.irestful.com';
         $this->port = 80;

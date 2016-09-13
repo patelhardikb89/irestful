@@ -1,10 +1,10 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Annotations\Parameters\Types\Adapters\TypeAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Property;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteAnnotationParameterType;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Adapters\DatabaseTypeAdapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Type;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Adapters\DatabaseTypeAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
 
 final class ConcreteAnnotationParameterTypeAdapter implements TypeAdapter {
     private $databaseTypeAdapter;

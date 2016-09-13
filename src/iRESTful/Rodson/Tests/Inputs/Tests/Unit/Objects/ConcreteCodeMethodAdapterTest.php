@@ -2,7 +2,7 @@
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Tests\Inputs\Helpers\Objects\CodeHelper;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteCodeMethod;
-use iRESTful\Rodson\Domain\Inputs\Codes\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Exceptions\MethodException;
 
 final class ConcreteCodeMethodAdapterTest extends \PHPUnit_Framework_TestCase {
     private $codeMock;
@@ -10,7 +10,7 @@ final class ConcreteCodeMethodAdapterTest extends \PHPUnit_Framework_TestCase {
     private $methodName;
     private $codeHelper;
     public function setUp() {
-        $this->codeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Codes\Code');
+        $this->codeMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Codes\Code');
 
         $this->className = 'iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects\ConcreteCodeMethodAdapterTest';
         $this->methodName = 'setUp';

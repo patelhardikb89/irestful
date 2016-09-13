@@ -20,18 +20,11 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassEntityA
 
 final class PHPFileRodsonApplication implements RodsonApplication {
     private $baseNamespace;
-    private $twigTemplateFactory;
-    private $repository;
-    private $service;
-    public function __construct(array $baseNamespace, $templateFolder, $cacheFolder = null) {
-
-        $this->baseNamespace = $baseNamespace;
-        $this->twigTemplateFactory = new TwigTemplateFactory($templateFolder, $cacheFolder);
-
-        $repositoryFactory = new ConcreteRodsonRepositoryFactory();
-        $this->repository = $repositoryFactory->create();
-
-        $this->service = new FileCodeService();
+    private $templateFolder;
+    private $cacheFolder;
+    public function __construct($templateFolder, $cacheFolder = null) {
+        $this->templateFolder = $templateFolder;
+        $this->cacheFolder = $cacheFolder;
     }
 
     public function executeByFolder($folderPath, $outputFolderPath) {
@@ -39,16 +32,23 @@ final class PHPFileRodsonApplication implements RodsonApplication {
     }
 
     public function executeByFile($filePath, $outputFolderPath) {
-        $rodson = $this->repository->retrieve([
-            'file_path' => $filePath
-        ]);
+
+        $repositoryFactory = new ConcreteRodsonRepositoryFactory();
+        $repository = $repositoryFactory->create();
+        $rodson = $repository->retrieve($filePath);
 
         $name = $rodson->getName();
+        $baseNamespace = [
+            'src',
+            $name->getOrganizationName(),
+            $name->getProjectName()
+        ];
 
-        $baseNamespace = array_merge($this->baseNamespace, [$name]);
-
-        $classAdapterFactory = new ConcreteSpecificClassAdapterFactory(
-            $baseNamespace,
+        $classAdapterFactory = new ConcreteSpecificClassAdapterFactory([
+                'src',
+                $name->getOrganizationName(),
+                $name->getProjectName()
+            ],
             '___',
             'America/Montreal'
         );
@@ -57,13 +57,17 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $classes = $classAdapter->fromRodsonToClasses($rodson);
 
         $output = array_filter(explode('/', $outputFolderPath));
-        $template = $this->twigTemplateFactory->create();
+        $twigTemplateFactory = new TwigTemplateFactory($this->templateFolder, $this->cacheFolder);
+
+        $template = $twigTemplateFactory->create();
         $fileAdapter = new ConcreteOutputCodeFileAdapter();
         $pathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $output);
 
         $codeAdapter = new ConcreteCodeAdapter($pathAdapter, $template);
         $codes = $codeAdapter->fromClassesToCode($classes);
-        $this->service->saveMultiple($codes);
+
+        $service = new FileCodeService();
+        $service->saveMultiple($codes);
     }
 
 }

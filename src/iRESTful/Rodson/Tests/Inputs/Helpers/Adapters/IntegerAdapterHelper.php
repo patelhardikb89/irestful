@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Adapters\IntegerAdapter;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Integer;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Integers\Exceptions\IntegerException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Adapters\IntegerAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Integer;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Integers\Exceptions\IntegerException;
 
 final class IntegerAdapterHelper {
     private $phpunit;

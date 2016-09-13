@@ -2,6 +2,7 @@
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
 use iRESTful\Rodson\Domain\Inputs\Repositories\Criterias\Adapters\RodsonRetrieverCriteriaAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteRodsonRetrieverCriteria;
+use iRESTful\Rodson\Domain\Inputs\Repositories\Criterias\Exceptions\RodsonRetrieverCriteriaException;
 
 final class ConcreteRodsonRetrieverCriteriaAdapter implements RodsonRetrieverCriteriaAdapter {
 
@@ -9,15 +10,13 @@ final class ConcreteRodsonRetrieverCriteriaAdapter implements RodsonRetrieverCri
 
     }
 
-    public function fromDataToRodsonRetrieverCriteria(array $data) {
+    public function fromFilePathToRodsonRetrieverCriteria($filePath) {
 
-        $jsonFilePath = null;
-        if (isset($data['file_path'])) {
-            $jsonFilePath = $data['file_path'];
+        if (!file_exists($filePath)) {
+            throw new RodsonRetrieverCriteriaException('The given filePath ('.$filePath.') does not exists.');
         }
 
-        return new ConcreteRodsonRetrieverCriteria($jsonFilePath);
-
+        return new ConcreteRodsonRetrieverCriteria($filePath);
     }
 
 }

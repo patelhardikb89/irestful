@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteObject;
-use iRESTful\Rodson\Domain\Inputs\Objects\Exceptions\ObjectException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Exceptions\ObjectException;
 
 final class ConcreteObjectTest extends \PHPUnit_Framework_TestCase {
     private $propertyMock;
@@ -9,8 +9,8 @@ final class ConcreteObjectTest extends \PHPUnit_Framework_TestCase {
     private $name;
     private $properties;
     public function setUp() {
-        $this->propertyMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Objects\Properties\Property');
-        $this->databaseMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Database');
+        $this->propertyMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Objects\Properties\Property');
+        $this->databaseMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Database');
 
         $this->name = 'MyObject';
         $this->properties = [

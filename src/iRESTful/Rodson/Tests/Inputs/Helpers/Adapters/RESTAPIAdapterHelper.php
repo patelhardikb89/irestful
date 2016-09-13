@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Helpers\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Adapters\RESTAPIAdapter;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\RESTAPI;
-use iRESTful\Rodson\Domain\Inputs\Databases\RESTAPIs\Exceptions\RESTAPIException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Adapters\RESTAPIAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\RESTAPI;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\RESTAPIs\Exceptions\RESTAPIException;
 
 final class RESTAPIAdapterHelper {
     private $phpunit;

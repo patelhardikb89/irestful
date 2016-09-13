@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Float;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Floats\Exceptions\FloatException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Floats\Float;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Floats\Exceptions\FloatException;
 
 final class ConcreteDatabaseTypeFloat implements Float {
     private $digitAmount;

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Actions\Action;
-use iRESTful\Rodson\Domain\Inputs\Controllers\HttpRequests\Commands\Actions\Exceptions\ActionException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Actions\Action;
+use iRESTful\Rodson\Domain\Inputs\Projects\Controllers\HttpRequests\Commands\Actions\Exceptions\ActionException;
 
 final class ConcreteControllerHttpRequestCommandAction implements Action {
     private $isRetrieval;

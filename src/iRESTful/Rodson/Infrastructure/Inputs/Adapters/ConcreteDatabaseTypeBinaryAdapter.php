@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Adapters\BinaryAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Binaries\Adapters\BinaryAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteDatabaseTypeBinary;
 
 final class ConcreteDatabaseTypeBinaryAdapter implements BinaryAdapter {

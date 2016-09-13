@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Values\Value;
+use iRESTful\Rodson\Domain\Inputs\Projects\Values\Value;
 
 final class ConcreteValue implements Value {
     private $inputVariable;

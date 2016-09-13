@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Objects;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Binary;
-use iRESTful\Rodson\Domain\Inputs\Types\Databases\Binaries\Exceptions\BinaryException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Binaries\Binary;
+use iRESTful\Rodson\Domain\Inputs\Projects\Types\Databases\Binaries\Exceptions\BinaryException;
 
 final class ConcreteDatabaseTypeBinary implements Binary {
     private $specificBitSize;

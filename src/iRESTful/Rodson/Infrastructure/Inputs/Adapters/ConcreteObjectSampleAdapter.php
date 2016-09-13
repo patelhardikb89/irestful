@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
-use iRESTful\Rodson\Domain\Inputs\Objects\Samples\Adapters\SampleAdapter;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Samples\Adapters\SampleAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteObjectSample;
 
 final class ConcreteObjectSampleAdapter implements SampleAdapter {

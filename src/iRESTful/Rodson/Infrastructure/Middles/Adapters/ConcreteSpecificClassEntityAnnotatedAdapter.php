@@ -5,7 +5,7 @@ use iRESTful\Rodson\Domain\Middles\Annotations\Adapters\AnnotationAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteSpecificClassEntityAnnotated;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Adapters\EntityAdapter;
 use iRESTful\Rodson\Domain\Middles\Samples\Adapters\SampleAdapter;
-use iRESTful\Rodson\Domain\Inputs\Objects\Object;
+use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
 
 final class ConcreteSpecificClassEntityAnnotatedAdapter implements AnnotatedEntityAdapter {
     private $sampleAdapter;

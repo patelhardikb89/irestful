@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Inputs\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteRelationalDatabase;
-use iRESTful\Rodson\Domain\Inputs\Databases\Relationals\Exceptions\RelationalDatabaseException;
+use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Exceptions\RelationalDatabaseException;
 
 final class ConcreteRelationalDatabaseTest extends \PHPUnit_Framework_TestCase {
     private $credentialsMock;
@@ -10,7 +10,7 @@ final class ConcreteRelationalDatabaseTest extends \PHPUnit_Framework_TestCase {
     private $hostName;
     public function setUp() {
 
-        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Databases\Credentials\Credentials');
+        $this->credentialsMock = $this->getMock('iRESTful\Rodson\Domain\Inputs\Projects\Databases\Credentials\Credentials');
 
         $this->driver = 'mysql';
         $this->ipAddress = '127.0.0.1';
