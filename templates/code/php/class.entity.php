@@ -16,7 +16,7 @@ use iRESTful\Objects\Libraries\Ids\Domain\Uuids\Uuid;
 final class {{entity.namespace.name}} extends AbstractEntity implements {{entity.interface.namespace.name}} {
     {{ fn.generateClassProperties(entity.constructor.parameters) }}
 
-    {{ fn.generateConstructorAnnotations(annotation) }}
+    {{ fn.generateConstructorAnnotationParameters(annotation.parameters) }}
     public function __construct(Uuid $uuid, \DateTime $createdOn{{- fn.generateConstructorSignature(entity.constructor.parameters, true) }}) {
         parent::__construct($uuid, $createdOn);
         {{ fn.generateAssignment(entity.constructor.parameters) }}

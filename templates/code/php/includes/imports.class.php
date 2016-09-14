@@ -83,11 +83,11 @@
 */
 {% endmacro %}
 
-{% macro generateConstructorAnnotations(annotation) %}
-{% if annotation.parameters|length > 0 -%}
+{% macro generateConstructorAnnotationParameters(annotationParameters) %}
+{% if annotationParameters|length > 0 -%}
 {% autoescape false %}
 {{ '/**' }}
-    {% for oneParameter in annotation.parameters %}
+    {% for oneParameter in annotationParameters %}
 *   @{{oneParameter.flow.property_name}} -> {{oneParameter.flow.method_chain}} -> {{oneParameter.flow.keyname}}{{ ' ' }}
 
         {%- if oneParameter.type -%}
