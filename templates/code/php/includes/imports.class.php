@@ -84,5 +84,44 @@
 {% endmacro %}
 
 {% macro generateConstructorAnnotations(annotation) %}
+{% if annotation.parameters|length > 0 -%}
+{% autoescape false %}
+{{ '/**' }}
+    {% for oneParameter in annotation.parameters %}
+*   @{{oneParameter.flow.property_name}} -> {{oneParameter.flow.method_chain}} -> {{oneParameter.flow.keyname}}{{ ' ' }}
 
+        {%- if oneParameter.type -%}
+            {%- if oneParameter.type.is_unique or oneParameter.type.is_key -%}
+                ++{{ ' ' }}
+                {%- if oneParameter.type.is_unique -%}
+                    @unique{{ ' ' }}
+                {%- endif -%}
+
+                {%- if oneParameter.type.is_key -%}
+                    @key{{ ' ' }}
+                {%- endif -%}
+            {%- endif -%}
+
+            {%- if oneParameter.type.database_type -%}
+                ## @{{oneParameter.type.database_type.name}}{{ ' ' }}
+
+                {%- for key, value in oneParameter.type.database_type.value -%}
+                    {{key}} -> {{value}}{{ ' ' }}
+                {%- endfor -%}
+
+            {%- endif -%}
+        {%- endif -%}
+
+        {%- if oneParameter.converter.database -%}
+            ** {{oneParameter.converter.database.interface}}::{{oneParameter.converter.database.method}}{{ ' ' }}
+        {%- endif -%}
+
+        {%- if oneParameter.elements_type -%}
+            ** @elements-type -> {{oneParameter.elements_type}}
+        {%- endif -%}
+        {{ ' ' }}
+    {% endfor %}
+{{ '*/' }}
+{% endautoescape %}
+{% endif %}
 {% endmacro %}

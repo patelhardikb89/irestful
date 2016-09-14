@@ -68,33 +68,37 @@ final class ConcreteDatabaseType implements DatabaseType {
     }
 
     public function getData() {
-        
+
         if ($this->hasBoolean()) {
             return [
-                'boolean' => true
+                'name' => 'boolean'
             ];
         }
 
         if ($this->hasBinary()) {
             return [
-                'binary' => $this->getBinary()->getData()
+                'name' => 'binary',
+                'value' => $this->getBinary()->getData()
             ];
         }
 
         if ($this->hasFloat()) {
             return [
-                'float' => $this->getFloat()->getData()
+                'name' => 'float',
+                'value' => $this->getFloat()->getData()
             ];
         }
 
         if ($this->hasInteger()) {
             return [
-                'integer' => $this->getInteger()
+                'name' => 'integer',
+                'value' => $this->getInteger()->getData()
             ];
         }
 
         return [
-            'string' =>  $this->getString()->getData()
+            'name' => 'string',
+            'value' => $this->getString()->getData()
         ];
     }
 
