@@ -456,28 +456,23 @@
         "converters": [
             {
                 "from": "string",
-                "to": "base_url",
-                "method": "fromStringToBaseUrl"
+                "to": "base_url"
             },
             {
                 "from": "string",
-                "to": "uri",
-                "method": "fromStringToUri"
+                "to": "uri"
             },
             {
                 "from": "string",
-                "to": "hashed_password",
-                "method": "fromStringToHashedPassword"
+                "to": "hashed_password"
             },
             {
                 "from": "string",
-                "to": "keyname",
-                "method": "fromStringToKeyname"
+                "to": "keyname"
             },
             {
                 "from": "string",
-                "to": "string_numeric",
-                "method": "fromStringToStringNumeric"
+                "to": "string_numeric"
             }
         ],
         "databases": {

@@ -52,9 +52,9 @@ final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
     private function fromValuesToAdapterInterfaceClassMapper(array $values) {
         $output = [];
         foreach($values as $oneValue) {
-            $adapter = $oneValue->getAdapter();
-            $interfaceName = $adapter->getInterface()->getNamespace()->getAllAsString();
-            $output[$interfaceName] = $adapter->getNamespace()->getAllAsString();
+            $converter = $oneValue->getConverter();
+            $interfaceName = $converter->getInterface()->getNamespace()->getAllAsString();
+            $output[$interfaceName] = $converter->getNamespace()->getAllAsString();
         }
 
         return $output;

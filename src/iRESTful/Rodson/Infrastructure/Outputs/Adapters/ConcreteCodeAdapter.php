@@ -14,7 +14,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Types\Tests\Test;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Tests\Transforms\Transform;
 use iRESTful\Rodson\Domain\Outputs\Codes\Exceptions\CodeException;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
-use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Converters\Converter;
 use iRESTful\Rodson\Domain\Middles\Composers\Composer;
 use iRESTful\Rodson\Domain\Middles\VagrantFiles\VagrantFile;
 use iRESTful\Rodson\Domain\Middles\PHPUnits\PHPUnit;
@@ -126,17 +126,17 @@ final class ConcreteCodeAdapter implements CodeAdapter {
     private function fromValueToCodes(Value $value) {
         $data = $value->getData();
         $namespace = $value->getNamespace();
-        $adapter = $value->getAdapter();
+        $converter = $value->getConverter();
 
         return [
-            $this->fromAdapterToCode($adapter),
+            $this->fromConverterToCode($converter),
             $this->render($namespace, $data, 'class.value.php')
         ];
     }
 
-    private function fromAdapterToCode(Adapter $adapter) {
-        $data = $adapter->getData();
-        $namespace = $adapter->getNamespace();
+    private function fromConverterToCode(Converter $converter) {
+        $data = $converter->getData();
+        $namespace = $converter->getNamespace();
         return $this->render($namespace, $data, 'class.adapter.php');
     }
 

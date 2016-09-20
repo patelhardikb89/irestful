@@ -10,10 +10,10 @@ use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Types\Type as ConverterTyp
 final class ConcreteType implements Type {
     private $name;
     private $databaseType;
-    private $databaseAdapter;
-    private $viewAdapter;
+    private $databaseConverter;
+    private $viewConverter;
     private $method;
-    public function __construct($name, DatabaseType $databaseType, Converter $databaseAdapter, Converter $viewAdapter = null, Method $method = null) {
+    public function __construct($name, DatabaseType $databaseType, Converter $databaseConverter, Converter $viewConverter = null, Method $method = null) {
 
         if (empty($name) || !is_string($name)) {
             throw new TypeException('The name must be a non-empty string.');
@@ -21,8 +21,8 @@ final class ConcreteType implements Type {
 
         $this->name = $name;
         $this->databaseType = $databaseType;
-        $this->databaseAdapter = $databaseAdapter;
-        $this->viewAdapter = $viewAdapter;
+        $this->databaseConverter = $databaseConverter;
+        $this->viewConverter = $viewConverter;
         $this->method = $method;
     }
 
@@ -34,29 +34,29 @@ final class ConcreteType implements Type {
         return $this->databaseType;
     }
 
-    public function getDatabaseAdapter() {
-        return $this->databaseAdapter;
+    public function getDatabaseConverter() {
+        return $this->databaseConverter;
     }
 
-    public function getDatabaseAdapterMethodName() {
-        return $this->getMethodName($this->databaseAdapter);
+    public function getDatabaseConverterMethodName() {
+        return $this->getMethodName($this->databaseConverter);
     }
 
-    public function hasViewAdapter() {
-        return !empty($this->viewAdapter);
+    public function hasViewConverter() {
+        return !empty($this->viewConverter);
     }
 
-    public function getViewAdapter() {
-        return $this->viewAdapter;
+    public function getViewConverter() {
+        return $this->viewConverter;
     }
 
-    public function getViewAdapterMethodName() {
+    public function getViewConverterMethodName() {
 
-        if (!$this->hasViewAdapter()) {
+        if (!$this->hasViewConverter()) {
             return null;
         }
 
-        return $this->getMethodName($this->viewAdapter);
+        return $this->getMethodName($this->viewConverter);
 
     }
 

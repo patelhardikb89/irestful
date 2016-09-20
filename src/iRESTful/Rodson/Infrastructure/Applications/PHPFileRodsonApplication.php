@@ -57,7 +57,7 @@ final class PHPFileRodsonApplication implements RodsonApplication {
             '___',
             'America/Montreal'
         );
-
+        
         $classAdapter = $classAdapterFactory->create();
         $classes = $classAdapter->fromRodsonToClasses($rodson);
 

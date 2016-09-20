@@ -1,34 +1,34 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
-use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Converters\Converter;
 use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;
-use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
-use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Exceptions\ConverterException;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Converters\Methods\Method;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Converters\Exceptions\ConverterException;
 
-final class ConcreteSpecificClassAdapter implements Adapter {
+final class ConcreteSpecificClassConverter implements Converter {
     private $type;
     private $interface;
     private $namespace;
     private $constructor;
-    private $customMethods;
+    private $methods;
     public function __construct(
         Type $type,
         ClassInterface $interface,
         ClassNamespace $namespace,
         Constructor $constructor,
-        array $customMethods
+        array $methods
     ) {
 
-        if (empty($customMethods)) {
-            throw new ConverterException('The customMethods array cannot be empty.');
+        if (empty($methods)) {
+            throw new ConverterException('The methods array cannot be empty.');
         }
 
-        foreach($customMethods as $oneCustomMethod) {
-            if (!($oneCustomMethod instanceof CustomMethod)) {
-                throw new ConverterException('The customMethods array must only contain CustomMethod objects.');
+        foreach($methods as $oneMethod) {
+            if (!($oneMethod instanceof Method)) {
+                throw new ConverterException('The methods array must only contain Method objects.');
             }
         }
 
@@ -36,7 +36,7 @@ final class ConcreteSpecificClassAdapter implements Adapter {
         $this->interface = $interface;
         $this->namespace = $namespace;
         $this->constructor = $constructor;
-        $this->customMethods = $customMethods;
+        $this->methods = $methods;
 
     }
 
@@ -56,14 +56,14 @@ final class ConcreteSpecificClassAdapter implements Adapter {
         return $this->constructor;
     }
 
-    public function getCustomMethods() {
-        return $this->customMethods;
+    public function getMethods() {
+        return $this->methods;
     }
 
     public function getData() {
 
-        $customMethods = $this->getCustomMethods();
-        array_walk($customMethods, function(&$element, $index) {
+        $methods = $this->getMethods();
+        array_walk($methods, function(&$element, $index) {
             $element = $element->getData();
         });
 
@@ -71,7 +71,7 @@ final class ConcreteSpecificClassAdapter implements Adapter {
             'interface' => $this->interface->getData(),
             'namespace' => $this->namespace->getData(),
             'constructor' => $this->constructor->getData(),
-            'custom_methods' => $customMethods
+            'methods' => $methods
         ];
     }
 

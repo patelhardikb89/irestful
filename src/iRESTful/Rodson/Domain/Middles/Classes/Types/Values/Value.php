@@ -6,7 +6,7 @@ interface Value {
     public function getNamespace();
     public function getInterface();
     public function getConstructor();
-    public function getAdapter();
+    public function getConverter();
     public function hasCustomMethod();
     public function getCustomMethod();
     public function getData();

@@ -6,25 +6,25 @@ use iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Classes\Constructors\Constructor;
 use iRESTful\Rodson\Domain\Middles\Classes\Methods\Customs\CustomMethod;
-use iRESTful\Rodson\Domain\Middles\Classes\Types\Adapters\Adapter;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Converters\Converter;
 
 final class ConcreteSpecificClassValue implements Value {
     private $type;
-    private $adapter;
+    private $converter;
     private $namespace;
     private $interface;
     private $constructor;
     private $customMethod;
     public function __construct(
         Type $type,
-        Adapter $adapter,
+        Converter $converter,
         ClassNamespace $namespace,
         ClassInterface $interface,
         Constructor $constructor,
         CustomMethod $customMethod = null
     ) {
         $this->type = $type;
-        $this->adapter = $adapter;
+        $this->converter = $converter;
         $this->namespace = $namespace;
         $this->interface = $interface;
         $this->constructor = $constructor;
@@ -47,8 +47,8 @@ final class ConcreteSpecificClassValue implements Value {
         return $this->constructor;
     }
 
-    public function getAdapter() {
-        return $this->adapter;
+    public function getConverter() {
+        return $this->converter;
     }
 
     public function hasCustomMethod() {
@@ -64,7 +64,7 @@ final class ConcreteSpecificClassValue implements Value {
             'namespace' => $this->namespace->getData(),
             'interface' => $this->interface->getData(),
             'constructor' => $this->constructor->getData(),
-            'adapter' => $this->adapter->getData()
+            'converter' => $this->converter->getData()
         ];
 
         if ($this->hasCustomMethod()) {

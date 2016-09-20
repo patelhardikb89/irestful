@@ -40,30 +40,6 @@ final class Authenticated {
 
     }
 
-    public static function fromStringToBaseUrl($value) {
-        return $value;
-    }
-
-    public static function fromStringToUri($string) {
-
-    }
-
-    public static function fromStringToHashedPassword($string) {
-
-    }
-
-    public static function fromStringToKeyname($string) {
-
-    }
-
-    public static function fromStringToStringNumeric($string) {
-
-    }
-
-    public static function fromJsonToData($json) {
-
-    }
-
     public static function match(array $params) {
 
     }

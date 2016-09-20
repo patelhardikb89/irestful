@@ -1,20 +1,16 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Inputs\Adapters;
 use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Adapters\ConverterAdapter;
-use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\Infrastructure\Inputs\Objects\ConcreteConverter;
-use iRESTful\Rodson\Domain\Inputs\Projects\Codes\Methods\Exceptions\MethodException;
 use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Exceptions\ConverterException;
 use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Types\Adapters\TypeAdapter;
 
 final class ConcreteConverterAdapter implements ConverterAdapter {
     private $typeAdapter;
-    private $methodAdapter;
     private $types;
     private $primitives;
-    public function __construct(TypeAdapter $typeAdapter, MethodAdapter $methodAdapter, array $types, array $primitives) {
+    public function __construct(TypeAdapter $typeAdapter, array $types, array $primitives) {
         $this->typeAdapter = $typeAdapter;
-        $this->methodAdapter = $methodAdapter;
         $this->types = $types;
         $this->primitives = $primitives;
     }
@@ -39,10 +35,6 @@ final class ConcreteConverterAdapter implements ConverterAdapter {
     }
 
     public function fromDataToConverter(array $data) {
-
-        if (!isset($data['method'])) {
-            throw new ConverterException('The method keyname is mandatory in order to convert data to an Adapter object.');
-        }
 
         $from = null;
         if (isset($data['from'])) {
@@ -69,14 +61,7 @@ final class ConcreteConverterAdapter implements ConverterAdapter {
 
         }
 
-        try {
-
-            $method = $this->methodAdapter->fromStringToMethod($data['method']);
-            return new ConcreteConverter($method, $from, $to);
-
-        } catch (MethodException $exception) {
-            throw new ConverterException('There was an exception while converting a string to a Method object.', $exception);
-        }
+        return new ConcreteConverter($from, $to);
 
     }
 

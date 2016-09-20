@@ -51,16 +51,16 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
             return new ConcreteClassInterfaceMethod($name, [$parameter]);
         };
 
-        $databaseAdapter = $type->getDatabaseAdapter();
-        $databaseAdapterMethodName = $type->getDatabaseAdapterMethodName();
+        $databaseConverter = $type->getDatabaseConverter();
+        $databaseConverterMethodName = $type->getDatabaseConverterMethodName();
         $methods = [
-            $createMethod($databaseAdapterMethodName, $type, $databaseAdapter)
+            $createMethod($databaseConverterMethodName, $type, $databaseConverter)
         ];
 
-        if ($type->hasViewAdapter()) {
-            $viewAdapter = $type->getViewAdapter();
-            $viewAdapterMethodName = $type->getViewAdapterMethodName();
-            $methods[] = $createMethod($viewAdapterMethodName, $type, $viewAdapter);
+        if ($type->hasViewConverter()) {
+            $viewConverter = $type->getViewConverter();
+            $viewConverterMethodName = $type->getViewConverterMethodName();
+            $methods[] = $createMethod($viewConverterMethodName, $type, $viewConverter);
         }
 
         return $methods;

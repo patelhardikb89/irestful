@@ -28,6 +28,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Mul
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Annotations\AnnotatedEntity;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Container;
+use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Types\Type as ConverterType;
 
 final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     private $parameterAdapter;
@@ -587,33 +588,6 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
     }
 
-    public function fromTypeToCustomMethod(Type $type) {
-        if ($type->hasMethod()) {
-            return null;
-        }
-
-        $method = $type->getMethod();
-        return $this->fromMethodToCustomMethod($method);
-    }
-
-    public function fromTypeToAdapterCustomMethods(Type $type) {
-
-        $databaseAdapterMethod = $type->getDatabaseAdapter()->getMethod();
-        $databaseAdapterName = $type->getDatabaseAdapterMethodName();
-        $customMethods = [
-            $this->createClassMethodCustom($databaseAdapterName, $databaseAdapterMethod)
-        ];
-
-        if ($type->hasViewAdapter()) {
-            $viewAdapterMethod = $type->getViewAdapter()->getMethod();
-            $viewAdapterName = $type->getViewAdapterMethodName();
-            $customMethods[] = $this->createClassMethodCustom($viewAdapterName, $viewAdapterMethod);
-        }
-
-        return $customMethods;
-
-    }
-
     public function fromMethodsToCustomMethods(array $methods) {
         $output = [];
         foreach($methods as $oneMethod) {
@@ -627,6 +601,15 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
         $name = $method->getName();
         $codeMethod = $method->getMethod();
         return $this->createClassMethodCustom($name, $codeMethod);
+    }
+
+    public function fromTypeToCustomMethod(Type $type) {
+        if ($type->hasMethod()) {
+            return null;
+        }
+
+        $method = $type->getMethod();
+        return $this->fromMethodToCustomMethod($method);
     }
 
     private function createClassMethodCustom($name, CodeMethod $codeMethod) {
@@ -739,7 +722,6 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
         $sourceCodeLines = $getSourceCodeLines($reflectionMethod);
         $parameters = $getParameters($reflectionMethod);
-
         return new ConcreteClassMethodCustom($name, $sourceCodeLines, $parameters);
     }
 

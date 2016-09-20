@@ -18,7 +18,7 @@ use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteAnnotationAdapterFa
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSampleAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassEntityAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassValueAdapter;
-use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassAdapterAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassConverterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassTestAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassTestTransformAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteConfigurationNamespaceFactory;
@@ -27,6 +27,7 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassEntityA
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassObjectAnnotatedAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassObjectAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteAnnotationParameterAdapterFactory;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassConverterMethodAdapter;
 
 final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterFactory {
     private $baseNamespace;
@@ -60,8 +61,9 @@ final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterF
         $constructorAdapter = new ConcreteClassConstructorAdapter($constructorParameterAdapter, $classCustomMethodAdapter);
 
         $entityAdapter = new ConcreteSpecificClassEntityAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $classCustomMethodAdapter);
-        $adapterAdapter = new ConcreteSpecificClassAdapterAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $classCustomMethodAdapter);
-        $valueAdapter = new ConcreteSpecificClassValueAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $classCustomMethodAdapter, $adapterAdapter);
+        $converterMethodAdapter = new ConcreteSpecificClassConverterMethodAdapter($interfaceMethodParameterAdapter);
+        $converterAdapter = new ConcreteSpecificClassConverterAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $converterMethodAdapter);
+        $valueAdapter = new ConcreteSpecificClassValueAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $classCustomMethodAdapter, $converterAdapter);
         $controllerAdapterAdapter = new ConcreteSpecificClassControllerAdapterAdapter($this->baseNamespace);
 
         $annotationAdapterFactory = new ConcreteAnnotationAdapterFactory($this->baseNamespace);

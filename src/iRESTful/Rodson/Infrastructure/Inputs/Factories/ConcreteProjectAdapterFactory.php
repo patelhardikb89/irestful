@@ -75,10 +75,9 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         return $databaseAdapter->fromDataToDatabases($this->databasesData);
     }
 
-    private function getConverters(Code $code, array $types, array $primitives) {
-        $methodAdapter = new ConcreteCodeMethodAdapter($code);
+    private function getConverters(array $types, array $primitives) {
         $converterTypeAdapter = new ConcreteConverterTypeAdapter();
-        $converterAdapter = new ConcreteConverterAdapter($converterTypeAdapter, $methodAdapter, $types, $primitives);
+        $converterAdapter = new ConcreteConverterAdapter($converterTypeAdapter, $types, $primitives);
         return $converterAdapter->fromDataToConverters($this->convertersData);
     }
 
@@ -107,7 +106,7 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         };
 
         $types = $getValidTypes();
-        $converters = $this->getConverters($code, $types, $primitives);
+        $converters = $this->getConverters($types, $primitives);
         return $getTypes($converters);
     }
 

@@ -6,5 +6,4 @@ interface Converter {
     public function fromType();
     public function hasToType();
     public function toType();
-    public function getMethod();
 }

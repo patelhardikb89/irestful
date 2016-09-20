@@ -11,7 +11,11 @@ final class {{namespace.name}} implements {{interface.namespace.name}} {
         {{ fn.generateAssignment(constructor.parameters) }}
     }
 
-    {{ fn.generateCustomMethods(custom_methods) }}
+    {% for oneMethod in methods %}
+        public function {{oneMethod.name}}(${{oneMethod.parameter.name}}) {
+            return new \{{oneMethod.namespace.all}}(${{oneMethod.parameter.name}});
+        }
+    {% endfor %}
 
 }
 {% endautoescape %}
