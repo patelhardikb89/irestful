@@ -32,8 +32,8 @@ final class {{namespace.name}} implements EntityConfiguration {
 
     public function getTransformerObjects() {
         return [
-            {{- returned.hashMapInstanceLine('iRESTful\Objects\Libraries\Dates\Domain\Adapters\DateTimeAdapter', '\iRESTful\Objects\Libraries\Dates\Infrastructure\Adapters\ConcreteDateTimeAdapter', '$this->getTimezone()') -}}
-            {{- returned.hashMapInstanceLine('iRESTful\Objects\Libraries\Ids\Domain\Uuids\Adapters\UuidAdapter', '\iRESTful\Objects\Libraries\Ids\Infrastructure\Adapters\ConcreteUuidAdapter') -}}
+            {{- returned.hashMapInstanceLine('iRESTful\\Objects\\Libraries\\Dates\\Domain\\Adapters\\DateTimeAdapter', 'iRESTful\\Objects\\Libraries\\Dates\\Infrastructure\\Adapters\\ConcreteDateTimeAdapter', '$this->getTimezone()') -}}
+            {{- returned.hashMapInstanceLine('iRESTful\\Objects\\Libraries\\Ids\\Domain\\Uuids\\Adapters\\UuidAdapter', 'iRESTful\\Objects\\Libraries\\Ids\\Infrastructure\\Adapters\\ConcreteUuidAdapter') -}}
             {{- returned.returnedHashMapObjects(mappers.interfaces.adapters) -}}
         ];
     }

@@ -18,6 +18,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Types\Converters\Converter;
 use iRESTful\Rodson\Domain\Middles\Composers\Composer;
 use iRESTful\Rodson\Domain\Middles\VagrantFiles\VagrantFile;
 use iRESTful\Rodson\Domain\Middles\PHPUnits\PHPUnit;
+use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
@@ -62,16 +63,12 @@ final class ConcreteCodeAdapter implements CodeAdapter {
 
         if ($class->hasAnnotatedObject()) {
             $annotatedObject = $class->getAnnotatedObject();
-            return [
-                $this->fromAnnotatedObjectToCode($annotatedObject)
-            ];
+            return $this->fromAnnotatedObjectToCodes($annotatedObject);
         }
 
         if ($class->hasAnnotatedEntity()) {
             $annotatedEntity = $class->getAnnotatedEntity();
-            return [
-                $this->fromAnnotatedEntityToCode($annotatedEntity)
-            ];
+            return $this->fromAnnotatedEntityToCodes($annotatedEntity);
         }
 
         if ($class->hasValue()) {
@@ -127,35 +124,60 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $data = $value->getData();
         $namespace = $value->getNamespace();
         $converter = $value->getConverter();
+        $interface = $value->getInterface();
+
+        $codeConverters = $this->fromConverterToCodes($converter);
+        return array_merge($codeConverters, [
+            $this->render($namespace, $data, 'class.value.php'),
+            $this->fromInterfaceToCode($interface)
+        ]);
+    }
+
+    private function fromConverterToCodes(Converter $converter) {
+        $data = $converter->getData();
+        $namespace = $converter->getNamespace();
+        $interface = $converter->getInterface();
 
         return [
-            $this->fromConverterToCode($converter),
-            $this->render($namespace, $data, 'class.value.php')
+            $this->render($namespace, $data, 'class.adapter.php'),
+            $this->fromInterfaceToCode($interface)
         ];
     }
 
-    private function fromConverterToCode(Converter $converter) {
-        $data = $converter->getData();
-        $namespace = $converter->getNamespace();
-        return $this->render($namespace, $data, 'class.adapter.php');
-    }
-
-    private function fromAnnotatedEntityToCode(AnnotatedEntity $annotatedEntity) {
+    private function fromAnnotatedEntityToCodes(AnnotatedEntity $annotatedEntity) {
         $data = $annotatedEntity->getData();
-        $namespace = $annotatedEntity->getEntity()->getNamespace();
-        return $this->render($namespace, $data, 'class.entity.php');
+        $entity = $annotatedEntity->getEntity();
+        $namespace = $entity->getNamespace();
+        $interface = $entity->getInterface();
+        return [
+            $this->render($namespace, $data, 'class.entity.php'),
+            $this->fromInterfaceToCode($interface)
+        ];
     }
 
-    private function fromAnnotatedObjectToCode(AnnotatedObject $annotatedObject) {
+    private function fromAnnotatedObjectToCodes(AnnotatedObject $annotatedObject) {
         $data = $annotatedObject->getData();
-        $namespace = $annotatedObject->getObject()->getNamespace();
-        return $this->render($namespace, $data, 'class.object.php');
+        $object = $annotatedObject->getObject();
+        $namespace = $object->getNamespace();
+        $interface = $object->getInterface();
+
+        return [
+             $this->render($namespace, $data, 'class.object.php'),
+             $this->fromInterfaceToCode($interface)
+        ];
+
     }
 
     private function fromConfigurationToCode(Configuration $configuration) {
         $data = $configuration->getData();
         $namespace = $configuration->getNamespace();
         return $this->render($namespace, $data, 'class.configuration.php');
+    }
+
+    private function fromInterfaceToCode(ClassInterface $interface) {
+        $data = $interface->getData();
+        $namespace = $interface->getNamespace();
+        return $this->render($namespace, $data, 'interface.php');
     }
 
     private function render(ClassNamespace $namespace, array $data, $templateFile) {

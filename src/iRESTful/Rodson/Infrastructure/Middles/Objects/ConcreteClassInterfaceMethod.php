@@ -24,7 +24,7 @@ final class ConcreteClassInterfaceMethod implements Method {
                 }
             }
         }
-
+        
         $this->name = $name;
         $this->parameters = $parameters;
 
