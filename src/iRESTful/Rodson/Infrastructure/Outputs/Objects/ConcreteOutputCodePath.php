@@ -31,12 +31,7 @@ final class ConcreteOutputCodePath implements Path {
             }
 
         }
-
-        $existingPath = '/'.implode('/', $basePath);
-        if (!file_exists($existingPath)) {
-            throw new PathException('The basePath ('.$existingPath.') must reference an existing folder.');
-        }
-
+        
         $this->basePath = $basePath;
         $this->relativePath = $relativePath;
         $this->file = $file;

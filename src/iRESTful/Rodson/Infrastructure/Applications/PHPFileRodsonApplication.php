@@ -44,20 +44,16 @@ final class PHPFileRodsonApplication implements RodsonApplication {
 
         $name = $rodson->getName();
         $baseNamespace = [
-            $this->baseFolder,
             $name->getOrganizationName(),
             $name->getProjectName()
         ];
 
-        $classAdapterFactory = new ConcreteSpecificClassAdapterFactory([
-                $this->baseFolder,
-                $name->getOrganizationName(),
-                $name->getProjectName()
-            ],
+        $classAdapterFactory = new ConcreteSpecificClassAdapterFactory(
+            $baseNamespace,
             '___',
             'America/Montreal'
         );
-        
+
         $classAdapter = $classAdapterFactory->create();
         $classes = $classAdapter->fromRodsonToClasses($rodson);
 
@@ -70,18 +66,29 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $phpunitAdapter = new ConcretePHPUnitAdapter();
         $phpunit = $phpunitAdapter->fromRodsonToPHPUnit($rodson);
 
-        $output = array_filter(explode('/', $outputFolderPath));
         $twigTemplateFactory = new TwigTemplateFactory($this->templateFolder, $this->cacheFolder);
 
         $template = $twigTemplateFactory->create();
         $fileAdapter = new ConcreteOutputCodeFileAdapter();
-        $pathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $output);
 
-        $codeAdapter = new ConcreteCodeAdapter($pathAdapter, $template);
-        $classCodes = $codeAdapter->fromClassesToCodes($classes);
-        $composerCode = $codeAdapter->fromComposerToCode($composer);
-        $vagrantFileCode = $codeAdapter->fromVagrantFileToCode($vagrantFile);
-        $phpunitCode = $codeAdapter->fromPHPUnitToCode($phpunit);
+        $classOutputPath = explode('/', $outputFolderPath);
+        if (!empty($this->baseFolder)) {
+            $baseFolderPath = explode('/', $this->baseFolder);
+            $classOutputPath = array_merge($classOutputPath, $baseFolderPath);
+        }
+
+        $classOutput = array_filter($classOutputPath);
+        $classPathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $classOutput);
+        $classCodeAdapter = new ConcreteCodeAdapter($classPathAdapter, $template);
+        $classCodes = $classCodeAdapter->fromClassesToCodes($classes);
+
+        $rootOutput = array_filter(explode('/', $outputFolderPath));
+        $rootPathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $rootOutput);
+        $rootCodeAdapter = new ConcreteCodeAdapter($rootPathAdapter, $template);
+        $composerCode = $rootCodeAdapter->fromComposerToCode($composer);
+        $vagrantFileCode = $rootCodeAdapter->fromVagrantFileToCode($vagrantFile);
+        $phpunitCode = $rootCodeAdapter->fromPHPUnitToCode($phpunit);
+
 
         $service = new FileCodeService();
         $service->saveMultiple(array_merge($classCodes, [$composerCode, $vagrantFileCode, $phpunitCode]));
