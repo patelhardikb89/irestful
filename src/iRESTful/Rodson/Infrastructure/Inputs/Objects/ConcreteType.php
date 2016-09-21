@@ -68,6 +68,19 @@ final class ConcreteType implements Type {
         return $this->method;
     }
 
+    public function fromNameToMethod($name) {
+
+        $matches = [];
+        preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
+
+        foreach($matches[0] as $oneElement) {
+            $replacement = strtoupper(str_replace('_', '', $oneElement));
+            $name = str_replace($oneElement, $replacement, $name);
+        }
+
+        return $name;
+    }
+
     private function getMethodName(Converter $converter) {
 
         $getConverterTypeName = function(ConverterType $type) {
@@ -90,7 +103,7 @@ final class ConcreteType implements Type {
             $toName = $getConverterTypeName($toType);
         }
 
-        return 'from'.ucfirst($fromName).'To'.ucfirst($toName);
+        return $this->fromNameToMethod('from'.ucfirst($fromName).'To'.ucfirst($toName));
     }
 
 }
