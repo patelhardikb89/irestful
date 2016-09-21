@@ -21,6 +21,15 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
     }
 
     public function fromNameToMethod($name) {
+
+        $matches = [];
+        preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
+
+        foreach($matches[0] as $oneElement) {
+            $replacement = strtoupper(str_replace('_', '', $oneElement));
+            $name = str_replace($oneElement, $replacement, $name);
+        }
+
         return new ConcreteClassInterfaceMethod($name);
     }
 
