@@ -182,14 +182,18 @@
                             "software": {
                                 "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
                                 "name": "my_software_name",
-                                "credentials": "some hash",
+                                "credentials___username": "my_software_username",
+                                "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                                "credentials___password": null,
                                 "roles": null,
                                 "created_on": 1470347205
                             },
                             "user": {
                                 "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
                                 "name": "my_username",
-                                "credentials": "some hask",
+                                "credentials___username": "my_user_username",
+                                "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                                "credentials___password": null,
                                 "roles": null,
                                 "created_on": 1470347205
                             },
@@ -216,14 +220,18 @@
                                 "software": {
                                     "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
                                     "name": "my_software_name",
-                                    "credentials": "some hash",
+                                    "credentials___username": "my_software_username",
+                                    "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                                    "credentials___password": null,
                                     "roles": null,
                                     "created_on": 1470347205
                                 },
                                 "user": {
                                     "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
                                     "name": "my_username",
-                                    "credentials": "some hask",
+                                    "credentials___username": "my_user_username",
+                                    "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                                    "credentials___password": null,
                                     "roles": null,
                                     "created_on": 1470347205
                                 },
@@ -246,14 +254,18 @@
                         "software": {
                             "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
                             "name": "my_software_name",
-                            "credentials": "some hash",
+                            "credentials___username": "my_software_username",
+                            "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                            "credentials___password": null,
                             "roles": null,
                             "created_on": 1470347205
                         },
                         "user": {
                             "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
                             "name": "my_username",
-                            "credentials": "some hask",
+                            "credentials___username": "my_user_username",
+                            "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                            "credentials___password": null,
                             "roles": null,
                             "created_on": 1470347205
                         },
@@ -272,7 +284,9 @@
                     {
                         "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
                         "name": "my_software_name",
-                        "credentials": "some hash",
+                        "credentials___username": "my_software_username",
+                        "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                        "credentials___password": null,
                         "roles": null,
                         "created_on": 1470347205
                     }
@@ -289,7 +303,9 @@
                     {
                         "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
                         "name": "my_username",
-                        "credentials": "some hask",
+                        "credentials___username": "my_user_username",
+                        "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                        "credentials___password": null,
                         "roles": null,
                         "created_on": 1470347205
                     }
