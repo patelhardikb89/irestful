@@ -21,7 +21,7 @@
     {% if hashmap|length > 0 %}
         {% import _self as fn %}
         {% for keyname, element in hashmap %}
-            {{- fn.hashMapLine(keyname, element, loop.last) -}}
+            {{- fn.hashMapInstanceLine(keyname, element, '', loop.last) -}}
         {% endfor %}
     {% endif %}
 {% endmacro %}
