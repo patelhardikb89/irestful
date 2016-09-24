@@ -45,4 +45,20 @@ final class ConcreteDatabase implements Database {
         return $this->restAPI;
     }
 
+    public function getData() {
+        $output = [
+            'name' => $this->name
+        ];
+
+        if ($this->hasRelational()) {
+            $output['relational'] = $this->relationalDatabase->getData();
+        }
+
+        if ($this->hasRESTAPI()) {
+            $output['rest_api'] = $this->restAPI->getData();
+        }
+
+        return $output;
+    }
+
 }

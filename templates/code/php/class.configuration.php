@@ -1,40 +1,63 @@
 {% autoescape false %}
 <?php
 namespace {{namespace.path}};
-use iRESTful\Objects\Entities\Entities\Configurations\EntityConfiguration;
+use {{object_configuration.namespace.all}};
+use iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Adapters\PDOEntityRepositoryServiceAdapter;
+use iRESTful\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObjectAdapterFactory;
 
-{% import "includes/returned.hashmap.php" as returned %}
-final class {{namespace.name}} implements EntityConfiguration {
 
-    public function __construct() {
+{% for oneNamespace in controller_node.namespaces %}
+    use {{oneNamespace.all}};
+{% endfor %}
 
+{% import "includes/imports.class.php" as fn %}
+final class {{namespace.name}} implements {{object_configuration.namespace.name}} {
+    private $dbName;
+    private $entityObjects;
+    public function __construct($dbName) {
+        $this->dbName = $dbName;
+        $this->entityObjects = new {{object_configuration.namespace.name}}();
     }
 
-    public function getDelimiter() {
-        return '{{delimiter}}';
+    public function get() {
+        return ['rules' => $this->getControllerRules()];
     }
 
-    public function getTimezone() {
-        return '{{timezone}}';
-    }
+    private function getControllerRules() {
+        $entityRepositoryServiceAdapter = new PDOEntityRepositoryServiceAdapter(
+            $this->entityObjects->getTransformerObjects(),
+            $this->entityObjects->getContainerClassMapper(),
+            $this->entityObjects->getInterfaceClassMapper(),
+            $this->entityObjects->getDelimiter(),
+            $this->entityObjects->getTimezone(),
+            getenv('DB_DRIVER'),
+            getenv('DB_SERVER'),
+            $this->dbName,
+            getenv('DB_USERNAME'),
+            getenv('DB_PASSWORD')
+        );
 
-    public function getContainerClassMapper() {
+        $objectAdapterFactory = new ReflectionObjectAdapterFactory(
+            $this->entityObjects->getTransformerObjects(),
+            $this->entityObjects->getContainerClassMapper(),
+            $this->entityObjects->getInterfaceClassMapper(),
+            $this->entityObjects->getDelimiter()
+        );
+
+        {% for oneParameter in controller_node.parameters %}
+            ${{oneParameter.parameter.name}} = $entityRepositoryServiceAdapter->fromClassNameToObject('{{oneParameter.parameter.type.namespace.all}}');
+        {% endfor %}
+
         return [
-            {{- returned.returnedHashMap(mappers.containers) -}}
-        ];
-    }
-
-    public function getInterfaceClassMapper() {
-        return [
-            {{- returned.returnedHashMap(mappers.interfaces.objects) -}}
-        ];
-    }
-
-    public function getTransformerObjects() {
-        return [
-            {{- returned.hashMapInstanceLine('iRESTful\\Objects\\Libraries\\Dates\\Domain\\Adapters\\DateTimeAdapter', 'iRESTful\\Objects\\Libraries\\Dates\\Infrastructure\\Adapters\\ConcreteDateTimeAdapter', '$this->getTimezone()') -}}
-            {{- returned.hashMapInstanceLine('iRESTful\\Objects\\Libraries\\Ids\\Domain\\Uuids\\Adapters\\UuidAdapter', 'iRESTful\\Objects\\Libraries\\Ids\\Infrastructure\\Adapters\\ConcreteUuidAdapter') -}}
-            {{- returned.returnedHashMapObjects(mappers.interfaces.adapters) -}}
+            {%- for oneController in controller_node.controllers -%}
+                [
+                    'controller' => new {{oneController.class.namespace.name}}({{- fn.generateConstructorInstanciationSignature(oneController.class.constructor.parameters) -}}),
+                    'criteria' => [
+                        'uri' => '{{oneController.pattern}}',
+                        'method' => '{{oneController.method}}'
+                    ]
+                ]
+            {%- endfor -%}
         ];
     }
 

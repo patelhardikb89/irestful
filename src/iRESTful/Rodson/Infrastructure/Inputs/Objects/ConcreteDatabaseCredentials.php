@@ -37,4 +37,16 @@ final class ConcreteDatabaseCredentials implements Credentials {
         return $this->password;
     }
 
+    public function getData() {
+        $output = [
+            'username' => $this->username
+        ];
+
+        if ($this->hasPassword()) {
+            $output['password'] = $this->password;
+        }
+
+        return $output;
+    }
+
 }

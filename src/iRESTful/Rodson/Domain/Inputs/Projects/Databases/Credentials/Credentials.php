@@ -5,4 +5,5 @@ interface Credentials {
     public function getUsername();
     public function hasPassword();
     public function getPassword();
+    public function getData();
 }

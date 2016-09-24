@@ -33,6 +33,15 @@
     {%- endif -%}
 {%- endmacro -%}
 
+{%- macro generateConstructorInstanciationSignature(parameters) -%}
+    {%- import _self as fn -%}
+    {%- if parameters|length > 0 -%}
+        {%- for oneParameter in parameters -%}
+            {{- '$' -}}{{- oneParameter.parameter.name -}}{{- loop.last ? '' : ', ' -}}
+        {%- endfor -%}
+    {%- endif -%}
+{%- endmacro -%}
+
 {%- macro generateClassProperties(parameters) -%}
     {%- if parameters|length > 0 -%}
         {%- for oneParameter in parameters -%}

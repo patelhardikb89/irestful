@@ -66,4 +66,21 @@ final class ConcreteRESTAPI implements RESTAPI {
         return $this->port;
     }
 
+    public function getData() {
+        $output = [
+            'base_url' => $this->baseUrl,
+            'port' => $this->port
+        ];
+
+        if ($this->hasCredentials()) {
+            $output['credentials'] = $this->credentials->getData();
+        }
+
+        if ($this->hasHeaderLine()) {
+            $output['header_line'] = $this->headerLine;
+        }
+
+        return $output;
+    }
+
 }

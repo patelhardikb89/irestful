@@ -1,21 +1,48 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Middles\Adapters;
 use iRESTful\Rodson\Domain\Middles\Configurations\Adapters\ConfigurationAdapter;
-use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteConfiguration;
-use iRESTful\Rodson\Domain\Middles\Namespaces\Factories\NamespaceFactory;
+use iRESTful\Rodson\Domain\Middles\Configurations\Objects\Adapters\ObjectConfigurationAdapter;
 use iRESTful\Rodson\Domain\Middles\Configurations\Exceptions\ConfigurationException;
+use iRESTful\Rodson\Domain\Middles\Namespaces\Factories\NamespaceFactory;
+use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteConfiguration;
+use iRESTful\Rodson\Domain\Middles\Configurations\Controllers\Nodes\Adapters\ControllerNodeAdapter;
 
 final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
     private $namespaceFactory;
-    private $delimiter;
-    private $timezone;
-    public function __construct(NamespaceFactory $namespaceFactory, $delimiter, $timezone) {
+    private $objectConfigurationAdapter;
+    private $controllerAdapter;
+    private $controllerNodeAdapter;
+    public function __construct(
+        NamespaceFactory $namespaceFactory,
+        ObjectConfigurationAdapter $objectConfigurationAdapter,
+        ControllerNodeAdapter $controllerNodeAdapter
+    ) {
         $this->namespaceFactory = $namespaceFactory;
-        $this->delimiter = $delimiter;
-        $this->timezone = $timezone;
+        $this->objectConfigurationAdapter = $objectConfigurationAdapter;
+        $this->controllerNodeAdapter = $controllerNodeAdapter;
     }
 
     public function fromDataToConfiguration(array $data) {
+
+        $getDatabasesFromAnnotatedEntities = function(array $annotatedEntities) {
+
+            $databases = [];
+            foreach($annotatedEntities as $oneAnnotatedEntity) {
+                $object = $oneAnnotatedEntity->getEntity()->getObject();
+                if (!$object->hasDatabase()) {
+                    throw new ConfigurationException('The given AnnotatedEntity does not have a Database object.');
+                }
+
+                $database = $object->getDatabase();
+                $name = $database->getName();
+                if (!isset($databases[$name])) {
+                    $databases[$name] = $database;
+                }
+            }
+
+            return array_values($databases);
+
+        };
 
         if (!isset($data['annotated_entities'])) {
             throw new ConfigurationException('The annotated_entities keyname is mandatory in order to convert data to a Configuration object.');
@@ -29,79 +56,20 @@ final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
             throw new ConfigurationException('The values keyname is mandatory in order to convert data to a Configuration object.');
         }
 
+        if (!isset($data['controllers'])) {
+            throw new ConfigurationException('The controllers keyname is mandatory in order to convert data to a Configuration object.');
+        }
+
+        $databases = $getDatabasesFromAnnotatedEntities($data['annotated_entities']);
         $namespace = $this->namespaceFactory->create();
+        $objectConfiguration = $this->objectConfigurationAdapter->fromDataToObjectConfiguration([
+            'annotated_entities' => $data['annotated_entities'],
+            'annotated_objects' => $data['annotated_objects'],
+            'values' => $data['values']
+        ]);
 
-        $entitiesInterfaceClassMapper = $this->fromAnnotatedEntitiesToInterfaceClassMapper($data['annotated_entities']);
-        $objectsInterfaceClassMapper = $this->fromAnnotatedObjectsToInterfaceClassMapper($data['annotated_objects']);
-        $valuesInterfaceClassMapper = $this->fromValuesToInterfaceClassMapper($data['values']);
-        $interfaceClassMapper = array_merge($entitiesInterfaceClassMapper, $objectsInterfaceClassMapper, $valuesInterfaceClassMapper);
-
-        $containerClassMapper = $this->fromAnnotatedEntitiesToContainerClassMapper($data['annotated_entities']);
-        $adapterInterfaceClassMapper = $this->fromValuesToAdapterInterfaceClassMapper($data['values']);
-
-        return new ConcreteConfiguration(
-            $namespace,
-            $this->delimiter,
-            $this->timezone,
-            $containerClassMapper,
-            $interfaceClassMapper,
-            $adapterInterfaceClassMapper
-        );
-    }
-
-    private function fromValuesToAdapterInterfaceClassMapper(array $values) {
-        $output = [];
-        foreach($values as $oneValue) {
-            $converter = $oneValue->getConverter();
-            $interfaceName = $converter->getInterface()->getNamespace()->getAllAsString();
-            $output[$interfaceName] = $converter->getNamespace()->getAllAsString();
-        }
-
-        return $output;
-    }
-
-    private function fromAnnotatedEntitiesToInterfaceClassMapper(array $annotatedEntities) {
-        $output = [];
-        foreach($annotatedEntities as $oneAnnotatedEntity) {
-            $entity = $oneAnnotatedEntity->getEntity();
-            $interfaceName = $entity->getInterface()->getNamespace()->getAllAsString();
-            $output[$interfaceName] = $entity->getNamespace()->getAllAsString();
-        }
-
-        return $output;
-
-    }
-
-    private function fromAnnotatedObjectsToInterfaceClassMapper(array $annotatedObjects) {
-        $output = [];
-        foreach($annotatedObjects as $oneAnnotatedObject) {
-            $object = $oneAnnotatedObject->getObject();
-            $interfaceName = $object->getInterface()->getNamespace()->getAllAsString();
-            $output[$interfaceName] = $object->getNamespace()->getAllAsString();
-        }
-
-        return $output;
-    }
-
-    private function fromValuesToInterfaceClassMapper(array $values) {
-        $output = [];
-        foreach($values as $oneValue) {
-            $interfaceName = $oneValue->getInterface()->getNamespace()->getAllAsString();
-            $output[$interfaceName] = $oneValue->getNamespace()->getAllAsString();
-        }
-
-        return $output;
-    }
-
-    private function fromAnnotatedEntitiesToContainerClassMapper(array $annotatedEntities) {
-        $output = [];
-        foreach($annotatedEntities as $annotatedEntity) {
-            $containerName = $annotatedEntity->getAnnotation()->getContainerName();
-            $output[$containerName] = $annotatedEntity->getEntity()->getNamespace()->getAllAsString();
-
-        }
-
-        return $output;
+        $controllerNode = $this->controllerNodeAdapter->fromDataToControllerNode($data['controllers']);
+        return new ConcreteConfiguration($namespace, $objectConfiguration, $controllerNode, $databases);
 
     }
 

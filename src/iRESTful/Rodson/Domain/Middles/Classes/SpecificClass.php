@@ -12,5 +12,7 @@ interface SpecificClass {
     public function getController();
     public function hasTest();
     public function getTest();
+    public function hasApplication();
+    public function getApplication();
     public function getNamespace();
 }

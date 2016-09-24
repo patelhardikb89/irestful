@@ -1,7 +1,6 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Outputs\Adapters;
 use iRESTful\Rodson\Domain\Outputs\Codes\Adapters\CodeAdapter;
-use iRESTful\Rodson\Domain\Middles\Configurations\Configuration;
 use iRESTful\Rodson\Domain\Outputs\Templates\Template;
 use iRESTful\Rodson\Domain\Outputs\Codes\Paths\Adapters\PathAdapter;
 use iRESTful\Rodson\Infrastructure\Outputs\Objects\ConcreteOutputCode;
@@ -19,13 +18,18 @@ use iRESTful\Rodson\Domain\Middles\Composers\Composer;
 use iRESTful\Rodson\Domain\Middles\VagrantFiles\VagrantFile;
 use iRESTful\Rodson\Domain\Middles\PHPUnits\PHPUnit;
 use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
+use iRESTful\Rodson\Domain\Middles\Configurations\Objects\ObjectConfiguration;
+use iRESTful\Rodson\Domain\Middles\Configurations\Configuration;
+use iRESTful\Rodson\Domain\Middles\Applications\Application;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
     private $template;
-    public function __construct(PathAdapter $pathAdapter, Template $template) {
+    private $webBaseFolder;
+    public function __construct(PathAdapter $pathAdapter, Template $template, $webBaseFolder) {
         $this->pathAdapter = $pathAdapter;
         $this->template = $template;
+        $this->webBaseFolder = $webBaseFolder;
     }
 
     public function fromPHPUnitToCode(PHPUnit $phpunit) {
@@ -85,33 +89,36 @@ final class ConcreteCodeAdapter implements CodeAdapter {
 
         if ($class->hasTest()) {
             $test = $class->getTest();
-            return $this->fromTestToCodes($test);
+            return [
+                $this->fromTestToCode($test)
+            ];
+        }
+
+        if ($class->hasApplication()) {
+            $application = $class->getApplication();
+            return $this->fromApplicationToCodes($application);
         }
 
         throw new CodeException('The was no class in the Class object.');
 
     }
 
-    private function fromTestToCodes(Test $test) {
+    private function fromTestToCode(Test $test) {
 
         if ($test->hasTransform()) {
             $transform = $test->getTransform();
-            return $this->fromTestTransformToCodes($transform);
+            return $this->fromTestTransformToCode($transform);
         }
 
         throw new CodeException('The was no test in the Test object.');
 
     }
 
-    private function fromTestTransformToCodes(Transform $transform) {
+    private function fromTestTransformToCode(Transform $transform) {
         $data = $transform->getData();
         $namespace = $transform->getNamespace();
-        $configuration = $transform->getConfiguration();
 
-        return [
-            $this->fromConfigurationToCode($configuration),
-            $this->render($namespace, $data, 'class.test.transform.php')
-        ];
+        return $this->render($namespace, $data, 'class.test.transform.php');
     }
 
     private function fromControllerToCode(Controller $controller) {
@@ -168,10 +175,35 @@ final class ConcreteCodeAdapter implements CodeAdapter {
 
     }
 
-    private function fromConfigurationToCode(Configuration $configuration) {
+    private function fromConfigurationToCodes(Configuration $configuration) {
+        $data = $configuration->getData();
+        $objectConfiguration = $configuration->getObjectConfiguration();
+        $namespace = $configuration->getNamespace();
+
+        return [
+            $this->fromObjectConfigurationToCode($objectConfiguration),
+            $this->render($namespace, $data, 'class.configuration.php')
+        ];
+    }
+
+    private function fromApplicationToCodes(Application $application) {
+        $data = $application->getData();
+        $configuration = $application->getConfiguration();
+        $namespace = $application->getNamespace();
+
+        return array_merge(
+            $this->fromConfigurationToCodes($configuration),
+            [
+                $this->render($namespace, $data, 'class.application.php'),
+                $this->renderIndex($data, 'index.php')
+            ]
+        );
+    }
+
+    private function fromObjectConfigurationToCode(ObjectConfiguration $configuration) {
         $data = $configuration->getData();
         $namespace = $configuration->getNamespace();
-        return $this->render($namespace, $data, 'class.configuration.php');
+        return $this->render($namespace, $data, 'class.configuration.objects.php');
     }
 
     private function fromInterfaceToCode(ClassInterface $interface) {
@@ -184,6 +216,15 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $code = $this->template->render($templateFile, $data);
 
         $relativeFilePath = implode('/', $namespace->getAll()).'.php';
+        $path = $this->pathAdapter->fromRelativePathStringToPath($relativeFilePath);
+
+        return new ConcreteOutputCode($code, $path);
+    }
+
+    private function renderIndex(array $data, $templateFile) {
+        $code = $this->template->render($templateFile, $data);
+
+        $relativeFilePath = $this->webBaseFolder.'/index.php';
         $path = $this->pathAdapter->fromRelativePathStringToPath($relativeFilePath);
 
         return new ConcreteOutputCode($code, $path);

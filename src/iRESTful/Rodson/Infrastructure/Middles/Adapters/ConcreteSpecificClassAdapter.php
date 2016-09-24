@@ -7,6 +7,8 @@ use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteSpecificClass;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Tests\Adapters\TestAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Annotations\Adapters\AnnotatedEntityAdapter;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Annotations\Adapters\AnnotatedObjectAdapter;
+use iRESTful\Rodson\Domain\Middles\Configurations\Adapters\ConfigurationAdapter;
+use iRESTful\Rodson\Domain\Middles\Applications\Adapters\ApplicationAdapter;
 use iRESTful\Rodson\Domain\Inputs\Rodson;
 
 final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
@@ -15,17 +17,23 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
     private $controllerAdapterAdapter;
     private $valueAdapter;
     private $testAdapter;
+    private $configurationAdapter;
+    private $applicationAdapter;
     public function __construct(
         AnnotatedEntityAdapter $annotatedEntityAdapter,
         AnnotatedObjectAdapter $annotatedObjectAdapter,
         ValueAdapter $valueAdapter,
         TestAdapter $testAdapter,
+        ConfigurationAdapter $configurationAdapter,
+        ApplicationAdapter $applicationAdapter,
         ControllerAdapterAdapter $controllerAdapterAdapter
     ) {
         $this->annotatedEntityAdapter = $annotatedEntityAdapter;
         $this->annotatedObjectAdapter = $annotatedObjectAdapter;
         $this->valueAdapter = $valueAdapter;
         $this->testAdapter = $testAdapter;
+        $this->configurationAdapter = $configurationAdapter;
+        $this->applicationAdapter = $applicationAdapter;
         $this->controllerAdapterAdapter = $controllerAdapterAdapter;
     }
 
@@ -54,15 +62,26 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
         $annotatedObjects = $this->annotatedObjectAdapter->fromObjectsToAnnotatedObjects($objects);
         $annotatedEntities = $this->annotatedEntityAdapter->fromObjectsToAnnotatedEntities($objects);
         $values = $this->valueAdapter->fromTypesToValues($types);
-        $tests = $this->testAdapter->fromDataToTests([
-            'annotated_entities' => $annotatedEntities,
-            'annotated_objects' => $annotatedObjects,
-            'values' => $values
-        ]);
-
 
         $specificControllers = $this->controllerAdapterAdapter->fromAnnotatedEntitiesToControllerAdapter($annotatedEntities)
                                                                 ->fromControllersToSpecificControllers($controllers);
+
+        $configuration = $this->configurationAdapter->fromDataToConfiguration([
+            'annotated_entities' => $annotatedEntities,
+            'annotated_objects' => $annotatedObjects,
+            'values' => $values,
+            'controllers' => [
+                'inputs' => $controllers,
+                'classes' => $specificControllers
+            ]
+        ]);
+
+        $application = $this->applicationAdapter->fromConfigurationToApplication($configuration);
+
+        $tests = $this->testAdapter->fromDataToTests([
+            'annotated_entities' => $annotatedEntities,
+            'configuration' => $configuration
+        ]);
 
         foreach($annotatedObjects as $oneAnnotatedObject) {
             $output[] = new ConcreteSpecificClass($oneAnnotatedObject);
@@ -84,6 +103,7 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
             $output[] = new ConcreteSpecificClass(null, null, null, null, $oneTest);
         }
 
+        $output[] = new ConcreteSpecificClass(null, null, null, null, null, $application);
         return $output;
     }
 

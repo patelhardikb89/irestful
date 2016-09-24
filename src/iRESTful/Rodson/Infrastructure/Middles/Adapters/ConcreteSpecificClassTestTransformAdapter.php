@@ -10,9 +10,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Types\Tests\Transforms\Exceptions\Tra
 
 final class ConcreteSpecificClassTestTransformAdapter implements TransformAdapter {
     private $baseNamespaces;
-    private $configurationAdapter;
-    public function __construct(ConfigurationAdapter $configurationAdapter, array $baseNamespaces) {
-        $this->configurationAdapter = $configurationAdapter;
+    public function __construct(array $baseNamespaces) {
         $this->baseNamespaces = $baseNamespaces;
     }
 
@@ -22,10 +20,13 @@ final class ConcreteSpecificClassTestTransformAdapter implements TransformAdapte
             throw new TransformException('The annotated_entities keyname is mandatory in order to convert data to Transform objects.');
         }
 
+        if (!isset($data['configuration'])) {
+            throw new TransformException('The configuration keyname is mandatory in order to convert data to Transform objects.');
+        }
+
         $output = [];
-        $configuration = $this->configurationAdapter->fromDataToConfiguration($data);
         foreach($data['annotated_entities'] as $oneAnnotatedEntity) {
-            $output[] = $this->fromAnnotatedEntityToTransform($oneAnnotatedEntity, $configuration);
+            $output[] = $this->fromAnnotatedEntityToTransform($oneAnnotatedEntity, $data['configuration']);
         }
 
         return $output;

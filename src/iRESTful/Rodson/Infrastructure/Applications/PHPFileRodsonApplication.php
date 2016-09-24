@@ -7,7 +7,7 @@ use iRESTful\Rodson\Infrastructure\Outputs\Services\FileCodeService;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteAnnotatedClassAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteAnnotationAdapterFactory;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSampleAdapter;
-use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteObjectConfigurationAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteConfigurationNamespaceFactory;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteFunctionalTransformTestAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteClassNamespaceAdapter;
@@ -26,10 +26,12 @@ final class PHPFileRodsonApplication implements RodsonApplication {
     private $templateFolder;
     private $cacheFolder;
     private $baseFolder;
-    public function __construct($templateFolder, $cacheFolder = null, $baseFolder = 'src') {
+    private $webBaseFolder;
+    public function __construct($templateFolder, $cacheFolder = null, $baseFolder = 'src', $webBaseFolder = 'web') {
         $this->templateFolder = $templateFolder;
         $this->cacheFolder = $cacheFolder;
         $this->baseFolder = $baseFolder;
+        $this->webBaseFolder = $webBaseFolder;
     }
 
     public function executeByFolder($folderPath, $outputFolderPath) {
@@ -79,12 +81,12 @@ final class PHPFileRodsonApplication implements RodsonApplication {
 
         $classOutput = array_filter($classOutputPath);
         $classPathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $classOutput);
-        $classCodeAdapter = new ConcreteCodeAdapter($classPathAdapter, $template);
+        $classCodeAdapter = new ConcreteCodeAdapter($classPathAdapter, $template, $this->webBaseFolder);
         $classCodes = $classCodeAdapter->fromClassesToCodes($classes);
 
         $rootOutput = array_filter(explode('/', $outputFolderPath));
         $rootPathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $rootOutput);
-        $rootCodeAdapter = new ConcreteCodeAdapter($rootPathAdapter, $template);
+        $rootCodeAdapter = new ConcreteCodeAdapter($rootPathAdapter, $template, $this->webBaseFolder);
         $composerCode = $rootCodeAdapter->fromComposerToCode($composer);
         $vagrantFileCode = $rootCodeAdapter->fromVagrantFileToCode($vagrantFile);
         $phpunitCode = $rootCodeAdapter->fromPHPUnitToCode($phpunit);

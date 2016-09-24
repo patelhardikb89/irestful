@@ -6,4 +6,5 @@ interface RelationalDatabase {
     public function getHostName();
     public function hasCredentials();
     public function getCredentials();
+    public function getData();
 }

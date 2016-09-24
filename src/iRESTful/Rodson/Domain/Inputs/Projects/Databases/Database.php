@@ -7,4 +7,5 @@ interface Database {
     public function getRelational();
     public function hasRESTAPI();
     public function getRESTAPI();
+    public function getData();
 }

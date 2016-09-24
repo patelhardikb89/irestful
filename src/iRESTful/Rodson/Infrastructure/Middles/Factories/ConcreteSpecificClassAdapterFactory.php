@@ -21,13 +21,19 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassValueAd
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassConverterAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassTestAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassTestTransformAdapter;
-use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteConfigurationNamespaceFactory;
-use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteObjectConfigurationNamespaceFactory;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteObjectConfigurationAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassEntityAnnotatedAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassObjectAnnotatedAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassObjectAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteAnnotationParameterAdapterFactory;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassConverterMethodAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteConfigurationNamespaceFactory;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationControllerAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationControllerNodeAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteApplicationAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteApplicationNamespaceFactory;
 
 final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterFactory {
     private $baseNamespace;
@@ -76,16 +82,27 @@ final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterF
         $annotationParameterAdapter = $annotationParameterAdapterFactory->create();
         $annotatedObjectAdapter = new ConcreteSpecificClassObjectAnnotatedAdapter($objectAdapter, $annotationParameterAdapter);
 
+        $objectConfigurationNamespaceFactory = new ConcreteObjectConfigurationNamespaceFactory($this->baseNamespace);
+        $objectConfigurationAdapter = new ConcreteObjectConfigurationAdapter($objectConfigurationNamespaceFactory, $this->delimiter, $this->timezone);
+
         $configurationNamespaceFactory = new ConcreteConfigurationNamespaceFactory($this->baseNamespace);
-        $configurationAdapter = new ConcreteConfigurationAdapter($configurationNamespaceFactory, $this->delimiter, $this->timezone);
-        $transformAdapter = new ConcreteSpecificClassTestTransformAdapter($configurationAdapter, $this->baseNamespace);
+        $configurationControllerAdapter = new ConcreteConfigurationControllerAdapter();
+        $cnfigurationControllerNodeAdapter = new ConcreteConfigurationControllerNodeAdapter($configurationControllerAdapter);
+        $configurationAdapter = new ConcreteConfigurationAdapter($configurationNamespaceFactory, $objectConfigurationAdapter, $cnfigurationControllerNodeAdapter);
+
+        $transformAdapter = new ConcreteSpecificClassTestTransformAdapter($this->baseNamespace);
         $testAdapter = new ConcreteSpecificClassTestAdapter($transformAdapter);
+
+        $applicationNamespaceFactory = new ConcreteApplicationNamespaceFactory($this->baseNamespace);
+        $applicationAdapter = new ConcreteApplicationAdapter($applicationNamespaceFactory);
 
         return new ConcreteSpecificClassAdapter(
             $annotatedEntityAdapter,
             $annotatedObjectAdapter,
             $valueAdapter,
             $testAdapter,
+            $configurationAdapter,
+            $applicationAdapter,
             $controllerAdapterAdapter
         );
     }

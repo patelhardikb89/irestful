@@ -40,4 +40,17 @@ final class ConcreteRelationalDatabase implements RelationalDatabase {
         return $this->credentials;
     }
 
+    public function getData() {
+        $output = [
+            'driver' => $this->driver,
+            'hostname' => $this->hostName
+        ];
+
+        if ($this->hasCredentials()) {
+            $output['credentials'] = $this->credentials->getData();
+        }
+
+        return $output;
+    }
+
 }

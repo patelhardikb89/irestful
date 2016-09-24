@@ -8,4 +8,5 @@ interface RESTAPI {
     public function getHeaderLine();
     public function getBaseUrl();
     public function getPort();
+    public function getData();
 }
