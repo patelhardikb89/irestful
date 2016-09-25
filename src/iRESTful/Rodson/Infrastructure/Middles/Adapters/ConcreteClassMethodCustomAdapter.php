@@ -39,7 +39,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     private function getCodeFromValue(Value $value) {
         if ($value->hasInputVariable()) {
             $variableName = $value->getInputVariable();
-            return '$input["'.$variableName.'"]';
+            return 'isset($input["'.$variableName.'"]) ? $input["'.$variableName.'"] : null';
         }
 
         if ($value->hasEnvironmentVariable()) {
@@ -549,7 +549,16 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
         };
 
-        $lines = [];
+        $lines = [
+            '$input = [];',
+            'if ($request->hasParameters()) {',
+            [
+                '$input = $request->getParameters();'
+            ],
+            '}',
+            ''
+        ];
+
         foreach($instructions as $oneInstruction) {
             $newLines = $this->generateCodeLinesFromInstruction($oneInstruction);
             if (!empty($newLines)) {
