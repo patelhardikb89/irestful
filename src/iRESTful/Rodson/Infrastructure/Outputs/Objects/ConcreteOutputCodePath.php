@@ -31,7 +31,7 @@ final class ConcreteOutputCodePath implements Path {
             }
 
         }
-        
+
         $this->basePath = $basePath;
         $this->relativePath = $relativePath;
         $this->file = $file;

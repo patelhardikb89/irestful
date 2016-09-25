@@ -24,12 +24,12 @@ use iRESTful\Rodson\Domain\Middles\Applications\Application;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
+    private $indexPathAdapter;
     private $template;
-    private $webBaseFolder;
-    public function __construct(PathAdapter $pathAdapter, Template $template, $webBaseFolder) {
+    public function __construct(PathAdapter $pathAdapter, PathAdapter $indexPathAdapter, Template $template) {
         $this->pathAdapter = $pathAdapter;
+        $this->indexPathAdapter = $indexPathAdapter;
         $this->template = $template;
-        $this->webBaseFolder = $webBaseFolder;
     }
 
     public function fromPHPUnitToCode(PHPUnit $phpunit) {
@@ -223,10 +223,7 @@ final class ConcreteCodeAdapter implements CodeAdapter {
 
     private function renderIndex(array $data, $templateFile) {
         $code = $this->template->render($templateFile, $data);
-
-        $relativeFilePath = $this->webBaseFolder.'/index.php';
-        $path = $this->pathAdapter->fromRelativePathStringToPath($relativeFilePath);
-
+        $path = $this->indexPathAdapter->fromRelativePathStringToPath('index.php');
         return new ConcreteOutputCode($code, $path);
     }
 

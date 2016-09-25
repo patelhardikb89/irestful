@@ -79,14 +79,17 @@ final class PHPFileRodsonApplication implements RodsonApplication {
             $classOutputPath = array_merge($classOutputPath, $baseFolderPath);
         }
 
+        $rootOutput = array_filter(explode('/', $outputFolderPath));
+        $indexOutput = array_merge($rootOutput, [$this->webBaseFolder]);
+        $indexPathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $indexOutput);
+
         $classOutput = array_filter($classOutputPath);
         $classPathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $classOutput);
-        $classCodeAdapter = new ConcreteCodeAdapter($classPathAdapter, $template, $this->webBaseFolder);
+        $classCodeAdapter = new ConcreteCodeAdapter($classPathAdapter, $indexPathAdapter, $template);
         $classCodes = $classCodeAdapter->fromClassesToCodes($classes);
 
-        $rootOutput = array_filter(explode('/', $outputFolderPath));
         $rootPathAdapter = new ConcreteOutputCodePathAdapter($fileAdapter, $rootOutput);
-        $rootCodeAdapter = new ConcreteCodeAdapter($rootPathAdapter, $template, $this->webBaseFolder);
+        $rootCodeAdapter = new ConcreteCodeAdapter($rootPathAdapter, $indexPathAdapter, $template);
         $composerCode = $rootCodeAdapter->fromComposerToCode($composer);
         $vagrantFileCode = $rootCodeAdapter->fromVagrantFileToCode($vagrantFile);
         $phpunitCode = $rootCodeAdapter->fromPHPUnitToCode($phpunit);
