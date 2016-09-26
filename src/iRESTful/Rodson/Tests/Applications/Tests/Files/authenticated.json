@@ -414,7 +414,7 @@
                 "view": "json"
             },
             "retrieve_by_uuid": {
-                "pattern": "retrieve /$role|container$\/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+                "pattern": "retrieve /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
                 "input": "input",
                 "instructions": [
                     "entity = retrieve input->container by uuid:input->uuid",
@@ -436,7 +436,7 @@
                 "view": "json"
             },
             "delete": {
-                "pattern": "insert /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+                "pattern": "delete /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
                 "input": "input",
                 "instructions": [
                     "entity = retrieve input->container by uuid:input->uuid",
