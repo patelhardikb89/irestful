@@ -697,12 +697,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/steve-rodrigue/irestful.git",
-                "reference": "c302ddf12e79e5c2409115248bbb85e4076317ca"
+                "reference": "09fd3062fea21fa06c7fda7c32a6e1c2cbd243e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/steve-rodrigue/irestful/zipball/c302ddf12e79e5c2409115248bbb85e4076317ca",
-                "reference": "c302ddf12e79e5c2409115248bbb85e4076317ca",
+                "url": "https://api.github.com/repos/steve-rodrigue/irestful/zipball/09fd3062fea21fa06c7fda7c32a6e1c2cbd243e6",
+                "reference": "09fd3062fea21fa06c7fda7c32a6e1c2cbd243e6",
                 "shasum": ""
             },
             "require": {
@@ -728,7 +728,7 @@
                 }
             ],
             "homepage": "https://github.com/steve-rodrigue/objects",
-            "time": "2016-06-23 18:02:40"
+            "time": "2016-09-26 19:12:11"
         },
         {
             "name": "symfony/yaml",

@@ -34,6 +34,8 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationControl
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteConfigurationControllerNodeAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteApplicationAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteApplicationNamespaceFactory;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteInstallationAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteInstallationNamespaceFactory;
 
 final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterFactory {
     private $baseNamespace;
@@ -96,6 +98,9 @@ final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterF
         $applicationNamespaceFactory = new ConcreteApplicationNamespaceFactory($this->baseNamespace);
         $applicationAdapter = new ConcreteApplicationAdapter($applicationNamespaceFactory);
 
+        $namespaceFactory = new ConcreteInstallationNamespaceFactory($this->baseNamespace);
+        $installationAdapter = new ConcreteInstallationAdapter($namespaceFactory);
+
         return new ConcreteSpecificClassAdapter(
             $annotatedEntityAdapter,
             $annotatedObjectAdapter,
@@ -103,6 +108,7 @@ final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterF
             $testAdapter,
             $configurationAdapter,
             $applicationAdapter,
+            $installationAdapter,
             $controllerAdapterAdapter
         );
     }

@@ -496,6 +496,7 @@
                 "type": "relational",
                 "driver": "[db-driver]",
                 "hostname": "[db-hostname]",
+                "engine": "[engine]",
                 "credentials": {
                     "username": "[db-username]",
                     "password": "[db-password]"

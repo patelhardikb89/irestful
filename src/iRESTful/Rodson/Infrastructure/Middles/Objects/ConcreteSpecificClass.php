@@ -8,6 +8,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Exceptions\ClassException;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Tests\Test;
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Annotations\AnnotatedObject;
 use iRESTful\Rodson\Domain\Middles\Applications\Application;
+use iRESTful\Rodson\Domain\Middles\Installations\Installation;
 
 final class ConcreteSpecificClass implements SpecificClass {
     private $annotatedObject;
@@ -15,16 +16,19 @@ final class ConcreteSpecificClass implements SpecificClass {
     private $value;
     private $controller;
     private $test;
+    private $application;
+    private $installation;
     public function __construct(
         AnnotatedObject $annotatedObject = null,
         AnnotatedEntity $annotatedEntity = null,
         Value $value = null,
         Controller $controller = null,
         Test $test = null,
-        Application $application = null
+        Application $application = null,
+        Installation $installation = null
     ) {
 
-        $amount = (empty($annotatedObject) ? 0 : 1) +  (empty($annotatedEntity) ? 0 : 1) + (empty($value) ? 0 : 1) + (empty($controller) ? 0 : 1) + (empty($test) ? 0 : 1) + (empty($application) ? 0 : 1);
+        $amount = (empty($annotatedObject) ? 0 : 1) +  (empty($annotatedEntity) ? 0 : 1) + (empty($value) ? 0 : 1) + (empty($controller) ? 0 : 1) + (empty($test) ? 0 : 1) + (empty($application) ? 0 : 1) + (empty($installation) ? 0 : 1);
         if ($amount != 1) {
             throw new ClassException('The class must either have an AnnotatedObject, AnnotatedEntity, Value, Controller, Test or Application.  '.$amount.' given.');
         }
@@ -35,6 +39,7 @@ final class ConcreteSpecificClass implements SpecificClass {
         $this->controller = $controller;
         $this->test = $test;
         $this->application = $application;
+        $this->installation = $installation;
     }
 
     public function hasAnnotatedObject() {
@@ -85,6 +90,14 @@ final class ConcreteSpecificClass implements SpecificClass {
         return $this->application;
     }
 
+    public function hasInstallation() {
+        return !empty($this->installation);
+    }
+
+    public function getInstallation() {
+        return $this->installation;
+    }
+
     public function getNamespace() {
 
         if ($this->hasObject()) {
@@ -105,6 +118,10 @@ final class ConcreteSpecificClass implements SpecificClass {
 
         if ($this->hasApplication()) {
             return $this->application->getNamespace();
+        }
+
+        if ($this->hasInstallation()) {
+            return $this->application->getInstallation();
         }
 
         return $this->test->getNamespace();

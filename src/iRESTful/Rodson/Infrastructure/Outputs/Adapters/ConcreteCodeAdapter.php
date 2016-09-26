@@ -21,6 +21,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\ClassInterface;
 use iRESTful\Rodson\Domain\Middles\Configurations\Objects\ObjectConfiguration;
 use iRESTful\Rodson\Domain\Middles\Configurations\Configuration;
 use iRESTful\Rodson\Domain\Middles\Applications\Application;
+use iRESTful\Rodson\Domain\Middles\Installations\Installation;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
@@ -97,6 +98,13 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         if ($class->hasApplication()) {
             $application = $class->getApplication();
             return $this->fromApplicationToCodes($application);
+        }
+
+        if ($class->hasInstallation()) {
+            $installation = $class->getInstallation();
+            return [
+                $this->fromInstallationToCode($installation)
+            ];
         }
 
         throw new CodeException('The was no class in the Class object.');
@@ -204,6 +212,12 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $data = $configuration->getData();
         $namespace = $configuration->getNamespace();
         return $this->render($namespace, $data, 'class.configuration.objects.php');
+    }
+
+    private function fromInstallationToCode(Installation $installation) {
+        $data = $installation->getData();
+        $namespace = $installation->getNamespace();
+        return $this->render($namespace, $data, 'class.installation.php');
     }
 
     private function fromInterfaceToCode(ClassInterface $interface) {

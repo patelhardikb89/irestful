@@ -25,25 +25,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     locale-gen en_US.UTF-8;
     dpkg-reconfigure locales;
 
-
-    {%- if has_relational_database -%}
-        DB_USERNAME="root";
-        DB_PASSWORD=`tr -dc A-Za-z0-9 < /dev/urandom | head -c 8 | xargs`;
-        DB_SERVER="127.0.0.1";
-        DB_DRIVER="mysql";
-        DB_NAME="development";
-
-        echo "export DB_USERNAME=$DB_USERNAME" >> /home/vagrant/.profile;
-        echo "export DB_PASSWORD=$DB_PASSWORD" >> /home/vagrant/.profile;
-        echo "export DB_SERVER=$DB_SERVER" >> /home/vagrant/.profile;
-        echo "export DB_DRIVER=$DB_DRIVER" >> /home/vagrant/.profile;
-        echo "export DB_NAME=$DB_NAME" >> /home/vagrant/.profile;
-
-        sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $DB_PASSWORD";
-        sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $DB_PASSWORD";
-        sudo apt-get install mysql-server-5.5 php5-mysql -y --force-yes;
-    {%- endif -%}
-
     sudo apt-get update -y;
     sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade;
 
@@ -67,6 +48,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     sudo apt-get autoremove -y --force-yes;
     sudo apt-get update -y;
     sudo apt-get upgrade -y;
+
+    {% if has_relational_database %}
+        DB_USERNAME="root";
+        DB_PASSWORD=`tr -dc A-Za-z0-9 < /dev/urandom | head -c 8 | xargs`;
+        DB_SERVER="127.0.0.1";
+        DB_DRIVER="mysql";
+        DB_NAME="development";
+
+        echo "export DB_USERNAME=$DB_USERNAME" >> /home/vagrant/.profile;
+        echo "export DB_PASSWORD=$DB_PASSWORD" >> /home/vagrant/.profile;
+        echo "export DB_SERVER=$DB_SERVER" >> /home/vagrant/.profile;
+        echo "export DB_DRIVER=$DB_DRIVER" >> /home/vagrant/.profile;
+        echo "export DB_NAME=$DB_NAME" >> /home/vagrant/.profile;
+
+        sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $DB_PASSWORD";
+        sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $DB_PASSWORD";
+        sudo apt-get install mysql-server-5.5 php5-mysql -y --force-yes;
+
+        sudo apt-get install mysql-client-core-5.5 -y --force-yes;
+    {% endif %}
 
     #remove dependencies:
     sudo rm -R -f /vagrant/vendor;

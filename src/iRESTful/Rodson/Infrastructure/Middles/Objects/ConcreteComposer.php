@@ -4,6 +4,7 @@ use iRESTful\Rodson\Domain\Middles\Composers\Composer;
 use iRESTful\Rodson\Domain\Inputs\URLs\Url;
 use iRESTful\Rodson\Domain\Inputs\Authors\Author;
 use iRESTful\Rodson\Domain\Middles\Composers\Exceptions\ComposerException;
+use iRESTful\Rodson\Domain\Middles\Installations\Installation;
 
 final class ConcreteComposer implements Composer {
     private $name;
@@ -13,7 +14,8 @@ final class ConcreteComposer implements Composer {
     private $authors;
     private $baseNamespace;
     private $baseFolder;
-    public function __construct($name, $type, Url $homepage, $license, array $authors, $baseNamespace, $baseFolder) {
+    private $installation;
+    public function __construct($name, $type, Url $homepage, $license, array $authors, $baseNamespace, $baseFolder, Installation $installation) {
 
         foreach($authors as $oneAuthor) {
             if (!($oneAuthor instanceof Author)) {
@@ -28,7 +30,7 @@ final class ConcreteComposer implements Composer {
         $this->authors = $authors;
         $this->baseNamespace = $baseNamespace;
         $this->baseFolder = $baseFolder;
-
+        $this->installation = $installation;
     }
 
     public function getName() {
@@ -59,6 +61,10 @@ final class ConcreteComposer implements Composer {
         return $this->baseNamespace;
     }
 
+    public function getInstallation() {
+        return $this->installation;
+    }
+
     public function getData() {
 
         $authors = $this->getAuthors();
@@ -73,7 +79,8 @@ final class ConcreteComposer implements Composer {
             'license' => $this->license,
             'authors' => $authors,
             'base_namespace' => $this->baseNamespace,
-            'base_folder' => $this->baseFolder
+            'base_folder' => $this->baseFolder,
+            'installation' => $this->installation->getData()
         ];
     }
 

@@ -22,6 +22,10 @@ final class ConcreteRelationalDatabaseAdapter implements RelationalDatabaseAdapt
             throw new RelationalDatabaseException('The hostname keyname is mandatory in order to convert data to a RelationalDatabase object.');
         }
 
+        if (!isset($data['engine'])) {
+            throw new RelationalDatabaseException('The engine keyname is mandatory in order to convert data to a RelationalDatabase object.');
+        }
+
         try {
 
             $credentials = null;
@@ -29,7 +33,7 @@ final class ConcreteRelationalDatabaseAdapter implements RelationalDatabaseAdapt
                 $credentials = $this->credentialsAdapter->fromDataToCredentials($data['credentials']);
             }
 
-            return new ConcreteRelationalDatabase($data['driver'], $data['hostname'], $credentials);
+            return new ConcreteRelationalDatabase($data['driver'], $data['hostname'], $data['engine'], $credentials);
 
         } catch (CredentialsException $exception) {
             throw new RelationalDatabaseException('There was an exception while converting data to a Credentials object.', $exception);

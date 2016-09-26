@@ -20,6 +20,8 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassEntityA
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteComposerAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteVagrantFileAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcretePHPUnitAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteInstallationAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteInstallationNamespaceFactory;
 
 final class PHPFileRodsonApplication implements RodsonApplication {
     private $baseNamespace;
@@ -40,6 +42,16 @@ final class PHPFileRodsonApplication implements RodsonApplication {
 
     public function executeByFile($filePath, $outputFolderPath) {
 
+        $getInstallation = function(array $classes) {
+            foreach($classes as $oneClass) {
+                if ($oneClass->hasInstallation()) {
+                    return $oneClass->getInstallation();
+                }
+            }
+
+            return null;
+        };
+
         $repositoryFactory = new ConcreteRodsonRepositoryFactory();
         $repository = $repositoryFactory->create();
         $rodson = $repository->retrieve($filePath);
@@ -59,8 +71,13 @@ final class PHPFileRodsonApplication implements RodsonApplication {
         $classAdapter = $classAdapterFactory->create();
         $classes = $classAdapter->fromRodsonToClasses($rodson);
 
+        $installation = $getInstallation($classes);
+
         $composerAdapter = new ConcreteComposerAdapter($this->baseFolder);
-        $composer = $composerAdapter->fromRodsonToComposer($rodson);
+        $composer = $composerAdapter->fromDataToComposer([
+            'rodson' => $rodson,
+            'installation' => $installation
+        ]);
 
         $vagrantFileAdapter = new ConcreteVagrantFileAdapter();
         $vagrantFile = $vagrantFileAdapter->fromRodsonToVagrantFile($rodson);

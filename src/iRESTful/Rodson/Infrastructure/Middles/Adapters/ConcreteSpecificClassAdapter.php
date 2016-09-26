@@ -9,6 +9,7 @@ use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Annotations\Adapters\A
 use iRESTful\Rodson\Domain\Middles\Classes\Types\Objects\Annotations\Adapters\AnnotatedObjectAdapter;
 use iRESTful\Rodson\Domain\Middles\Configurations\Adapters\ConfigurationAdapter;
 use iRESTful\Rodson\Domain\Middles\Applications\Adapters\ApplicationAdapter;
+use iRESTful\Rodson\Domain\Middles\Installations\Adapters\InstallationAdapter;
 use iRESTful\Rodson\Domain\Inputs\Rodson;
 
 final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
@@ -19,6 +20,7 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
     private $testAdapter;
     private $configurationAdapter;
     private $applicationAdapter;
+    private $installationAdapter;
     public function __construct(
         AnnotatedEntityAdapter $annotatedEntityAdapter,
         AnnotatedObjectAdapter $annotatedObjectAdapter,
@@ -26,6 +28,7 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
         TestAdapter $testAdapter,
         ConfigurationAdapter $configurationAdapter,
         ApplicationAdapter $applicationAdapter,
+        InstallationAdapter $installationAdapter,
         ControllerAdapterAdapter $controllerAdapterAdapter
     ) {
         $this->annotatedEntityAdapter = $annotatedEntityAdapter;
@@ -34,6 +37,7 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
         $this->testAdapter = $testAdapter;
         $this->configurationAdapter = $configurationAdapter;
         $this->applicationAdapter = $applicationAdapter;
+        $this->installationAdapter = $installationAdapter;
         $this->controllerAdapterAdapter = $controllerAdapterAdapter;
     }
 
@@ -50,6 +54,23 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
             }
 
             return array_values($output);
+        };
+
+        $getRelationalDatabase = function(array $objects) {
+
+            foreach($objects as $oneObject) {
+
+                if ($oneObject->hasDatabase()) {
+                    $database = $oneObject->getDatabase();
+                    if ($database->hasRelational()) {
+                        return $database->getRelational();
+                    }
+                }
+
+            }
+
+            return null;
+
         };
 
         $output = [];
@@ -74,6 +95,11 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
                 'inputs' => $controllers,
                 'classes' => $specificControllers
             ]
+        ]);
+
+        $installation = $this->installationAdapter->fromDataToInstallation([
+            'object_configuration' => $configuration->getObjectConfiguration(),
+            'relational_database' => $getRelationalDatabase($objects)
         ]);
 
         $application = $this->applicationAdapter->fromConfigurationToApplication($configuration);
@@ -104,6 +130,7 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
         }
 
         $output[] = new ConcreteSpecificClass(null, null, null, null, null, $application);
+        $output[] = new ConcreteSpecificClass(null, null, null, null, null, null, $installation);
         return $output;
     }
 

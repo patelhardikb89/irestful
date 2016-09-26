@@ -49,7 +49,8 @@ final class ConcreteNamespace implements ClassNamespace {
         return [
             'name' => $this->getName(),
             'path' => $this->getPathAsString(),
-            'all' => $this->getAllAsString()
+            'all' => $this->getAllAsString(),
+            'all_escaped' => str_replace('\\', '\\\\', $this->getAllAsString())
         ];
     }
 

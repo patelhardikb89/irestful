@@ -7,8 +7,9 @@ use iRESTful\Rodson\Domain\Inputs\Projects\Databases\Relationals\Exceptions\Rela
 final class ConcreteRelationalDatabase implements RelationalDatabase {
     private $driver;
     private $hostName;
+    private $engine;
     private $credentials;
-    public function __construct($driver, $hostName, Credentials $credentials = null) {
+    public function __construct($driver, $hostName, $engine, Credentials $credentials = null) {
 
         if (empty($driver) || !is_string($driver)) {
             throw new RelationalDatabaseException('The driver must be a non-empty string.');
@@ -18,8 +19,13 @@ final class ConcreteRelationalDatabase implements RelationalDatabase {
             throw new RelationalDatabaseException('The hostName must be a non-empty string.');
         }
 
+        if (empty($engine) || !is_string($engine)) {
+            throw new RelationalDatabaseException('The engine must be a non-empty string.');
+        }
+
         $this->driver = $driver;
         $this->hostName = $hostName;
+        $this->engine = $engine;
         $this->credentials = $credentials;
 
     }
@@ -30,6 +36,10 @@ final class ConcreteRelationalDatabase implements RelationalDatabase {
 
     public function getHostName() {
         return $this->hostName;
+    }
+
+    public function getEngine() {
+        return $this->engine;
     }
 
     public function hasCredentials() {
@@ -43,7 +53,8 @@ final class ConcreteRelationalDatabase implements RelationalDatabase {
     public function getData() {
         $output = [
             'driver' => $this->driver,
-            'hostname' => $this->hostName
+            'hostname' => $this->hostName,
+            'engine' => $this->engine
         ];
 
         if ($this->hasCredentials()) {

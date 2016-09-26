@@ -14,5 +14,7 @@ interface SpecificClass {
     public function getTest();
     public function hasApplication();
     public function getApplication();
+    public function hasInstallation();
+    public function getInstallation();
     public function getNamespace();
 }
