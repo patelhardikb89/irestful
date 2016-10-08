@@ -106,7 +106,8 @@ final class ConcreteSpecificClassAdapter implements SpecificClassAdapter {
 
         $tests = $this->testAdapter->fromDataToTests([
             'annotated_entities' => $annotatedEntities,
-            'configuration' => $configuration
+            'configuration' => $configuration,
+            'controllers' => $controllers
         ]);
 
         foreach($annotatedObjects as $oneAnnotatedObject) {

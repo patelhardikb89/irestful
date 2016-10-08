@@ -5,7 +5,8 @@ use iRESTful\Rodson\Domain\Inputs\Projects\Objects\Object;
 use iRESTful\Rodson\Domain\Inputs\Projects\Types\Type;
 
 interface CustomMethodAdapter {
-    public function fromInstructionsToCustomMethod(array $instructions);
+    public function fromControllerInstructionsToCustomMethod(array $instructions);
+    public function fromTestInstructionsToCustomMethods(array $testInstructions);
     public function fromObjectToCustomMethods(Object $object);
     public function fromMethodsToCustomMethods(array $methods);
     public function fromMethodToCustomMethod(Method $method);

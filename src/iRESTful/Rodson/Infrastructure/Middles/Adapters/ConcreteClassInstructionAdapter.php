@@ -21,19 +21,30 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
         $this->annotatedEntities = $annotatedEntities;
     }
 
-    public function fromControllerToInstructions(Controller $controller) {
+    public function fromDataToInstructions(array $data) {
 
-        $httpRequests = null;
-        if ($controller->hasHttpRequests()) {
-            $httpRequests = $controller->getHttpRequests();
+        if (!isset($data['instructions'])) {
+            throw new InstructionException('The instructions keyname is mandatory in order to convert data to Instruction objects.');
         }
 
-        $inputName = $controller->getInputName();
+        if (!isset($data['controller'])) {
+            throw new InstructionException('The controller keyname is mandatory in order to convert data to Instruction objects.');
+        }
+
+        $mustReturn = false;
+        if (isset($data['must_return'])) {
+            $mustReturn = $data['must_return'];
+        }
+
+        $httpRequests = null;
+        if ($data['controller']->hasHttpRequests()) {
+            $httpRequests = $data['controller']->getHttpRequests();
+        }
 
         $assignments = [];
         $returnedInstructions = [];
-        $instructions = $controller->getInstructions();
-        foreach($instructions as $oneInstruction) {
+        $inputName = $data['controller']->getInputName();
+        foreach($data['instructions'] as $oneInstruction) {
 
             $isReturned = false;
             if (strpos($oneInstruction, 'return ') === 0) {
@@ -79,7 +90,7 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
 
             $assignment = $this->assignmentAdapterAdapter->fromDataToAssignmentAdapter([
                 'annotated_entities' => $this->annotatedEntities,
-                'controller' => $controller,
+                'controller' => $data['controller'],
                 'previous_assignments' => $assignments,
                 'input' => $inputName
             ])->fromStringToAssignment($oneInstruction);
@@ -93,7 +104,21 @@ final class ConcreteClassInstructionAdapter implements InstructionAdapter {
             }
         }
 
-        throw new InstructionException('There was no return clause in the instructions.');
+        if ($mustReturn) {
+            throw new InstructionException('There was no return clause in the instructions.');
+        }
+
+        return $returnedInstructions;
+
+    }
+
+    public function fromControllerToInstructions(Controller $controller) {
+        $instructions = $controller->getInstructions();
+        return $this->fromDataToInstructions([
+            'instructions' => $instructions,
+            'controller' => $controller,
+            'must_return' => true
+        ]);
 
     }
 

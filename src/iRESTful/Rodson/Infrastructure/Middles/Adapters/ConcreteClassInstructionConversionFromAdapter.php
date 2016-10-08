@@ -28,11 +28,23 @@ final class ConcreteClassInstructionConversionFromAdapter implements FromAdapter
             return null;
 
         };
-        
-        $assignment = $getAssignmentByVariableName($string);
-        $isInput = ($this->inputName == $string);
 
-        return new ConcreteClassInstructionConversionFrom($isInput, $assignment);
+        $isInput = false;
+        $inputKeynames = [];
+        if (strpos($string, $this->inputName) !== false) {
+            $isInput = true;
+            $exploded = explode('->', $string);
+            foreach($exploded as $oneExploded) {
+                if ($oneExploded == $this->inputName) {
+                    continue;
+                }
+
+                $inputKeynames[] = $oneExploded;
+            }
+        }
+
+        $assignment = $getAssignmentByVariableName($string);
+        return new ConcreteClassInstructionConversionFrom($isInput, $inputKeynames, $assignment);
     }
 
 }

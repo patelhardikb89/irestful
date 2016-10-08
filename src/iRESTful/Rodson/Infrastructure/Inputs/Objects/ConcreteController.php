@@ -13,7 +13,16 @@ final class ConcreteController implements Controller {
     private $view;
     private $constants;
     private $httpRequests;
-    public function __construct($name, $inputName, $pattern, array $instructions, View $view, array $constants = null, array $httpRequests = null) {
+    public function __construct(
+        $name,
+        $inputName,
+        $pattern,
+        array $instructions,
+        array $tests,
+        View $view,
+        array $constants = null,
+        array $httpRequests = null
+    ) {
 
         if (empty($constants)) {
             $constants = null;
@@ -39,6 +48,10 @@ final class ConcreteController implements Controller {
             throw new ControllerException('There must be at least 1 instruction.');
         }
 
+        if (empty($tests)) {
+            throw new ControllerException('There must be at least 1 test.');
+        }
+
         foreach($instructions as $index => $oneInstruction) {
 
             if (!is_integer($index)) {
@@ -47,6 +60,57 @@ final class ConcreteController implements Controller {
 
             if (empty($oneInstruction) || !is_string($oneInstruction)) {
                 throw new ControllerException('The instructions must be strings.');
+            }
+
+        }
+
+        foreach($tests as $index => $oneTest) {
+
+            if (!is_integer($index)) {
+                throw new ControllerException('The tests must contain integer indexes.');
+            }
+
+            if (empty($oneTest) || !is_array($oneTest)) {
+                throw new ControllerException('The tests must contain arrays.');
+            }
+
+            foreach($oneTest as $subIndex => $oneSubTest) {
+
+                if (!is_integer($subIndex)) {
+                    throw new ControllerException('The tests[] must contain integer indexes.');
+                }
+
+                if (empty($oneSubTest) || (!is_array($oneSubTest) && !is_string($oneSubTest))) {
+                    throw new ControllerException('The tests[] must contain arrays and/or strings.');
+                }
+
+                if (is_array($oneSubTest)) {
+
+                    foreach($oneSubTest as $subSubIndex => $oneSubSubTest) {
+
+                        if (!is_integer($subSubIndex)) {
+                            throw new ControllerException('The tests[][] must contain integer indexes.');
+                        }
+
+                        if (empty($oneSubSubTest) || (!is_array($oneSubSubTest) && !is_string($oneSubSubTest))) {
+                            throw new ControllerException('The tests[][] must contain array and/or strings.');
+                        }
+
+                        if (is_array($oneSubSubTest)) {
+                            foreach($oneSubSubTest as $subSubSubIndex => $oneSubSubSubTest) {
+
+                                if (!is_integer($subSubSubIndex)) {
+                                    throw new ControllerException('The tests[][][] must contain integer indexes.');
+                                }
+
+                                if (empty($oneSubSubSubTest) || !is_string($oneSubSubSubTest)) {
+                                    throw new ControllerException('The tests[][] must contain strings.');
+                                }
+
+                            }
+                        }
+                    }
+                }
             }
 
         }
@@ -81,6 +145,7 @@ final class ConcreteController implements Controller {
         $this->inputName = $inputName;
         $this->pattern = $pattern;
         $this->instructions = $instructions;
+        $this->tests = $tests;
         $this->view = $view;
         $this->constants = $constants;
         $this->httpRequests = $httpRequests;
@@ -101,6 +166,10 @@ final class ConcreteController implements Controller {
 
     public function getInstructions() {
         return $this->instructions;
+    }
+
+    public function getTests() {
+        return $this->tests;
     }
 
     public function getView() {

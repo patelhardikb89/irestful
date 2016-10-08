@@ -27,7 +27,7 @@ final class ConcreteSpecificClassControllerAdapter implements ControllerAdapter 
         $this->namespaceAdapter = $namespaceAdapter;
         $this->annotatedEntities = $annotatedEntities;
     }
-    
+
     public function fromControllersToSpecificControllers(array $controllers) {
         $output = [];
         foreach($controllers as $oneController) {
@@ -44,7 +44,7 @@ final class ConcreteSpecificClassControllerAdapter implements ControllerAdapter 
 
         $namespace = $this->namespaceAdapter->fromControllerToNamespace($controller);
         $constructor = $this->constructorAdapter->fromInstructionsToConstructor($instructions);
-        $customMethod = $this->customMethodAdapter->fromInstructionsToCustomMethod($instructions);
+        $customMethod = $this->customMethodAdapter->fromControllerInstructionsToCustomMethod($instructions);
 
         return new ConcreteSpecificClassController($namespace, $constructor, $customMethod);
     }

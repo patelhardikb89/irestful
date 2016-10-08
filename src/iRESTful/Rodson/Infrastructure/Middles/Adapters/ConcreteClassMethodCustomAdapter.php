@@ -29,6 +29,9 @@ use iRESTful\Rodson\Domain\Middles\Classes\Types\Entities\Annotations\AnnotatedE
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Containers\Container;
 use iRESTful\Rodson\Domain\Inputs\Projects\Converters\Types\Type as ConverterType;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Tests\TestInstruction;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Tests\Comparisons\TestInstructionComparison;
+use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Tests\Containers\TestContainerInstruction;
 
 final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     private $parameterAdapter;
@@ -148,10 +151,15 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     }
 
     private function getContainerNameFromContainer(Container $container) {
+
         if ($container->hasAnnotatedEntity()) {
             $annotatedEntity = $container->getAnnotatedEntity();
             $containerName = $annotatedEntity->getAnnotation()->getContainerName();
             return "'".$containerName."'";
+        }
+
+        if ($container->isLoopContainer()) {
+            return '$containerName';
         }
 
         $value = $container->getValue();
@@ -186,7 +194,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
             return [
                 '$this->entityRepositoryFactory->create()->retrieve([',
                 [
-                    "'container' => '".$containerName."'",
+                    "'container' => ".$containerName,
                     "'keyname' => [",
                     [
                         "'name' => ".$this->getCodeFromValue($name),
@@ -397,7 +405,6 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
             $container = $to->getContainer();
             if ($container->hasValue()) {
                 $value = $container->getValue();
-
                 $input = $this->generateArrayCode([
                     'container' => $value,
                     'data' => 'input'
@@ -450,6 +457,20 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
             }
 
             if ($assignment->isPartialEntitySet()) {
+                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.');';
+            }
+
+            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.');';
+        }
+
+        if ($from->isInput()) {
+
+            $input = '$input';
+            if ($to->isMultiple()) {
+                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.');';
+            }
+
+            if ($to->isPartialSet()) {
                 return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.');';
             }
 
@@ -529,7 +550,21 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
         //throws
     }
 
-    private function getSourceCodeLines(array $instructions) {
+    private function getConstrollerSourceCodeLines(array $instructions) {
+        $lines = [
+            '$input = [];',
+            'if ($request->hasParameters()) {',
+            [
+                '$input = $request->getParameters();'
+            ],
+            '}',
+            ''
+        ];
+
+        return $this->getSourceCodeLines($instructions, $lines);
+    }
+
+    private function processSourceCodeLines(array $inputLines = []) {
 
         $tab = '    ';
         $process = function(array $lines, $currentTab = '') use(&$tab, &$process) {
@@ -549,16 +584,11 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
         };
 
-        $lines = [
-            '$input = [];',
-            'if ($request->hasParameters()) {',
-            [
-                '$input = $request->getParameters();'
-            ],
-            '}',
-            ''
-        ];
+        return explode(PHP_EOL, $process($inputLines));
+    }
 
+    private function getSourceCodeLines(array $instructions, array $inputLines = []) {
+        $lines = $inputLines;
         foreach($instructions as $oneInstruction) {
             $newLines = $this->generateCodeLinesFromInstruction($oneInstruction);
             if (!empty($newLines)) {
@@ -572,12 +602,12 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
             $lines[] = 'return $'.$variableName.';';
         }
 
-        return explode(PHP_EOL, $process($lines));
+        return $this->processSourceCodeLines($lines);
     }
 
-    public function fromInstructionsToCustomMethod(array $instructions) {
+    public function fromControllerInstructionsToCustomMethod(array $instructions) {
         $name = 'execute';
-        $sourceCodeLines = $this->getSourceCodeLines($instructions);
+        $sourceCodeLines = $this->getConstrollerSourceCodeLines($instructions);
         $parameter = $this->parameterAdapter->fromDataToParameter([
             'name' => 'httpRequest',
             'namespace' => new ConcreteNamespace(explode('\\', 'iRESTful\Objects\Libraries\Https\Domain\Requests\HttpRequest'))
@@ -604,6 +634,196 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
         }
 
         return $output;
+    }
+
+    public function fromTestInstructionsToCustomMethods(array $testInstructions) {
+
+        $output = [];
+        foreach($testInstructions as $oneTestInstruction) {
+            $customMethods = $this->fromTestInstructionToCustomMethods($oneTestInstruction);
+            if (!empty($customMethods)) {
+                $output = array_merge($output, $customMethods);
+            }
+        }
+
+        return $output;
+
+    }
+
+    private function generateHashMapCode(array $data) {
+
+        $getKeyname = function($part) {
+            if (is_numeric($part)) {
+                return '';
+            }
+
+            return "'".$part."' => ";
+        };
+
+        $getValue = function($part) {
+            if (is_numeric($part) || is_bool($part)) {
+                return $part;
+            }
+
+            return "'".$part."'";
+        };
+
+        $output = [];
+        $amount = count($data);
+        $keys = array_keys($data);
+        for($i = 0; $i < $amount; $i++) {
+
+            $delimiter = (($i + 1) >= $amount) ? '' : ',';
+
+            if (is_array($data[$keys[$i]])) {
+                $output[] = $getKeyname($keys[$i]).'[';
+                $output[] = $this->generateHashMapCode($data[$keys[$i]]);
+                $output[] = ']'.$delimiter;
+                continue;
+            }
+
+            $output[] = $getKeyname($keys[$i]).$getValue($data[$keys[$i]]).$delimiter;
+        }
+
+        return $output;
+    }
+
+    private function fromInstructionsToTestInitCustomMethod(array $instructions, array $input, $methodName) {
+
+        if (empty($instructions)) {
+            return new ConcreteClassMethodCustom($methodName);
+        }
+
+        $inputCode = [
+            '$input = [',
+            $this->generateHashMapCode($input),
+            '];',
+            ''
+        ];
+
+        $sourceCodeLines = $this->getSourceCodeLines($instructions, $inputCode);
+        $processedSourceCodeLines = $this->processSourceCodeLines($sourceCodeLines);
+        return new ConcreteClassMethodCustom($methodName, $processedSourceCodeLines);
+
+    }
+
+    private function fromTestInstructionToTestInitCustomMethod(TestInstruction $testInstruction) {
+        $input = ($testInstruction->hasInput()) ? $testInstruction->getInput() : [];
+        $instructions = ($testInstruction->hasInstructions()) ?  $testInstruction->getInstructions() : [];
+        return $this->fromInstructionsToTestInitCustomMethod($instructions, $input, 'init');
+    }
+
+    private function fromTestContainerInstructionToTestCustomMethod(TestContainerInstruction $testContainerInstruction, $methodName, array $input) {
+
+        $methodSourceCodeLines = [];
+        if ($testContainerInstruction->hasInstructions()) {
+            $instructions = $testContainerInstruction->getInstructions();
+            $sourceCodeLines = $this->getSourceCodeLines($instructions);
+
+            $comparisonCode = '';
+            if ($testContainerInstruction->hasComparison()) {
+                $comparisonCode = '$this->assertEquals($oneData, $sourceData);';
+            }
+
+            $methodSourceCodeLines[] = [
+                '$retrieveSetData = function($container, array $data, $index, $amount) {',
+                $sourceCodeLines,
+                '}',
+                '',
+                '$amount = count($this->data);',
+                'foreach($this->data as $oneData) {',
+                [
+                    '$sourceData = $retrieveSetData($oneData[\'container\'], $oneData[\'data\'], 0, $amount);',
+                    $comparisonCode
+                ],
+                '}'
+            ];
+        }
+
+        if ($testContainerInstruction->hasSampleInstructions()) {
+            $sampleInstructions = $testContainerInstruction->getSampleInstructions();
+            foreach($sampleInstructions as $oneSampleInstruction) {
+                $instructions = $oneSampleInstruction->getInstructions();
+                $sourceCodeLines = $this->getSourceCodeLines($instructions);
+
+                $comparisonCode = '';
+                if ($oneSampleInstruction->hasComparison()) {
+                    $comparisonCode = '$this->assertEquals($oneData, $sourceData);';
+                }
+
+                $methodSourceCodeLines[] = [
+                    '$retrieveData = function($containerName, array $data) {',
+                    $sourceCodeLines,
+                    '}',
+                    '',
+                    'foreach($this->data as $oneData) {',
+                    [
+                        '$sourceData = $retrieveData($oneData[\'container\'], $oneData[\'data\']);',
+                        $comparisonCode
+                    ],
+                    '}'
+                ];
+
+            }
+
+        }
+
+        $functions = [];
+        $amount = count($methodSourceCodeLines);
+        foreach($methodSourceCodeLines as $index => $oneMethodSourceCodeLines) {
+
+            $delimiter = (($index + 1) >= $amount) ? '' : ',';
+
+            $functions[] = [
+                'function() {',
+                $oneMethodSourceCodeLines,
+                '}'.$delimiter
+            ];
+        }
+
+        $sourceCodeLines = [
+            '$testFunctions = [',
+            $functions,
+            '];',
+            '',
+            'foreach($testFunctions as $oneTestFunction) {',
+            [
+                '$oneTestFunction();'
+            ],
+            '}'
+        ];
+
+        $processedSourceCodeLines = $this->processSourceCodeLines($sourceCodeLines);
+        return new ConcreteClassMethodCustom($methodName, $processedSourceCodeLines);
+
+    }
+
+    private function fromTestInstructionToContainerTestCustomMethods(TestInstruction $testInstruction) {
+
+        if (!$testInstruction->hasContainerInstructions()) {
+            return [];
+        }
+
+        $output = [];
+        $input = ($testInstruction->hasInput()) ? $testInstruction->getInput() : [];
+        $containerInstructions = $testInstruction->getContainerInstructions();
+        foreach($containerInstructions as $index => $oneContainerInstruction) {
+            $methodName = 'testExecute_'.$index.'_Success';
+            $output[] = $this->fromTestContainerInstructionToTestCustomMethod($oneContainerInstruction, $methodName, $input);
+
+        }
+
+        return $output;
+
+    }
+
+    public function fromTestInstructionToCustomMethods(TestInstruction $testInstruction) {
+
+        $initCustomMethod = $this->fromTestInstructionToTestInitCustomMethod($testInstruction);
+        $containerTestCustomMethods = $this->fromTestInstructionToContainerTestCustomMethods($testInstruction);
+
+        return array_merge([$initCustomMethod], $containerTestCustomMethods);
+
     }
 
     public function fromMethodToCustomMethod(Method $method) {

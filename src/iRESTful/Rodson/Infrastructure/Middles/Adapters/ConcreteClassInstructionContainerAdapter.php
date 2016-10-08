@@ -28,13 +28,18 @@ final class ConcreteClassInstructionContainerAdapter implements ContainerAdapter
 
         };
 
+        $isLoopContainer = false;
+        if (strpos($string, '$each->container') !== false) {
+            $isLoopContainer = true;
+        }
+
         $value = null;
         $annotatedEntity = $getAnnotatedEntityByObjectName($string);
-        if (empty($annotatedEntity)) {
+        if (empty($annotatedEntity) && empty($isLoopContainer)) {
             $value = $this->valueAdapter->fromStringToValue($string);
         }
 
-        return new ConcreteClassInstructionContainer($value, $annotatedEntity);
+        return new ConcreteClassInstructionContainer($isLoopContainer, $value, $annotatedEntity);
     }
 
 }

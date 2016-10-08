@@ -36,6 +36,12 @@ use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteApplicationAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteApplicationNamespaceFactory;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteInstallationAdapter;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteInstallationNamespaceFactory;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteSpecificClassTestControllerAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteTestInstructionAdapterAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteTestContainerInstructionAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteTestSampleInstructionAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteTestInstructionComparisonAdapter;
+use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteClassInstructionAdapterAdapterFactory;
 
 final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterFactory {
     private $baseNamespace;
@@ -92,8 +98,24 @@ final class ConcreteSpecificClassAdapterFactory implements SpecificClassAdapterF
         $cnfigurationControllerNodeAdapter = new ConcreteConfigurationControllerNodeAdapter($configurationControllerAdapter);
         $configurationAdapter = new ConcreteConfigurationAdapter($configurationNamespaceFactory, $objectConfigurationAdapter, $cnfigurationControllerNodeAdapter);
 
-        $transformAdapter = new ConcreteSpecificClassTestTransformAdapter($this->baseNamespace);
-        $testAdapter = new ConcreteSpecificClassTestAdapter($transformAdapter);
+        //class instruction:
+        $classInstructionAdapterAdapterFactory = new ConcreteClassInstructionAdapterAdapterFactory();
+        $classInstructionAdapterAdapter = $classInstructionAdapterAdapterFactory->create();
+
+        $instructionComparisonAdapter = new ConcreteTestInstructionComparisonAdapter();
+        $classTestContainerSampleInstructorAdapter = new ConcreteTestSampleInstructionAdapter($classInstructionAdapterAdapter, $instructionComparisonAdapter);
+        $classTestContainerInstructionAdapter = new ConcreteTestContainerInstructionAdapter($classInstructionAdapterAdapter, $classTestContainerSampleInstructorAdapter, $instructionComparisonAdapter);
+        $classTestInstructionAdapterAdapter = new ConcreteTestInstructionAdapterAdapter($classInstructionAdapterAdapter, $classTestContainerInstructionAdapter);
+
+        //custom method adapter
+        $interfaceNamespaceAdapter = new ConcreteClassInterfaceNamespaceAdapter($this->baseNamespace);
+        $interfaceMethodParamaterTypeAdapter = new ConcreteClassInterfaceMethodParameterTypeAdapter();
+        $interfaceMethodParameterAdapter = new ConcreteClassInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
+        $classCustomMethodAdapter = new ConcreteClassMethodCustomAdapter($interfaceMethodParameterAdapter);
+
+        $testControllerAdapter = new ConcreteSpecificClassTestControllerAdapter($classTestInstructionAdapterAdapter, $classCustomMethodAdapter, $this->baseNamespace);
+        $testTransformAdapter = new ConcreteSpecificClassTestTransformAdapter($this->baseNamespace);
+        $testAdapter = new ConcreteSpecificClassTestAdapter($testTransformAdapter, $testControllerAdapter);
 
         $applicationNamespaceFactory = new ConcreteApplicationNamespaceFactory($this->baseNamespace);
         $applicationAdapter = new ConcreteApplicationAdapter($applicationNamespaceFactory);

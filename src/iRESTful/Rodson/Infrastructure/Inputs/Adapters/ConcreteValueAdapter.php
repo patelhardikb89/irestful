@@ -38,7 +38,7 @@ final class ConcreteValueAdapter implements ValueAdapter {
             $variableName = substr($string, $pos + 2);
             return new ConcreteValue($variableName);
         }
-
+        
         $matches = [];
         preg_match_all('/\[([a-z\_]+)\]/s', $string, $matches);
         if (isset($matches[1][0]) && !empty($matches[1][0])) {

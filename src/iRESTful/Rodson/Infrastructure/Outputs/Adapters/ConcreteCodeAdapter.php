@@ -22,6 +22,7 @@ use iRESTful\Rodson\Domain\Middles\Configurations\Objects\ObjectConfiguration;
 use iRESTful\Rodson\Domain\Middles\Configurations\Configuration;
 use iRESTful\Rodson\Domain\Middles\Applications\Application;
 use iRESTful\Rodson\Domain\Middles\Installations\Installation;
+use iRESTful\Rodson\Domain\Middles\Classes\Types\Tests\Controllers\Controller as TestController;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $pathAdapter;
@@ -118,8 +119,20 @@ final class ConcreteCodeAdapter implements CodeAdapter {
             return $this->fromTestTransformToCode($transform);
         }
 
-        throw new CodeException('The was no test in the Test object.');
+        if ($test->hasController()) {
+            $controller = $test->getController();
+            return $this->fromTestControllerToCode($controller);
+        }
 
+        throw new CodeException('There was no test in the Test object.');
+
+    }
+
+    private function fromTestControllerToCode(TestController $controller) {
+        $data = $controller->getData();
+        $namespace = $controller->getNamespace();
+
+        return $this->render($namespace, $data, 'class.test.controller.php');
     }
 
     private function fromTestTransformToCode(Transform $transform) {

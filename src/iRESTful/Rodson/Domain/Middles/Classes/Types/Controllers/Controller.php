@@ -5,5 +5,6 @@ interface Controller {
     public function getNamespace();
     public function getConstructor();
     public function getCustomMethod();
+    public function getTestClass();
     public function getData();
 }

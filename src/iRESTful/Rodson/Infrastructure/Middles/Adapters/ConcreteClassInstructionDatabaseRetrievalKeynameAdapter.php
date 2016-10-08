@@ -21,6 +21,11 @@ final class ConcreteClassInstructionDatabaseRetrievalKeynameAdapter implements K
             throw new KeynameException('The value keyname is mandatory in order to convert data to a Keyname object.');
         }
 
+
+
+        print_r($data);
+
+
         $name = $this->valueAdapter->fromStringToValue($data['name']);
         $value = $this->valueAdapter->fromStringToValue($data['value']);
         return new ConcreteClassInstructionDatabaseRetrievalKeyname($name, $value);

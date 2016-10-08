@@ -52,6 +52,14 @@
                             }
                         ],
                         "created_on": 1470346929
+                    },
+                    {
+                        "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                        "is_user_mandatory": true,
+                        "pattern___regex_pattern": "[.]+",
+                        "pattern___specific_uri": null,
+                        "params": null,
+                        "created_on": 1470346929
                     }
                 ]
             },
@@ -92,6 +100,12 @@
                                 "created_on": 1470347072
                             }
                         ],
+                        "created_on": 1470347090
+                    },
+                    {
+                        "uuid": "10010456-29ab-401f-93bc-946cd3fd750a",
+                        "base_url": "http://test.irestful.com",
+                        "endpoints": null,
                         "created_on": 1470347090
                     }
                 ]
@@ -156,6 +170,14 @@
                             }
                         ],
             			"created_on": 1470347205
+                    },
+                    {
+                        "uuid": "5b3ed235-5d8d-4702-9b92-532003e3bf96",
+            			"keyname": "another_keyname",
+            			"title": "This is a another keyname",
+            			"description": "This is the description of the another keyname",
+            			"roles": null,
+            			"created_on": 1470347205
                     }
                 ]
             },
@@ -174,6 +196,41 @@
                             "is_user_mandatory": false,
                             "pattern___regex_pattern": null,
                             "pattern___specific_uri": "/my/value",
+                            "params": null,
+                            "created_on": 1470346929
+                        },
+                        "owner": {
+                            "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                            "software": {
+                                "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                                "name": "my_software_name",
+                                "credentials___username": "my_software_username",
+                                "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                                "credentials___password": null,
+                                "roles": null,
+                                "created_on": 1470347205
+                            },
+                            "user": {
+                                "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                                "name": "my_username",
+                                "credentials___username": "my_user_username",
+                                "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                                "credentials___password": null,
+                                "roles": null,
+                                "created_on": 1470347205
+                            },
+                            "created_on": 1470347205
+                        },
+                        "shared_resources": null,
+                        "created_on": 1470347205
+                    },
+                    {
+                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "endpoint": {
+                            "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                            "is_user_mandatory": true,
+                            "pattern___regex_pattern": "[.]+",
+                            "pattern___specific_uri": null,
                             "params": null,
                             "created_on": 1470346929
                         },
@@ -239,6 +296,22 @@
                             }
                         ],
                         "created_on": 1470347205
+                    },
+                    {
+                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "permissions": [
+                            {
+                                "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                                "title": "This is just a title",
+                                "description": "This is just a description",
+                                "can_read": true,
+                                "can_write": false,
+                                "can_delete": false,
+                                "created_on": 1470347205
+                            }
+                        ],
+                        "owners": null,
+                        "created_on": 1470347205
                     }
                 ]
             },
@@ -270,6 +343,20 @@
                             "created_on": 1470347205
                         },
                         "created_on": 1470347205
+                    },
+                    {
+                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "software": {
+                            "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                            "name": "my_software_name",
+                            "credentials___username": "my_software_username",
+                            "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                            "credentials___password": null,
+                            "roles": null,
+                            "created_on": 1470347205
+                        },
+                        "user": null,
+                        "created_on": 1470347205
                     }
                 ]
             },
@@ -284,6 +371,15 @@
                     {
                         "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
                         "name": "my_software_name",
+                        "credentials___username": "my_software_username",
+                        "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                        "credentials___password": null,
+                        "roles": null,
+                        "created_on": 1470347205
+                    },
+                    {
+                        "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                        "name": "another_software_name",
                         "credentials___username": "my_software_username",
                         "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
                         "credentials___password": null,
@@ -308,6 +404,15 @@
                         "credentials___password": null,
                         "roles": null,
                         "created_on": 1470347205
+                    },
+                    {
+                        "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                        "name": "another_username",
+                        "credentials___username": "my_user_username",
+                        "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
+                        "credentials___password": null,
+                        "roles": null,
+                        "created_on": 1470347205
                     }
                 ]
             },
@@ -321,8 +426,8 @@
                 "samples": [
                     {
                         "uuid": "2d7145b5-634d-4760-97fa-b2aaf283ad3b",
-                        "title": "This is an updated role",
-                        "description": "This is an updated role description.",
+                        "title": "This is a role",
+                        "description": "This is a role description.",
                         "permissions": [
                             {
                                 "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
@@ -334,6 +439,13 @@
                                 "created_on": 1470347205
                             }
                         ],
+                        "created_on": 1470347205
+                    },
+                    {
+                        "uuid": "2d7145b5-634d-4760-97fa-b2aaf283ad3b",
+                        "title": "This is an updated role",
+                        "description": "This is an updated role description.",
+                        "permissions": null,
                         "created_on": 1470347205
                     }
                 ]
@@ -356,6 +468,15 @@
                         "can_write": false,
                         "can_delete": false,
                         "created_on": 1470347205
+                    },
+                    {
+                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "title": "This is just an updated title",
+                        "description": "This is just an updated description",
+                        "can_read": false,
+                        "can_write": true,
+                        "can_delete": true,
+                        "created_on": 1470347212
                     }
                 ]
             },
@@ -383,6 +504,29 @@
             }
         },
         "controllers": {
+            "retrieve_by_uuid": {
+                "pattern": "retrieve /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+                "input": "input",
+                "instructions": [
+                    "entity = retrieve input->container by uuid:input->uuid",
+                    "output = from entity to data",
+                    "return output"
+                ],
+                "view": "json",
+                "tests": [
+                    [
+                        "samples = from this to multiple entity",
+                        "insert samples",
+                        [
+                            [
+                                "entity = retrieve $each->container by uuid:$each->data->uuid",
+                                "data = from entity to data",
+                                "compare data to $each"
+                            ]
+                        ]
+                    ]
+                ]
+            },
             "retrieve_partial_set": {
                 "pattern": "retrieve /$container$/partials",
                 "input": "input",
@@ -391,7 +535,18 @@
                     "output = from entitySet to data",
                     "return output"
                 ],
-                "view": "json"
+                "view": "json",
+                "tests": [
+                    [
+                        "samples = from this to multiple entity",
+                        "insert samples",
+                        [
+                            "entitySet = retrieve $each->container index 0 amount $each->data|length",
+                            "data = from entitySet to data",
+                            "compare data to $each"
+                        ]
+                    ]
+                ]
             },
             "retrieve_set": {
                 "pattern": "retrieve /$container$",
@@ -401,7 +556,18 @@
                     "output = from entities to data",
                     "return output"
                 ],
-                "view": "json"
+                "view": "json",
+                "tests": [
+                    [
+                        "samples = from this to multiple entity",
+                        "insert samples",
+                        [
+                            "entities = retrieve multiple $each->container by uuid:$each->data->uuid",
+                            "data = from entities to data",
+                            "compare data to $each"
+                        ]
+                    ]
+                ]
             },
             "retrieve_by_keyname": {
                 "pattern": "retrieve /$container$/$name$/$value",
@@ -411,62 +577,20 @@
                     "output = from entity to data",
                     "return output"
                 ],
-                "view": "json"
-            },
-            "retrieve_by_uuid": {
-                "pattern": "retrieve /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
-                "input": "input",
-                "instructions": [
-                    "entity = retrieve input->container by uuid:input->uuid",
-                    "output = from entity to data",
-                    "return output"
-                ],
-                "view": "json"
-            },
-            "update": {
-                "pattern": "update /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|original_uuid$",
-                "input": "input",
-                "instructions": [
-                    "original = retrieve input->container by uuid:input->uuid",
-                    "updated = from input to input->container",
-                    "update original using updated",
-                    "output = from updated to data",
-                    "return output"
-                ],
-                "view": "json"
-            },
-            "delete": {
-                "pattern": "delete /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
-                "input": "input",
-                "instructions": [
-                    "entity = retrieve input->container by uuid:input->uuid",
-                    "delete entity",
-                    "output = from entity to data",
-                    "return output"
-                ],
-                "view": "json"
-            },
-            "insert": {
-                "pattern": "insert /$container$",
-                "input": "input",
-                "instructions": [
-                    "entity = from input to input->container",
-                    "insert entity",
-                    "output = from entity to data",
-                    "return output"
-                ],
-                "view": "json"
-            },
-            "insert_in_bulk": {
-                "pattern": "insert /$container$/$name$/$value",
-                "input": "input",
-                "instructions": [
-                    "entities = from input to multiple input->container",
-                    "insert entities",
-                    "output = from entities to data",
-                    "return output"
-                ],
-                "view": "json"
+                "view": "json",
+                "tests": [
+                    [
+                        "samples = from this to multiple entity",
+                        "insert samples",
+                        [
+                            [
+                                "entity = retrieve $each->container by $each->data|property->name:$each->data|property->value",
+                                "data = from entity to data",
+                                "compare data to $each"
+                            ]
+                        ]
+                    ]
+                ]
             }
         },
         "converters": [

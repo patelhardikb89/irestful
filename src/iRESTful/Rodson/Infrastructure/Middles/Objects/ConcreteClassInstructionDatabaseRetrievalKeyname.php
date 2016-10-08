@@ -2,7 +2,6 @@
 namespace iRESTful\Rodson\Infrastructure\Middles\Objects;
 use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Keyname;
 use iRESTful\Rodson\Domain\Inputs\Projects\Values\Value;
-use iRESTful\Rodson\Domain\Middles\Classes\Instructions\Databases\Retrievals\Keynames\Exceptions\KeynameException;
 
 final class ConcreteClassInstructionDatabaseRetrievalKeyname implements Keyname {
     private $name;

@@ -16,7 +16,7 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements En
         $this->valueAdapter = $valueAdapter;
         $this->containerAdapter = $containerAdapter;
     }
-
+    
     public function fromDataToEntity(array $data) {
 
         if (!isset($data['object_name'])) {
@@ -36,7 +36,7 @@ final class ConcreteClassInstructionDatabaseRetrievalEntityAdapter implements En
             $value = $this->valueAdapter->fromStringToValue($data['property']['value']);
             return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, $value);
         }
-        
+
         $keyname = $this->keynameAdapter->fromDataToKeyname($data['property']);
         return new ConcreteClassInstructionDatabaseRetrievalEntity($annotatedClass, null, $keyname);
 

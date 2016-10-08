@@ -28,6 +28,10 @@ final class ConcreteSpecificClassController implements Controller {
         return $this->customMethod;
     }
 
+    public function getTestClass() {
+        
+    }
+
     public function getData() {
         return [
             'namespace' => $this->namespace->getData(),

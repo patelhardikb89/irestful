@@ -46,6 +46,10 @@ final class ConcreteControllerAdapter implements ControllerAdapter {
             throw new ControllerException('The instructions is mandatory in order to convert data to a Controller object.');
         }
 
+        if (!isset($data['tests'])) {
+            throw new ControllerException('The tests is mandatory in order to convert data to a Controller object.');
+        }
+
         $constants = null;
         if (isset($data['constants'])) {
             $constants = $data['constants'];
@@ -59,7 +63,16 @@ final class ConcreteControllerAdapter implements ControllerAdapter {
         }
 
         $view = (is_array($data['view']) ? $this->viewAdapter->fromDataToView($data['view']) : $this->viewAdapter->fromStringToView($data['view']));
-        return new ConcreteController($data['name'], $data['input'], $data['pattern'], $data['instructions'], $view, $constants, $httpRequests);
+        return new ConcreteController(
+            $data['name'],
+            $data['input'],
+            $data['pattern'],
+            $data['instructions'],
+            $data['tests'],
+            $view,
+            $constants,
+            $httpRequests
+        );
     }
 
 }

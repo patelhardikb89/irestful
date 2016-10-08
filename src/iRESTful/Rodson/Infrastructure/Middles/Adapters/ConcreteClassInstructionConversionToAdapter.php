@@ -34,10 +34,10 @@ final class ConcreteClassInstructionConversionToAdapter implements ToAdapter {
         }
 
         $container = null;
-        if (!$isData) {
+        if (!$isData && ($string != 'entity')) {
             $container = $this->containerAdapter->fromStringToContainer($string);
         }
-        
+
         return new ConcreteClassInstructionConversionTo($isData, $isMultiple, $isPartialSet, $container);
     }
 

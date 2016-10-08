@@ -92,3 +92,101 @@ possible instructions:
     ],
     "view": "json"
 }
+
+
+
+
+
+
+
+
+
+
+
+
+"delete": {
+    "pattern": "delete /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+    "input": "input",
+    "instructions": [
+        "entity = retrieve input->container by uuid:input->uuid",
+        "delete entity",
+        "output = from entity to data",
+        "return output"
+    ],
+    "view": "json",
+    "tests": [
+        [
+            "samples = from this to multiple entity",
+            "insert samples",
+            [
+                [
+                    "entity = retrieve this|container by uuid:this->uuid",
+                    "delete entity",
+                    "retrieve this|container by uuid:this->uuid | not found"
+                ]
+            ]
+        ]
+    ]
+},
+"insert": {
+    "pattern": "insert /$container$",
+    "input": "input",
+    "instructions": [
+        "entity = from input to input->container",
+        "insert entity",
+        "output = from entity to data",
+        "return output"
+    ],
+    "view": "json",
+    "tests": [
+        [
+            [
+                [
+                    "retrieve this|container by uuid:this->uuid | not found"
+                ]
+            ]
+        ],
+        [
+            [
+                [
+                    "sample = from this to entity",
+                    "insert sample",
+                    "entity = retrieve this|container by uuid:this->uuid",
+                    "data = from entity to data",
+                    "compare data to this"
+                ]
+            ]
+        ]
+    ]
+},
+"insert_in_bulk": {
+    "pattern": "insert /",
+    "input": "input",
+    "instructions": [
+        "entities = from input to multiple input->container",
+        "insert entities",
+        "output = from entities to data",
+        "return output"
+    ],
+    "view": "json",
+    "tests": [
+        [
+            [
+                [
+                    "retrieve this|container by uuid:this->uuid | not found"
+                ]
+            ]
+        ],
+        [
+            "samples = from this to multiple entity",
+            "insert samples",
+            [
+                [
+                    "entity = retrieve this|container by uuid:this->uuid",
+                    "data = from entity to data",
+                    "compare data to this"
+                ]
+            ]
+        ]
+    ]
+}

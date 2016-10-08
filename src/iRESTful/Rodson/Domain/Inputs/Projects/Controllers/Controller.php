@@ -7,6 +7,7 @@ interface Controller {
     public function getPattern();
     public function getInstructions();
     public function getView();
+    public function getTests();
     public function hasConstants();
     public function getConstants();
     public function hasHttpRequests();
