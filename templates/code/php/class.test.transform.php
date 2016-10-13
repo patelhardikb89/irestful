@@ -1,12 +1,12 @@
 <?php
 namespace {{namespace.path}};
-use {{configuration.namespace.all}};
+use {{configuration.object_configuration.namespace.all}};
 use iRESTful\Objects\Entities\Entities\Tests\Helpers\ConversionHelper;
 
 final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
     private $helpers;
     public function setUp() {
-        $configs = new {{configuration.namespace.name}}();
+        $configs = new {{configuration.object_configuration.namespace.name}}();
 
         $data = [
             {% for oneSample in samples %}

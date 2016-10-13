@@ -10,19 +10,18 @@
          stopOnFailure="true"
          syntaxCheck="false"
          bootstrap="./vendor/autoload.php">
-
     <testsuites>
+        <testsuite name="functional">
+            <directory suffix="Test.php">./src/iRESTful/Tests/Tests/Functional</directory>
+        </testsuite>
+        <testsuite name="unit-dsl">
+            <directory suffix="Test.php">./src/iRESTful/DSLs/Tests/Tests/Unit</directory>
+        </testsuite>
         <testsuite name="unit">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Inputs/Tests/Unit</directory>
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Middles/Tests/Unit</directory>
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Outputs/Tests/Unit</directory>
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Applications/Tests/Unit</directory>
+            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/DSLs/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Inputs/Tests/Functional</directory>
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Middles/Tests/Functional</directory>
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Outputs/Tests/Functional</directory>
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Applications/Tests/Functional</directory>
+            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/DSLs/Tests/Functional</directory>
         </testsuite>
 
     </testsuites>

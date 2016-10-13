@@ -13,7 +13,7 @@ use {{object.interface.namespace.all}};
 final class {{object.namespace.name}} implements {{object.interface.namespace.name}} {
     {{ fn.generateClassProperties(object.constructor.parameters) }}
 
-    {{ fn.generateConstructorAnnotationParameters(annotation_parameters) }}
+    {{ fn.generateConstructorAnnotationParameters(parameters) }}
     public function __construct({{- fn.generateConstructorSignature(object.constructor.parameters) }}) {
         {{ fn.generateAssignment(object.constructor.parameters) }}
     }

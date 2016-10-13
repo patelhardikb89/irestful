@@ -1,0 +1,10 @@
+{
+    "require": {
+      "php": ">=5.5",
+      "phpunit/phpunit": "4.0.5",
+      "steve-rodrigue/objects": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "iRESTful": "src" }
+    }
+}

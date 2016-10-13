@@ -1,7 +1,6 @@
 * Validate that assignment variable names do not have the same name as an http request (for controllers).
 * Make sure to modify the variable names when adding code in classes.
 * Make sure only a small subset of php functions are whitelisted in the custom methods.
-* Standardize the way we create namespaces.
 
 * When there is a method that returns a nullable array, make the method with an 's' (ex: getRoles()) in the interface.  Also, add the has* methods in both the interfaces and classes.
 

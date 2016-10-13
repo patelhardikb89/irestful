@@ -21,7 +21,7 @@ final class ConcreteSpecificClassAdapterFactoryTest extends \PHPUnit_Framework_T
 
     public function testCreate_Success() {
         $adapter = $this->factory->create();
-        $this->assertTrue($adapter instanceof \iRESTful\Rodson\Domain\Middles\Classes\Adapters\SpecificClassAdapter);
+        $this->assertTrue($adapter instanceof \iRESTful\Classes\Domain\Adapters\SpecificClassAdapter);
     }
 
 }

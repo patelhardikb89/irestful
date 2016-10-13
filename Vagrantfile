@@ -4,8 +4,8 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "precise64"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.box = "xenial-server-cloudimg-amd64-vagrant"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
 
   config.vm.network :private_network, ip: "192.168.66.60"
   config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true
@@ -35,15 +35,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     sudo apt-get install git -y --force-yes;
 
     #update and upgrade
-    sudo add-apt-repository ppa:ondrej/php5-5.6 -y;
-    sudo apt-get update -y;
-    sudo apt-get upgrade -y;
-    sudo add-apt-repository ppa:ondrej/php5-5.6 -y;
-    sudo apt-get install php5 -y --force-yes;
-    sudo apt-get install php5-cli -y --force-yes;
-    sudo apt-get install php5-fpm -y --force-yes;
-    sudo apt-get install php5-xdebug -y --force-yes;
-    sudo apt-get install php5-curl -y --force-yes;
+    sudo apt-get install php -y --force-yes;
+    sudo apt-get install php-cli -y --force-yes;
+    sudo apt-get install php-fpm -y --force-yes;
+    sudo apt-get install php-xdebug -y --force-yes;
+    sudo apt-get install php-curl -y --force-yes;
+    sudo apt-get install php-xml -y --force-yes;
+    sudo apt-get install php-mbstring -y --force-yes;
     sudo apt-get purge apache2 -y --force-yes;
     sudo apt-get autoremove -y --force-yes;
     sudo apt-get update -y;

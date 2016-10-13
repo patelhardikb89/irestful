@@ -20,13 +20,13 @@ final class {{namespace.name}} implements EntityConfiguration {
 
     public function getContainerClassMapper() {
         return [
-            {{- returned.returnedHashMap(mappers.containers) -}}
+            {{- returned.returnedHashMap(container_class_mapper) -}}
         ];
     }
 
     public function getInterfaceClassMapper() {
         return [
-            {{- returned.returnedHashMap(mappers.interfaces.objects) -}}
+            {{- returned.returnedHashMap(interface_class_mapper) -}}
         ];
     }
 
@@ -34,7 +34,7 @@ final class {{namespace.name}} implements EntityConfiguration {
         return [
             {{- returned.hashMapInstanceLine('iRESTful\\Objects\\Libraries\\Dates\\Domain\\Adapters\\DateTimeAdapter', 'iRESTful\\Objects\\Libraries\\Dates\\Infrastructure\\Adapters\\ConcreteDateTimeAdapter', '$this->getTimezone()') -}}
             {{- returned.hashMapInstanceLine('iRESTful\\Objects\\Libraries\\Ids\\Domain\\Uuids\\Adapters\\UuidAdapter', 'iRESTful\\Objects\\Libraries\\Ids\\Infrastructure\\Adapters\\ConcreteUuidAdapter') -}}
-            {{- returned.returnedHashMapObjects(mappers.interfaces.adapters) -}}
+            {{- returned.returnedHashMapObjects(adapter_interface_class_mapper) -}}
         ];
     }
 

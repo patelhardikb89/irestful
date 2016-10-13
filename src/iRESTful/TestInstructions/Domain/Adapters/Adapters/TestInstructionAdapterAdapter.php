@@ -1,0 +1,6 @@
+<?php
+namespace iRESTful\TestInstructions\Domain\Adapters\Adapters;
+
+interface TestInstructionAdapterAdapter {
+    public function fromAnnotatedEntitiesToTestInstructionAdapter(array $annotatedEntities);
+}

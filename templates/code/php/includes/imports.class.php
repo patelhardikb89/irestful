@@ -7,9 +7,17 @@
             {{- 'array $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
         {%- endif -%}
     {%- elseif oneParameter.type.namespace -%}
-        {{- oneParameter.type.namespace.name -}}{{- ' $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- if oneParameter.is_optional -%}
+            {{- oneParameter.type.namespace.name -}}{{- ' $' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}
+        {%- else -%}
+            {{- oneParameter.type.namespace.name -}}{{- ' $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- endif -%}
     {%- else -%}
-        {{- '$' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- if oneParameter.is_optional -%}
+            {{- '$' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}
+        {%- else -%}
+            {{- '$' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- endif -%}
     {%- endif -%}
 {%- endmacro -%}
 
@@ -45,7 +53,7 @@
 {%- macro generateClassProperties(parameters) -%}
     {%- if parameters|length > 0 -%}
         {%- for oneParameter in parameters -%}
-            private ${{oneParameter.property}};
+            private ${{oneParameter.property.name}};
         {% endfor %}
     {%- endif -%}
 {%- endmacro -%}
@@ -53,7 +61,7 @@
 {%- macro generateAssignment(parameters) -%}
     {%- if parameters|length > 0 -%}
         {%- for oneParameter in parameters -%}
-            $this->{{oneParameter.property}} = ${{ oneParameter.parameter.name -}};
+            $this->{{oneParameter.property.name}} = ${{ oneParameter.parameter.name -}};
         {% endfor %}
     {%- endif -%}
 {%- endmacro -%}
@@ -62,7 +70,7 @@
     {%- if parameters|length > 0 -%}
         {% for oneParameter in parameters %}
             public function {{oneParameter.method.name}}() {
-                return $this->{{oneParameter.property}};
+                return $this->{{oneParameter.property.name}};
             }
         {% endfor -%}
     {%- endif -%}
@@ -88,7 +96,7 @@
 
 {% macro generateClassAnnotations(annotation) %}
 /**
-*   @container -> {{annotation.container}}
+*   @container -> {{annotation.container_name}}
 */
 {% endmacro %}
 
@@ -97,7 +105,7 @@
 {% autoescape false %}
 {{ '/**' }}
     {% for oneParameter in annotationParameters %}
-*   @{{oneParameter.flow.property_name}} -> {{oneParameter.flow.method_chain}} -> {{oneParameter.flow.keyname}}{{ ' ' }}
+*   @{{oneParameter.flow.property_name}} -> {{oneParameter.flow.method_chain.chain_as_string}} -> {{oneParameter.flow.keyname}}{{ ' ' }}
 
         {%- if oneParameter.type -%}
             {%- if oneParameter.type.is_unique or oneParameter.type.is_key -%}
@@ -121,8 +129,8 @@
             {%- endif -%}
         {%- endif -%}
 
-        {%- if oneParameter.converter.database -%}
-            ** {{oneParameter.converter.database.interface}}::{{oneParameter.converter.database.method}}{{ ' ' }}
+        {%- if oneParameter.converter.database_converter -%}
+            ** {{oneParameter.converter.database_converter.interface_name}}::{{oneParameter.converter.database_converter.method_name}}{{ ' ' }}
         {%- endif -%}
 
         {%- if oneParameter.elements_type -%}

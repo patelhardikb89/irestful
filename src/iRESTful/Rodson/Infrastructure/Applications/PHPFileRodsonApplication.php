@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Infrastructure\Applications;
 use iRESTful\Rodson\Applications\RodsonApplication;
-use iRESTful\Rodson\Infrastructure\Inputs\Factories\ConcreteRodsonRepositoryFactory;
+use iRESTful\DSLs\Infrastructure\Factories\ConcreteRodsonRepositoryFactory;
 use iRESTful\Rodson\Infrastructure\Middles\Factories\ConcreteSpecificClassAdapterFactory;
 use iRESTful\Rodson\Infrastructure\Outputs\Services\FileCodeService;
 use iRESTful\Rodson\Infrastructure\Middles\Adapters\ConcreteAnnotatedClassAdapter;

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Middles\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteNamespace;
-use iRESTful\Rodson\Domain\Middles\Namespaces\Exceptions\NamespaceException;
+use iRESTful\Classes\Domain\Namespaces\Exceptions\NamespaceException;
 
 final class ConcreteNamespaceTest extends \PHPUnit_Framework_TestCase {
     private $namespace;

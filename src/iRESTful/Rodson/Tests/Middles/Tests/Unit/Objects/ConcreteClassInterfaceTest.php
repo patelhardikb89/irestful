@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Rodson\Tests\Middles\Tests\Unit\Objects;
 use iRESTful\Rodson\Infrastructure\Middles\Objects\ConcreteClassInterface;
-use iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Exceptions\InterfaceException;
+use iRESTful\Classes\Domain\Interfaces\Exceptions\InterfaceException;
 
 final class ConcreteClassInterfaceTest extends \PHPUnit_Framework_TestCase {
     private $namespaceMock;
@@ -9,8 +9,8 @@ final class ConcreteClassInterfaceTest extends \PHPUnit_Framework_TestCase {
     private $name;
     private $methods;
     public function setUp() {
-        $this->methodMock = $this->getMock('iRESTful\Rodson\Domain\Middles\Classes\Interfaces\Methods\Method');
-        $this->namespaceMock = $this->getMock('iRESTful\Rodson\Domain\Middles\Namespaces\ClassNamespace');
+        $this->methodMock = $this->getMock('iRESTful\Classes\Domain\Interfaces\Methods\Method');
+        $this->namespaceMock = $this->getMock('iRESTful\Classes\Domain\Namespaces\ClassNamespace');
 
         $this->name = 'MyInterface';
         $this->methods = [

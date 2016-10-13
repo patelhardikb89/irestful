@@ -3,5 +3,5 @@
 /reports
 /composer.phar
 .DS_Store
-/src/iRESTful/Rodson/Tests/Applications/Tests/Files/Output/*
-/src/iRESTful/Rodson/Tests/Applications/Tests/Files/Output.bck/*
+/src/iRESTful/Tests/Files/Authenticated/Output/*
+/src/iRESTful/Tests/Files/Authenticated/Output.bck/*

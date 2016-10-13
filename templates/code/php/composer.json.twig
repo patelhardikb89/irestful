@@ -1,7 +1,7 @@
 {
     "name": "{{name}}",
     "type": "{{type}}",
-    "homepage": "{{homepage}}",
+    "homepage": "{{homepage.url}}",
     "license": "{{license}}",
 
     {% if authors|length > 0 %}
@@ -9,7 +9,7 @@
         {%- for oneAuthor in authors -%}
             {
                 "name": "{{oneAuthor.name}}",
-                "email": "{{oneAuthor.email}}"
+                "email": "{{oneAuthor.email.email}}"
             }{{- loop.last ? '' : ',' -}}
 
         {%- endfor -%}
