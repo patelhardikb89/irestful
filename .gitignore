@@ -3,5 +3,6 @@
 /reports
 /composer.phar
 .DS_Store
+*.log
 /src/iRESTful/Tests/Files/Authenticated/Output/*
 /src/iRESTful/Tests/Files/Authenticated/Output.bck/*
