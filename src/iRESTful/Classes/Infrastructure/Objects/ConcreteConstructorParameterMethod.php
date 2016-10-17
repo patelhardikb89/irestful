@@ -3,7 +3,7 @@ namespace iRESTful\Classes\Infrastructure\Objects;
 use iRESTful\Classes\Domain\Constructors\Parameters\Methods\Method;
 use iRESTful\Classes\Domain\Constructors\Parameters\Methods\Exceptions\MethodException;
 
-final class ConcreteClassConstructorParameterMethod implements Method {
+final class ConcreteConstructorParameterMethod implements Method {
     private $name;
     private $subMethod;
     public function __construct($name, Method $subMethod = null) {

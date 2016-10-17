@@ -4,7 +4,7 @@ use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Parameter;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Types\Type;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Exceptions\ParameterException;
 
-final class ConcreteClassInterfaceMethodParameter implements Parameter {
+final class ConcreteInterfaceMethodParameter implements Parameter {
     private $name;
     private $type;
     private $isOptional;

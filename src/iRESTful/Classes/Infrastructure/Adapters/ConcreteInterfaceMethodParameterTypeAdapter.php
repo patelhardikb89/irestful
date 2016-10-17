@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Classes\Infrastructure\Adapters;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Types\Adapters\TypeAdapter;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassInterfaceMethodParameterType;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteInterfaceMethodParameterType;
 
-final class ConcreteClassInterfaceMethodParameterTypeAdapter implements TypeAdapter {
+final class ConcreteInterfaceMethodParameterTypeAdapter implements TypeAdapter {
 
     public function __construct() {
 
@@ -26,7 +26,7 @@ final class ConcreteClassInterfaceMethodParameterTypeAdapter implements TypeAdap
             $primitive = $data['primitive'];
         }
 
-        return new ConcreteClassInterfaceMethodParameterType($isArray, $namespace, $primitive);
+        return new ConcreteInterfaceMethodParameterType($isArray, $namespace, $primitive);
 
     }
 

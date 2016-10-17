@@ -4,7 +4,7 @@ use iRESTful\Classes\Domain\Methods\Customs\CustomMethod;
 use iRESTful\Classes\Domain\Methods\Customs\Exceptions\CustomMethodException;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Parameter;
 
-final class ConcreteClassMethodCustom implements CustomMethod {
+final class ConcreteMethodCustom implements CustomMethod {
     private $name;
     private $sourceCodeLines;
     private $parameters;

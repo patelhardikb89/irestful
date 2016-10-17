@@ -4,7 +4,7 @@ use iRESTful\Classes\Domain\Interfaces\Methods\Method;
 use iRESTful\Classes\Domain\Interfaces\Methods\Exceptions\MethodException;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Parameter;
 
-final class ConcreteClassInterfaceMethod implements Method {
+final class ConcreteInterfaceMethod implements Method {
     private $name;
     private $parameters;
     public function __construct($name, array $parameters = null) {

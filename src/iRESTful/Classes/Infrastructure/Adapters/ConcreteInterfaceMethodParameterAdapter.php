@@ -3,11 +3,11 @@ namespace iRESTful\Classes\Infrastructure\Adapters;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Exceptions\ParameterException;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Types\Adapters\TypeAdapter;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassInterfaceMethodParameter;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteInterfaceMethodParameter;
 use iRESTful\Classes\Domain\Namespaces\Adapters\InterfaceNamespaceAdapter;
 use iRESTful\DSLs\Domain\Projects\Converters\Types\Type;
 
-final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAdapter {
+final class ConcreteInterfaceMethodParameterAdapter implements ParameterAdapter {
     private $namespaceAdapter;
     private $typeAdapter;
     public function __construct(InterfaceNamespaceAdapter $namespaceAdapter, TypeAdapter $typeAdapter) {
@@ -78,7 +78,7 @@ final class ConcreteClassInterfaceMethodParameterAdapter implements ParameterAda
 
         $name = $convert($data['name']);
         $type = $this->typeAdapter->fromDataToType($typeData);
-        return new ConcreteClassInterfaceMethodParameter($name, $type, $isOptional);
+        return new ConcreteInterfaceMethodParameter($name, $type, $isOptional);
 
     }
 

@@ -4,7 +4,7 @@ use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Types\Type;
 use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
 use iRESTful\DSLs\Domain\Projects\Primitives\Primitive;
 
-final class ConcreteClassInterfaceMethodParameterType implements Type {
+final class ConcreteInterfaceMethodParameterType implements Type {
     private $isArray;
     private $namespace;
     private $primitive;

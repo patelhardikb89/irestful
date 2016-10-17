@@ -6,7 +6,7 @@ use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Parameter;
 use iRESTful\Classes\Domain\Constructors\Parameters\Methods\Method;
 use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
 
-final class ConcreteClassConstructorParameter implements ConstructorParameter {
+final class ConcreteConstructorParameter implements ConstructorParameter {
     private $property;
     private $parameter;
     private $method;

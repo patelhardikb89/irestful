@@ -5,7 +5,7 @@ use iRESTful\Classes\Domain\Methods\Customs\CustomMethod;
 use iRESTful\Classes\Domain\Constructors\Parameters\Parameter;
 use iRESTful\Classes\Domain\Constructors\Exceptions\ConstructorException;
 
-final class ConcreteClassConstructor implements Constructor {
+final class ConcreteConstructor implements Constructor {
     private $customMethod;
     private $parameters;
     public function __construct(CustomMethod $customMethod = null, array $parameters = null) {

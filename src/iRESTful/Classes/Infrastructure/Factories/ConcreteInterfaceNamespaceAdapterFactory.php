@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Classes\Infrastructure\Factories;
 use iRESTful\Classes\Domain\Namespaces\Adapters\Factories\InterfaceNamespaceAdapterFactory;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceNamespaceAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 
 final class ConcreteInterfaceNamespaceAdapterFactory implements InterfaceNamespaceAdapterFactory {
@@ -12,7 +12,7 @@ final class ConcreteInterfaceNamespaceAdapterFactory implements InterfaceNamespa
 
     public function create() {
         $namespaceAdapter = new ConcreteNamespaceAdapter($this->baseNamespace);
-        return new ConcreteClassInterfaceNamespaceAdapter($namespaceAdapter);
+        return new ConcreteInterfaceNamespaceAdapter($namespaceAdapter);
     }
 
 }

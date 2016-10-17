@@ -6,7 +6,7 @@ use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
 use iRESTful\DSLs\Domain\Projects\Controllers\Controller;
 
-final class ConcreteClassInterfaceNamespaceAdapter implements InterfaceNamespaceAdapter {
+final class ConcreteInterfaceNamespaceAdapter implements InterfaceNamespaceAdapter {
     private $namespaceAdapter;
     private $baseNamespace;
     public function __construct(NamespaceAdapter $namespaceAdapter) {

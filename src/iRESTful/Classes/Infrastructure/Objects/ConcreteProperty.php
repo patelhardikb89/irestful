@@ -3,7 +3,7 @@ namespace iRESTful\Classes\Infrastructure\Objects;
 use iRESTful\Classes\Domain\Properties\Property;
 use iRESTful\Classes\Domain\Properties\Exceptions\PropertyException;
 
-final class ConcreteClassProperty implements Property {
+final class ConcreteProperty implements Property {
     private $name;
     public function __construct($name) {
 

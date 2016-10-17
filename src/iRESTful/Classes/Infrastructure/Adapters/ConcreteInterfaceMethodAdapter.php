@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Classes\Infrastructure\Adapters;
 use iRESTful\Classes\Domain\Interfaces\Methods\Adapters\MethodAdapter;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassInterfaceMethod;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteInterfaceMethod;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
 use iRESTful\Classes\Domain\Methods\Customs\CustomMethod;
 use iRESTful\DSLs\Domain\Projects\Converters\Converter;
@@ -12,7 +12,7 @@ use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
 use iRESTful\DSLs\Domain\Projects\Controllers\Controller;
 
-final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
+final class ConcreteInterfaceMethodAdapter implements MethodAdapter {
     private $customMethodAdapter;
     private $parameterAdapter;
     public function __construct(CustomMethodAdapter $customMethodAdapter, ParameterAdapter $parameterAdapter) {
@@ -30,7 +30,7 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
             $name = str_replace($oneElement, $replacement, $name);
         }
 
-        return new ConcreteClassInterfaceMethod($name);
+        return new ConcreteInterfaceMethod($name);
     }
 
     public function fromObjectToMethods(Object $object) {
@@ -57,7 +57,7 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
         $createMethod = function($name, Type $type, Converter $converter) use(&$parameterAdapter) {
             $parameterType = ($converter->hasFromType()) ? $converter->fromType() : $type;
             $parameter = $parameterAdapter->fromTypeToParameter($parameterType);
-            return new ConcreteClassInterfaceMethod($name, [$parameter]);
+            return new ConcreteInterfaceMethod($name, [$parameter]);
         };
 
         $databaseConverter = $type->getDatabaseConverter();
@@ -107,7 +107,7 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
             $parameters = $customMethod->getParameters();
         }
 
-        return new ConcreteClassInterfaceMethod($name, $parameters);
+        return new ConcreteInterfaceMethod($name, $parameters);
     }
 
     public function fromControllerToMethod(Controller $controller) {
@@ -118,7 +118,7 @@ final class ConcreteClassInterfaceMethodAdapter implements MethodAdapter {
             'is_array' => true
         ]);
 
-        return new ConcreteClassInterfaceMethod($name, [$parameter]);
+        return new ConcreteInterfaceMethod($name, [$parameter]);
     }
 
 }

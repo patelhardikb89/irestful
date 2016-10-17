@@ -12,7 +12,7 @@ use iRESTful\DSLs\Infrastructure\Adapters\ConcreteDatabaseTypeIntegerAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteDatabaseTypeStringAdapter;
 use iRESTful\Annotations\Infrastructure\Adapters\ConcreteAnnotationParameterConverterSingleAdapter;
 use iRESTful\Annotations\Infrastructure\Adapters\ConcreteAnnotationParameterFlowMethodChainAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceNamespaceAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 
 final class ConcreteAnnotationParameterAdapterFactory implements ParameterAdapterFactory {
@@ -23,7 +23,7 @@ final class ConcreteAnnotationParameterAdapterFactory implements ParameterAdapte
 
     public function create() {
         $subInterfaceNamespaceAdapter = new ConcreteNamespaceAdapter($this->baseNamespace);
-        $namespaceAdapter = new ConcreteClassInterfaceNamespaceAdapter($subInterfaceNamespaceAdapter);
+        $namespaceAdapter = new ConcreteInterfaceNamespaceAdapter($subInterfaceNamespaceAdapter);
 
         $annotationParameterFlowMethodChainAdapter = new ConcreteAnnotationParameterFlowMethodChainAdapter();
         $annotationParameterSingleConverterAdapter = new ConcreteAnnotationParameterConverterSingleAdapter($namespaceAdapter);

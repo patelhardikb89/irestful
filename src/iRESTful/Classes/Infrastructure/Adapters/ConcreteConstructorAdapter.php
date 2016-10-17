@@ -4,10 +4,10 @@ use iRESTful\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
 use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
 use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassConstructor;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteConstructor;
 use iRESTful\Classes\Domain\Constructors\Parameters\Adapters\ParameterAdapter;
 
-final class ConcreteClassConstructorAdapter implements ConstructorAdapter {
+final class ConcreteConstructorAdapter implements ConstructorAdapter {
     private $parameterAdapter;
     private $customMethodAdapter;
     public function __construct(ParameterAdapter $parameterAdapter, CustomMethodAdapter $customMethodAdapter) {
@@ -18,23 +18,23 @@ final class ConcreteClassConstructorAdapter implements ConstructorAdapter {
     public function fromInstructionsToConstructor(array $instructions) {
         $parameters = $this->parameterAdapter->fromInstructionsToParameters($instructions);
         $customMethod = $this->customMethodAdapter->fromControllerInstructionsToCustomMethod($instructions);
-        return new ConcreteClassConstructor($customMethod, $parameters);
+        return new ConcreteConstructor($customMethod, $parameters);
     }
 
     public function fromObjectToConstructor(Object $object) {
         $parameters = $this->parameterAdapter->fromObjectToParameters($object);
-        return new ConcreteClassConstructor(null, $parameters);
+        return new ConcreteConstructor(null, $parameters);
     }
 
     public function fromTypeToConstructor(Type $type) {
         $parameter = $this->parameterAdapter->fromTypeToParameter($type);
         $customMethod = $this->customMethodAdapter->fromTypeToCustomMethod($type);
-        return new ConcreteClassConstructor($customMethod, [$parameter]);
+        return new ConcreteConstructor($customMethod, [$parameter]);
 
     }
 
     public function fromTypeToAdapterConstructor(Type $type) {
-        return new ConcreteClassConstructor();
+        return new ConcreteConstructor();
     }
 
 }

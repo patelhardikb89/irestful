@@ -5,7 +5,7 @@ use iRESTful\Classes\Domain\Interfaces\Methods\Method;
 use iRESTful\Classes\Domain\Interfaces\Exceptions\InterfaceException;
 use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
 
-final class ConcreteClassInterface implements ClassInterface {
+final class ConcreteInterface implements ClassInterface {
     private $methods;
     private $namespace;
     private $isEntity;

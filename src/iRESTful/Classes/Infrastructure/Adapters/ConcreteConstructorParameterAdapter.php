@@ -5,14 +5,14 @@ use iRESTful\Classes\Domain\Properties\Adapters\PropertyAdapter;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
 use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassConstructorParameter;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteConstructorParameter;
 use iRESTful\DSLs\Domain\Projects\Objects\Properties\Property;
 use iRESTful\Classes\Domain\Namespaces\Adapters\InterfaceNamespaceAdapter;
 use iRESTful\Classes\Domain\Constructors\Parameters\Methods\Adapters\MethodAdapter;
 use iRESTful\Instructions\Domain\Instruction;
 use iRESTful\Classes\Domain\Constructors\Parameters\Exceptions\ParameterException;
 
-final class ConcreteClassConstructorParameterAdapter implements ConstructorParameterAdapter {
+final class ConcreteConstructorParameterAdapter implements ConstructorParameterAdapter {
     private $namespaceAdapter;
     private $propertyAdapter;
     private $parameterAdapter;
@@ -108,7 +108,7 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
                 'namespace' => $namespace
             ]);
 
-            $parameters[$propertyName] = new ConcreteClassConstructorParameter($property, $methodParameter);
+            $parameters[$propertyName] = new ConcreteConstructorParameter($property, $methodParameter);
 
             $from = $conversion->from();
             if ($from->hasAssignment()) {
@@ -171,7 +171,7 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
             'namespace' => $namespace
         ]);
 
-        return new ConcreteClassConstructorParameter($property, $methodParameter);
+        return new ConcreteConstructorParameter($property, $methodParameter);
     }
 
     public function fromInstructionDatabaseRetrievalToParameter($retrieval) {
@@ -232,7 +232,7 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
             'namespace' => $namespace
         ]);
 
-        return new ConcreteClassConstructorParameter($property, $methodParameter);
+        return new ConcreteConstructorParameter($property, $methodParameter);
     }
 
     public function fromObjectToParameters(Object $object) {
@@ -275,7 +275,7 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
                 'is_optional' => $propertyIsOptional
             ]);
 
-            return new ConcreteClassConstructorParameter($classProperty, $methodParameter, $method);
+            return new ConcreteConstructorParameter($classProperty, $methodParameter, $method);
         }
 
         $propertyIsArray = $propertyType->isArray();
@@ -287,7 +287,7 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
             'is_array' => $propertyIsArray
         ]);
 
-        return new ConcreteClassConstructorParameter($classProperty, $methodParameter, $method);
+        return new ConcreteConstructorParameter($classProperty, $methodParameter, $method);
     }
 
     public function fromTypeToParameter(Type $type) {
@@ -298,7 +298,7 @@ final class ConcreteClassConstructorParameterAdapter implements ConstructorParam
         ]);
 
         $method = $this->methodAdapter->fromTypeToMethod($type);
-        return new ConcreteClassConstructorParameter($classProperty, $methodParameter, $method);
+        return new ConcreteConstructorParameter($classProperty, $methodParameter, $method);
     }
 
 }

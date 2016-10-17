@@ -2,11 +2,11 @@
 namespace iRESTful\Classes\Infrastructure\Factories;
 use iRESTful\Classes\Domain\Interfaces\Adapters\Factories\InterfaceAdapterFactory;
 use iRESTful\Classes\Infrastructure\Factories\ConcreteInterfaceNamespaceAdapterFactory;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceMethodAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassMethodCustomAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceMethodParameterAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceMethodParameterTypeAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteMethodCustomAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 
 final class ConcreteInterfaceAdapterFactory implements InterfaceAdapterFactory {
@@ -22,13 +22,13 @@ final class ConcreteInterfaceAdapterFactory implements InterfaceAdapterFactory {
 
         $subClassNamespaceAdapter = new ConcreteNamespaceAdapter($this->baseNamespace);
 
-        $interfaceMethodParamaterTypeAdapter = new ConcreteClassInterfaceMethodParameterTypeAdapter();
-        $interfaceMethodParameterAdapter = new ConcreteClassInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
+        $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
+        $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
 
-        $classCustomMethodAdapter = new ConcreteClassMethodCustomAdapter($interfaceMethodParameterAdapter);
+        $classCustomMethodAdapter = new ConcreteMethodCustomAdapter($interfaceMethodParameterAdapter);
 
-        $interfaceMethodAdapter = new ConcreteClassInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);
-        return new ConcreteClassInterfaceAdapter($interfaceNamespaceAdapter, $interfaceMethodAdapter);
+        $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);
+        return new ConcreteInterfaceAdapter($interfaceNamespaceAdapter, $interfaceMethodAdapter);
     }
 
 }

@@ -5,10 +5,10 @@ use iRESTful\ClassesTests\Infrastructure\Adapters\ConcreteTestAdapter;
 use iRESTful\ClassesTests\Infrastructure\Adapters\ConcreteTestTransformAdapter;
 use iRESTful\ClassesTests\Infrastructure\Adapters\ConcreteTestControllerAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceNamespaceAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceMethodParameterTypeAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassInterfaceMethodParameterAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassMethodCustomAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceNamespaceAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteMethodCustomAdapter;
 use iRESTful\TestInstructions\Infrastructure\Factories\ConcreteTestInstructionAdapterAdapterFactory;
 
 final class ConcreteTestAdapterFactory implements TestAdapterFactory {
@@ -25,11 +25,11 @@ final class ConcreteTestAdapterFactory implements TestAdapterFactory {
         $testInstructionAdapterAdapter = $testInstructionAdapterAdapterFactory->create();
 
         $subInterfaceNamespaceAdapter = new ConcreteNamespaceAdapter($this->baseNamespaces);
-        $interfaceNamespaceAdapter = new ConcreteClassInterfaceNamespaceAdapter($subInterfaceNamespaceAdapter);
+        $interfaceNamespaceAdapter = new ConcreteInterfaceNamespaceAdapter($subInterfaceNamespaceAdapter);
 
-        $interfaceMethodParamaterTypeAdapter = new ConcreteClassInterfaceMethodParameterTypeAdapter();
-        $interfaceMethodParameterAdapter = new ConcreteClassInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
-        $customMethodAdapter = new ConcreteClassMethodCustomAdapter($interfaceMethodParameterAdapter);
+        $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
+        $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
+        $customMethodAdapter = new ConcreteMethodCustomAdapter($interfaceMethodParameterAdapter);
 
         $testControllerAdapter = new ConcreteTestControllerAdapter($testInstructionAdapterAdapter, $customMethodAdapter, $this->baseNamespaces);
 

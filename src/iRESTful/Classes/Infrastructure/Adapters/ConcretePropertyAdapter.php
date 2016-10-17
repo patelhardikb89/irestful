@@ -1,9 +1,9 @@
 <?php
 namespace iRESTful\Classes\Infrastructure\Adapters;
 use iRESTful\Classes\Domain\Properties\Adapters\PropertyAdapter;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassProperty;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteProperty;
 
-final class ConcreteClassPropertyAdapter implements PropertyAdapter {
+final class ConcretePropertyAdapter implements PropertyAdapter {
 
     public function __construct() {
 
@@ -26,7 +26,7 @@ final class ConcreteClassPropertyAdapter implements PropertyAdapter {
         };
 
         $name = $convert($name);
-        return new ConcreteClassProperty($name);
+        return new ConcreteProperty($name);
     }
 
 }

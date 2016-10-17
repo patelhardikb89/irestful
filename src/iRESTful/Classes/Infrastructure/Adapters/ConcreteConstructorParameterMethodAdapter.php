@@ -2,10 +2,10 @@
 namespace iRESTful\Classes\Infrastructure\Adapters;
 use iRESTful\DSLs\Domain\Projects\Objects\Properties\Property;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassConstructorParameterMethod;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteConstructorParameterMethod;
 use iRESTful\Classes\Domain\Constructors\Parameters\Methods\Adapters\MethodAdapter;
 
-final class ConcreteClassConstructorParameterMethodAdapter implements MethodAdapter {
+final class ConcreteConstructorParameterMethodAdapter implements MethodAdapter {
 
     public function __construct() {
 
@@ -36,11 +36,11 @@ final class ConcreteClassConstructorParameterMethodAdapter implements MethodAdap
             $subMethod = $this->fromTypeToMethod($propertyTypeType);
         }
 
-        return new ConcreteClassConstructorParameterMethod($propertyName, $subMethod);
+        return new ConcreteConstructorParameterMethod($propertyName, $subMethod);
     }
 
     public function fromTypeToMethod(Type $type) {
-        return new ConcreteClassConstructorParameterMethod('get');
+        return new ConcreteConstructorParameterMethod('get');
     }
 
 }

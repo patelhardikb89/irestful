@@ -6,7 +6,7 @@ use iRESTful\Classes\Domain\Methods\Customs\Exceptions\CustomMethodException;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
 use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
-use iRESTful\Classes\Infrastructure\Objects\ConcreteClassMethodCustom;
+use iRESTful\Classes\Infrastructure\Objects\ConcreteMethodCustom;
 use iRESTful\DSLs\Domain\Projects\Codes\Methods\Method as CodeMethod;
 use iRESTful\DSLs\Domain\Projects\Converters\Converter;
 use iRESTful\Classes\Infrastructure\Objects\ConcreteNamespace;
@@ -33,7 +33,7 @@ use iRESTful\Instructions\Domain\Tests\TestInstruction;
 use iRESTful\Instructions\Domain\Tests\Comparisons\TestInstructionComparison;
 use iRESTful\Instructions\Domain\Tests\Containers\TestContainerInstruction;
 
-final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
+final class ConcreteMethodCustomAdapter implements CustomMethodAdapter {
     private $parameterAdapter;
     public function __construct(ParameterAdapter $parameterAdapter) {
         $this->parameterAdapter = $parameterAdapter;
@@ -613,7 +613,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
             'namespace' => new ConcreteNamespace(explode('\\', 'iRESTful\Objects\Libraries\Https\Domain\Requests\HttpRequest'))
         ]);
 
-        return new ConcreteClassMethodCustom($name, $sourceCodeLines, [$parameter]);
+        return new ConcreteMethodCustom($name, $sourceCodeLines, [$parameter]);
     }
 
     public function fromObjectToCustomMethods(Object $object) {
@@ -691,7 +691,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
     private function fromInstructionsToTestInitCustomMethod(array $instructions, array $input, $methodName) {
 
         if (empty($instructions)) {
-            return new ConcreteClassMethodCustom($methodName);
+            return new ConcreteMethodCustom($methodName);
         }
 
         $inputCode = [
@@ -703,7 +703,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
         $sourceCodeLines = $this->getSourceCodeLines($instructions, $inputCode);
         $processedSourceCodeLines = $this->processSourceCodeLines($sourceCodeLines);
-        return new ConcreteClassMethodCustom($methodName, $processedSourceCodeLines);
+        return new ConcreteMethodCustom($methodName, $processedSourceCodeLines);
 
     }
 
@@ -794,7 +794,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
         ];
 
         $processedSourceCodeLines = $this->processSourceCodeLines($sourceCodeLines);
-        return new ConcreteClassMethodCustom($methodName, $processedSourceCodeLines);
+        return new ConcreteMethodCustom($methodName, $processedSourceCodeLines);
 
     }
 
@@ -951,7 +951,7 @@ final class ConcreteClassMethodCustomAdapter implements CustomMethodAdapter {
 
         $sourceCodeLines = $getSourceCodeLines($reflectionMethod);
         $parameters = $getParameters($reflectionMethod);
-        return new ConcreteClassMethodCustom($name, $sourceCodeLines, $parameters);
+        return new ConcreteMethodCustom($name, $sourceCodeLines, $parameters);
     }
 
 }
