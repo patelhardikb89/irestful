@@ -2,7 +2,7 @@
 namespace iRESTful\Instructions\Infrastructure\Objects;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Entities\Entity;
 use iRESTful\Instructions\Domain\Containers\Container;
-use iRESTful\DSLs\Domain\Projects\Values\Value;
+use iRESTful\Instructions\Domain\Values\Value;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Keynames\Keyname;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Entities\Exceptions\EntityException;
 

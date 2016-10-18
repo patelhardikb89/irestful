@@ -8,13 +8,14 @@ use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcretePropertyAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteMethodCustomAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteCustomMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorParameterMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorParameterAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorAdapter;
 use iRESTful\ClassesConverters\Infrastructure\Adapters\ConcreteConverterMethodAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
 
 final class ConcreteConverterAdapterFactory implements ConverterAdapterFactory {
     private $baseNamespace;
@@ -34,7 +35,8 @@ final class ConcreteConverterAdapterFactory implements ConverterAdapterFactory {
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
 
         $classPropertyAdapter = new ConcretePropertyAdapter();
-        $classCustomMethodAdapter = new ConcreteMethodCustomAdapter($interfaceMethodParameterAdapter);
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);
         $interfaceAdapter = new ConcreteInterfaceAdapter($interfaceNamespaceAdapter, $interfaceMethodAdapter);

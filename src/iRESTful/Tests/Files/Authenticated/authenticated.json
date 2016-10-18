@@ -584,7 +584,7 @@
                         "insert samples",
                         [
                             [
-                                "entity = retrieve $each->container by $each->data|property->name:$each->data|property->value",
+                                "entity = retrieve $each->container by $each->data|property.name:$each->data|property.value",
                                 "data = from entity to data",
                                 "compare data to $each"
                             ]

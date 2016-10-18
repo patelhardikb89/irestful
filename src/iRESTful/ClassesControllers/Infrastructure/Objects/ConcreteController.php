@@ -3,7 +3,7 @@ namespace iRESTful\ClassesControllers\Infrastructure\Objects;
 use iRESTful\ClassesControllers\Domain\Controller;
 use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
 use iRESTful\Classes\Domain\Constructors\Constructor;
-use iRESTful\Classes\Domain\Methods\Customs\CustomMethod;
+use iRESTful\Classes\Domain\CustomMethods\CustomMethod;
 use iRESTful\ClassesControllers\Domain\Exceptions\ControllerException;
 
 final class ConcreteController implements Controller {

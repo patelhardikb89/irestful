@@ -6,7 +6,7 @@ use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcretePropertyAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassNamespaceAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteMethodCustomAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteCustomMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodAdapter;
@@ -14,6 +14,7 @@ use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorParameterMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorParameterAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
 
 final class ConcreteObjectAdapterFactory implements ObjectAdapterFactory {
     private $baseNamespace;
@@ -31,7 +32,8 @@ final class ConcreteObjectAdapterFactory implements ObjectAdapterFactory {
         $classPropertyAdapter = new ConcretePropertyAdapter();
         $subClassNamespaceAdapter = new ConcreteNamespaceAdapter($this->baseNamespace);
         $classNamespaceAdapter = new ConcreteClassNamespaceAdapter($subClassNamespaceAdapter);
-        $classCustomMethodAdapter = new ConcreteMethodCustomAdapter($interfaceMethodParameterAdapter);
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);
         $interfaceAdapter = new ConcreteInterfaceAdapter($interfaceNamespaceAdapter, $interfaceMethodAdapter);

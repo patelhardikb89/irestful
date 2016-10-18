@@ -14,7 +14,9 @@ final class ConcreteInstructionValueLoop implements Loop {
 
         if (!empty($keynames)) {
             foreach($keynames as $oneKeyname) {
-                throw new KeynameException('The keynames array must only contain Keyname objects.');
+                if (!($oneKeyname instanceof Keyname)) {
+                    throw new KeynameException('The keynames array must only contain Keyname objects.');
+                }
             }
         }
 

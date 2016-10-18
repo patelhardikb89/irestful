@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Objects;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Keynames\Keyname;
-use iRESTful\DSLs\Domain\Projects\Values\Value;
+use iRESTful\Instructions\Domain\Values\Value;
 
 final class ConcreteInstructionDatabaseRetrievalKeyname implements Keyname {
     private $name;

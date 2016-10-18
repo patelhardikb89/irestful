@@ -2,7 +2,7 @@
 namespace iRESTful\Classes\Domain\Interfaces\Methods\Adapters;
 use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
-use iRESTful\Classes\Domain\Methods\Customs\CustomMethod;
+use iRESTful\Classes\Domain\CustomMethods\CustomMethod;
 use iRESTful\DSLs\Domain\Projects\Controllers\Controller;
 
 interface MethodAdapter {

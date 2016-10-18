@@ -1,7 +1,8 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Adapters;
-use iRESTful\Instructions\Domain\Values\Loops\Adapters;
+use iRESTful\Instructions\Domain\Values\Loops\Adapters\LoopAdapter;
 use iRESTful\Instructions\Domain\Values\Loops\Keynames\Adapters\KeynameAdapter;
+use iRESTful\Instructions\Infrastructure\Objects\ConcreteInstructionValueLoop;
 
 final class ConcreteInstructionValueLoopAdapter implements LoopAdapter {
     private $keynameAdapter;
@@ -10,8 +11,17 @@ final class ConcreteInstructionValueLoopAdapter implements LoopAdapter {
     }
 
     public function fromStringToLoop($string) {
-        print_r(['fromStringToLoop']);
-        die();
+        $keynames = [];
+        $exploded = explode('->', $string);
+        foreach($exploded as $oneKeyname) {
+            if ($oneKeyname == '$each') {
+                continue;
+            }
+
+            $keynames[] = $this->keynameAdapter->fromStringToKeyname($oneKeyname);
+        }
+
+        return new ConcreteInstructionValueLoop($keynames);
     }
 
 }

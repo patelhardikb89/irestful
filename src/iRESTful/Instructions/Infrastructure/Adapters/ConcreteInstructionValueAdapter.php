@@ -1,11 +1,11 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Adapters;
-use iRESTful\Instructions\Domain\Values\Adapters\ValueAdapter;
+use iRESTful\Instructions\Domain\Values\Adapters\ValueAdapter as InstructionValueAdapter;
 use iRESTful\Instructions\Domain\Values\Loops\Adapters\LoopAdapter;
-use iRESTful\Instructions\Domain\Values\Adapters\ValueAdapter;
+use iRESTful\DSLs\Domain\Projects\Values\Adapters\ValueAdapter;
 use iRESTful\Instructions\Infrastructure\Objects\ConcreteInstructionValue;
 
-final class ConcreteInstructionValueAdapter implements ValueAdapter {
+final class ConcreteInstructionValueAdapter implements InstructionValueAdapter {
     private $loopAdapter;
     private $valueAdapter;
     public function __construct(LoopAdapter $loopAdapter, ValueAdapter $valueAdapter) {

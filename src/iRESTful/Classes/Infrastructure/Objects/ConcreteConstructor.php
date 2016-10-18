@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Classes\Infrastructure\Objects;
 use iRESTful\Classes\Domain\Constructors\Constructor;
-use iRESTful\Classes\Domain\Methods\Customs\CustomMethod;
+use iRESTful\Classes\Domain\CustomMethods\CustomMethod;
 use iRESTful\Classes\Domain\Constructors\Parameters\Parameter;
 use iRESTful\Classes\Domain\Constructors\Exceptions\ConstructorException;
 

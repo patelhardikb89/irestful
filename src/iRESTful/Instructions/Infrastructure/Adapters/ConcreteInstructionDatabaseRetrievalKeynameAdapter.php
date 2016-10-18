@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Adapters;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Keynames\Adapters\KeynameAdapter;
-use iRESTful\DSLs\Domain\Projects\Values\Adapters\ValueAdapter;
+use iRESTful\Instructions\Domain\Values\Adapters\ValueAdapter;
 use iRESTful\Instructions\Infrastructure\Objects\ConcreteInstructionDatabaseRetrievalKeyname;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Keynames\Exceptions\KeynameException;
 
@@ -20,11 +20,6 @@ final class ConcreteInstructionDatabaseRetrievalKeynameAdapter implements Keynam
         if (!isset($data['value'])) {
             throw new KeynameException('The value keyname is mandatory in order to convert data to a Keyname object.');
         }
-
-
-
-        print_r($data);
-
 
         $name = $this->valueAdapter->fromStringToValue($data['name']);
         $value = $this->valueAdapter->fromStringToValue($data['value']);

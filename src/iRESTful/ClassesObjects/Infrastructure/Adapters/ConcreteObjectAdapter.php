@@ -5,7 +5,7 @@ use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\Classes\Domain\Namespaces\Adapters\ClassNamespaceAdapter;
 use iRESTful\Classes\Domain\Interfaces\Adapters\InterfaceAdapter;
 use iRESTful\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
-use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
+use iRESTful\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\ClassesObjects\Infrastructure\Objects\ConcreteObject;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {

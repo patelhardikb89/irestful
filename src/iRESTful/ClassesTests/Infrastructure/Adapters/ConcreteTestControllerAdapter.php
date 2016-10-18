@@ -2,22 +2,22 @@
 namespace iRESTful\ClassesTests\Infrastructure\Adapters;
 use iRESTful\ClassesTests\Domain\Controllers\Adapters\ControllerAdapter;
 use iRESTful\TestInstructions\Domain\Adapters\Adapters\TestInstructionAdapterAdapter;
-use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
+use iRESTful\TestInstructions\Domain\CustomMethods\Nodes\Adapters\CustomMethodNodeAdapter;
 use iRESTful\ClassesTests\Infrastructure\Objects\ConcreteTestController;
 use iRESTful\ClassesTests\Domain\Controllers\Exceptions\ControllerException;
 use iRESTful\Classes\Infrastructure\Objects\ConcreteNamespace;
 
 final class ConcreteTestControllerAdapter implements ControllerAdapter {
     private $testInstructionAdapterAdapter;
-    private $customMethodAdapter;
+    private $customMethodNodeAdapter;
     private $baseNamespace;
     public function __construct(
         TestInstructionAdapterAdapter $testInstructionAdapterAdapter,
-        CustomMethodAdapter $customMethodAdapter,
+        CustomMethodNodeAdapter $customMethodNodeAdapter,
         array $baseNamespace
     ) {
         $this->testInstructionAdapterAdapter = $testInstructionAdapterAdapter;
-        $this->customMethodAdapter = $customMethodAdapter;
+        $this->customMethodNodeAdapter = $customMethodNodeAdapter;
         $this->baseNamespace = $baseNamespace;
     }
 
@@ -66,14 +66,13 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
         $testInstructions = $this->testInstructionAdapterAdapter->fromAnnotatedEntitiesToTestInstructionAdapter($data['annotated_entities'])
                                                                 ->fromDSLControllerToTestInstructions($data['controller']);
 
-        //$testCustomMethods = $this->customMethodAdapter->fromTestInstructionsToCustomMethods($testInstructions);
-        $testCustomMethods = [];
+        $testCustomMethodNodes = $this->customMethodNodeAdapter->fromTestInstructionsToCustomMethodNodes($testInstructions);
 
         $name = $convert($data['controller']->getName()).'Test';
         $merged = array_merge($this->baseNamespace, ['Tests', 'Tests', 'Functional', 'Controllers', $name]);
         $namespace = new ConcreteNamespace($merged);
 
-        return new ConcreteTestController($namespace, $testCustomMethods);
+        return new ConcreteTestController($namespace, $testCustomMethodNodes);
 
     }
 

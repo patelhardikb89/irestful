@@ -1,10 +1,11 @@
 <?php
 namespace iRESTful\Classes\Infrastructure\Factories;
-use iRESTful\Classes\Domain\Methods\Customs\Adapters\Factories\CustomMethodAdapterFactory;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteMethodCustomAdapter;
+use iRESTful\Classes\Domain\CustomMethods\Adapters\Factories\CustomMethodAdapterFactory;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteCustomMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
 use iRESTful\Classes\Infrastructure\Factories\ConcreteInterfaceNamespaceAdapterFactory;
+use iRESTful\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
 
 final class ConcreteCustomMethodAdapterFactory implements CustomMethodAdapterFactory {
     private $baseNamespace;
@@ -19,7 +20,9 @@ final class ConcreteCustomMethodAdapterFactory implements CustomMethodAdapterFac
 
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
-        return new ConcreteMethodCustomAdapter($interfaceMethodParameterAdapter);
+
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        return new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
     }
 
 }

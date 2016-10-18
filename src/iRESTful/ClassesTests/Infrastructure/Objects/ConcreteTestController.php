@@ -5,18 +5,18 @@ use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
 
 final class ConcreteTestController implements Controller {
     private $namespace;
-    private $customMethods;
-    public function __construct(ClassNamespace $namespace, array $customMethods) {
+    private $customMethodNodes;
+    public function __construct(ClassNamespace $namespace, array $customMethodNodes) {
         $this->namespace = $namespace;
-        $this->customMethods = $customMethods;
+        $this->customMethodNodes = $customMethodNodes;
     }
 
     public function getNamespace() {
         return $this->namespace;
     }
 
-    public function getCustomMethods() {
-        return $this->customMethods;
+    public function getCustomMethodNodes() {
+        return $this->customMethodNodes;
     }
 
 }

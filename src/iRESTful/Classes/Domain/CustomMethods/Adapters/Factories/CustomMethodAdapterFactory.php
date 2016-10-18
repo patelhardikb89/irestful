@@ -1,5 +1,5 @@
 <?php
-namespace iRESTful\Classes\Domain\Methods\Customs\Adapters\Factories;
+namespace iRESTful\Classes\Domain\CustomMethods\Adapters\Factories;
 
 interface CustomMethodAdapterFactory {
     public function create();

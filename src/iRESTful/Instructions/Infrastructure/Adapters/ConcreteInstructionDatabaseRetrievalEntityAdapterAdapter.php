@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Adapters;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Entities\Adapters\Adapters\EntityAdapterAdapter;
-use iRESTful\DSLs\Domain\Projects\Values\Adapters\Adapters\ValueAdapterAdapter;
+use iRESTful\Instructions\Domain\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Instructions\Infrastructure\Adapters\ConcreteInstructionDatabaseRetrievalEntityAdapter;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Keynames\Adapters\Adapters\KeynameAdapterAdapter;
 use iRESTful\Instructions\Domain\Containers\Adapters\Adapters\ContainerAdapterAdapter;

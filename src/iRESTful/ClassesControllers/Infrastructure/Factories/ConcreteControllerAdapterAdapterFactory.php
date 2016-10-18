@@ -5,7 +5,7 @@ use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassControllerAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteMethodCustomAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteCustomMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcretePropertyAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorParameterMethodAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteConstructorParameterAdapter;
@@ -14,6 +14,7 @@ use iRESTful\Classes\Infrastructure\Adapters\ConcreteClassNamespaceAdapter;
 use iRESTful\Instructions\Infrastructure\Factories\ConcreteInstructionAdapterAdapterFactory;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 use iRESTful\ClassesControllers\Infrastructure\Adapters\ConcreteControllerAdapterAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
 
 final class ConcreteControllerAdapterAdapterFactory implements ControllerAdapterAdapterFactory {
     private $baseNamespace;
@@ -31,7 +32,8 @@ final class ConcreteControllerAdapterAdapterFactory implements ControllerAdapter
         $interfaceNamespaceAdapter = new ConcreteInterfaceNamespaceAdapter($subInterfaceNamespaceAdapter);
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
-        $classCustomMethodAdapter = new ConcreteMethodCustomAdapter($interfaceMethodParameterAdapter);
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         //constructor:
         $classPropertyAdapter = new ConcretePropertyAdapter();

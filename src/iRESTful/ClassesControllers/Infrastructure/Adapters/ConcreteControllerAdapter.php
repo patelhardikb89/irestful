@@ -4,7 +4,7 @@ use iRESTful\ClassesControllers\Domain\Adapters\ControllerAdapter;
 use iRESTful\DSLs\Domain\Projects\Controllers\Controller;
 use iRESTful\Classes\Domain\Namespaces\Adapters\ClassNamespaceAdapter;
 use iRESTful\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
-use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
+use iRESTful\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\Instructions\Domain\Adapters\Adapters\InstructionAdapterAdapter;
 use iRESTful\ClassesControllers\Infrastructure\Objects\ConcreteController;
 

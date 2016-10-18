@@ -1,10 +1,9 @@
 <?php
-namespace iRESTful\Classes\Domain\Methods\Customs;
+namespace iRESTful\Classes\Domain\CustomMethods;
 
 interface CustomMethod {
     public function getName();
-    public function hasSourceCodeLines();
-    public function getSourceCodeLines();
+    public function getSourceCode();
     public function hasParameters();
     public function getParameters();
 }

@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Adapters;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Multiples\Adapters\MultipleEntityAdapter;
-use iRESTful\DSLs\Domain\Projects\Values\Adapters\ValueAdapter;
+use iRESTful\Instructions\Domain\Values\Adapters\ValueAdapter;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Multiples\Exceptions\MultipleEntityException;
 use iRESTful\Instructions\Infrastructure\Objects\ConcreteInstructionDatabaseRetrievalMultipleEntity;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Keynames\Adapters\KeynameAdapter;

@@ -79,7 +79,7 @@
 {% macro generateCustomMethod(customMethod) %}
     {%- import _self as fn -%}
     public function {{customMethod.name}}({{- fn.generateSignature(customMethod.parameters) -}}) {
-        {% for oneSourceCodeLine in customMethod.source_code_lines %}
+        {% for oneSourceCodeLine in customMethod.source_code.lines %}
             {{- oneSourceCodeLine|replace({'$current->': '$this->'})|raw }}
         {% endfor -%}
     }

@@ -5,7 +5,7 @@ use iRESTful\DSLs\Domain\Projects\Types\Type;
 use iRESTful\Classes\Domain\Namespaces\Adapters\ClassNamespaceAdapter;
 use iRESTful\Classes\Domain\Interfaces\Adapters\InterfaceAdapter;
 use iRESTful\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
-use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
+use iRESTful\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\ClassesConverters\Domain\Adapters\ConverterAdapter;
 use iRESTful\ClassesValues\Infrastructure\Objects\ConcreteValue;
 

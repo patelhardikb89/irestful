@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Adapters;
 use iRESTful\Instructions\Domain\Containers\Adapters\ContainerAdapter;
-use iRESTful\DSLs\Domain\Projects\Values\Adapters\ValueAdapter;
+use iRESTful\Instructions\Domain\Values\Adapters\ValueAdapter;
 use iRESTful\Instructions\Infrastructure\Objects\ConcreteInstructionContainer;
 
 final class ConcreteInstructionContainerAdapter implements ContainerAdapter {

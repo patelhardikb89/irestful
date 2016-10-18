@@ -3,13 +3,13 @@ namespace iRESTful\Classes\Infrastructure\Adapters;
 use iRESTful\Classes\Domain\Interfaces\Methods\Adapters\MethodAdapter;
 use iRESTful\Classes\Infrastructure\Objects\ConcreteInterfaceMethod;
 use iRESTful\Classes\Domain\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
-use iRESTful\Classes\Domain\Methods\Customs\CustomMethod;
+use iRESTful\Classes\Domain\CustomMethods\CustomMethod;
 use iRESTful\DSLs\Domain\Projects\Converters\Converter;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
 use iRESTful\DSLs\Domain\Projects\Objects\Properties\Property;
 use iRESTful\Classes\Domain\Interfaces\Methods\Exceptions\MethodException;
 use iRESTful\DSLs\Domain\Projects\Objects\Object;
-use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
+use iRESTful\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\DSLs\Domain\Projects\Controllers\Controller;
 
 final class ConcreteInterfaceMethodAdapter implements MethodAdapter {

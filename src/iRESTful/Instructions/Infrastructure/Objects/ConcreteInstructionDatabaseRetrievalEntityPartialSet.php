@@ -2,7 +2,7 @@
 namespace iRESTful\Instructions\Infrastructure\Objects;
 use iRESTful\Instructions\Domain\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
 use iRESTful\Instructions\Domain\Containers\Container;
-use iRESTful\DSLs\Domain\Projects\Values\Value;
+use iRESTful\Instructions\Domain\Values\Value;
 
 final class ConcreteInstructionDatabaseRetrievalEntityPartialSet implements EntityPartialSet {
     private $container;

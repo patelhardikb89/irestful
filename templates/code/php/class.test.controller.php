@@ -39,6 +39,14 @@ final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
         $this->entityAdapterFactory = null;
     }
 
-    {{ fn.generateCustomMethods(custom_methods) }}
+
+    {%- if custom_method_nodes|length > 0 -%}
+        {% for oneCustomMethodNode in custom_method_nodes %}
+
+            {{ fn.generateCustomMethods(oneCustomMethodNode.related_custom_methods) }}
+            {{ fn.generateCustomMethods(oneCustomMethodNode.custom_methods) }}
+        {% endfor -%}
+    {%- endif -%}
+
 }
 {% endautoescape %}

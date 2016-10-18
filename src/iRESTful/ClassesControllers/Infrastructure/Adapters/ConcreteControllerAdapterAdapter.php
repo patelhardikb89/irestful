@@ -2,7 +2,7 @@
 namespace iRESTful\ClassesControllers\Infrastructure\Adapters;
 use iRESTful\ClassesControllers\Domain\Adapters\Adapters\ControllerAdapterAdapter;
 use iRESTful\Instructions\Domain\Adapters\Adapters\InstructionAdapterAdapter;
-use iRESTful\Classes\Domain\Methods\Customs\Adapters\CustomMethodAdapter;
+use iRESTful\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
 use iRESTful\Classes\Domain\Namespaces\Adapters\ClassNamespaceAdapter;
 use iRESTful\ClassesControllers\Infrastructure\Adapters\ConcreteControllerAdapter;

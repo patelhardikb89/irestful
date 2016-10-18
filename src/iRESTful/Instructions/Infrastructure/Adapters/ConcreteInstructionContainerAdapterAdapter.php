@@ -1,10 +1,9 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Adapters;
 use iRESTful\Instructions\Domain\Containers\Adapters\Adapters\ContainerAdapterAdapter;
-use iRESTful\DSLs\Domain\Projects\Values\Adapters\ValueAdapter;
+use iRESTful\Instructions\Domain\Values\Adapters\Adapters\ValueAdapterAdapter;
 use iRESTful\Instructions\Infrastructure\Adapters\ConcreteInstructionContainerAdapter;
 use iRESTful\Instructions\Domain\Containers\Exceptions\ContainerException;
-use iRESTful\DSLs\Domain\Projects\Values\Adapters\Adapters\ValueAdapterAdapter;
 
 final class ConcreteInstructionContainerAdapterAdapter implements ContainerAdapterAdapter {
     private $valueAdapterAdapter;

@@ -8,8 +8,11 @@ use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAdapter;
-use iRESTful\Classes\Infrastructure\Adapters\ConcreteMethodCustomAdapter;
+use iRESTful\TestInstructions\Infrastructure\Adapters\PHPCustomMethodAdapter;
 use iRESTful\TestInstructions\Infrastructure\Factories\ConcreteTestInstructionAdapterAdapterFactory;
+use iRESTful\Classes\Infrastructure\Adapters\ConcreteCustomMethodAdapter;
+use iRESTful\TestInstructions\Infrastructure\Adapters\ConcreteCustomMethodNodeAdapter;
+use iRESTful\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
 
 final class ConcreteTestAdapterFactory implements TestAdapterFactory {
     private $baseNamespaces;
@@ -29,9 +32,12 @@ final class ConcreteTestAdapterFactory implements TestAdapterFactory {
 
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
-        $customMethodAdapter = new ConcreteMethodCustomAdapter($interfaceMethodParameterAdapter);
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $customMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
+        $testCustomMethodAdapter = new PHPCustomMethodAdapter($customMethodAdapter, $sourceCodeAdapter);
+        $testCustomMethodNodeAdapter = new ConcreteCustomMethodNodeAdapter($testCustomMethodAdapter);
 
-        $testControllerAdapter = new ConcreteTestControllerAdapter($testInstructionAdapterAdapter, $customMethodAdapter, $this->baseNamespaces);
+        $testControllerAdapter = new ConcreteTestControllerAdapter($testInstructionAdapterAdapter, $testCustomMethodNodeAdapter, $this->baseNamespaces);
 
         return new ConcreteTestAdapter($testTransformAdapter, $testControllerAdapter);
     }

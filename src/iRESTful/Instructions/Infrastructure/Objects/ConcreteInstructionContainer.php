@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\Instructions\Infrastructure\Objects;
 use iRESTful\Instructions\Domain\Containers\Container;
-use iRESTful\DSLs\Domain\Projects\Values\Value;
+use iRESTful\Instructions\Domain\Values\Value;
 use iRESTful\ClassesEntities\Domain\Annotations\AnnotatedEntity;
 use iRESTful\Instructions\Domain\Containers\Exceptions\ContainerException;
 
