@@ -49,6 +49,10 @@ final class ConcreteOutputCodePath implements Path {
         return $this->relativePath;
     }
 
+    public function getBasePath() {
+        return $this->basePath;
+    }
+
     public function getFile() {
         return $this->file;
     }

@@ -2,6 +2,7 @@
 {% import "includes/imports.class.php" as fn %}
 <?php
 namespace {{namespace.path}};
+use {{configuration.object_configuration.namespace.all}};
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityRepositoryFactoryAdapter;
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityServiceFactoryAdapter;
 use iRESTful\Objects\Entities\Entities\Infrastructure\Adapters\ReflectionEntityAdapterAdapterFactoryAdapter;
@@ -12,6 +13,16 @@ use iRESTful\Objects\Entities\Entities\Infrastructure\Factories\ConcreteEntityAd
 final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
 
     public function setUp() {
+
+        $objectConfigurations = new {{configuration.object_configuration.namespace.name}}();
+        $params = [
+            'transformer_objects' => $objectConfigurations->getTransformerObjects(),
+            'container_class_mapper' => $objectConfigurations->getContainerClassMapper(),
+            'interface_class_mapper' => $objectConfigurations->getInterfaceClassMapper(),
+            'delimiter' => $objectConfigurations->getDelimiter(),
+            'base_url' => getenv('API_PROTOCOL').'://'.getenv('API_DOMAIN'),
+            'port' => getenv('API_PORT')
+        ];
 
         $entityRepositoryFactoryAdapter = new HttpEntityRepositoryFactoryAdapter();
         $this->entityRepositoryFactory = $entityRepositoryFactoryAdapter->fromDataToEntityRepositoryFactory($params);

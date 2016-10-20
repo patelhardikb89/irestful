@@ -60,12 +60,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         echo "export DB_SERVER=$DB_SERVER" >> /home/vagrant/.profile;
         echo "export DB_DRIVER=$DB_DRIVER" >> /home/vagrant/.profile;
         echo "export DB_NAME=$DB_NAME" >> /home/vagrant/.profile;
+        source /home/vagrant/.profile;
 
         sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $DB_PASSWORD";
         sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $DB_PASSWORD";
         sudo apt-get install mysql-server-5.5 php5-mysql -y --force-yes;
 
         sudo apt-get install mysql-client-core-5.5 -y --force-yes;
+
+        sudo cp {{absolute_nginx_directory_path}}/{{nginx.name}} /etc/nginx/sites-available/{{nginx.name}};
+        sudo ln -s /etc/nginx/sites-available/{{nginx.name}} /etc/nginx/sites-enabled/{{nginx.name}};
+        sudo sed -i "s/{username}/$DB_USERNAME/g" /etc/nginx/sites-enabled/{{nginx.name}};
+        sudo sed -i "s/{password}/$DB_PASSWORD/g" /etc/nginx/sites-enabled/{{nginx.name}};
+        sudo sed -i "s/{server}/$DB_SERVER/g" /etc/nginx/sites-enabled/{{nginx.name}};
+        sudo sed -i "s/{driver}/$DB_DRIVER/g" /etc/nginx/sites-enabled/{{nginx.name}};
+
+        sudo service nginx restart;
+        sudo echo "127.0.0.1 {{nginx.server_name}}" >> /etc/hosts;
+
+        #modify the www.conf file of php5-fpm:
+        sudo cp {{absolute_phpfpm_directory_path}}/www.conf /etc/php5/fpm/pool.d/www.conf;
+        sudo service php5-fpm restart;
+
     {% endif %}
 
     #remove dependencies:

@@ -16,6 +16,7 @@ use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
 use iRESTful\ClassesConverters\Domain\Converter;
 use iRESTful\ConfigurationsComposers\Domain\Composer;
 use iRESTful\ConfigurationsVagrants\Domain\VagrantFile;
+use iRESTful\ConfigurationsNginx\Domain\Nginx;
 use iRESTful\ConfigurationsPHPUnits\Domain\PHPUnit;
 use iRESTful\Classes\Domain\Interfaces\ClassInterface;
 use iRESTful\ClassesConfigurations\Domain\Objects\ObjectConfiguration;
@@ -43,11 +44,27 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         return new ConcreteOutputCode($code, $path);
     }
 
-    public function fromVagrantFileToCode(VagrantFile $vagrantFile) {
+    public function fromVagrantFileToCodes(VagrantFile $vagrantFile) {
         $data = $this->getData($vagrantFile);
-        $code = $this->template->render('vagrantfile.twig', $data);
+
         $path =  $this->rootPathAdapter->fromRelativePathStringToPath('Vagrantfile');
-        return new ConcreteOutputCode($code, $path);
+
+        $basePath = $path->getBasePath();
+        $nginxFileName = $vagrantFile->getNginx()->getName();
+        $data['absolute_nginx_directory_path'] = '/'.implode('/', $basePath).'/conf/nginx';
+        $data['absolute_phpfpm_directory_path'] = '/'.implode('/', $basePath).'/conf/php-fpm';
+
+        $code = $this->template->render('vagrantfile.twig', $data);
+        $nginx = $vagrantFile->getNginx();
+
+        $phpfpmCode = $this->template->render('phpfpm-www.conf.twig', []);
+        $phpFpmPath =  $this->rootPathAdapter->fromRelativePathStringToPath('conf/php-fpm/www.conf');
+
+        return [
+            new ConcreteOutputCode($code, $path),
+            new ConcreteOutputCode($phpfpmCode, $phpFpmPath),
+            $this->fromNginxToCode($nginx)
+        ];
     }
 
     public function fromComposerToCode(Composer $composer) {
@@ -129,6 +146,20 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $data = $this->getData($installation);
         $namespace = $installation->getNamespace();
         return $this->render($namespace, $data, 'class.installation.php');
+    }
+
+    private function fromNginxToCode(Nginx $nginx) {
+        $data = $this->getData($nginx);
+
+        $fileName = $nginx->getName();
+        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('myFile');
+        $basePath = '/'.implode('/', $path->getBasePath());
+        $nginxPath = '/'.implode('/', $nginx->getRoot()->getDirectoryPath());
+        $data['absolute_directory_path'] = $basePath.$nginxPath;
+
+        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('conf/nginx/'.$fileName);
+        $code = $this->template->render('nginx.conf.twig', $data);
+        return new ConcreteOutputCode($code, $path);
     }
 
     private function fromTestToCode(Test $test) {

@@ -27,6 +27,10 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
             throw new ControllerException('The controllers keyname is mandatory in order to convert data to Controller objects.');
         }
 
+        if (!isset($data['configuration'])) {
+            throw new ControllerException('The configuration keyname is mandatory in order to convert data to Controller objects.');
+        }
+
         if (!isset($data['annotated_entities'])) {
             throw new ControllerException('The annotated_entities keyname is mandatory in order to convert data to Controller objects.');
         }
@@ -35,6 +39,7 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
         foreach($data['controllers'] as $oneController) {
             $output[] = $this->fromDataToController([
                 'controller' => $oneController,
+                'configuration' => $data['configuration'],
                 'annotated_entities' => $data['annotated_entities']
             ]);
         }
@@ -59,6 +64,10 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
             throw new ControllerException('The controller keyname is mandatory in order to convert data to a Controller object.');
         }
 
+        if (!isset($data['configuration'])) {
+            throw new ControllerException('The configuration keyname is mandatory in order to convert data to a Controller object.');
+        }
+
         if (!isset($data['annotated_entities'])) {
             throw new ControllerException('The annotated_entities keyname is mandatory in order to convert data to a Controller object.');
         }
@@ -72,7 +81,7 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
         $merged = array_merge($this->baseNamespace, ['Tests', 'Tests', 'Functional', 'Controllers', $name]);
         $namespace = new ConcreteNamespace($merged);
 
-        return new ConcreteTestController($namespace, $testCustomMethodNodes);
+        return new ConcreteTestController($namespace, $data['configuration'], $testCustomMethodNodes);
 
     }
 

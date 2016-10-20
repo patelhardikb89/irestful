@@ -51,7 +51,7 @@ final class {{namespace.name}} implements {{object_configuration.namespace.name}
         return [
             {%- for oneController in controller_node.controllers -%}
                 [
-                    'controller' => new {{oneController.class.namespace.name}}({{- fn.generateConstructorInstanciationSignature(oneController.class.constructor.parameters) -}}),
+                    'controller' => new {{oneController.controller.namespace.name}}({{- fn.generateConstructorInstanciationSignature(oneController.controller.constructor.parameters) -}}),
                     'criteria' => [
                         'uri' => '{{oneController.pattern}}',
                         'method' => '{{oneController.method}}'

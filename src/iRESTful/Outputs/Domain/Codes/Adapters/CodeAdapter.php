@@ -8,7 +8,7 @@ use iRESTful\ClassesInstallations\Domain\Installation;
 
 interface CodeAdapter {
     public function fromComposerToCode(Composer $composer);
-    public function fromVagrantFileToCode(VagrantFile $vagrantFile);
+    public function fromVagrantFileToCodes(VagrantFile $vagrantFile);
     public function fromPHPUnitToCode(PHPUnit $phpunit);
     public function fromInstallationToCode(Installation $installation);
     public function fromTestsToCodes(array $tests);

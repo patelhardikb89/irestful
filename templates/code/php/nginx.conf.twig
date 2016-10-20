@@ -1,0 +1,27 @@
+server {
+
+    listen 80;
+
+    root {{absolute_directory_path}};
+    index {{root.file_name}};
+
+    server_name {{server_name}};
+
+    location / {
+
+        try_files $uri $uri/ /{{root.file_name}}?$query_string;
+
+        fastcgi_keep_conn               on;
+        fastcgi_pass                    127.0.0.1:9000;
+        fastcgi_index                   {{root.file_name}};
+        fastcgi_intercept_errors        on;
+
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param  DB_USERNAME "{username}";
+        fastcgi_param  DB_PASSWORD "{password}";
+        fastcgi_param  DB_SERVER "{server}";
+        fastcgi_param  DB_DRIVER "{driver}";
+
+        include        fastcgi_params;
+    }
+}

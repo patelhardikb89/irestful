@@ -1,13 +1,14 @@
 <?php
 namespace iRESTful\ConfigurationsVagrants\Infrastructure\Adapters;
 use iRESTful\ConfigurationsVagrants\Domain\Adapters\VagrantFileAdapter;
-use iRESTful\DSLs\Domain\DSL;
 use iRESTful\ConfigurationsVagrants\Infrastructure\Objects\ConcreteVagrantFile;
+use iRESTful\ConfigurationsNginx\Domain\Adapters\NginxAdapter;
+use iRESTful\DSLs\Domain\DSL;
 
 final class ConcreteVagrantFileAdapter implements VagrantFileAdapter {
-
-    public function __construct() {
-
+    private $nginxAdapter;
+    public function __construct(NginxAdapter $nginxAdapter) {
+        $this->nginxAdapter = $nginxAdapter;
     }
 
     public function fromDSLToVagrantFile(DSL $dsl) {
@@ -33,8 +34,17 @@ final class ConcreteVagrantFileAdapter implements VagrantFileAdapter {
         };
 
         $name = str_replace('/', '-', $dsl->getName()->getName());
+        $nginx = $this->nginxAdapter->fromDataToNginx([
+            'name' => strtolower($name),
+            'server_name' => strtolower($name).'.dev',
+            'root' => [
+                'file_name' => 'index.php',
+                'directory_path' => 'web'
+            ]
+        ]);
+
         $hasRelDatabase = $hasRelationalDatabase($dsl);
-        return new ConcreteVagrantFile($name, $hasRelDatabase);
+        return new ConcreteVagrantFile($name, $nginx, $hasRelDatabase);
     }
 
 }

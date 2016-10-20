@@ -134,7 +134,7 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
         $codeAdapter = $codeAdapterFactory->create();
 
         $phpunitCode = $codeAdapter->fromPHPUnitToCode($phpunit);
-        $vagrantFileCode = $codeAdapter->fromVagrantFileToCode($vagrantFile);
+        $vagrantFileCodes = $codeAdapter->fromVagrantFileToCodes($vagrantFile);
         $composerCode = $codeAdapter->fromComposerToCode($composer);
         $annotatedObjectCodes = $codeAdapter->fromAnnotatedObjectsToCodes($annotatedObjects);
         $annotatedEntityCodes = $codeAdapter->fromAnnotatedEntitiesToCodes($annotatedEntities);
@@ -148,7 +148,7 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
         $fileCodeServiceFactory = new FileCodeServiceFactory();
         $fileCodeServiceFactory->create()->saveMultiple(array_merge(
             [$phpunitCode],
-            [$vagrantFileCode],
+            $vagrantFileCodes,
             [$composerCode],
             $annotatedObjectCodes,
             $annotatedEntityCodes,
