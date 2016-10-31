@@ -220,10 +220,28 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
 
         $generateCodeLinesFromDelete = function(Delete $delete) {
             if ($delete->hasAssignment()) {
-                $variableName = $delete->getAssignment()->getVariableName();
-                return [
-                    '$this->entityServiceFactory->create()->delete($'.$variableName.');'
-                ];
+                $assignment = $delete->getAssignment();
+                $variableName = $assignment->getVariableName();
+
+                if ($assignment->hasConversion()) {
+                    $to = $assignment->getConversion()->to();
+                    if ($to->isMultiple()) {
+                        return [
+                            '$this->entitySetServiceFactory->create()->delete($'.$variableName.');'
+                        ];
+                    }
+
+                    if ($to->isPartialSet()) {
+                        //throws
+                    }
+
+                    return [
+                        '$this->entityServiceFactory->create()->delete($'.$variableName.');'
+                    ];
+                }
+
+                //throws
+
             }
 
             if ($delete->hasAssignments()) {

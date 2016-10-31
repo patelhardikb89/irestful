@@ -11,7 +11,6 @@
 * Enable combos in code generation.
 
 * The default CRUD controllers must always be present to all containers.
-* Enable all CRUD controllers
 
 * Put samples in a separate section.
 

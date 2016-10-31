@@ -600,6 +600,42 @@
                     ]
                 ]
             },
+            "delete_entity_set": {
+                "pattern": "delete /",
+                "input": "input",
+                "instructions": [
+                    "entities = from input to multiple input->container",
+                    "delete entities",
+                    "output = from entities to data",
+                    "return output"
+                ],
+                "view": "json",
+                "tests": [
+                    [
+                        [
+                            [
+                                "retrieve $each->container by uuid:$each->data->uuid | not found"
+                            ]
+                        ]
+                    ],
+                    [
+                        "samples = from this to multiple entity",
+                        "insert samples",
+                        [
+                            [
+                                "entity = retrieve $each->container by uuid:$each->data->uuid",
+                                "compare entity to $each"
+                            ]
+                        ],
+                        "delete samples",
+                        [
+                            [
+                                "retrieve $each->container by uuid:$each->data->uuid | not found"
+                            ]
+                        ]
+                    ]
+                ]
+            },
             "delete": {
                 "pattern": "delete /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
                 "input": "input",
