@@ -11,6 +11,7 @@ use iRESTful\Classes\Domain\Namespaces\Adapters\InterfaceNamespaceAdapter;
 use iRESTful\Classes\Domain\Constructors\Parameters\Methods\Adapters\MethodAdapter;
 use iRESTful\Instructions\Domain\Instruction;
 use iRESTful\Classes\Domain\Constructors\Parameters\Exceptions\ParameterException;
+use iRESTful\Instructions\Domain\Assignments\Assignment;
 
 final class ConcreteConstructorParameterAdapter implements ConstructorParameterAdapter {
     private $namespaceAdapter;
@@ -31,7 +32,20 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
 
     public function fromInstructionsToParameters(array $instructions) {
 
-        $parameters = [];
+        $propertyName = 'controllerResponseAdapter';
+        $namespaceData = explode('\\', 'iRESTful\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter');
+
+        $namespace = $this->namespaceAdapter->fromFullDataToNamespace($namespaceData);
+        $property = $this->propertyAdapter->fromNameToProperty($propertyName);
+        $methodParameter = $this->parameterAdapter->fromDataToParameter([
+            'name' => $propertyName,
+            'namespace' => $namespace
+        ]);
+
+        $parameters = [
+            $propertyName => new ConcreteConstructorParameter($property, $methodParameter)
+        ];
+
         foreach($instructions as $oneInstruction) {
             $newParameters = $this->fromInstructionToParameters($oneInstruction);
             if (!empty($newParameters)) {
@@ -101,7 +115,7 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
             $propertyName = 'entityAdapterFactory';
             $namespaceData = explode('\\', 'iRESTful\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory');
 
-            $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
+            $namespace = $this->namespaceAdapter->fromFullDataToNamespace($namespaceData);
             $property = $this->propertyAdapter->fromNameToProperty($propertyName);
             $methodParameter = $this->parameterAdapter->fromDataToParameter([
                 'name' => $propertyName,
@@ -141,30 +155,68 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
 
     public function fromInstructionDatabaseActionToParameter($action) {
 
-        $getPropertyName = function($action) {
-            if ($action->hasHttpRequest()) {
-                return 'httpApplicationFactoryAdapter';
-            }
-
-            return 'entityServiceFactory';
-        };
-
         $getNamespaceData = function($action) {
+
+            $entitySetService = explode('\\', 'iRESTful\Objects\Entities\Entities\Domain\Sets\Services\Factories\EntitySetServiceFactory');
+            $entityService = explode('\\', 'iRESTful\Objects\Entities\Entities\Domain\Services\Factories\EntityServiceFactory');
+
+            $byAssignment = function(Assignment $assignment) use(&$entitySetService, &$entityService) {
+
+                if ($assignment->isMultipleEntities()) {
+                    return $entitySetService;
+                }
+
+                if ($assignment->isPartialEntitySet()) {
+                    //throws
+                }
+
+                return $entityService;
+
+            };
+
             if ($action->hasHttpRequest()) {
                 return explode('\\', 'iRESTful\Objects\Libraries\Https\Applications\Factories\Adapters\HttpApplicationFactoryAdapter');
             }
 
-            if ($action->hasInsert() || $action->hasUpdate() || $action->hasDelete()) {
-                return explode('\\', 'iRESTful\Objects\Entities\Entities\Domain\Services\Factories\EntityServiceFactory');
+            if ($action->hasInsert()) {
+                $insert = $action->getInsert();
+                if ($insert->hasAssignment()) {
+                    $assignment = $insert->getAssignment();
+                    return $byAssignment($assignment);
+                }
+
+                if ($insert->hasAssignments()) {
+                    return $entitySetService;
+                }
+
+                //throws
+
+            }
+
+            if ($action->hasUpdate()) {
+                $updateAssignment = $action->getUpdate()->getUpdated();
+                return $byAssignment($updateAssignment);
+            }
+
+            if ($action->hasDelete()) {
+                $delete = $action->getDelete();
+                if ($delete->hasAssignment()) {
+                    $assignment = $delete->getAssignment();
+                    return $byAssignment($assignment);
+                }
+
+                if ($delete->hasAssignments()) {
+                    return $entitySetService;
+                }
             }
 
             //throws
         };
 
-        $propertyName = $getPropertyName($action);
         $namespaceData = $getNamespaceData($action);
+        $propertyName = lcfirst($namespaceData[count($namespaceData) - 1]);
 
-        $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
+        $namespace = $this->namespaceAdapter->fromFullDataToNamespace($namespaceData);
         $property = $this->propertyAdapter->fromNameToProperty($propertyName);
         $methodParameter = $this->parameterAdapter->fromDataToParameter([
             'name' => $propertyName,
@@ -175,27 +227,7 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
     }
 
     public function fromInstructionDatabaseRetrievalToParameter($retrieval) {
-
-        $getPropertyName = function($retrieval) {
-            if ($retrieval->hasHttpRequest()) {
-                return 'httpApplicationFactoryAdapter';
-            }
-
-            if ($retrieval->hasEntity()) {
-                return 'entityRepositoryFactory';
-            }
-
-            if ($retrieval->hasMultipleEntities()) {
-                return 'entitySetRepositoryFactory';
-            }
-
-            if ($retrieval->hasEntityPartialSet()) {
-                return 'entityPartialSetRepositoryFactory';
-            }
-
-            throw new ParameterException('The given retrieval object did not have a valid retrieval method.');
-        };
-
+        
         $getNamespaceData = function($retrieval) {
 
             $name = '';
@@ -215,6 +247,10 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
                 $name = 'iRESTful\Objects\Entities\Entities\Domain\Sets\Partials\Repositories\Factories\EntityPartialSetRepositoryFactory';
             }
 
+            if ($retrieval->hasRelatedEntity()) {
+                $name = 'iRESTful\Objects\Entities\Entities\Domain\Relations\Repositories\Factories\EntityRelationRepositoryFactory';
+            }
+
             if (empty($name)) {
                 throw new NamespaceException('The given Retrieval object did not have a valid retrieval method.');
             }
@@ -222,10 +258,10 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
             return explode('\\', $name);
         };
 
-        $propertyName = $getPropertyName($retrieval);
         $namespaceData = $getNamespaceData($retrieval);
+        $propertyName = lcfirst($namespaceData[count($namespaceData) - 1]);
 
-        $namespace = $this->namespaceAdapter->fromDataToNamespace($namespaceData);
+        $namespace = $this->namespaceAdapter->fromFullDataToNamespace($namespaceData);
         $property = $this->propertyAdapter->fromNameToProperty($propertyName);
         $methodParameter = $this->parameterAdapter->fromDataToParameter([
             'name' => $propertyName,

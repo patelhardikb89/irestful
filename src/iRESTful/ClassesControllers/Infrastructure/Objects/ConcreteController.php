@@ -28,8 +28,4 @@ final class ConcreteController implements Controller {
         return $this->customMethod;
     }
 
-    public function getTestClass() {
-
-    }
-
 }

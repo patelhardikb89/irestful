@@ -14,6 +14,8 @@ final class ConcreteInstructionConversionToAdapter implements ToAdapter {
 
     public function fromStringToTo($string) {
 
+        //from input to multiple input->container
+
         $isMultiple = false;
         if (strpos($string, 'multiple ') === 0) {
             $string = substr($string, strlen('multiple '));

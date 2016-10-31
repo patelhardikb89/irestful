@@ -12,6 +12,12 @@ use iRESTful\Objects\Libraries\Ids\Domain\Uuids\Uuid;
     {% endif %}
 {% endfor %}
 
+{% for oneParameter in entity.custom_methods.parameters %}
+    {% if oneParameter.type.namespace.all %}
+        use {{oneParameter.type.namespace.all}};
+    {% endif %}
+{% endfor %}
+
 {{ fn.generateClassAnnotations(annotation) }}
 final class {{entity.namespace.name}} extends AbstractEntity implements {{entity.interface.namespace.name}} {
     {{ fn.generateClassProperties(entity.constructor.parameters) }}

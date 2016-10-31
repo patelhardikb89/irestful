@@ -7,19 +7,23 @@ use iRESTful\Instructions\Domain\Databases\Retrievals\Entities\Adapters\EntityAd
 use iRESTful\Instructions\Domain\Databases\Retrievals\EntityPartialSets\Adapters\EntityPartialSetAdapter;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Multiples\Adapters\MultipleEntityAdapter;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Exceptions\RetrievalException;
+use iRESTful\Instructions\Domain\Databases\Retrievals\Relations\Adapters\RelatedEntityAdapter;
 
 final class ConcreteInstructionDatabaseRetrievalAdapter implements RetrievalAdapter {
     private $entityAdapter;
     private $entityPartialSetAdapter;
     private $multipleEntityAdapter;
+    private $relatedEntityAdapter;
     public function __construct(
         EntityAdapter $entityAdapter,
         EntityPartialSetAdapter $entityPartialSetAdapter,
-        MultipleEntityAdapter $multipleEntityAdapter
+        MultipleEntityAdapter $multipleEntityAdapter,
+        RelatedEntityAdapter $relatedEntityAdapter
     ) {
         $this->entityAdapter = $entityAdapter;
         $this->entityPartialSetAdapter = $entityPartialSetAdapter;
         $this->multipleEntityAdapter = $multipleEntityAdapter;
+        $this->relatedEntityAdapter = $relatedEntityAdapter;
     }
 
     public function fromStringToRetrieval($string) {
@@ -63,6 +67,24 @@ final class ConcreteInstructionDatabaseRetrievalAdapter implements RetrievalAdap
 
             return new ConcreteInstructionDatabaseRetrieval(null, null, $multipleEntity);
         }
+
+        $matches = [];
+        preg_match_all('/([^ ]+) master-uuid ([^ ]+) slave-property ([^ ]+) slave-container ([^ ]+)/s', $string, $matches);
+        if (isset($matches[0][0]) && ($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && isset($matches[3][0]) && isset($matches[4][0])) {
+            $relatedEntity = $this->relatedEntityAdapter->fromDataToRelatedEntity([
+                'master' => [
+                    'container' => $matches[1][0],
+                    'uuid' => $matches[2][0]
+                ],
+                'slave' => [
+                    'property' => $matches[3][0],
+                    'container' => $matches[4][0]
+                ]
+            ]);
+
+            return new ConcreteInstructionDatabaseRetrieval(null, null, null, null, $relatedEntity);
+        }
+
 
         throw new RetrievalException('The given retrieval command ('.$string.') is invalid.');
 

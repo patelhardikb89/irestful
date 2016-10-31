@@ -9,4 +9,6 @@ interface Assignment {
     public function getConversion();
     public function hasMergedAssignments();
     public function getMergedAssignments();
+    public function isPartialEntitySet();
+    public function isMultipleEntities();
 }

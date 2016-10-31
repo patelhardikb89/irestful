@@ -18,6 +18,7 @@ final class ConcreteInstructionConversionAdapter implements ConversionAdapter {
 
         $matches = [];
         preg_match_all('/from ([^ ]+) to (.+)/s', $string, $matches);
+
         if (($matches[0][0] == $string) && isset($matches[1][0]) && isset($matches[2][0]) && !empty($matches[1][0]) && !empty($matches[2][0])) {
             $from = $this->fromAdapter->fromStringToFrom($matches[1][0]);
             $to = $this->toAdapter->fromStringToTo($matches[2][0]);

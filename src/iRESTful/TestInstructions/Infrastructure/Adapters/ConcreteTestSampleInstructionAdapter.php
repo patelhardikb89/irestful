@@ -31,29 +31,11 @@ final class ConcreteTestSampleInstructionAdapter implements TestSampleInstructio
 
         $commands = [];
         $comparisonCommand = null;
+
         foreach($data['tests'] as $oneTest) {
-            $oneTest = str_replace('this|container', '$each->container', $oneTest);
 
-            $matches = [];
-            preg_match_all('/this->([^ ]+)/s', $oneTest, $matches);
-
-            if (isset($matches[1]) && !empty($matches[1])) {
-                foreach($matches[1] as $index => $oneProperty) {
-
-                    if (
-                        (strpos($matches[1][$index], ':') !== false) &&
-                        (strpos($matches[1][$index], '$property.name$') !== false) &&
-                        (strpos($matches[1][$index], 'this->$property.value$') !== false)
-                    ) {
-                        $matches[1][$index] = str_replace('$property.name$', '$each->data|name', $matches[1][$index]);
-                        $oneTest = str_replace('this->$property.value$', '$each->data|value', $matches[1][$index]);
-
-                        continue;
-                    }
-
-                    $oneTest = str_replace($matches[0][$index], '$each->data->'.$matches[1][$index], $oneTest);
-                }
-
+            if (strpos($oneTest, '$each->data ') !== false) {
+                $oneTest = str_replace('$each->data ', 'input ', $oneTest);
             }
 
             if (strpos($oneTest, 'compare') !== false) {
@@ -62,9 +44,9 @@ final class ConcreteTestSampleInstructionAdapter implements TestSampleInstructio
             }
 
             if (strpos($oneTest, '| not found') !== false) {
+                $oneTest = 'retrievedValue = '.str_replace('| not found', '', $oneTest);
                 print_r([$oneTest, 'fromDataToTestSampleInstructions']);
                 continue;
-                //die();
             }
 
             $commands[] = $oneTest;

@@ -4,7 +4,8 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "xenial-server-cloudimg-amd64-vagrant"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
 
   config.vm.network :private_network, ip: "192.168.66.60"
   config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true
@@ -34,39 +35,46 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     sudo apt-get install git -y --force-yes;
 
     #update and upgrade
-    sudo add-apt-repository ppa:ondrej/php5-5.6 -y;
-    sudo apt-get update -y;
-    sudo apt-get upgrade -y;
-    sudo add-apt-repository ppa:ondrej/php5-5.6 -y;
-    sudo apt-get install php5 -y --force-yes;
-    sudo apt-get install php5-cli -y --force-yes;
-    sudo apt-get install php5-fpm -y --force-yes;
-    sudo apt-get install php5-xdebug -y --force-yes;
-    sudo apt-get install php5-curl -y --force-yes;
+    sudo apt-get install php -y --force-yes;
+    sudo apt-get install php-cli -y --force-yes;
+    sudo apt-get install php-fpm -y --force-yes;
+    sudo apt-get install php-xdebug -y --force-yes;
+    sudo apt-get install php-curl -y --force-yes;
+    sudo apt-get install php-xml -y --force-yes;
+    sudo apt-get install php-mbstring -y --force-yes;
+    sudo apt-get install php-bcmath -y --force-yes;
     sudo apt-get purge apache2 -y --force-yes;
     sudo apt-get autoremove -y --force-yes;
     sudo apt-get update -y;
     sudo apt-get upgrade -y;
+    sudo apt-get install nginx -y --force-yes;
 
     {% if has_relational_database %}
         DB_USERNAME="root";
         DB_PASSWORD=`tr -dc A-Za-z0-9 < /dev/urandom | head -c 8 | xargs`;
         DB_SERVER="127.0.0.1";
         DB_DRIVER="mysql";
-        DB_NAME="development";
+        DB_NAME="{{database_name}}";
+        API_PROTOCOL="http";
+        API_DOMAIN="{{nginx.server_name}}";
+        API_PORT=80;
 
-        echo "export DB_USERNAME=$DB_USERNAME" >> /home/vagrant/.profile;
-        echo "export DB_PASSWORD=$DB_PASSWORD" >> /home/vagrant/.profile;
-        echo "export DB_SERVER=$DB_SERVER" >> /home/vagrant/.profile;
-        echo "export DB_DRIVER=$DB_DRIVER" >> /home/vagrant/.profile;
-        echo "export DB_NAME=$DB_NAME" >> /home/vagrant/.profile;
-        source /home/vagrant/.profile;
+        echo "export DB_USERNAME=$DB_USERNAME" >> /home/ubuntu/.profile;
+        echo "export DB_PASSWORD=$DB_PASSWORD" >> /home/ubuntu/.profile;
+        echo "export DB_SERVER=$DB_SERVER" >> /home/ubuntu/.profile;
+        echo "export DB_DRIVER=$DB_DRIVER" >> /home/ubuntu/.profile;
+        echo "export DB_NAME=$DB_NAME" >> /home/ubuntu/.profile;
+        echo "export API_PROTOCOL=$API_PROTOCOL" >> /home/ubuntu/.profile;
+        echo "export API_DOMAIN=$API_DOMAIN" >> /home/ubuntu/.profile;
+        echo "export API_PORT=$API_PORT" >> /home/ubuntu/.profile;
+        source /home/ubuntu/.profile;
 
-        sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $DB_PASSWORD";
-        sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $DB_PASSWORD";
-        sudo apt-get install mysql-server-5.5 php5-mysql -y --force-yes;
+        sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $DB_PASSWORD";
+        sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $DB_PASSWORD";
+        sudo apt-get install mysql-server php-mysql -y --force-yes;
 
-        sudo apt-get install mysql-client-core-5.5 -y --force-yes;
+        rm /etc/nginx/sites-available/default;
+        rm /etc/nginx/sites-enabled/default;
 
         sudo cp {{absolute_nginx_directory_path}}/{{nginx.name}} /etc/nginx/sites-available/{{nginx.name}};
         sudo ln -s /etc/nginx/sites-available/{{nginx.name}} /etc/nginx/sites-enabled/{{nginx.name}};
@@ -76,11 +84,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         sudo sed -i "s/{driver}/$DB_DRIVER/g" /etc/nginx/sites-enabled/{{nginx.name}};
 
         sudo service nginx restart;
-        sudo echo "127.0.0.1 {{nginx.server_name}}" >> /etc/hosts;
+        sudo echo "127.0.0.1 irestful-authenticated.dev" >> /etc/hosts;
 
         #modify the www.conf file of php5-fpm:
-        sudo cp {{absolute_phpfpm_directory_path}}/www.conf /etc/php5/fpm/pool.d/www.conf;
-        sudo service php5-fpm restart;
+        sudo cp /vagrant/conf/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf;
+        sudo systemctl restart php7.0-fpm;
+        sudo systemctl enable php7.0-fpm;
+        sudo systemctl restart nginx;
 
     {% endif %}
 

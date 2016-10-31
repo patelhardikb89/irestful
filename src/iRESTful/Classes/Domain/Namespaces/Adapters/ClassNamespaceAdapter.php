@@ -10,4 +10,5 @@ interface ClassNamespaceAdapter {
     public function fromTypeToAdapterNamespace(Type $type);
     public function fromTypeToNamespace(Type $type);
     public function fromDataToNamespace(array $data);
+    public function fromFullDataToNamespace(array $data);
 }

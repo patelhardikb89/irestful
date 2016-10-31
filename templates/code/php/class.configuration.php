@@ -2,7 +2,6 @@
 <?php
 namespace {{namespace.path}};
 use {{object_configuration.namespace.all}};
-use iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Adapters\PDOEntityRepositoryServiceAdapter;
 use iRESTful\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObjectAdapterFactory;
 
 
@@ -11,7 +10,7 @@ use iRESTful\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObje
 {% endfor %}
 
 {% import "includes/imports.class.php" as fn %}
-final class {{namespace.name}} implements {{object_configuration.namespace.name}} {
+final class {{namespace.name}} {
     private $dbName;
     private $entityObjects;
     public function __construct($dbName) {
@@ -24,28 +23,24 @@ final class {{namespace.name}} implements {{object_configuration.namespace.name}
     }
 
     private function getControllerRules() {
-        $entityRepositoryServiceAdapter = new PDOEntityRepositoryServiceAdapter(
-            $this->entityObjects->getTransformerObjects(),
-            $this->entityObjects->getContainerClassMapper(),
-            $this->entityObjects->getInterfaceClassMapper(),
-            $this->entityObjects->getDelimiter(),
-            $this->entityObjects->getTimezone(),
-            getenv('DB_DRIVER'),
-            getenv('DB_SERVER'),
-            $this->dbName,
-            getenv('DB_USERNAME'),
-            getenv('DB_PASSWORD')
-        );
 
-        $objectAdapterFactory = new ReflectionObjectAdapterFactory(
-            $this->entityObjects->getTransformerObjects(),
-            $this->entityObjects->getContainerClassMapper(),
-            $this->entityObjects->getInterfaceClassMapper(),
-            $this->entityObjects->getDelimiter()
-        );
+        $factory = function($className) {
+            return new $className(
+                $this->entityObjects->getTransformerObjects(),
+                $this->entityObjects->getContainerClassMapper(),
+                $this->entityObjects->getInterfaceClassMapper(),
+                $this->entityObjects->getDelimiter(),
+                $this->entityObjects->getTimezone(),
+                getenv('DB_DRIVER'),
+                getenv('DB_SERVER'),
+                $this->dbName,
+                getenv('DB_USERNAME'),
+                getenv('DB_PASSWORD')
+            );
+        };
 
         {% for oneParameter in controller_node.parameters %}
-            ${{oneParameter.parameter.name}} = $entityRepositoryServiceAdapter->fromClassNameToObject('{{oneParameter.parameter.type.namespace.all}}');
+            ${{oneParameter.constructor_parameter.parameter.name}} = $factory('\{{oneParameter.class_namespace.all}}');
         {% endfor %}
 
         return [
@@ -56,7 +51,7 @@ final class {{namespace.name}} implements {{object_configuration.namespace.name}
                         'uri' => '{{oneController.pattern}}',
                         'method' => '{{oneController.method}}'
                     ]
-                ]
+                ]{{- loop.last ? '' : ', ' -}}
             {%- endfor -%}
         ];
     }

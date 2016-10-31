@@ -63,18 +63,19 @@ final class PHPCustomMethodAdapter implements TestCustomMethodAdapter {
 
             $comparisonCode = '';
             if ($testContainerInstruction->hasComparison()) {
-                $comparisonCode = '$this->assertEquals($oneData, $sourceData);';
+                $comparisonCode = '$this->assertEquals($retrieved, $source);';
             }
 
             $methodSourceCodeLines[] = [
-                '$retrieveSetData = function($container, array $data, $index, $amount) {',
+                '$retrieveSet = function($container, array $data, $index, $amount) {',
                 $sourceCodeLines,
                 '}',
                 '',
                 '$amount = count($this->data);',
                 'foreach($this->data as $oneData) {',
                 [
-                    '$sourceData = $retrieveSetData($oneData[\'container\'], $oneData[\'data\'], 0, $amount);',
+                    '$retrievedSet = $retrieveSet($oneData[\'container\'], $oneData[\'data\'], 0, $amount);',
+                    '$sourceSet = $this->entityAdapterFactory->create()->fromDataToEntitySet($oneData, true);',
                     $comparisonCode
                 ],
                 '}'
@@ -84,24 +85,29 @@ final class PHPCustomMethodAdapter implements TestCustomMethodAdapter {
         if ($testContainerInstruction->hasSampleInstructions()) {
             $sampleInstructions = $testContainerInstruction->getSampleInstructions();
             foreach($sampleInstructions as $oneSampleInstruction) {
-                $instructions = $oneSampleInstruction->getInstructions();
-                $sourceCodeLines = $this->sourceCodeAdapter->fromDataToSourceCode([
-                    'instructions' => $instructions
-                ])->getLines();
+
+                $sourceCodeLines = [];
+                if ($oneSampleInstruction->hasInstructions()) {
+                    $instructions = $oneSampleInstruction->getInstructions();
+                    $sourceCodeLines = $this->sourceCodeAdapter->fromDataToSourceCode([
+                        'instructions' => $instructions
+                    ])->getLines();
+                }
 
                 $comparisonCode = '';
                 if ($oneSampleInstruction->hasComparison()) {
-                    $comparisonCode = '$this->assertEquals($oneData, $sourceData);';
+                    $comparisonCode = '$this->assertEquals($retrieved, $source);';
                 }
 
                 $methodSourceCodeLines[] = [
-                    '$retrieveData = function(array $data) {',
+                    '$retrieveEntity = function(array $input) {',
                     $sourceCodeLines,
-                    '}',
+                    '};',
                     '',
                     'foreach($this->data as $oneData) {',
                     [
-                        '$sourceData = $retrieveData($oneData);',
+                        '$retrieved = $retrieveEntity($oneData);',
+                        '$source = $this->entityAdapterFactory->create()->fromDataToEntity($oneData, true);',
                         $comparisonCode
                     ],
                     '}'

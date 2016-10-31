@@ -33,7 +33,7 @@ final class ConcreteInstructionDatabaseRetrievalMultipleEntityAdapter implements
 
         $container = $this->containerAdapter->fromStringToContainer($data['object_name']);
         if ($data['property']['name'] == 'uuid') {
-            $value = $this->valueAdapter->fromStringToValue($data['property']['name']);
+            $value = $this->valueAdapter->fromStringToValue($data['property']['value']);
             return new ConcreteInstructionDatabaseRetrievalMultipleEntity($container, $value);
         }
 

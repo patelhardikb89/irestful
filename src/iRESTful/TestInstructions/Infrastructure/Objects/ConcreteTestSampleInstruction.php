@@ -9,20 +9,26 @@ use iRESTful\TestInstructions\Domain\Comparisons\TestInstructionComparison;
 final class ConcreteTestSampleInstruction implements TestSampleInstruction {
     private $instructions;
     private $comparison;
-    public function __construct(array $instructions, TestInstructionComparison $comparison = null) {
+    public function __construct(array $instructions = null, TestInstructionComparison $comparison = null) {
 
         if (empty($instructions)) {
-            throw new TestSampleInstructionException('The instructions array cannot be empty.');
+            $instructions = null;
         }
 
-        foreach($instructions as $oneInstruction) {
-            if (!($oneInstruction instanceof Instruction)) {
-                throw new TestSampleInstructionException('The instructions array must only contain Instruction objects.');
+        if (!empty($instructions)) {
+            foreach($instructions as $oneInstruction) {
+                if (!($oneInstruction instanceof Instruction)) {
+                    throw new TestSampleInstructionException('The instructions array must only contain Instruction objects.');
+                }
             }
         }
 
         $this->instructions = $instructions;
         $this->comparison = $comparison;
+    }
+
+    public function hasInstructions() {
+        return !empty($this->instructions);
     }
 
     public function getInstructions() {

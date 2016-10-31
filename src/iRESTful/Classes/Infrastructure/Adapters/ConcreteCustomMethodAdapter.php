@@ -65,7 +65,7 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
             'name' => 'httpRequest',
             'namespace' => new ConcreteNamespace(explode('\\', 'iRESTful\Objects\Libraries\Https\Domain\Requests\HttpRequest'))
         ]);
-        
+
         return new ConcreteCustomMethod($name, $sourceCode, [$parameter]);
     }
 

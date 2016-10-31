@@ -9,6 +9,10 @@ final class ConcreteNamespaceAdapter implements NamespaceAdapter {
         $this->baseNamespace = $baseNamespace;
     }
 
+    public function fromFullDataToNamespace(array $data) {
+        return new ConcreteNamespace($data);
+    }
+
     public function fromDataToNamespace(array $data) {
 
         $converted = [];

@@ -29,13 +29,13 @@
                 },
                 "samples": [
                     {
-                        "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                        "uuid": "d2044e56-402b-4dbf-a8f8-066dd4a0c7b3",
                         "is_user_mandatory": false,
                         "pattern___regex_pattern": null,
                         "pattern___specific_uri": "/my/value",
                         "params": [
                             {
-                                "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
+                                "uuid": "4f126401-5047-41f0-8a04-4cdcad80194e",
                                 "name": "my_second_param",
                                 "pattern___regex_pattern": "[a-z0-9]+",
                                 "pattern___specific_value": null,
@@ -43,7 +43,7 @@
                                 "created_on": 1470346899
                             },
                             {
-                                "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
+                                "uuid": "7b7132d4-b7bf-427b-9592-2df034676bf9",
                                 "name": "my_param",
                                 "pattern___regex_pattern": null,
                                 "pattern___specific_value": "my value",
@@ -54,7 +54,7 @@
                         "created_on": 1470346929
                     },
                     {
-                        "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                        "uuid": "e7bcfff9-2e0f-47f2-8470-91e88594731f",
                         "is_user_mandatory": true,
                         "pattern___regex_pattern": "[.]+",
                         "pattern___specific_uri": null,
@@ -71,17 +71,17 @@
                 },
                 "samples": [
                     {
-                        "uuid": "10010456-29ab-401f-93bc-946cd3fd750a",
+                        "uuid": "45251b92-8aef-42e1-9684-b8c1e4d0c663",
                         "base_url": "http://apis.irestful.com",
                         "endpoints": [
                             {
-                                "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                                "uuid": "169ec9a7-f380-4f5d-b96a-aedafca265ed",
                                 "is_user_mandatory": false,
                                 "pattern___regex_pattern": null,
                                 "pattern___specific_uri": "/my/value",
                                 "params": [
                                     {
-                                        "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
+                                        "uuid": "ae5d7a5d-29bd-44b4-bc4f-087d0566936b",
                                         "name": "my_second_param",
                                         "pattern___regex_pattern": "[a-z0-9]+",
                                         "pattern___specific_value": null,
@@ -89,7 +89,7 @@
                                         "created_on": 1470347043
                                     },
                                     {
-                                        "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
+                                        "uuid": "bbddb626-f527-4b80-8801-79fe6c53e4ab",
                                         "name": "my_param",
                                         "pattern___regex_pattern": null,
                                         "pattern___specific_value": "my value",
@@ -103,7 +103,7 @@
                         "created_on": 1470347090
                     },
                     {
-                        "uuid": "10010456-29ab-401f-93bc-946cd3fd750a",
+                        "uuid": "859bf659-380e-4c3d-95ab-6f2107ad08a1",
                         "base_url": "http://test.irestful.com",
                         "endpoints": null,
                         "created_on": 1470347090
@@ -119,7 +119,7 @@
                 },
                 "samples": [
                     {
-                        "uuid": "4d4ffc9b-03ee-4c7a-99bd-e7f9a83b5bc3",
+                        "uuid": "b2a2f3cf-f534-4eda-b93b-e9b9c84171bb",
                         "name": "my_second_param",
                         "pattern___regex_pattern": "[a-z0-9]+",
                         "pattern___specific_value": null,
@@ -127,7 +127,7 @@
                         "created_on": 1470347043
                     },
                     {
-                        "uuid": "cdf75f60-6c59-489c-a9eb-fc4080fed3ae",
+                        "uuid": "d320e2a3-3692-4983-b136-3bbb49be0449",
                         "name": "my_param",
                         "pattern___regex_pattern": null,
                         "pattern___specific_value": "my value",
@@ -146,18 +146,18 @@
                 },
                 "samples": [
                     {
-                        "uuid": "5b3ed235-5d8d-4702-9b92-532003e3bf96",
+                        "uuid": "47a3667b-1a2a-49d9-9ab7-f46e8e4e6a68",
             			"keyname": "another_registration",
             			"title": "This is a another registration",
             			"description": "This is the description of the another registration",
             			"roles": [
                             {
-                                "uuid": "6b7926c6-24df-4626-845c-4e6886231b81",
+                                "uuid": "a7a4848f-8c57-44ce-bebc-2a00fef4a15c",
                     			"title": "This is a second role",
                     			"description": "This is a second role description.",
                     			"permissions": [
                                     {
-                                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                                        "uuid": "49565d79-4a8b-4984-b577-a36cbc8b6b7c",
                                         "title": "This is just a title",
                                         "description": "This is just a description",
                                         "can_read": true,
@@ -172,7 +172,7 @@
             			"created_on": 1470347205
                     },
                     {
-                        "uuid": "5b3ed235-5d8d-4702-9b92-532003e3bf96",
+                        "uuid": "0e4ede0e-d2aa-4c9d-97c0-9dd8c4a3a4a5",
             			"keyname": "another_keyname",
             			"title": "This is a another keyname",
             			"description": "This is the description of the another keyname",
@@ -190,7 +190,7 @@
                 },
                 "samples": [
                     {
-                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "uuid": "c71228f2-0f97-4a35-b630-bfc3dcb14f22",
                         "endpoint": {
                             "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
                             "is_user_mandatory": false,
@@ -200,7 +200,7 @@
                             "created_on": 1470346929
                         },
                         "owner": {
-                            "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                            "uuid": "044d657f-2c7a-47ae-a10c-ea4008424f13",
                             "software": {
                                 "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
                                 "name": "my_software_name",
@@ -211,7 +211,7 @@
                                 "created_on": 1470347205
                             },
                             "user": {
-                                "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                                "uuid": "96226c6a-0251-4f76-b6cf-815db07d03a4",
                                 "name": "my_username",
                                 "credentials___username": "my_user_username",
                                 "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -225,9 +225,9 @@
                         "created_on": 1470347205
                     },
                     {
-                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "uuid": "6c77253e-cb12-454e-99c9-d886afe5a3fc",
                         "endpoint": {
-                            "uuid": "6b7afaaf-b91f-4a1b-88a9-5d5ae8c2608d",
+                            "uuid": "7840acfc-72c0-4275-a240-d601d3f5e864",
                             "is_user_mandatory": true,
                             "pattern___regex_pattern": "[.]+",
                             "pattern___specific_uri": null,
@@ -235,9 +235,9 @@
                             "created_on": 1470346929
                         },
                         "owner": {
-                            "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                            "uuid": "5c819992-5f4c-4f79-928b-156e93aee063",
                             "software": {
-                                "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                                "uuid": "24d6d113-0d5c-4947-bdd9-c20222145d1f",
                                 "name": "my_software_name",
                                 "credentials___username": "my_software_username",
                                 "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -246,7 +246,7 @@
                                 "created_on": 1470347205
                             },
                             "user": {
-                                "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                                "uuid": "ae9f2cb0-3be9-437d-877d-290d1bbc8326",
                                 "name": "my_username",
                                 "credentials___username": "my_user_username",
                                 "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -269,13 +269,13 @@
                 },
                 "samples": [
                     {
-                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "uuid": "fe384b92-fbcd-41e1-b89f-feaa34fea0fc",
                         "permissions": null,
                         "owners": [
                             {
-                                "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                                "uuid": "f271884d-4ac3-44d7-a26f-14d11faded20",
                                 "software": {
-                                    "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                                    "uuid": "eff7f5d8-2cbf-4e95-bd3a-225639c53b3a",
                                     "name": "my_software_name",
                                     "credentials___username": "my_software_username",
                                     "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -284,7 +284,7 @@
                                     "created_on": 1470347205
                                 },
                                 "user": {
-                                    "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                                    "uuid": "3c902b3e-11e2-436c-a8f9-25fe273b1d6c",
                                     "name": "my_username",
                                     "credentials___username": "my_user_username",
                                     "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -298,10 +298,10 @@
                         "created_on": 1470347205
                     },
                     {
-                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "uuid": "5835136d-db5f-42c1-802b-48cfdb41be30",
                         "permissions": [
                             {
-                                "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                                "uuid": "85e609df-3379-4e5b-a203-bb7b02cf7eec",
                                 "title": "This is just a title",
                                 "description": "This is just a description",
                                 "can_read": true,
@@ -323,9 +323,9 @@
                 },
                 "samples": [
                     {
-                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "uuid": "09ec0d2c-66f0-46af-8297-c86a99bd1f70",
                         "software": {
-                            "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                            "uuid": "49f75754-602a-4b75-a3db-3348972e8be4",
                             "name": "my_software_name",
                             "credentials___username": "my_software_username",
                             "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -334,7 +334,7 @@
                             "created_on": 1470347205
                         },
                         "user": {
-                            "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                            "uuid": "1d380a0b-798a-4277-8878-211de27cfca4",
                             "name": "my_username",
                             "credentials___username": "my_user_username",
                             "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -345,9 +345,9 @@
                         "created_on": 1470347205
                     },
                     {
-                        "uuid": "416b1c6c-697d-4812-b900-43dd718f547d",
+                        "uuid": "7c59d995-d37a-4d5f-b7c8-b08334b54d15",
                         "software": {
-                            "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                            "uuid": "6d3471b8-3b71-449e-9d00-fb74f9306651",
                             "name": "my_software_name",
                             "credentials___username": "my_software_username",
                             "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -369,7 +369,7 @@
                 },
                 "samples": [
                     {
-                        "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                        "uuid": "00c21a45-8723-4b35-8123-a2c9a892467b",
                         "name": "my_software_name",
                         "credentials___username": "my_software_username",
                         "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -378,7 +378,7 @@
                         "created_on": 1470347205
                     },
                     {
-                        "uuid": "e21d4c75-8206-4996-a014-aa4ce6acf6b0",
+                        "uuid": "6c8ae338-d51f-49b3-be09-429c4f308d97",
                         "name": "another_software_name",
                         "credentials___username": "my_software_username",
                         "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -397,7 +397,7 @@
                 },
                 "samples": [
                     {
-                        "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                        "uuid": "15af7532-37d1-4230-a0c6-148678a912b0",
                         "name": "my_username",
                         "credentials___username": "my_user_username",
                         "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -406,7 +406,7 @@
                         "created_on": 1470347205
                     },
                     {
-                        "uuid": "b700c850-ca31-4023-9dc7-e0e2a9bcc256",
+                        "uuid": "ca4333ef-67ab-4b28-8ec5-02167c61b05e",
                         "name": "another_username",
                         "credentials___username": "my_user_username",
                         "credentials___hashed_password": "$2y$10$x/U44x/ABmhuUJHgJqcXCOtzfCs6VRbuCHmVA56EfD/AAIyig9CmK",
@@ -425,12 +425,12 @@
                 },
                 "samples": [
                     {
-                        "uuid": "2d7145b5-634d-4760-97fa-b2aaf283ad3b",
+                        "uuid": "d53ea156-92e8-4136-a492-049c8eb94382",
                         "title": "This is a role",
                         "description": "This is a role description.",
                         "permissions": [
                             {
-                                "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                                "uuid": "1c9fb08e-d419-4802-8122-8a90d7c4d22c",
                                 "title": "This is just a title",
                                 "description": "This is just a description",
                                 "can_read": true,
@@ -442,7 +442,7 @@
                         "created_on": 1470347205
                     },
                     {
-                        "uuid": "2d7145b5-634d-4760-97fa-b2aaf283ad3b",
+                        "uuid": "913139c0-586b-4462-a271-ab06e25d1303",
                         "title": "This is an updated role",
                         "description": "This is an updated role description.",
                         "permissions": null,
@@ -461,7 +461,7 @@
                 },
                 "samples": [
                     {
-                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "uuid": "8565d73c-3dd2-4a4a-83b4-9a0247108bfa",
                         "title": "This is just a title",
                         "description": "This is just a description",
                         "can_read": true,
@@ -470,7 +470,7 @@
                         "created_on": 1470347205
                     },
                     {
-                        "uuid": "366ffc72-20cd-45a0-9d50-c2636010ea28",
+                        "uuid": "e4d0aa6c-a12c-43d3-8644-e495f436dba5",
                         "title": "This is just an updated title",
                         "description": "This is just an updated description",
                         "can_read": false,
@@ -520,7 +520,6 @@
                         [
                             [
                                 "entity = retrieve $each->container by uuid:$each->data->uuid",
-                                "data = from entity to data",
                                 "compare data to $each"
                             ]
                         ]
@@ -548,6 +547,16 @@
                     ]
                 ]
             },
+            "retrieve_related": {
+                "pattern": "retrieve /$master_container$/$master_uuid$/$slave_property$/$slave_container$",
+                "input": "input",
+                "instructions": [
+                    "entities = retrieve input->master_container master-uuid input->master_uuid slave-property input->slave_property slave-container input->slave_container",
+                    "output = from entities to data",
+                    "return output"
+                ],
+                "view": "json"
+            },
             "retrieve_set": {
                 "pattern": "retrieve /$container$",
                 "input": "input",
@@ -570,7 +579,7 @@
                 ]
             },
             "retrieve_by_keyname": {
-                "pattern": "retrieve /$container$/$name$/$value",
+                "pattern": "retrieve /$container$/$name$/$value$",
                 "input": "input",
                 "instructions": [
                     "entity = retrieve input->container by input->name:input->value",
@@ -585,6 +594,91 @@
                         [
                             [
                                 "entity = retrieve $each->container by $each->data|property.name:$each->data|property.value",
+                                "compare entity to $each"
+                            ]
+                        ]
+                    ]
+                ]
+            },
+            "delete": {
+                "pattern": "delete /$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$",
+                "input": "input",
+                "instructions": [
+                    "entity = retrieve input->container by uuid:input->uuid",
+                    "delete entity",
+                    "output = from entity to data",
+                    "return output"
+                ],
+                "view": "json",
+                "tests": [
+                    [
+                        "samples = from this to multiple entity",
+                        "insert samples",
+                        [
+                            [
+                                "entity = retrieve $each->container by uuid:$each->data->uuid",
+                                "delete entity",
+                                "retrieve $each->container by uuid:$each->data->uuid | not found"
+                            ]
+                        ]
+                    ]
+                ]
+            },
+            "insert": {
+                "pattern": "insert /$container$",
+                "input": "input",
+                "instructions": [
+                    "entity = from input to input->container",
+                    "insert entity",
+                    "output = from entity to data",
+                    "return output"
+                ],
+                "view": "json",
+                "tests": [
+                    [
+                        [
+                            [
+                                "retrieve $each->container by uuid:$each->data->uuid | not found"
+                            ]
+                        ]
+                    ],
+                    [
+                        [
+                            [
+                                "sample = from $each->data to $each->container",
+                                "insert sample",
+                                "entity = retrieve $each->container by uuid:$each->data->uuid",
+                                "data = from entity to data",
+                                "compare data to $each"
+                            ]
+                        ]
+                    ]
+                ]
+            },
+            "insert_entity_set": {
+                "pattern": "insert /",
+                "input": "input",
+                "instructions": [
+                    "entities = from input to multiple input->container",
+                    "insert entities",
+                    "output = from entities to data",
+                    "return output"
+                ],
+                "view": "json",
+                "tests": [
+                    [
+                        [
+                            [
+                                "retrieve $each->container by uuid:$each->data->uuid | not found"
+                            ]
+                        ]
+                    ],
+                    [
+                        "samples = from this to multiple entity",
+                        "insert samples",
+                        [
+                            [
+                                "entity = retrieve $each->container by uuid:$each->data->uuid",
                                 "data = from entity to data",
                                 "compare data to $each"
                             ]

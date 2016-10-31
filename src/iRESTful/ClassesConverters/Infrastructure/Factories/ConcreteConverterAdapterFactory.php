@@ -35,7 +35,7 @@ final class ConcreteConverterAdapterFactory implements ConverterAdapterFactory {
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
 
         $classPropertyAdapter = new ConcretePropertyAdapter();
-        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('input', true);
         $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);

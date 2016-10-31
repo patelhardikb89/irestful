@@ -26,6 +26,7 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
     private $templatePath;
     private $delimiter;
     private $timezone;
+    private $dependenciesInterfaceClassMapper;
     public function setUp() {
 
         $filePath = realpath(__DIR__.'/../../Files/Authenticated/authenticated.json');
@@ -44,6 +45,16 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
         $this->delimiter = '___';
         $this->timezone = 'America/Montreal';
 
+        $this->dependenciesInterfaceClassMapper = [
+            'iRESTful\Objects\Entities\Entities\Domain\Repositories\Factories\EntityRepositoryFactory' => 'iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntityRepositoryFactory',
+            'iRESTful\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory' => 'iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntityAdapterFactory',
+            'iRESTful\Objects\Entities\Entities\Domain\Sets\Partials\Repositories\Factories\EntityPartialSetRepositoryFactory' => 'iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntityPartialSetRepositoryFactory',
+            'iRESTful\Objects\Entities\Entities\Domain\Sets\Repositories\Factories\EntitySetRepositoryFactory' => 'iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntitySetRepositoryFactory',
+            'iRESTful\Objects\Entities\Entities\Domain\Relations\Repositories\Factories\EntityRelationRepositoryFactory' => 'iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntityRelationRepositoryFactory',
+            'iRESTful\Objects\Entities\Entities\Domain\Services\Factories\EntityServiceFactory' => 'iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntityServiceWithSubEntitiesFactory',
+            'iRESTful\Objects\Entities\Entities\Domain\Sets\Services\Factories\EntitySetServiceFactory' => 'iRESTful\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntitySetServiceWithSubEntitiesFactory',
+            'iRESTful\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter' => 'iRESTful\Applications\Libraries\Routers\Infrastructure\Adapters\ConcreteJsonControllerResponseAdapter'
+        ];
 
     }
 
@@ -84,7 +95,7 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
         $valueClasses = $valueAdapterFactory->create()->fromTypesToValues($types);
 
         //we get the configuration class:
-        $configurationAdapterFactory = new ConcreteConfigurationAdapterFactory($baseNamespace, $this->delimiter, $this->timezone);
+        $configurationAdapterFactory = new ConcreteConfigurationAdapterFactory($baseNamespace, $this->dependenciesInterfaceClassMapper, $this->delimiter, $this->timezone);
         $configuration = $configurationAdapterFactory->create()->fromDataToConfiguration([
             'annotated_entities' => $annotatedEntities,
             'annotated_objects' => $annotatedObjects,

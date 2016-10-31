@@ -32,7 +32,7 @@ final class ConcreteTestAdapterFactory implements TestAdapterFactory {
 
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
-        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('this->data', false);
         $customMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
         $testCustomMethodAdapter = new PHPCustomMethodAdapter($customMethodAdapter, $sourceCodeAdapter);
         $testCustomMethodNodeAdapter = new ConcreteCustomMethodNodeAdapter($testCustomMethodAdapter);

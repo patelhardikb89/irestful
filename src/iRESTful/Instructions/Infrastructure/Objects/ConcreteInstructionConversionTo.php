@@ -12,9 +12,13 @@ final class ConcreteInstructionConversionTo implements To {
     public function __construct($isData, $isMultiple, $isPartialSet, Container $container = null) {
 
         $isData = (bool) $isData;
-        $amount = ($isData ? 1 : 0) + ($isMultiple ? 1 : 0) +  + ($isPartialSet ? 1 : 0) + (empty($container) ? 0 : 1);
-        if ($amount != 1) {
-            throw new ToException('The to must be either data, multiple, partialSet or a container.  '.$amount.' given.');
+        $amount = ($isData ? 1 : 0) + ($isMultiple ? 1 : 0) + ($isPartialSet ? 1 : 0) + (empty($container) ? 0 : 1);
+
+        if (
+            !($amount == 1) &&
+            !($isMultiple && ($amount == 2))
+        ) {
+            throw new ToException('The to must be either data, multiple, partialSet or a container.  It can also contain multiple + data, partialSet or a container.'.$amount.' given.');
         }
 
         $this->isData = $isData;

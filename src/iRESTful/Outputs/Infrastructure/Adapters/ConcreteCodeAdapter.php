@@ -47,14 +47,12 @@ final class ConcreteCodeAdapter implements CodeAdapter {
     public function fromVagrantFileToCodes(VagrantFile $vagrantFile) {
         $data = $this->getData($vagrantFile);
 
-        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('Vagrantfile');
-
-        $basePath = $path->getBasePath();
         $nginxFileName = $vagrantFile->getNginx()->getName();
-        $data['absolute_nginx_directory_path'] = '/'.implode('/', $basePath).'/conf/nginx';
-        $data['absolute_phpfpm_directory_path'] = '/'.implode('/', $basePath).'/conf/php-fpm';
+        $data['absolute_nginx_directory_path'] = '/vagrant/conf/nginx';
+        $data['absolute_phpfpm_directory_path'] = '/vagrant/conf/php-fpm';
 
         $code = $this->template->render('vagrantfile.twig', $data);
+        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('Vagrantfile');
         $nginx = $vagrantFile->getNginx();
 
         $phpfpmCode = $this->template->render('phpfpm-www.conf.twig', []);
@@ -152,10 +150,8 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $data = $this->getData($nginx);
 
         $fileName = $nginx->getName();
-        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('myFile');
-        $basePath = '/'.implode('/', $path->getBasePath());
         $nginxPath = '/'.implode('/', $nginx->getRoot()->getDirectoryPath());
-        $data['absolute_directory_path'] = $basePath.$nginxPath;
+        $data['absolute_directory_path'] = '/vagrant'.$nginxPath;
 
         $path =  $this->rootPathAdapter->fromRelativePathStringToPath('conf/nginx/'.$fileName);
         $code = $this->template->render('nginx.conf.twig', $data);

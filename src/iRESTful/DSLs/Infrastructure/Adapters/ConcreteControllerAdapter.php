@@ -46,8 +46,9 @@ final class ConcreteControllerAdapter implements ControllerAdapter {
             throw new ControllerException('The instructions is mandatory in order to convert data to a Controller object.');
         }
 
-        if (!isset($data['tests'])) {
-            throw new ControllerException('The tests is mandatory in order to convert data to a Controller object.');
+        $tests = [];
+        if (isset($data['tests'])) {
+            $tests = $data['tests'];
         }
 
         $constants = null;
@@ -67,8 +68,8 @@ final class ConcreteControllerAdapter implements ControllerAdapter {
             $data['input'],
             $data['pattern'],
             $data['instructions'],
-            $data['tests'],
             $view,
+            $tests,
             $constants,
             $httpRequests
         );

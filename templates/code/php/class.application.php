@@ -1,9 +1,9 @@
 <?php
-namespace {{namespace.all}};
+namespace {{namespace.path}};
 use {{configuration.namespace.all}};
 use iRESTful\Applications\Libraries\Routers\Infrastructure\Factories\ConcreteApplicationFactory;
 
-final class ConcreteEntityApplication {
+final class {{namespace.name}} {
 
     public function __construct(array $server, array $queryParameters, array $requestParameters) {
         $dbName = $this->retrieveDatabaseName($server['SERVER_NAME']);

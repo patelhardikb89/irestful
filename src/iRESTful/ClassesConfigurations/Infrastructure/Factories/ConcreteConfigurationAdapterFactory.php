@@ -7,18 +7,25 @@ use iRESTful\ClassesConfigurations\Infrastructure\Adapters\ConcreteObjectConfigu
 use iRESTful\ClassesConfigurations\Infrastructure\Factories\ConcreteObjectConfigurationNamespaceFactory;
 use iRESTful\ClassesConfigurations\Infrastructure\Adapters\ConcreteConfigurationControllerAdapter;
 use iRESTful\ClassesConfigurations\Infrastructure\Adapters\ConcreteConfigurationControllerNodeAdapter;
+use iRESTful\ClassesConfigurations\Infrastructure\Adapters\ConcreteConfigurationControllerNodeParameterAdapter;
+use iRESTful\Classes\Infrastructure\Factories\ConcreteClassNamespaceAdapterFactory;
 
 final class ConcreteConfigurationAdapterFactory implements ConfigurationAdapterFactory {
     private $baseNamespace;
+    private $dependenciesInterfaceClassMapper;
     private $delimiter;
     private $timezone;
-    public function __construct(array $baseNamespace, $delimiter, $timezone) {
+    public function __construct(array $baseNamespace, array $dependenciesInterfaceClassMapper, $delimiter, $timezone) {
         $this->baseNamespace = $baseNamespace;
+        $this->dependenciesInterfaceClassMapper = $dependenciesInterfaceClassMapper;
         $this->delimiter = $delimiter;
         $this->timezone = $timezone;
     }
 
     public function create() {
+
+        $classNamespaceAdapterFactory = new ConcreteClassNamespaceAdapterFactory($this->baseNamespace);
+        $classNamespaceAdapter = $classNamespaceAdapterFactory->create();
 
         $configurationNamespaceFactory = new ConcreteConfigurationNamespaceFactory($this->baseNamespace);
 
@@ -26,7 +33,8 @@ final class ConcreteConfigurationAdapterFactory implements ConfigurationAdapterF
         $objectConfigurationAdapter = new ConcreteObjectConfigurationAdapter($objectConfigurationNamespaceFactory, $this->delimiter, $this->timezone);
 
         $controllerAdapter = new ConcreteConfigurationControllerAdapter();
-        $controllerNodeAdapter = new ConcreteConfigurationControllerNodeAdapter($controllerAdapter);
+        $controllerNodeParameterAdapter = new ConcreteConfigurationControllerNodeParameterAdapter($classNamespaceAdapter, $this->dependenciesInterfaceClassMapper);
+        $controllerNodeAdapter = new ConcreteConfigurationControllerNodeAdapter($controllerAdapter, $controllerNodeParameterAdapter);
 
         return new ConcreteConfigurationAdapter($configurationNamespaceFactory, $objectConfigurationAdapter, $controllerNodeAdapter);
     }

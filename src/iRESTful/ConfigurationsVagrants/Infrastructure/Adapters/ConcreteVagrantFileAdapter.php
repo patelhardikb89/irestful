@@ -33,10 +33,12 @@ final class ConcreteVagrantFileAdapter implements VagrantFileAdapter {
             return false;
         };
 
-        $name = str_replace('/', '-', $dsl->getName()->getName());
+        $dslName = $dsl->getName()->getName();
+        $name = strtolower(str_replace('/', '-', $dslName));
+        $databaseName = strtolower(str_replace('/', '_', $dslName));
         $nginx = $this->nginxAdapter->fromDataToNginx([
-            'name' => strtolower($name),
-            'server_name' => strtolower($name).'.dev',
+            'name' => $name,
+            'server_name' => $name.'.dev',
             'root' => [
                 'file_name' => 'index.php',
                 'directory_path' => 'web'
@@ -44,7 +46,7 @@ final class ConcreteVagrantFileAdapter implements VagrantFileAdapter {
         ]);
 
         $hasRelDatabase = $hasRelationalDatabase($dsl);
-        return new ConcreteVagrantFile($name, $nginx, $hasRelDatabase);
+        return new ConcreteVagrantFile($name, $databaseName, $nginx, $hasRelDatabase);
     }
 
 }

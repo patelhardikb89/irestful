@@ -23,6 +23,7 @@ use iRESTful\Instructions\Infrastructure\Adapters\ConcreteInstructionValueLoopAd
 use iRESTful\Instructions\Infrastructure\Adapters\ConcreteInstructionValueLoopKeynameAdapter;
 use iRESTful\Instructions\Infrastructure\Adapters\ConcreteInstructionValueLoopKeynameMetaDataAdapter;
 use iRESTful\Instructions\Infrastructure\Adapters\ConcreteInstructionValueLoopKeynameMetaDataPropertyAdapter;
+use iRESTful\Instructions\Infrastructure\Adapters\ConcreteInstructionDatabaseRetrievalRelatedEntityAdapterAdapter;
 
 final class ConcreteInstructionAdapterAdapterFactory implements InstructionAdapterAdapterFactory {
 
@@ -54,11 +55,13 @@ final class ConcreteInstructionAdapterAdapterFactory implements InstructionAdapt
         $classInstructionDatabaseRetrievalEntityAdapterAdapter = new ConcreteInstructionDatabaseRetrievalEntityAdapterAdapter($classInstructionDatabaseRetrievalKeynameAdapterAdapter, $instructionValueAdapterAdapter, $classInstructionContainerAdapterAdapter);
         $classInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter = new ConcreteInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter($instructionValueAdapterAdapter, $classInstructionContainerAdapterAdapter);
         $classInstructionDatabaseRetrievalMultipleEntityAdapterAdapter = new ConcreteInstructionDatabaseRetrievalMultipleEntityAdapterAdapter($classInstructionDatabaseRetrievalKeynameAdapterAdapter, $instructionValueAdapterAdapter, $classInstructionContainerAdapterAdapter);
+        $classInstructionDatabaseRetrievalRelatedEntityAdapterAdapter = new ConcreteInstructionDatabaseRetrievalRelatedEntityAdapterAdapter($instructionValueAdapterAdapter, $classInstructionContainerAdapterAdapter);
 
         $classInstructionDatabaseRetrievalAdapterAdapter = new ConcreteInstructionDatabaseRetrievalAdapterAdapter(
             $classInstructionDatabaseRetrievalEntityAdapterAdapter,
             $classInstructionDatabaseRetrievalEntityPartialSetAdapterAdapter,
-            $classInstructionDatabaseRetrievalMultipleEntityAdapterAdapter
+            $classInstructionDatabaseRetrievalMultipleEntityAdapterAdapter,
+            $classInstructionDatabaseRetrievalRelatedEntityAdapterAdapter
         );
 
         $classInstructionDatabaseAdapterAdapter = new ConcreteInstructionDatabaseAdapterAdapter(

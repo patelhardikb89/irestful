@@ -6,17 +6,19 @@ use iRESTful\Instructions\Domain\Databases\Retrievals\Entities\Entity;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Multiples\MultipleEntity;
 use iRESTful\Instructions\Domain\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Exceptions\RetrievalException;
+use iRESTful\Instructions\Domain\Databases\Retrievals\Relations\RelatedEntity;
 
 final class ConcreteInstructionDatabaseRetrieval implements Retrieval {
     private $httpRequest;
     private $entity;
     private $multipleEntity;
     private $entityPartialSet;
-    public function __construct(HttpRequest $httpRequest = null, Entity $entity = null, MultipleEntity $multipleEntity = null, EntityPartialSet $entityPartialSet = null) {
+    private $relatedEntity;
+    public function __construct(HttpRequest $httpRequest = null, Entity $entity = null, MultipleEntity $multipleEntity = null, EntityPartialSet $entityPartialSet = null, RelatedEntity $relatedEntity = null) {
 
-        $amount = (empty($httpRequest) ? 0 : 1) + (empty($entity) ? 0 : 1) + (empty($multipleEntity) ? 0 : 1) + (empty($entityPartialSet) ? 0 : 1);
+        $amount = (empty($httpRequest) ? 0 : 1) + (empty($entity) ? 0 : 1) + (empty($multipleEntity) ? 0 : 1) + (empty($entityPartialSet) ? 0 : 1) + (empty($relatedEntity) ? 0 : 1);
         if ($amount != 1) {
-            throw new RetrievalException('One of these must be non-empty: httpRequest, entity, multipleEntity, entityPartialSet.  '.$amount.' given.');
+            throw new RetrievalException('One of these must be non-empty: httpRequest, entity, multipleEntity, entityPartialSet, relatedEntity.  '.$amount.' given.');
         }
 
         if (!empty($httpRequest)) {
@@ -25,11 +27,12 @@ final class ConcreteInstructionDatabaseRetrieval implements Retrieval {
                 throw new ActionException('The given HttpRequest object is invalid for a retrieval.  It must be contain a retrieval action.');
             }
         }
-        
+
         $this->httpRequest = $httpRequest;
         $this->entity = $entity;
         $this->multipleEntity = $multipleEntity;
         $this->entityPartialSet = $entityPartialSet;
+        $this->relatedEntity = $relatedEntity;
 
     }
 
@@ -63,6 +66,14 @@ final class ConcreteInstructionDatabaseRetrieval implements Retrieval {
 
     public function getEntityPartialSet() {
         return $this->entityPartialSet;
+    }
+
+    public function hasRelatedEntity() {
+        return !empty($this->relatedEntity);
+    }
+
+    public function getRelatedEntity() {
+        return $this->relatedEntity;
     }
 
     public function getData() {

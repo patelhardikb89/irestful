@@ -5,6 +5,5 @@ interface Path {
     public function getPath();
     public function getRelativePath();
     public function getAbsolutePath();
-    public function getBasePath();
     public function getFile();
 }

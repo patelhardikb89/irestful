@@ -14,6 +14,10 @@ final class ConcreteInterfaceNamespaceAdapter implements InterfaceNamespaceAdapt
         $this->baseNamespace = 'Domain';
     }
 
+    public function fromFullDataToNamespace(array $data) {
+        return $this->namespaceAdapter->fromFullDataToNamespace($data);
+    }
+
     public function fromDataToNamespace(array $data) {
         $merged = array_merge([$this->baseNamespace], $data);
         return $this->namespaceAdapter->fromDataToNamespace($merged);

@@ -26,7 +26,7 @@ final class ConcreteInterfaceAdapterFactory implements InterfaceAdapterFactory {
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
 
-        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('input', true);
         $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);

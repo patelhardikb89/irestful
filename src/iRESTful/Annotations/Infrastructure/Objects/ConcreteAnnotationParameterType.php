@@ -8,7 +8,7 @@ final class ConcreteAnnotationParameterType implements Type {
     private $isKey;
     private $databaseType;
     private $default;
-    public function __construct($isUnique, $isKey, DatabaseType $databaseType, $default = null) {
+    public function __construct($isUnique, $isKey, DatabaseType $databaseType = null, $default = null) {
         $this->isUnique = (bool) $isUnique;
         $this->isKey = (bool) $isKey;
         $this->databaseType = $databaseType;
@@ -21,6 +21,10 @@ final class ConcreteAnnotationParameterType implements Type {
 
     public function isKey() {
         return $this->isKey;
+    }
+
+    public function hasDatabaseType() {
+        return !empty($this->databaseType);
     }
 
     public function getDatabaseType() {
@@ -39,9 +43,12 @@ final class ConcreteAnnotationParameterType implements Type {
 
         $output = [
             'is_unique' => $this->isUnique(),
-            'is_key' => $this->isKey(),
-            'database_type' => $this->getDatabaseType()->getData()
+            'is_key' => $this->isKey()
         ];
+
+        if ($this->hasDatabaseType()) {
+            $output['database_type'] = $this->getDatabaseType()->getData();
+        }
 
         if ($this->hasDefault()) {
             $output['default'] = $this->getDefault();

@@ -5,13 +5,18 @@ namespace {{namespace.path}};
 use {{configuration.object_configuration.namespace.all}};
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityRepositoryFactoryAdapter;
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityServiceFactoryAdapter;
+use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntitySetServiceFactoryAdapter;
 use iRESTful\Objects\Entities\Entities\Infrastructure\Adapters\ReflectionEntityAdapterAdapterFactoryAdapter;
 use iRESTful\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityRelationRepositoryFactoryAdapter;
 use iRESTful\Objects\Entities\Entities\Infrastructure\Factories\ConcreteEntityAdapterFactory;
 
 final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
-
+    private $data;
+    private $entityRepositoryFactory;
+    private $entityServiceFactory;
+    private $entitySetServiceFactory;
+    private $entityAdapterFactory;
     public function setUp() {
 
         $objectConfigurations = new {{configuration.object_configuration.namespace.name}}();
@@ -32,6 +37,9 @@ final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
 
         $entityServiceFactoryAdapter = new HttpEntityServiceFactoryAdapter();
         $this->entityServiceFactory = $entityServiceFactoryAdapter->fromDataToEntityServiceFactory($params);
+
+        $entitySetServiceFactoryAdapter = new HttpEntitySetServiceFactoryAdapter();
+        $this->entitySetServiceFactory = $entitySetServiceFactoryAdapter->fromDataToEntitySetServiceFactory($params);
 
         $entityAdapterAdapterFactoryAdapter = new ReflectionEntityAdapterAdapterFactoryAdapter();
         $entityAdapterAdapter = $entityAdapterAdapterFactoryAdapter->fromDataToEntityAdapterAdapterFactory($params)->create();

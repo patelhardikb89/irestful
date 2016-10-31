@@ -32,7 +32,7 @@ final class ConcreteEntityAdapterFactory implements EntityAdapterFactory {
         $classPropertyAdapter = new ConcretePropertyAdapter();
         $subClassNamespaceAdapter = new ConcreteNamespaceAdapter($this->baseNamespace);
         $classNamespaceAdapter = new ConcreteClassNamespaceAdapter($subClassNamespaceAdapter);
-        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('input', true);
         $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);

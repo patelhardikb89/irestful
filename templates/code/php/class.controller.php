@@ -10,8 +10,15 @@ use iRESTful\Applications\Libraries\Routers\Domain\Controllers\Controller;
     {% endif %}
 {% endfor %}
 
-final class {{namespace.name}} implements Controller {
+{% for oneParameter in custom_method.parameters %}
+    {% if oneParameter.type.namespace.all %}
+        use {{oneParameter.type.namespace.all}};
+    {% endif %}
+{% endfor %}
 
+final class {{namespace.name}} implements Controller {
+    {{ fn.generateClassProperties(constructor.parameters) }}
+    
     public function __construct({{- fn.generateConstructorSignature(constructor.parameters) }}) {
         {{ fn.generateAssignment(constructor.parameters) }}
     }

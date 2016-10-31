@@ -69,14 +69,25 @@ final class ConcreteInstructionAssignment implements Assignment {
 
     public function isMultipleEntities() {
         if ($this->hasDatabase()) {
-            return $this->getDatabase()->getRetrieval()->hasMultipleEntities();
+            $retrieval = $this->getDatabase()->getRetrieval();
+            if ($retrieval->hasMultipleEntities()) {
+                return true;
+            }
+
+            return $retrieval->hasRelatedEntity();
         }
 
         if ($this->hasMergedAssignments()) {
             return true;
         }
 
-        $from = $this->getConversion()->from();
+        $conversion = $this->getConversion();
+        $to = $conversion->to();
+        if ($to->isMultiple()) {
+            return true;
+        }
+
+        $from = $conversion->from();
         if (!$from->hasAssignment()) {
             return false;
         }

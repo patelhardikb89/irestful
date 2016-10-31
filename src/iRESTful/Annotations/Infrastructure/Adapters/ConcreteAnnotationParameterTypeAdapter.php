@@ -35,17 +35,20 @@ final class ConcreteAnnotationParameterTypeAdapter implements TypeAdapter {
         }
 
         if ($objectPropertyType->hasObject()) {
-            $databaseType = $this->databaseTypeAdapter->fromDataToDatabaseType([
-                'name' => 'binary',
-                'specific' => 128
-            ]);
+            $object = $objectPropertyType->getObject();
+            if ($object->hasDatabase()) {
+                $databaseType = $this->databaseTypeAdapter->fromDataToDatabaseType([
+                    'name' => 'binary',
+                    'specific' => 128
+                ]);
+            }
         }
 
         if ($objectPropertyType->hasPrimitive()) {
             $objectPropertyPrimitiveName = $objectPropertyType->getPrimitive()->getName();
             $databaseType = $this->databaseTypeAdapter->fromDataToDatabaseType([
                 'name' => $objectPropertyPrimitiveName,
-                'specific' => 255
+                'max' => 255
             ]);
         }
 

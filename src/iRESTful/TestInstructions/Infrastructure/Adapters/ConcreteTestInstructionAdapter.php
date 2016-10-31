@@ -23,6 +23,10 @@ final class ConcreteTestInstructionAdapter implements TestInstructionAdapter {
 
     public function fromDSLControllerToTestInstructions(Controller $controller) {
 
+        if (!$controller->hasTests()) {
+            return [];
+        }
+
         $input = [];
         foreach($this->annotatedEntities as $oneAnnotatedEntity) {
             $containerName = $oneAnnotatedEntity->getAnnotation()->getContainerName();
@@ -38,6 +42,7 @@ final class ConcreteTestInstructionAdapter implements TestInstructionAdapter {
         $inputName = $controller->getInputName();
         foreach($tests as $oneTest) {
 
+            $commands = [];
             foreach($oneTest as $oneCommand) {
 
                 if (is_array($oneCommand)) {

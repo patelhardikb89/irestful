@@ -14,6 +14,10 @@ final class ConcreteClassNamespaceAdapter implements ClassNamespaceAdapter {
         $this->baseNamespace = 'Infrastructure';
     }
 
+    public function fromFullDataToNamespace(array $data) {
+        return $this->namespaceAdapter->fromFullDataToNamespace($data);
+    }
+
     public function fromDataToNamespace(array $data) {
         $merged = array_merge([$this->baseNamespace], $data);
         return $this->namespaceAdapter->fromDataToNamespace($merged);
@@ -31,7 +35,7 @@ final class ConcreteClassNamespaceAdapter implements ClassNamespaceAdapter {
         if ($object->hasDatabase()) {
             $rootFolder = 'Entities';
         }
-        
+
         $objectName = $object->getName();
         return $this->fromDataToNamespace([$rootFolder, 'Concrete'.ucfirst($objectName)]);
 

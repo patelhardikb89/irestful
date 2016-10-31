@@ -2,7 +2,7 @@
 namespace iRESTful\ClassesConfigurations\Infrastructure\Objects;
 use iRESTful\ClassesConfigurations\Domain\Controllers\Nodes\ControllerNode;
 use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
-use iRESTful\Classes\Domain\Constructors\Parameters\Parameter;
+use iRESTful\ClassesConfigurations\Domain\Controllers\Nodes\Parameters\Parameter;
 use iRESTful\ClassesConfigurations\Domain\Controllers\Controller;
 use iRESTful\ClassesConfigurations\Domain\Controllers\Nodes\Exceptions\ControllerNodeException;
 

@@ -29,18 +29,16 @@ group = www-data
 ;                            a specific port;
 ;   '[ip:6:addr:ess]:port' - to listen on a TCP socket to a specific IPv6 address on
 ;                            a specific port;
-;   'port'                 - to listen on a TCP socket to all IPv4 addresses on a
-;                            specific port;
-;   '[::]:port'            - to listen on a TCP socket to all addresses
+;   'port'                 - to listen on a TCP socket to all addresses
 ;                            (IPv6 and IPv4-mapped) on a specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-;listen = /var/run/php5-fpm.sock
+;listen = /run/php/php7.0-fpm.sock
 listen = [::]:9000
 
 ; Set listen(2) backlog.
-; Default Value: 65535 (-1 on FreeBSD and OpenBSD)
-;listen.backlog = 65535
+; Default Value: 511 (-1 on FreeBSD and OpenBSD)
+;listen.backlog = 511
 
 ; Set permissions for unix socket, if one is used. In Linux, read/write
 ; permissions must be set in order to allow connections from a web server. Many
@@ -226,7 +224,7 @@ pm.max_spare_servers = 3
 ;   last request memory:  0
 ;
 ; Note: There is a real-time FPM status monitoring sample web page available
-;       It's available in: /usr/share/php5/fpm/status.html
+;       It's available in: /usr/share/php/7.0/fpm/status.html
 ;
 ; Note: The value must start with a leading slash (/). The value can be
 ;       anything, but it may not be a good idea to use the .php extension or it
@@ -351,7 +349,7 @@ pm.max_spare_servers = 3
 ; Chdir to this directory at the start.
 ; Note: relative path can be used.
 ; Default Value: current directory or / when chroot
-chdir = /
+;chdir = /var/www
 
 ; Redirect worker stdout and stderr into main error log. If not set, stdout and
 ; stderr will be redirected to /dev/null according to FastCGI specs.
@@ -375,7 +373,7 @@ chdir = /
 ; exectute php code.
 ; Note: set an empty value to allow all extensions.
 ; Default Value: .php
-;security.limit_extensions = .php .php3 .php4 .php5
+;security.limit_extensions = .php .php3 .php4 .php5 .php7
 
 ; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
 ; the current environment.

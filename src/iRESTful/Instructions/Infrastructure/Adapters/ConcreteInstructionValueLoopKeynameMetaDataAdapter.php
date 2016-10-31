@@ -17,7 +17,7 @@ final class ConcreteInstructionValueLoopKeynameMetaDataAdapter implements MetaDa
         }
 
         $exploded = explode('.', $string);
-        if (isset($exploded[0]) && isset($exploded[1]) && ($exploded[0] == 'exploded')) {
+        if (isset($exploded[0]) && isset($exploded[1]) && ($exploded[0] == 'property')) {
             $property = $this->propertyAdapter->fromStringToProperty($exploded[1]);
             return new ConcreteInstructionValueLoopKeynameMetaData(false, $property);
         }

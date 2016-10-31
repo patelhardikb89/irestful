@@ -9,7 +9,7 @@ server {
 
     location / {
 
-        try_files $uri $uri/ /{{root.file_name}}?$query_string;
+        try_files $uri /{{root.file_name}}?$query_string;
 
         fastcgi_keep_conn               on;
         fastcgi_pass                    127.0.0.1:9000;

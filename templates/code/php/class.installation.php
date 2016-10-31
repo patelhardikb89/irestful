@@ -12,8 +12,8 @@ final class {{namespace.name}} {
 
         EngineDatabase::reset();
 
-        $containerClassMapper = [{{- fn.returnedHashMap(object_configuration.mappers.containers) -}}];
-        $interfaceClassMapper = [{{- fn.returnedHashMap(object_configuration.mappers.interfaces.objects) -}}];
+        $containerClassMapper = [{{- fn.returnedHashMap(object_configuration.container_class_mapper) -}}];
+        $interfaceClassMapper = [{{- fn.returnedHashMap(object_configuration.interface_class_mapper) -}}];
         $engine = 'InnoDB';
         $fieldDelimiter = '{{object_configuration.delimiter}}';
         $schemaAdapterFactory = new ReflectionClassSchemaAdapterFactory($containerClassMapper, $interfaceClassMapper, $engine, $fieldDelimiter);

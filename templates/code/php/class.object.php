@@ -10,6 +10,12 @@ use {{object.interface.namespace.all}};
     {% endif %}
 {% endfor %}
 
+{% for oneParameter in object.custom_methods.parameters %}
+    {% if oneParameter.type.namespace.all %}
+        use {{oneParameter.type.namespace.all}};
+    {% endif %}
+{% endfor %}
+
 final class {{object.namespace.name}} implements {{object.interface.namespace.name}} {
     {{ fn.generateClassProperties(object.constructor.parameters) }}
 

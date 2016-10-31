@@ -10,6 +10,10 @@ final class ConcreteCustomMethodSourceCode implements SourceCode {
         $tab = '    ';
         $process = function(array $lines, $currentTab = '') use(&$tab, &$process) {
 
+            if (empty($lines)) {
+                return '';
+            }
+
             $output = '';
             $newTab = $currentTab.$tab;
             foreach($lines as $oneLine) {
@@ -29,10 +33,6 @@ final class ConcreteCustomMethodSourceCode implements SourceCode {
         if (!empty($lines)) {
             foreach($lines as $oneLine) {
                 if (!empty($oneLine) && !is_string($oneLine)) {
-
-                    print_r($lines);
-                    die();
-
                     throw new SourceCodeException('The lines array must only contain string lines.');
                 }
             }

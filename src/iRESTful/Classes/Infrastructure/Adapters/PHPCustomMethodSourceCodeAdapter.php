@@ -19,19 +19,22 @@ use iRESTful\Instructions\Domain\Containers\Container;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Multiples\MultipleEntity;
 use iRESTful\Instructions\Domain\Databases\Retrievals\EntityPartialSets\EntityPartialSet;
 use iRESTful\Instructions\Domain\Databases\Retrievals\Entities\Entity;
+use iRESTful\Instructions\Domain\Databases\Retrievals\Relations\RelatedEntity;
 
 final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
-
-    public function __construct() {
-
+    private $inputVariableName;
+    private $isController;
+    public function __construct($inputVariableName, $isController) {
+        $this->inputVariableName = $inputVariableName;
+        $this->isController = $isController;
     }
 
     public function fromInstructionsToControllerSourceCode(array $instructions) {
         $inputLines = [
-            '$input = [];',
-            'if ($request->hasParameters()) {',
+            '$'.$this->inputVariableName.' = [];',
+            'if ($httpRequest->hasParameters()) {',
             [
-                '$input = $request->getParameters();'
+                '$'.$this->inputVariableName.' = $httpRequest->getParameters();'
             ],
             '}',
             ''
@@ -43,6 +46,11 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
     }
 
     public function fromInstructionsToSourceCode(array $instructions) {
+
+        if (empty($instructions)) {
+            return $this->fromSourceCodeLinesToSourceCode([]);
+        }
+
         $lines = [];
         foreach($instructions as $oneInstruction) {
             $newLines = $this->generateCodeLinesFromInstruction($oneInstruction);
@@ -54,7 +62,13 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
         $lastIndex = count($instructions) - 1;
         if ($instructions[$lastIndex]->hasAssignment()) {
             $variableName = $instructions[$lastIndex]->getAssignment()->getVariableName();
-            $lines[] = 'return $'.$variableName.';';
+            $returnedLine = 'return $'.$variableName.';';
+            if ($this->isController) {
+                $returnedLine = 'return $this->controllerResponseAdapter->fromDataToControllerResponse($'.$variableName.');';
+            }
+
+            $lines[] = $returnedLine;
+
         }
 
         return $this->fromSourceCodeLinesToSourceCode($lines);
@@ -163,10 +177,29 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
 
         $generateCodeLinesFromInsert = function(Insert $insert) {
             if ($insert->hasAssignment()) {
-                $variableName = $insert->getAssignment()->getVariableName();
-                return [
-                    '$this->entityServiceFactory->create()->insert($'.$variableName.');'
-                ];
+
+                $assignment = $insert->getAssignment();
+                $variableName = $assignment->getVariableName();
+
+                if ($assignment->hasConversion()) {
+                    $to = $assignment->getConversion()->to();
+                    if ($to->isMultiple()) {
+                        return [
+                            '$this->entitySetServiceFactory->create()->insert($'.$variableName.');'
+                        ];
+                    }
+
+                    if ($to->isPartialSet()) {
+                        //throws
+                    }
+
+                    return [
+                        '$this->entityServiceFactory->create()->insert($'.$variableName.');'
+                    ];
+                }
+
+                //throws
+
             }
 
             if ($insert->hasAssignments()) {
@@ -265,39 +298,39 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
 
         if ($from->isInput() && $to->hasContainer()) {
 
-            $input = '$input';
-            $container = $to->getContainer();
+            $input = '$'.$this->inputVariableName;
+            /*$container = $to->getContainer();
             if ($container->hasValue()) {
                 $value = $container->getValue();
                 $input = $this->generateArrayCode([
                     'container' => $value,
-                    'data' => 'input'
+                    'data' => $this->inputVariableName
                 ]);
-            }
+            }*/
 
             if ($to->isMultiple()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.');';
+                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.', true);';
             }
 
             if ($to->isPartialSet()) {
                 return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.');';
             }
 
-            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.');';
+            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.', true);';
         }
 
         if ($from->hasAssignment() && $to->isData()) {
             $assignment = $from->getAssignment();
             $variableName = $assignment->getVariableName();
             if ($assignment->isMultipleEntities()) {
-                return '$this->entityAdapterFactory->create()->fromEntitiesToData($'.$variableName.');';
+                return '$this->entityAdapterFactory->create()->fromEntitiesToData($'.$variableName.', true);';
             }
 
             if ($assignment->isPartialEntitySet()) {
-                return '$this->entityAdapterFactory->create()->fromEntityPartialSetToData($'.$variableName.');';
+                return '$this->entityAdapterFactory->create()->fromEntityPartialSetToData($'.$variableName.', true);';
             }
 
-            return '$this->entityAdapterFactory->create()->fromEntityToData($'.$variableName.');';
+            return '$this->entityAdapterFactory->create()->fromEntityToData($'.$variableName.', true);';
         }
 
         if ($from->isData() && $to->hasContainer() && $from->hasAssignment()) {
@@ -317,28 +350,28 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
 
 
             if ($assignment->isMultipleEntities()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.');';
+                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.', true);';
             }
 
             if ($assignment->isPartialEntitySet()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.');';
+                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.', true);';
             }
 
-            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.');';
+            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.', true);';
         }
 
         if ($from->isInput()) {
 
-            $input = '$input';
+            $input = '$'.$this->inputVariableName;
             if ($to->isMultiple()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.');';
+                return '$this->entityAdapterFactory->create()->fromDataToEntities('.$input.', true);';
             }
 
             if ($to->isPartialSet()) {
-                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.');';
+                return '$this->entityAdapterFactory->create()->fromDataToEntityPartialSet('.$input.', true);';
             }
 
-            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.');';
+            return '$this->entityAdapterFactory->create()->fromDataToEntity('.$input.', true);';
         }
 
         //throws
@@ -442,6 +475,11 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
             return $this->generateCodeLinesFromEntityPartialSet($entityPartialSet);
         }
 
+        if ($retrieval->hasRelatedEntity()) {
+            $relatedEntity = $retrieval->getRelatedEntity();
+            return $this->generateCodeLinesFromRelatedEntity($relatedEntity);
+        }
+
         //throws
 
     }
@@ -458,13 +496,16 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
 
                     $metaData = $oneKeyname->getMetaData();
                     if ($metaData->hasProperty()) {
-                        print_r([$metaData, 'metaData', 'getCodeFromInstructionValue']);
-                        die();
+                        $property = $metaData->getProperty();
+                        if ($property->isName()) {
+                            return '\'uuid\'';
+                        }
+
+                        return '$input[\'data\'][\'uuid\']';
                     }
 
                     $hasLength = true;
                 }
-
 
                 $output .= '[\''.$name.'\']';
             }
@@ -524,7 +565,7 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
         }
 
         if ($container->isLoopContainer()) {
-            return '$containerName';
+            return '$input[\'container\']';
         }
 
         $value = $container->getValue();
@@ -544,7 +585,7 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
             return [
                 '$this->entityRepositoryFactory->create()->retrieve([',
                 [
-                    "'container' => ".$containerName,
+                    "'container' => ".$containerName.",",
                     "'uuid' => ".$uuidCode
                 ],
                 ']);'
@@ -559,10 +600,10 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
             return [
                 '$this->entityRepositoryFactory->create()->retrieve([',
                 [
-                    "'container' => ".$containerName,
+                    "'container' => ".$containerName.",",
                     "'keyname' => [",
                     [
-                        "'name' => ".$this->getCodeFromInstructionValue($name),
+                        "'name' => ".$this->getCodeFromInstructionValue($name).",",
                         "'value' => ".$this->getCodeFromInstructionValue($value)
                     ],
                     "]"
@@ -585,7 +626,7 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
             return [
                 '$this->entitySetRepositoryFactory->create()->retrieve([',
                 [
-                    "'container' => ".$containerName,
+                    "'container' => ".$containerName.",",
                     "'uuids' => ".$this->getCodeFromInstructionValue($uuidValue)
                 ],
                 ']);'
@@ -600,10 +641,10 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
             return [
                 '$this->entitySetRepositoryFactory->create()->retrieve([',
                 [
-                    "'container' => '".$containerName."'",
+                    "'container' => '".$containerName."'".",",
                     "'keyname' => [",
                     [
-                        "'name' => ".$this->getCodeFromInstructionValue($name),
+                        "'name' => ".$this->getCodeFromInstructionValue($name).",",
                         "'value' => ".$this->getCodeFromInstructionValue($value)
                     ],
                     ']'
@@ -624,14 +665,38 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
         $amount = $entityPartialSet->getAmountValue();
 
         return [
-            '$this->entityPartialSetFactory->create()->retrieve([',
+            '$this->entityPartialSetRepositoryFactory->create()->retrieve([',
             [
                 '\'container\' => '.$containerName.',',
                 '\'index\' => '.$this->getCodeFromInstructionValue($index).',',
-                '\'amount\' => '.$this->getCodeFromInstructionValue($amount).','
+                '\'amount\' => '.$this->getCodeFromInstructionValue($amount)
             ],
             ']);'
         ];
+    }
+
+    private function generateCodeLinesFromRelatedEntity(RelatedEntity $relatedEntity) {
+
+        $masterContainer = $relatedEntity->getMasterContainer();
+        $masterContainerName = $this->getContainerNameFromContainer($masterContainer);
+
+        $slaveContainer = $relatedEntity->getSlaveContainer();
+        $slaveContainerName = $this->getContainerNameFromContainer($slaveContainer);
+
+        $masterUuidValue = $relatedEntity->getMasterUuidValue();
+        $slavePropertyValue = $relatedEntity->getSlavePropertyValue();
+
+        return [
+            '$this->entityRelationRepositoryFactory->create()->retrieve([',
+            [
+                '\'master_container\' => '.$masterContainerName.',',
+                '\'slave_container\' => '.$slaveContainerName.',',
+                '\'slave_property\' => '.$this->getCodeFromInstructionValue($slavePropertyValue).',',
+                '\'master_uuid\' => '.$this->getCodeFromInstructionValue($masterUuidValue)
+            ],
+            ']);'
+        ];
+
     }
 
     private function getCodeFromValue(Value $value) {
@@ -664,6 +729,11 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
         };
 
         $getValue = function($part) {
+
+            if (empty($part)) {
+                return 'false';
+            }
+
             if (is_numeric($part) || is_bool($part)) {
                 return $part;
             }
