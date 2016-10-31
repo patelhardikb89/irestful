@@ -7,7 +7,6 @@
 
 ---------
 
-* Do not generate test classes with no test method.
 * Make sure to type variables properly in all classes.
 * Enable combos in code generation.
 

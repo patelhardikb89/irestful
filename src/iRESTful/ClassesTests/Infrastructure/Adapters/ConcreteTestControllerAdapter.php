@@ -37,11 +37,15 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
 
         $output = [];
         foreach($data['controllers'] as $oneController) {
-            $output[] = $this->fromDataToController([
+            $testController = $this->fromDataToController([
                 'controller' => $oneController,
                 'configuration' => $data['configuration'],
                 'annotated_entities' => $data['annotated_entities']
             ]);
+
+            if (!empty($testController)) {
+                $output[] = $testController;
+            }
         }
 
         return $output;
@@ -76,6 +80,9 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
                                                                 ->fromDSLControllerToTestInstructions($data['controller']);
 
         $testCustomMethodNodes = $this->customMethodNodeAdapter->fromTestInstructionsToCustomMethodNodes($testInstructions);
+        if (empty($testCustomMethodNodes)) {
+            return null;
+        }
 
         $name = $convert($data['controller']->getName()).'Test';
         $merged = array_merge($this->baseNamespace, ['Tests', 'Tests', 'Functional', 'Controllers', $name]);
