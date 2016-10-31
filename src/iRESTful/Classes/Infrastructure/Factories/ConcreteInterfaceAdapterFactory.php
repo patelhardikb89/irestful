@@ -9,6 +9,7 @@ use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterAda
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteInterfaceMethodParameterTypeAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcretePrimitiveAdapter;
 
 final class ConcreteInterfaceAdapterFactory implements InterfaceAdapterFactory {
     private $baseNamespace;
@@ -17,6 +18,8 @@ final class ConcreteInterfaceAdapterFactory implements InterfaceAdapterFactory {
     }
 
     public function create() {
+
+        $primitiveAdapter = new ConcretePrimitiveAdapter();
 
         $interfaceNamespaceAdapterFactory = new ConcreteInterfaceNamespaceAdapterFactory($this->baseNamespace);
         $interfaceNamespaceAdapter = $interfaceNamespaceAdapterFactory->create();
@@ -27,7 +30,7 @@ final class ConcreteInterfaceAdapterFactory implements InterfaceAdapterFactory {
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
 
         $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('input', true);
-        $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
+        $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($primitiveAdapter, $interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);
         return new ConcreteInterfaceAdapter($interfaceNamespaceAdapter, $interfaceMethodAdapter);

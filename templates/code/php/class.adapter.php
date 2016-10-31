@@ -12,7 +12,7 @@ final class {{namespace.name}} implements {{interface.namespace.name}} {
     }
 
     {% for oneMethod in methods %}
-        public function {{oneMethod.name}}(${{oneMethod.parameter.name}}) {
+        public function {{oneMethod.name}}({{- fn.generateSignatureVariable(oneMethod.parameter, true) -}}) {
             return new \{{oneMethod.namespace.all}}(${{oneMethod.parameter.name}});
         }
     {% endfor %}

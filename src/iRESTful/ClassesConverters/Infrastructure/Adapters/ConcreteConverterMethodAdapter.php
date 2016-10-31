@@ -80,11 +80,41 @@ final class ConcreteConverterMethodAdapter implements MethodAdapter {
 
             };
 
-            $methodName = $getMethodName($converter);
-            $parameter = $parameterAdapter->fromDataToParameter([
-                'name' => 'value'
-            ]);
+            $getPrimitive = function() use(&$converter, &$type) {
+                if ($converter->hasFromType()) {
+                    $type = $converter->fromType();
+                }
 
+                if ($type->hasPrimitive()) {
+                    return $type->getPrimitive();
+                }
+
+                return null;
+            };
+
+            $getNamespace = function() use(&$converter, &$type) {
+                if ($converter->hasFromType()) {
+                    $type = $converter->fromType();
+                }
+
+                if ($type->hasType()) {
+                    $typeType = $type->getType();
+                    return $typeType->getNamespace();
+                }
+
+                return null;
+
+            };
+
+
+            $methodName = $getMethodName($converter);
+            $primitive =
+            $parameter = $parameterAdapter->fromDataToParameter([
+                'name' => 'value',
+                'primitive' => $getPrimitive(),
+                'namespace' => $getNamespace()
+            ]);
+            
             return new ConcreteConverterMethod($methodName, $parameter, $namespace);
 
         };

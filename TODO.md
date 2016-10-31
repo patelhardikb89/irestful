@@ -7,7 +7,6 @@
 
 ---------
 
-* Make sure to type variables properly in all classes.
 * Enable combos in code generation.
 
 * The default CRUD controllers must always be present to all containers.

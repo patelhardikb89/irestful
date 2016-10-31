@@ -12,6 +12,30 @@
         {%- else -%}
             {{- oneParameter.type.namespace.name -}}{{- ' $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
         {%- endif -%}
+    {%- elseif oneParameter.type.primitive.is_string -%}
+        {%- if oneParameter.is_optional -%}
+            string {{- ' $' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}
+        {%- else -%}
+            string {{- ' $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- endif -%}
+    {%- elseif oneParameter.type.primitive.is_boolean -%}
+        {%- if oneParameter.is_optional -%}
+            bool {{- ' $' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}
+        {%- else -%}
+            bool {{- ' $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- endif -%}
+    {%- elseif oneParameter.type.primitive.is_integer -%}
+        {%- if oneParameter.is_optional -%}
+            int {{- ' $' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}
+        {%- else -%}
+            int {{- ' $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- endif -%}
+    {%- elseif oneParameter.type.primitive.is_float -%}
+        {%- if oneParameter.is_optional -%}
+            float {{- ' $' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}
+        {%- else -%}
+            float {{- ' $' -}}{{- oneParameter.name -}}{{- isLast ? '' : ', ' -}}
+        {%- endif -%}
     {%- else -%}
         {%- if oneParameter.is_optional -%}
             {{- '$' -}}{{- oneParameter.name -}}{{- ' = null' -}}{{- isLast ? '' : ', ' -}}

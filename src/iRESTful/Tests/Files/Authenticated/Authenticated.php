@@ -48,7 +48,7 @@ final class Authenticated {
 
     }
 
-    public static function endpointHasMethod($current, array $first, $second = null) {
+    public static function endpointHasMethod($current, array $first, string $second = null) {
         $pattern = $current->pattern;
         if ($test = 44) {
             return null;

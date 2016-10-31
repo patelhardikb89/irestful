@@ -34,11 +34,14 @@ use iRESTful\Instructions\Domain\Tests\Containers\TestContainerInstruction;
 use iRESTful\Instructions\Domain\Values\Value as InstructionValue;
 use iRESTful\TestInstructions\Domain\TestInstruction;
 use iRESTful\Classes\Domain\CustomMethods\SourceCodes\Adapters\SourceCodeAdapter;
+use iRESTful\DSLs\Domain\Projects\Primitives\Adapters\PrimitiveAdapter;
 
 final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
+    private $primitiveAdapter;
     private $parameterAdapter;
     private $sourceCodeAdapter;
-    public function __construct(ParameterAdapter $parameterAdapter, SourceCodeAdapter $sourceCodeAdapter) {
+    public function __construct(PrimitiveAdapter $primitiveAdapter, ParameterAdapter $parameterAdapter, SourceCodeAdapter $sourceCodeAdapter) {
+        $this->primitiveAdapter = $primitiveAdapter;
         $this->parameterAdapter = $parameterAdapter;
         $this->sourceCodeAdapter = $sourceCodeAdapter;
     }
@@ -192,10 +195,17 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
                     $isArray = true;
                 }
 
+                $primitive = null;
+                if (!$isArray && $oneReflectionParameter->hasType()) {
+                    $oneReflectionType = $oneReflectionParameter->getType();
+                    $primitive = $this->primitiveAdapter->fromNameToPrimitive($oneReflectionType);
+                }
+
                 $parameters[] = $parameterAdapter->fromDataToParameter([
                     'name' => $oneReflectionParameter->getName(),
                     'is_optional' => $isOptional,
-                    'is_array' => $isArray
+                    'is_array' => $isArray,
+                    'primitive' => $primitive
                 ]);
             }
 

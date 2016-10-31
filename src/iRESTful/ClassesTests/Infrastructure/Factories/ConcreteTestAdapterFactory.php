@@ -13,6 +13,7 @@ use iRESTful\TestInstructions\Infrastructure\Factories\ConcreteTestInstructionAd
 use iRESTful\Classes\Infrastructure\Adapters\ConcreteCustomMethodAdapter;
 use iRESTful\TestInstructions\Infrastructure\Adapters\ConcreteCustomMethodNodeAdapter;
 use iRESTful\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcretePrimitiveAdapter;
 
 final class ConcreteTestAdapterFactory implements TestAdapterFactory {
     private $baseNamespaces;
@@ -21,6 +22,8 @@ final class ConcreteTestAdapterFactory implements TestAdapterFactory {
     }
 
     public function create() {
+
+        $primitiveAdapter = new ConcretePrimitiveAdapter();
 
         $testTransformAdapter = new ConcreteTestTransformAdapter($this->baseNamespaces);
 
@@ -33,7 +36,7 @@ final class ConcreteTestAdapterFactory implements TestAdapterFactory {
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
         $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('this->data', false);
-        $customMethodAdapter = new ConcreteCustomMethodAdapter($interfaceMethodParameterAdapter, $sourceCodeAdapter);
+        $customMethodAdapter = new ConcreteCustomMethodAdapter($primitiveAdapter, $interfaceMethodParameterAdapter, $sourceCodeAdapter);
         $testCustomMethodAdapter = new PHPCustomMethodAdapter($customMethodAdapter, $sourceCodeAdapter);
         $testCustomMethodNodeAdapter = new ConcreteCustomMethodNodeAdapter($testCustomMethodAdapter);
 

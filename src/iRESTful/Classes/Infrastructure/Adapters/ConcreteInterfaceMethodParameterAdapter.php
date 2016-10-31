@@ -27,8 +27,10 @@ final class ConcreteInterfaceMethodParameterAdapter implements ParameterAdapter 
 
         $name = $getName($type);
         if ($type->hasPrimitive()) {
+            $primitive = $type->getPrimitive();
             return $this->fromDataToParameter([
-                'name' => $name
+                'name' => $name,
+                'primitive' => $primitive
             ]);
         }
 

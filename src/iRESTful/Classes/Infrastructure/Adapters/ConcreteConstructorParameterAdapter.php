@@ -227,7 +227,7 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
     }
 
     public function fromInstructionDatabaseRetrievalToParameter($retrieval) {
-        
+
         $getNamespaceData = function($retrieval) {
 
             $name = '';
@@ -327,10 +327,43 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
     }
 
     public function fromTypeToParameter(Type $type) {
+
+        $converter = $type->getDatabaseConverter();
+        $getPrimitive = function() use(&$converter) {
+            if (!$converter->hasFromType()) {
+                return null;
+            }
+
+            $type = $converter->fromType();
+            if (!$type->hasPrimitive()) {
+                return null;
+            }
+
+            return $type->getPrimitive();
+        };
+
+        $getNamespace = function() use(&$converter) {
+
+            if (!$converter->hasFromType()) {
+                return null;
+            }
+
+            $type = $converter->fromType();
+            if (!$type->hasType()) {
+                return null;
+            }
+
+            $typeType = $type->getType();
+            return $typeType->getNamespace();
+
+        };
+
         $name = $type->getName();
         $classProperty = $this->propertyAdapter->fromNameToProperty($name);
         $methodParameter = $this->parameterAdapter->fromDataToParameter([
-            'name' => $name
+            'name' => $name,
+            'primitive' => $getPrimitive(),
+            'namespace' => $getNamespace()
         ]);
 
         $method = $this->methodAdapter->fromTypeToMethod($type);
