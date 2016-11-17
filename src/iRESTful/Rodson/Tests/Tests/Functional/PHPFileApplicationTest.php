@@ -12,13 +12,14 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
         $folderName = 'Authenticated';
         $jsonFileName = 'authenticated.json';
 
-        //$folderName = 'Profiles';
-        //$jsonFileName = 'profile.json';
-
-        $this->filePath = realpath(__DIR__.'/../../Files/'.$folderName.'/'.$jsonFileName);
-        $this->outputFolderPath = realpath(__DIR__.'/../../Files/'.$folderName.'/Output');
+        $this->filePath = '/vagrant/src/iRESTful/Products/'.$folderName.'/CRUD/'.$jsonFileName;
+        $this->outputFolderPath = '/vagrant/build/'.$folderName.'/CRUD';
         $this->templatePath = '/vagrant/templates/rodson/code/php';
         $this->timezone = 'America/Montreal';
+
+        if (!is_dir($this->outputFolderPath)) {
+            mkdir($this->outputFolderPath, 777, true);
+        }
 
     }
 
