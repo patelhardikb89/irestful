@@ -3,8 +3,8 @@
 <?php
 namespace {{entity.namespace.path}};
 use {{entity.interface.namespace.all}};
-use iRESTful\Objects\Entities\Entities\Infrastructure\Objects\AbstractEntity;
-use iRESTful\Objects\Libraries\Ids\Domain\Uuids\Uuid;
+use iRESTful\LeoPaul\Objects\Entities\Entities\Infrastructure\Objects\AbstractEntity;
+use iRESTful\LeoPaul\Objects\Libraries\Ids\Domain\Uuids\Uuid;
 
 {% for oneParameter in entity.constructor.parameters %}
     {% if oneParameter.parameter.type.namespace.all %}

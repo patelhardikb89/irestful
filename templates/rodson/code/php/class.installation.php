@@ -2,9 +2,9 @@
 {% import "includes/returned.hashmap.php" as fn %}
 <?php
 namespace {{namespace.path}};
-use iRESTful\Applications\Libraries\PDO\Installations\Database as EngineDatabase;
-use iRESTful\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionClassSchemaAdapterFactory;
-use iRESTful\Applications\Libraries\PDODatabases\Infrastructure\Factories\PDOSchemaAdapterFactory;
+use iRESTful\LeoPaul\Applications\Libraries\PDO\Installations\Database as EngineDatabase;
+use iRESTful\LeoPaul\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionClassSchemaAdapterFactory;
+use iRESTful\LeoPaul\Applications\Libraries\PDODatabases\Infrastructure\Factories\PDOSchemaAdapterFactory;
 
 final class {{namespace.name}} {
 

@@ -1,7 +1,7 @@
 {% autoescape false %}
 <?php
 namespace {{namespace.path}};
-use iRESTful\Objects\Entities\Entities\Configurations\EntityConfiguration;
+use iRESTful\LeoPaul\Objects\Entities\Entities\Configurations\EntityConfiguration;
 
 {% import "includes/returned.hashmap.php" as returned %}
 final class {{namespace.name}} implements EntityConfiguration {

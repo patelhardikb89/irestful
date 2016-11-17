@@ -6,10 +6,10 @@ use {{configuration.object_configuration.namespace.all}};
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityRepositoryFactoryAdapter;
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityServiceFactoryAdapter;
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntitySetServiceFactoryAdapter;
-use iRESTful\Objects\Entities\Entities\Infrastructure\Adapters\ReflectionEntityAdapterAdapterFactoryAdapter;
-use iRESTful\Objects\Entities\Entities\Domain\Exceptions\EntityException;
+use iRESTful\LeoPaul\Objects\Entities\Entities\Infrastructure\Adapters\ReflectionEntityAdapterAdapterFactoryAdapter;
+use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityRelationRepositoryFactoryAdapter;
-use iRESTful\Objects\Entities\Entities\Infrastructure\Factories\ConcreteEntityAdapterFactory;
+use iRESTful\LeoPaul\Objects\Entities\Entities\Infrastructure\Factories\ConcreteEntityAdapterFactory;
 
 final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
     private $data;

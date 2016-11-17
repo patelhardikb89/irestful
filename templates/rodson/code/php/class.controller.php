@@ -2,7 +2,7 @@
 {% import "includes/imports.class.php" as fn %}
 <?php
 namespace {{namespace.path}};
-use iRESTful\Applications\Libraries\Routers\Domain\Controllers\Controller;
+use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controller;
 
 {% for oneParameter in constructor.parameters %}
     {% if oneParameter.parameter.type.namespace.all %}

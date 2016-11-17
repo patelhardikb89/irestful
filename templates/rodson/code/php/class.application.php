@@ -1,7 +1,7 @@
 <?php
 namespace {{namespace.path}};
 use {{configuration.namespace.all}};
-use iRESTful\Applications\Libraries\Routers\Infrastructure\Factories\ConcreteApplicationFactory;
+use iRESTful\LeoPaul\Applications\Libraries\Routers\Infrastructure\Factories\ConcreteApplicationFactory;
 
 final class {{namespace.name}} {
 

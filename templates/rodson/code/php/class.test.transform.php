@@ -1,7 +1,7 @@
 <?php
 namespace {{namespace.path}};
 use {{configuration.object_configuration.namespace.all}};
-use iRESTful\Objects\Entities\Entities\Tests\Helpers\ConversionHelper;
+use iRESTful\LeoPaul\Objects\Entities\Entities\Tests\Helpers\ConversionHelper;
 
 final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
     private $helpers;

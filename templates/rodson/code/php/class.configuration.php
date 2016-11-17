@@ -2,7 +2,7 @@
 <?php
 namespace {{namespace.path}};
 use {{object_configuration.namespace.all}};
-use iRESTful\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObjectAdapterFactory;
+use iRESTful\LeoPaul\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObjectAdapterFactory;
 use iRESTful\Applications\APIs\Entities\Infrastructure\Configurations\ConcreteEntityApplicationConfiguration;
 
 {% for oneNamespace in controller_node.namespaces %}
