@@ -29,7 +29,13 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
     private $dependenciesInterfaceClassMapper;
     public function setUp() {
 
-        $filePath = realpath(__DIR__.'/../../Files/Authenticated/authenticated.json');
+        //$folderName = 'Authenticated';
+        //$jsonFileName = 'authenticated.json';
+
+        $folderName = 'Profiles';
+        $jsonFileName = 'profile.json';
+
+        $filePath = realpath(__DIR__.'/../../Files/'.$folderName.'/'.$jsonFileName);
 
         $baseDirectory = explode('/', $filePath);
         array_pop($baseDirectory);
@@ -37,7 +43,7 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
         $this->data = json_decode(file_get_contents($filePath), true);
         $this->data['base_directory'] = implode('/', $baseDirectory);
 
-        $this->outputFolderPath = realpath(__DIR__.'/../../Files/Authenticated/Output');
+        $this->outputFolderPath = realpath(__DIR__.'/../../Files/'.$folderName.'/Output');
         $this->codeDirectory = 'src';
         $this->webDirectory = 'web';
         $this->templatePath = '/vagrant/templates/code/php';
@@ -73,26 +79,41 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
             $name->getOrganizationName(),
             $name->getProjectName()
         ];
-
-        //we get the annotated class objects:
+        
         $project = $dsl->getProject();
-        $objects = $project->getObjects();
-        $annotatedObjectAdapterFactory = new ConcreteAnnotatedObjectAdapterFactory($baseNamespace);
-        $annotatedObjects = $annotatedObjectAdapterFactory->create()->fromDSLObjectsToAnnotatedClassObjects($objects);
+
+        //we get the objects:
+        $annotatedObjects = [];
+        if ($project->hasObjects()) {
+            $objects = $project->getObjects();
+            $annotatedObjectAdapterFactory = new ConcreteAnnotatedObjectAdapterFactory($baseNamespace);
+            $annotatedObjects = $annotatedObjectAdapterFactory->create()->fromDSLObjectsToAnnotatedClassObjects($objects);
+        }
 
         //we get class entities:
-        $annotatedEntityAdapterFactory = new ConcreteAnnotatedEntityAdapterFactory($baseNamespace);
-        $annotatedEntities = $annotatedEntityAdapterFactory->create()->fromDSLObjectsToAnnotatedEntities($objects);
-
-        //we get controller classes:
-        $controllers = $project->getControllers();
-        $controllerAdapterAdapterFactory = new ConcreteControllerAdapterAdapterFactory($baseNamespace);
-        $controllerClasses = $controllerAdapterAdapterFactory->create()->fromAnnotatedEntitiesToControllerAdapter($annotatedEntities)->fromDSLControllersToControllers($controllers);
+        $annotatedEntities = [];
+        if ($project->hasEntities()) {
+            $entities = $project->getEntities();
+            $annotatedEntityAdapterFactory = new ConcreteAnnotatedEntityAdapterFactory($baseNamespace, $this->timezone);
+            $annotatedEntities = $annotatedEntityAdapterFactory->create()->fromDSLEntitiesToAnnotatedEntities($entities);
+        }
 
         //we get the value classes:
-        $types = $project->getTypes();
-        $valueAdapterFactory = new ConcreteValueAdapterFactory($baseNamespace);
-        $valueClasses = $valueAdapterFactory->create()->fromTypesToValues($types);
+        $valueClasses = [];
+        if ($project->hasObjects()) {
+            $types = $project->getTypes();
+            $valueAdapterFactory = new ConcreteValueAdapterFactory($baseNamespace);
+            $valueClasses = $valueAdapterFactory->create()->fromTypesToValues($types);
+        }
+
+        //we get controller classes:
+        $controllers = [];
+        $controllerClasses = [];
+        if ($project->hasControllers()) {
+            $controllers = $project->getControllers();
+            $controllerAdapterAdapterFactory = new ConcreteControllerAdapterAdapterFactory($baseNamespace);
+            $controllerClasses = $controllerAdapterAdapterFactory->create()->fromAnnotatedEntitiesToControllerAdapter($annotatedEntities)->fromDSLControllersToControllers($controllers);
+        }
 
         //we get the configuration class:
         $configurationAdapterFactory = new ConcreteConfigurationAdapterFactory($baseNamespace, $this->dependenciesInterfaceClassMapper, $this->delimiter, $this->timezone);
@@ -106,19 +127,21 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
             ]
         ]);
 
-        //we get the test classes:
-        $testAdapterFactory = new ConcreteTestAdapterFactory($baseNamespace);
-        $tests = $testAdapterFactory->create()->fromDataToTests([
-            'annotated_entities' => $annotatedEntities,
-            'configuration' => $configuration,
-            'controllers' => $controllers
-        ]);
-
         //we get the installation class:
         $installationAdapterFactory = new ConcreteInstallationAdapterFactory($baseNamespace);
         $installationClass = $installationAdapterFactory->create()->fromDataToInstallation([
             'object_configuration' => $configuration->getObjectConfiguration(),
             'relational_database' => $project->getRelationalDatabase()
+        ]);
+
+
+        //we get the test classes:
+        $testAdapterFactory = new ConcreteTestAdapterFactory($baseNamespace);
+        $tests = $testAdapterFactory->create()->fromDataToTests([
+            'annotated_entities' => $annotatedEntities,
+            'configuration' => $configuration,
+            'controllers' => $controllers,
+            'installation' => $installationClass
         ]);
 
         //we get the application class:

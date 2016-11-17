@@ -10,10 +10,10 @@
         }
     ],
     "require": {
-      "php": ">=7",
+      "php": ">=7.0",
       "phpunit/phpunit": "5.6.1",
-      "phpunit/phpunit": "5.6.1",
-      "twig/twig": "v1.24.1"
+      "twig/twig": "v1.24.1",
+      "steve-rodrigue/objects": "dev-master"
     },
     "autoload": {
         "psr-0": { "iRESTful": "src" }

@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\ClassesEntitiesAnnotations\Domain\Adapters;
-use iRESTful\DSLs\Domain\Projects\Objects\Object;
+use iRESTful\DSLs\Domain\Projects\Objects\Entities\Entity;
 
 interface AnnotatedEntityAdapter {
-    public function fromDSLObjectToAnnotatedEntity(Object $object);
-    public function fromDSLObjectsToAnnotatedEntities(array $objects);
+    public function fromDSLEntityToAnnotatedEntity(Entity $entity);
+    public function fromDSLEntitiesToAnnotatedEntities(array $entities);
 }

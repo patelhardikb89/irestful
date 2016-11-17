@@ -18,7 +18,7 @@ final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
     private $entitySetServiceFactory;
     private $entityAdapterFactory;
     public function setUp() {
-
+        
         $objectConfigurations = new {{configuration.object_configuration.namespace.name}}();
         $params = [
             'transformer_objects' => $objectConfigurations->getTransformerObjects(),

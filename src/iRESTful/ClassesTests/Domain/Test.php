@@ -6,4 +6,6 @@ interface Test {
     public function getTransform();
     public function hasController();
     public function getController();
+    public function hasCRUD();
+    public function getCRUD();
 }

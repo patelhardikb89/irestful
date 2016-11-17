@@ -1,5 +1,5 @@
 <?php
-namespace iRESTful\DSLs\Domain\Projects\Objects\Samples\Exceptions;
+namespace iRESTful\DSLs\Domain\Projects\Objects\Entities\Samples\Exceptions;
 
 final class SampleException extends \Exception {
     const CODE = 1;

@@ -8,6 +8,7 @@ use iRESTful\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
 use iRESTful\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\ClassesEntities\Infrastructure\Objects\ConcreteEntity;
 use iRESTful\ClassesEntities\Domain\Exceptions\EntityException;
+use iRESTful\DSLs\Domain\Projects\Objects\Entities\Entity;
 
 final class ConcreteEntityAdapter implements EntityAdapter {
     private $namespaceAdapter;
@@ -26,31 +27,25 @@ final class ConcreteEntityAdapter implements EntityAdapter {
         $this->customMethodAdapter = $customMethodAdapter;
     }
 
-    public function fromDSLObjectsToEntities(array $objects) {
+    public function fromDSLEntitiesToEntities(array $entities) {
         $output = [];
-        foreach($objects as $oneObject) {
-            $entity = $this->fromDSLObjectToEntity($oneObject);
-            if (!empty($entity)) {
-                $output[] = $entity;
-            }
+        foreach($entities as $oneEntity) {
+            $output[] = $this->fromDSLEntityToEntity($oneEntity);
         }
 
         return $output;
     }
 
-    public function fromDSLObjectToEntity(Object $object) {
+    public function fromDSLEntityToEntity(Entity $entity) {
 
-        if (!$object->hasDatabase()) {
-            return null;
-        }
-
+        $object = $entity->getObject();
         $namespace = $this->namespaceAdapter->fromObjectToNamespace($object);
         $interface = $this->interfaceAdapter->fromObjectToInterface($object);
         $constructor = $this->constructorAdapter->fromObjectToConstructor($object);
         $customMethods = $this->customMethodAdapter->fromObjectToCustomMethods($object);
 
         return new ConcreteEntity(
-            $object,
+            $entity,
             $namespace,
             $interface,
             $constructor,

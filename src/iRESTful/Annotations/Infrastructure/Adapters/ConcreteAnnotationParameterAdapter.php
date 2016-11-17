@@ -32,7 +32,7 @@ final class ConcreteAnnotationParameterAdapter implements ParameterAdapter {
             throw new ParameterException('The given entity does not have parameters to its constructor.  Therefore, does not have AnnotationParameter objects.');
         }
 
-        $object = $entity->getObject();
+        $object = $entity->getEntity()->getObject();
         $parameters = $entity->getConstructor()->getParameters();
         foreach($parameters as $oneParameter) {
 

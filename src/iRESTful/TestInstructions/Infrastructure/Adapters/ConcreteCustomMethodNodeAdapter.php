@@ -19,7 +19,7 @@ final class ConcreteCustomMethodNodeAdapter implements CustomMethodNodeAdapter {
 
         return $output;
     }
-
+    
     public function fromTestInstructionToCustomMethodNode(TestInstruction $testInstruction) {
         $initCustomMethod = $this->customMethodAdapter->fromTestInstructionToTestInitCustomMethod($testInstruction);
         $containerTestCustomMethods = $this->customMethodAdapter->fromTestInstructionToCustomMethods($testInstruction);

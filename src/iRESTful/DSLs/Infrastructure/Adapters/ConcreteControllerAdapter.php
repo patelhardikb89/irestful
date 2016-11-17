@@ -18,7 +18,7 @@ final class ConcreteControllerAdapter implements ControllerAdapter {
         $output = [];
         foreach($data as $name => $oneData) {
             $oneData['name'] = $name;
-            $output[] = $this->fromDataToController($oneData);
+            $output[$name] = $this->fromDataToController($oneData);
         }
 
         return $output;

@@ -59,7 +59,8 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
             }
         }
 
-        $lastIndex = count($instructions) - 1;
+        $keys = array_keys($instructions);
+        $lastIndex = $keys[count($instructions) - 1];
         if ($instructions[$lastIndex]->hasAssignment()) {
             $variableName = $instructions[$lastIndex]->getAssignment()->getVariableName();
             $returnedLine = 'return $'.$variableName.';';

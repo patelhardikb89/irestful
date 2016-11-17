@@ -28,7 +28,7 @@ final class ConcreteSampleAdapter implements SampleAdapter {
         if (!isset($data['data'])) {
             throw new SampleException('The data keyname is mandatory in order to convert data to a Sample object.');
         }
-
+        
         return new ConcreteSample($data['container'], $data['data']);
 
     }

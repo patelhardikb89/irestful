@@ -12,7 +12,7 @@ final class ConcreteConfiguration implements Configuration {
     private $objectConfiguration;
     private $databases;
     private $controllerNode;
-    public function __construct(ClassNamespace $namespace, ObjectConfiguration $objectConfiguration, ControllerNode $controllerNode, array $databases) {
+    public function __construct(ClassNamespace $namespace, ObjectConfiguration $objectConfiguration, array $databases, ControllerNode $controllerNode = null) {
 
         if (empty($databases)) {
             throw new ConfigurationException('The databases must be non-empty.');
@@ -41,6 +41,10 @@ final class ConcreteConfiguration implements Configuration {
 
     public function getDatabases() {
         return $this->databases;
+    }
+
+    public function hasControllerNode() {
+        return !empty($this->controllerNode);
     }
 
     public function getControllerNode() {

@@ -43,11 +43,11 @@ final class ConcreteTestInstructionAdapter implements TestInstructionAdapter {
         foreach($tests as $oneTest) {
 
             $commands = [];
-            foreach($oneTest as $oneCommand) {
+            foreach($oneTest as $index => $oneCommand) {
 
                 if (is_array($oneCommand)) {
 
-                    $containerInstructions[] = $this->testContainerInstructionAdapter->fromDataToTestContainerInstructions([
+                    $containerInstructions[$index] = $this->testContainerInstructionAdapter->fromDataToTestContainerInstructions([
                         'tests' => $oneCommand,
                         'controller' => $controller,
                         'annotated_entities' => $this->annotatedEntities
@@ -60,7 +60,7 @@ final class ConcreteTestInstructionAdapter implements TestInstructionAdapter {
                     $oneCommand = str_replace('this', $inputName, $oneCommand);
                 }
 
-                $commands[] = $oneCommand;
+                $commands[$index] = $oneCommand;
 
             }
 

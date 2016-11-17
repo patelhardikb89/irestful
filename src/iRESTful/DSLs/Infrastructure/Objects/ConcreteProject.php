@@ -7,17 +7,21 @@ use iRESTful\DSLs\Domain\Projects\Exceptions\ProjectException;
 final class ConcreteProject implements Project {
     private $parents;
     private $objects;
+    private $entities;
     private $controllers;
-    public function __construct(array $objects, array $controllers, array $parents = null) {
+    public function __construct(array $objects = null, array $entities = null, array $controllers = null, array $parents = null) {
 
-        $verify = function(array $data = null, $type, $badTypeMessage) {
+        $verify = function(array $data = null, $type, $badTypeMessage, $badKeynameMessage) {
 
             if (empty($data)) {
-                return;
+                return null;
             }
 
-            $data = array_values($data);
-            foreach($data as $oneElement) {
+            foreach($data as $keyname => $oneElement) {
+
+                if (!is_string($keyname)) {
+                    throw new ProjectException($badKeynameMessage);
+                }
 
                 if (!($oneElement instanceof $type)) {
                     throw new ProjectException($badTypeMessage);
@@ -29,37 +33,28 @@ final class ConcreteProject implements Project {
 
         };
 
-        if (empty($parents)) {
-            $parents = null;
-        }
+        $parents = $verify($parents, 'iRESTful\DSLs\Domain\SubDSLs\SubDSL', 'The parents must only contain SubDSL objects.', 'The parents array must be an array, where the keynames are strings.');
+        $objects = $verify($objects, 'iRESTful\DSLs\Domain\Projects\Objects\Object', 'The objects must only contain Object objects.', 'The objects array must be an array, where the keynames are strings.');
+        $entities = $verify($entities, 'iRESTful\DSLs\Domain\Projects\Objects\Entities\Entity', 'The entities must only contain Entity objects.', 'The entities array must be an array, where the keynames are strings.');
+        $controllers = $verify($controllers, 'iRESTful\DSLs\Domain\Projects\Controllers\Controller', 'The controllers must only contain Controller objects.', 'The controllers array must be an array, where the keynames are strings.');
 
-        if (empty($objects)) {
-            throw new ProjectException('There must be at least 1 object.');
+        if (empty($objects) && empty($controllers)) {
+            throw new ProjectException('There objects and controllers cannot be both empty.');
         }
-
-        if (empty($controllers)) {
-            throw new ProjectException('There must be at least 1 controller.');
-        }
-
-        $parents = $verify($parents, 'iRESTful\DSLs\Domain\DSL', 'The parents must only contain DSL objects.');
-        $objects = $verify($objects, 'iRESTful\DSLs\Domain\Projects\Objects\Object', 'The objects must only contain Entity objects.');
-        $controllers = $verify($controllers, 'iRESTful\DSLs\Domain\Projects\Controllers\Controller', 'The controllers must only contain Controller objects.');
 
         $this->parents = $parents;
         $this->objects = $objects;
+        $this->entities = $entities;
         $this->controllers = $controllers;
     }
 
-    public function getObjects(): array {
-        return $this->objects;
-    }
-
-    public function getControllers(): array {
-        return $this->controllers;
-    }
-
     public function getTypes(): array {
+
         $output = [];
+        if (!$this->hasObjects()) {
+            return $output;
+        }
+
         foreach($this->objects as $oneObject) {
             $objectTypes = $oneObject->getTypes();
             foreach($objectTypes as $oneObjectType) {
@@ -68,10 +63,15 @@ final class ConcreteProject implements Project {
             }
         }
 
-        return array_values($output);
+        return $output;
     }
 
     public function getRelationalDatabase() {
+
+        if (!$this->hasObjects()) {
+            return null;
+        }
+
         foreach($this->objects as $oneObject) {
 
             if ($oneObject->hasDatabase()) {
@@ -84,6 +84,46 @@ final class ConcreteProject implements Project {
         }
 
         return null;
+    }
+
+    public function hasObjects() {
+        return !empty($this->objects);
+    }
+
+    public function getObjects() {
+        return $this->objects;
+    }
+
+    public function hasEntities() {
+        return !empty($this->entities);
+    }
+
+    public function getEntities() {
+        return $this->entities;
+    }
+
+    public function hasEntityByName(string $name): bool {
+        if (!$this->hasEntities()) {
+            return false;
+        }
+
+        return isset($this->entities[$name]);
+    }
+
+    public function getEntityByName(string $name) {
+        if (!$this->hasEntityByName($name)) {
+            return null;
+        }
+
+        return$this->entities[$name];
+    }
+
+    public function hasControllers() {
+        return !empty($this->controllers);
+    }
+
+    public function getControllers() {
+        return $this->controllers;
     }
 
     public function hasParents(): bool {

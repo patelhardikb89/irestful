@@ -2,7 +2,7 @@
 namespace iRESTful\ClassesEntities\Domain;
 
 interface Entity {
-    public function getObject();
+    public function getEntity();
     public function getNamespace();
     public function getInterface();
     public function getConstructor();

@@ -9,10 +9,6 @@ final class Authenticated {
 
     }
 
-    public static function validateStringNumeric($stringNumeric) {
-
-    }
-
     public static function validateBoolean($boolean) {
 
     }

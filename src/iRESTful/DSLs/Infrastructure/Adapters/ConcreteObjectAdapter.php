@@ -7,23 +7,22 @@ use iRESTful\DSLs\Domain\Projects\Objects\Properties\Exceptions\PropertyExceptio
 use iRESTful\DSLs\Domain\Projects\Objects\Adapters\ObjectAdapter;
 use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\DSLs\Domain\Projects\Objects\Methods\Adapters\MethodAdapter;
-use iRESTful\DSLs\Domain\Projects\Objects\Samples\Adapters\SampleAdapter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $methodAdapter;
     private $propertyAdapter;
-    private $sampleAdapter;
     private $databases;
+    private $parents;
     public function __construct(
         MethodAdapter $methodAdapter,
         PropertyAdapter $propertyAdapter,
-        SampleAdapter $sampleAdapter,
-        array $databases
+        array $databases,
+        array $parents
     ) {
         $this->methodAdapter = $methodAdapter;
         $this->propertyAdapter = $propertyAdapter;
-        $this->sampleAdapter = $sampleAdapter;
         $this->databases = $databases;
+        $this->parents = $parents;
     }
 
     public function fromDataToValidObjects(array $data) {
@@ -61,13 +60,12 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
                 $methods = $this->methodAdapter->fromDataToMethods($data['methods']);
             }
 
-            $samples = null;
-            if (isset($data['samples'])) {
-                $samples = $this->sampleAdapter->fromDataToSamples($data['samples']);
-            }
+            $properties = $this->propertyAdapter->fromDataToProperties([
+                'properties' => $data['properties'],
+                'parents' => $this->parents
+            ]);
 
-            $properties = $this->propertyAdapter->fromDataToProperties($data['properties']);
-            return new ConcreteObject($data['name'], $properties, $database, $methods, $samples);
+            return new ConcreteObject($data['name'], $properties, $database, $methods);
 
         } catch (PropertyException $exception) {
             throw new ObjectException('There was an exception while converting data to Property objects.', $exception);

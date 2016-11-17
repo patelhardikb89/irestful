@@ -5,10 +5,13 @@ use iRESTful\DSLs\Domain\Projects\Databases\Credentials\Adapters\CredentialsAdap
 use iRESTful\DSLs\Infrastructure\Objects\ConcreteRESTAPI;
 use iRESTful\DSLs\Domain\Projects\Databases\Credentials\Exceptions\CredentialsException;
 use iRESTful\DSLs\Domain\Projects\Databases\RESTAPIs\Exceptions\RESTAPIException;
+use iRESTful\DSLs\Domain\URLs\Adapters\UrlAdapter;
 
 final class ConcreteRESTAPIAdapter implements RESTAPIAdapter {
+    private $urlAdapter;
     private $credentialsAdapter;
-    public function __construct(CredentialsAdapter $credentialsAdapter) {
+    public function __construct(UrlAdapter $urlAdapter, CredentialsAdapter $credentialsAdapter) {
+        $this->urlAdapter = $urlAdapter;
         $this->credentialsAdapter = $credentialsAdapter;
     }
 
@@ -34,7 +37,8 @@ final class ConcreteRESTAPIAdapter implements RESTAPIAdapter {
                 $credentials = $this->credentialsAdapter->fromDataToCredentials($data['credentials']);
             }
 
-            return new ConcreteRESTAPI($data['base_url'], $data['port'], $credentials, $headerLine);
+            $baseUrl = $this->urlAdapter->fromStringToUrl($data['base_url']);
+            return new ConcreteRESTAPI($baseUrl, $data['port'], $credentials, $headerLine);
 
         } catch (CredentialsException $exception) {
             throw new RESTAPIException('There was an exception while converting data to a Credentials object.', $exception);

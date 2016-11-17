@@ -28,12 +28,7 @@ final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
 
             $databases = [];
             foreach($annotatedEntities as $oneAnnotatedEntity) {
-                $object = $oneAnnotatedEntity->getEntity()->getObject();
-                if (!$object->hasDatabase()) {
-                    throw new ConfigurationException('The given AnnotatedEntity does not have a Database object.');
-                }
-
-                $database = $object->getDatabase();
+                $database = $oneAnnotatedEntity->getEntity()->getEntity()->getDatabase();
                 $name = $database->getName();
                 if (!isset($databases[$name])) {
                     $databases[$name] = $database;
@@ -56,10 +51,6 @@ final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
             throw new ConfigurationException('The values keyname is mandatory in order to convert data to a Configuration object.');
         }
 
-        if (!isset($data['controllers'])) {
-            throw new ConfigurationException('The controllers keyname is mandatory in order to convert data to a Configuration object.');
-        }
-
         $databases = $getDatabasesFromAnnotatedEntities($data['annotated_entities']);
         $namespace = $this->namespaceFactory->create();
         $objectConfiguration = $this->objectConfigurationAdapter->fromDataToObjectConfiguration([
@@ -68,8 +59,12 @@ final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
             'values' => $data['values']
         ]);
 
-        $controllerNode = $this->controllerNodeAdapter->fromDataToControllerNode($data['controllers']);
-        return new ConcreteConfiguration($namespace, $objectConfiguration, $controllerNode, $databases);
+        $controllerNode = null;
+        if (!isset($data['controllers'])) {
+            $controllerNode = $this->controllerNodeAdapter->fromDataToControllerNode($data['controllers']);
+        }
+
+        return new ConcreteConfiguration($namespace, $objectConfiguration, $databases, $controllerNode);
 
     }
 

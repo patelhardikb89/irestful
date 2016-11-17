@@ -44,6 +44,13 @@ final class ConcreteAnnotationParameterTypeAdapter implements TypeAdapter {
             }
         }
 
+        if ($objectPropertyType->hasParentObject()) {
+            $databaseType = $this->databaseTypeAdapter->fromDataToDatabaseType([
+                'name' => 'binary',
+                'specific' => 128
+            ]);
+        }
+
         if ($objectPropertyType->hasPrimitive()) {
             $objectPropertyPrimitiveName = $objectPropertyType->getPrimitive()->getName();
             $databaseType = $this->databaseTypeAdapter->fromDataToDatabaseType([

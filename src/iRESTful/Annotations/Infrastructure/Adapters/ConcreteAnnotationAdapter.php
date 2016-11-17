@@ -12,7 +12,7 @@ final class ConcreteAnnotationAdapter implements AnnotationAdapter {
     }
 
     public function fromEntityToAnnotation(Entity $entity) {
-        $containerName = $entity->getObject()->getName();
+        $containerName = $entity->getEntity()->getObject()->getName();
         $parameters = $this->parameterAdapter->fromEntityToParameters($entity);
         return new ConcreteAnnotation($containerName, $parameters);
     }

@@ -24,6 +24,7 @@ use iRESTful\ClassesConfigurations\Domain\Configuration;
 use iRESTful\ClassesApplications\Domain\Application;
 use iRESTful\ClassesInstallations\Domain\Installation;
 use iRESTful\ClassesTests\Domain\Controllers\Controller as TestController;
+use iRESTful\ClassesTests\Domain\CRUDs\CRUD;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $rootPathAdapter;
@@ -170,8 +171,19 @@ final class ConcreteCodeAdapter implements CodeAdapter {
             return $this->fromTestControllerToCode($controller);
         }
 
+        if ($test->hasCRUD()) {
+            $crud = $test->getCRUD();
+            return $this->fromTestCRUDToCode($crud);
+        }
+
         throw new CodeException('There was no test in the Test object.');
 
+    }
+
+    private function fromTestCRUDToCode(CRUD $crud) {
+        $data = $this->getData($crud);
+        $namespace = $crud->getNamespace();
+        return $this->render($namespace, $data, 'class.test.controller.crud.php');
     }
 
     private function fromTestControllerToCode(TestController $controller) {

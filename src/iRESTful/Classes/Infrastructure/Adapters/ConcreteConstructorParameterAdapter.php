@@ -294,6 +294,11 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
                 return $this->namespaceAdapter->fromObjectToNamespace($object);
             }
 
+            if ($propertyType->hasParentObject()) {
+                $parentObject = $propertyType->getParentObject();
+                return $this->namespaceAdapter->fromParentObjectToNamespace($parentObject);
+            }
+
             //throws
         };
 

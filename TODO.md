@@ -1,17 +1,26 @@
 * Validate that assignment variable names do not have the same name as an http request (for controllers).
 * Make sure to modify the variable names when adding code in classes.
-* Make sure only a small subset of php functions are whitelisted in the custom methods.
 
 * When there is a method that returns a nullable array, make the method with an 's' (ex: getRoles()) in the interface.  Also, add the has* methods in both the interfaces and classes.
 
 
 ---------
 
+* Enable projects that use sub projects
+* Add the CLI params
+* Create more factories to not duplicate code.
+* Make sure we have objects or container.  1 of them is mandatory.  Cannot be both empty.
+* Enable cross origin
+* Remove duplicate interfaces in classes, when 2 parameters have the same type.
 * Enable combos in code generation.
+* Generate the .gitignore file.
+* Enable importing static data on install
 
-* The default CRUD controllers must always be present to all containers.
-
-* Put samples in a separate section.
+* Create a logger that write on files.
+* Create an application
+* Generate the binary using composer.
+* Make sure the generated code is aligned properly.
+* Generate the Dockerfile and docker-compose file when necessary.
 
 --------------------
 

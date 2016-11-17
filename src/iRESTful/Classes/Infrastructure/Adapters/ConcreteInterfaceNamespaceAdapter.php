@@ -5,6 +5,7 @@ use iRESTful\Classes\Domain\Namespaces\Adapters\NamespaceAdapter;
 use iRESTful\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\DSLs\Domain\Projects\Types\Type;
 use iRESTful\DSLs\Domain\Projects\Controllers\Controller;
+use iRESTful\DSLs\Domain\Projects\Objects\Properties\Types\Parents\ParentObject;
 
 final class ConcreteInterfaceNamespaceAdapter implements InterfaceNamespaceAdapter {
     private $namespaceAdapter;
@@ -61,6 +62,32 @@ final class ConcreteInterfaceNamespaceAdapter implements InterfaceNamespaceAdapt
         }
 
         return $this->fromDataToNamespace(['Types', $folderName, 'Adapters', $typeName.'Adapter']);
+    }
+
+    public function fromParentObjectToNamespace(ParentObject $parentObject) {
+        $dslName = $parentObject->getSubDSL()->getDSL()->getName();
+        $rootFolder = 'Entities';
+        $objectName = $parentObject->getObject()->getName();
+
+        return $this->fromFullDataToNamespace([
+            $dslName->getOrganizationName(),
+            $dslName->getProjectName(),
+            $this->baseNamespace,
+            $rootFolder,
+            $this->convert($objectName)
+        ]);
+    }
+
+    protected function convert($name) {
+        $matches = [];
+        preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
+
+        foreach($matches[0] as $oneElement) {
+            $replacement = strtoupper(str_replace('_', '', $oneElement));
+            $name = str_replace($oneElement, $replacement, $name);
+        }
+
+        return ucfirst($name);
     }
 
 }

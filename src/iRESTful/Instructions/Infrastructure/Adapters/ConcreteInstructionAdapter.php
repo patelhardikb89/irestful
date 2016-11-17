@@ -44,7 +44,7 @@ final class ConcreteInstructionAdapter implements InstructionAdapter {
         $assignments = [];
         $returnedInstructions = [];
         $inputName = $data['controller']->getInputName();
-        foreach($data['instructions'] as $oneInstruction) {
+        foreach($data['instructions'] as $index => $oneInstruction) {
 
             $isReturned = false;
             if (strpos($oneInstruction, 'return ') === 0) {
@@ -66,7 +66,7 @@ final class ConcreteInstructionAdapter implements InstructionAdapter {
                     $merge[] = $assignments[$oneVariable];
                 }
 
-                $returnedInstructions[] = new ConcreteInstruction(null, $merge);
+                $returnedInstructions[$index] = new ConcreteInstruction(null, $merge);
                 return $returnedInstructions;
             }
 
@@ -84,7 +84,7 @@ final class ConcreteInstructionAdapter implements InstructionAdapter {
                     'previous_assignments' => $assignments,
                     'http_requests' => $httpRequests
                 ])->fromStringToAction($oneInstruction);
-                $returnedInstructions[] = new ConcreteInstruction(null, null, $action);
+                $returnedInstructions[$index] = new ConcreteInstruction(null, null, $action);
                 continue;
             }
 
@@ -97,7 +97,7 @@ final class ConcreteInstructionAdapter implements InstructionAdapter {
 
             $variableName = $assignment->getVariableName();
             $assignments[$variableName] = $assignment;
-            $returnedInstructions[] = new ConcreteInstruction($assignment);
+            $returnedInstructions[$index] = new ConcreteInstruction($assignment);
 
             if ($isReturned) {
                 return $returnedInstructions;

@@ -6,3 +6,4 @@
 *.log
 /src/iRESTful/Tests/Files/Authenticated/Output/*
 /src/iRESTful/Tests/Files/Authenticated/Output.bck/*
+/src/iRESTful/Tests/Files/Profiles/*

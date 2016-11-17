@@ -29,7 +29,6 @@ use iRESTful\DSLs\Infrastructure\Adapters\ConcreteObjectPropertyTypeAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteObjectMethodAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteConverterTypeAdapter;
 use iRESTful\DSLs\Infrastructure\Factories\ConcretePrimitiveFactory;
-use iRESTful\DSLs\Infrastructure\Adapters\ConcreteObjectSampleAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestCommandAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestCommandActionAdapter;
@@ -38,6 +37,17 @@ use iRESTful\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestViewAdapt
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteValueAdapterAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteControllerViewTemplateAdapter;
 use iRESTful\DSLs\Infrastructure\Adapters\ConcreteControllerViewAdapter;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcreteEntityAdapter;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcreteEntitySampleAdapter;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcreteEntitySampleNodeAdapter;
+use iRESTful\Objects\Libraries\Dates\Infrastructure\Factories\ConcreteDateTimeFactory;
+use iRESTful\Objects\Libraries\Dates\Infrastructure\Adapters\ConcreteDateTimeAdapter;
+use iRESTful\Objects\Libraries\Ids\Infrastructure\Factories\V4UuidFactory;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcreteEntitySampleReferenceAdapter;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcreteSubDSLAdapter;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcreteUrlAdapter;
+use iRESTful\DSLs\Infrastructure\Factories\ConcreteDSLAdapterFactory;
+use iRESTful\DSLs\Infrastructure\Adapters\ConcreteParentObjectAdapter;
 
 final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
     private $codeData;
@@ -45,12 +55,15 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
     private $databasesData;
     private $typesData;
     private $objectsData;
+    private $parentsData;
     private $baseDirectory;
     public function __construct(
-        array $codeData, array $convertersData,
+        array $codeData,
+        array $convertersData,
         array $databasesData,
         array $typesData,
         array $objectsData,
+        array $parentsData,
         $baseDirectory
     ) {
         $this->codeData = $codeData;
@@ -58,7 +71,9 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         $this->databasesData = $databasesData;
         $this->typesData = $typesData;
         $this->objectsData = $objectsData;
+        $this->parentsData = $parentsData;
         $this->baseDirectory = $baseDirectory;
+
     }
 
     private function getCode() {
@@ -68,9 +83,10 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
     }
 
     private function getDatabases() {
+        $urlAdapter = new ConcreteUrlAdapter();
         $credentialsAdapter = new ConcreteDatabaseCredentialsAdapter();
         $relationalDatabaseAdapter = new ConcreteRelationalDatabaseAdapter($credentialsAdapter);
-        $restAPIAdapter = new ConcreteRESTAPIAdapter($credentialsAdapter);
+        $restAPIAdapter = new ConcreteRESTAPIAdapter($urlAdapter, $credentialsAdapter);
         $databaseAdapter = new ConcreteDatabaseAdapter($relationalDatabaseAdapter, $restAPIAdapter);
         return $databaseAdapter->fromDataToDatabases($this->databasesData);
     }
@@ -110,26 +126,25 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         return $getTypes($converters);
     }
 
-    private function getObjectAdapter(Code $code, array $types, array $primitives, array $objects) {
-        $databases = $this->getDatabases();
+    private function getObjectAdapter(Code $code, array $types, array $primitives, array $objects, array $databases, array $parents) {
 
-        $sampleAdapter = new ConcreteObjectSampleAdapter();
         $methodAdapter = new ConcreteCodeMethodAdapter($code);
         $objectMethodAdapter = new ConcreteObjectMethodAdapter($methodAdapter);
 
-        $propertyTypeAdapter = new ConcreteObjectPropertyTypeAdapter($types, $primitives, $objects);
+        $parentObjectAdapter = new ConcreteParentObjectAdapter();
+        $propertyTypeAdapter = new ConcreteObjectPropertyTypeAdapter($parentObjectAdapter, $types, $primitives, $objects);
         $propertyAdapter = new ConcreteObjectPropertyAdapter($propertyTypeAdapter);
-        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $sampleAdapter, $databases);
+        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $databases, $parents);
     }
 
-    private function getObjects(Code $code, array $types, array $primitives) {
+    private function getObjects(Code $code, array $types, array $primitives, array $databases, array $parents) {
 
         $objects = [];
         $amountObjectsData = count($this->objectsData);
         $amountNewObjects = 0;
 
         while($amountNewObjects != $amountObjectsData) {
-            $objectAdapter = $this->getObjectAdapter($code, $types, $primitives, $objects);
+            $objectAdapter = $this->getObjectAdapter($code, $types, $primitives, $objects, $databases, $parents);
             $newObjects = $objectAdapter->fromDataToValidObjects($this->objectsData);
             $amountNewObjects = count($newObjects);
             if ($amountNewObjects == count($objects)) {
@@ -143,6 +158,27 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
 
     }
 
+    private function getParents(array $databases) {
+        $dslAdapterFactory = new ConcreteDSLAdapterFactory();
+        $dslAdapter = $dslAdapterFactory->create();
+
+        $subDSLAdapterAdapter = new ConcreteSubDSLAdapter($dslAdapter, $databases, $this->baseDirectory);
+        return $subDSLAdapterAdapter->fromDataToSubDSLs($this->parentsData);
+    }
+
+    private function getEntityAdapter(array $objects) {
+
+        $dateTimeAdapter = new ConcreteDateTimeAdapter('America/Montreal');
+        $dateTimeFactory = new ConcreteDateTimeFactory($dateTimeAdapter);
+        $uuidFactory = new V4UuidFactory();
+
+        $referenceAdapter = new ConcreteEntitySampleReferenceAdapter();
+        $sampleAdapter = new ConcreteEntitySampleAdapter($uuidFactory, $dateTimeFactory, $referenceAdapter, $objects);
+        $sampleNodeAdapter = new ConcreteEntitySampleNodeAdapter($sampleAdapter);
+
+        return new ConcreteEntityAdapter($sampleNodeAdapter);
+    }
+
     public function create() {
 
         try {
@@ -152,7 +188,9 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
 
             $code = $this->getCode();
             $types = $this->getTypes($code, $primitives);
-            $objects = $this->getObjects($code, $types, $primitives);
+            $databases = $this->getDatabases();
+            $parents = $this->getParents($databases);
+            $objects = $this->getObjects($code, $types, $primitives, $databases, $parents);
 
             $valueAdapterAdapter = new ConcreteValueAdapterAdapter();
             $controllerHttpRequestCommandActionAdapter = new ConcreteControllerHttpRequestCommandActionAdapter();
@@ -163,8 +201,14 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
             $controllerViewTemplateAdapter = new ConcreteControllerViewTemplateAdapter();
             $controllerViewAdapter = new ConcreteControllerViewAdapter($controllerViewTemplateAdapter);
             $controllerAdapter = new ConcreteControllerAdapter($controllerViewAdapter, $controllerHttpRequestAdapter);
-            $objectAdapter = $this->getObjectAdapter($code, $types, $primitives, $objects);
-            return new ConcreteProjectAdapter($objectAdapter, $controllerAdapter);
+            $objectAdapter = $this->getObjectAdapter($code, $types, $primitives, $objects, $databases, $parents);
+            $entityAdapter = $this->getEntityAdapter($objects);
+
+            $dslAdapterFactory = new ConcreteDSLAdapterFactory();
+            $dslAdapter = $dslAdapterFactory->create();
+
+            $subDSLAdapterAdapter = new ConcreteSubDSLAdapter($dslAdapter, $databases, $this->baseDirectory);
+            return new ConcreteProjectAdapter($objectAdapter, $entityAdapter, $controllerAdapter, $subDSLAdapterAdapter);
 
         } catch (CodeException $exception) {
             throw new ProjectException('There was an exception while converting data to a Code object.', $exception);

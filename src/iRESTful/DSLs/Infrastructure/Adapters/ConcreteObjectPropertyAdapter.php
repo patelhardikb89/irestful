@@ -14,8 +14,17 @@ final class ConcreteObjectPropertyAdapter implements PropertyAdapter {
 
     public function fromDataToProperties(array $data) {
 
+        if (!isset($data['properties'])) {
+            throw new PropertyException('The properties keyname is mandatory in order to convert data to Property objects.');
+        }
+
+        $parents = null;
+        if (isset($data['parents'])) {
+            $parents = $data['parents'];
+        }
+
         $output = [];
-        foreach($data as $name => $type) {
+        foreach($data['properties'] as $name => $type) {
 
             $isOptional = false;
             $isUnique = false;
@@ -59,7 +68,8 @@ final class ConcreteObjectPropertyAdapter implements PropertyAdapter {
                 'is_optional' => $isOptional,
                 'is_unique' => $isUnique,
                 'is_key' => $isKey,
-                'default' => $default
+                'default' => $default,
+                'parents' => $parents
             ]);
         }
 
@@ -96,9 +106,18 @@ final class ConcreteObjectPropertyAdapter implements PropertyAdapter {
             $default = $data['default'];
         }
 
+        $parents = null;
+        if (isset($data['parents'])) {
+            $parents = $data['parents'];
+        }
+
         try {
 
-            $type = $this->typeAdapter->fromStringToType($data['type']);
+            $type = $this->typeAdapter->fromDataToType([
+                'name' => $data['type'],
+                'parents' => $parents
+            ]);
+
             return new ConcreteObjectProperty($data['name'], $type, $isOptional, $isUnique, $isKey, $default);
 
         } catch (TypeException $exception) {

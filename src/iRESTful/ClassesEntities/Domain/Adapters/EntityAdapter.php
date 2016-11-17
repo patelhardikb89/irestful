@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\ClassesEntities\Domain\Adapters;
-use iRESTful\DSLs\Domain\Projects\Objects\Object;
+use iRESTful\DSLs\Domain\Projects\Objects\Entities\Entity;
 
 interface EntityAdapter {
-    public function fromDSLObjectToEntity(Object $object);
-    public function fromDSLObjectsToEntities(array $objects);
+    public function fromDSLEntityToEntity(Entity $entity);
+    public function fromDSLEntitiesToEntities(array $entities);
 }

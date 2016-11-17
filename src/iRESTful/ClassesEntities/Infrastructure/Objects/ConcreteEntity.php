@@ -1,7 +1,7 @@
 <?php
 namespace iRESTful\ClassesEntities\Infrastructure\Objects;
 use iRESTful\ClassesEntities\Domain\Entity;
-use iRESTful\DSLs\Domain\Projects\Objects\Object;
+use iRESTful\DSLs\Domain\Projects\Objects\Entities\Entity as DSLEntity;
 use iRESTful\Classes\Domain\Namespaces\ClassNamespace;
 use iRESTful\Classes\Domain\Interfaces\ClassInterface;
 use iRESTful\Classes\Domain\Constructors\Constructor;
@@ -9,13 +9,13 @@ use iRESTful\ClassesEntities\Domain\Exceptions\EntityException;
 use iRESTful\Classes\Domain\CustomMethods\CustomMethod;
 
 final class ConcreteEntity implements Entity {
-    private $object;
+    private $entity;
     private $namespace;
     private $interface;
     private $constructor;
     private $customMethods;
     public function __construct(
-        Object $object,
+        DSLEntity $entity,
         ClassNamespace $namespace,
         ClassInterface $interface,
         Constructor $constructor,
@@ -34,15 +34,15 @@ final class ConcreteEntity implements Entity {
             }
         }
 
-        $this->object = $object;
+        $this->entity = $entity;
         $this->namespace = $namespace;
         $this->interface = $interface;
         $this->constructor = $constructor;
         $this->customMethods = $customMethods;
     }
 
-    public function getObject() {
-        return $this->object;
+    public function getEntity() {
+        return $this->entity;
     }
 
     public function getNamespace() {
