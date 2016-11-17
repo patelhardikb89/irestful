@@ -1,6 +1,6 @@
 <?php
 namespace iRESTful\Outputs\Infrastructure\Factories;
-use  iRESTful\Outputs\Domain\Codes\Adapters\Factories\CodeAdapterFactory;
+use iRESTful\Outputs\Domain\Codes\Adapters\Factories\CodeAdapterFactory;
 use iRESTful\Outputs\Infrastructure\Adapters\ConcreteOutputCodeFileAdapter;
 use iRESTful\Outputs\Infrastructure\Adapters\ConcreteOutputCodePathAdapter;
 use iRESTful\Outputs\Infrastructure\Factories\TwigTemplateFactory;

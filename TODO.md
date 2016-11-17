@@ -6,7 +6,6 @@
 
 ---------
 
-* Enable projects that use sub projects
 * Add the CLI params
 * Create more factories to not duplicate code.
 * Make sure we have objects or container.  1 of them is mandatory.  Cannot be both empty.

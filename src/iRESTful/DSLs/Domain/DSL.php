@@ -8,5 +8,4 @@ interface DSL {
     public function getLicense();
     public function getAuthors();
     public function getProject();
-    public function getBaseDirectory();
 }
