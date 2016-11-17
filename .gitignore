@@ -4,6 +4,6 @@
 /composer.phar
 .DS_Store
 *.log
-/src/iRESTful/Tests/Files/Authenticated/Output/*
-/src/iRESTful/Tests/Files/Authenticated/Output.bck/*
-/src/iRESTful/Tests/Files/Profiles/*
+/src/iRESTful/Rodson/Tests/Files/Authenticated/Output/*
+/src/iRESTful/Rodson/Tests/Files/Authenticated/Output.bck/*
+/src/iRESTful/Rodson/Tests/Files/Profiles/*

@@ -1,0 +1,32 @@
+{
+    "name": "{{name}}",
+    "type": "{{type}}",
+    "homepage": "{{homepage.url}}",
+    "license": "{{license}}",
+
+    {% if authors|length > 0 %}
+    "authors": [
+        {%- for oneAuthor in authors -%}
+            {
+                "name": "{{oneAuthor.name}}",
+                "email": "{{oneAuthor.email.email}}"
+            }{{- loop.last ? '' : ',' -}}
+
+        {%- endfor -%}
+    ],
+    {% endif %}
+
+    "require": {
+      "php": ">=7.0",
+      "phpunit/phpunit": "5.6.1",
+      "steve-rodrigue/irestful": "dev-master"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "{{installation.namespace.all_escaped}}::install"
+        ]
+    },
+    "autoload": {
+        "psr-0": { "{{base_namespace}}": "{{base_folder}}" }
+    }
+}

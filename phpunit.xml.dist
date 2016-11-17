@@ -11,17 +11,29 @@
          syntaxCheck="false"
          bootstrap="./vendor/autoload.php">
     <testsuites>
-        <testsuite name="functional">
-            <directory suffix="Test.php">./src/iRESTful/Tests/Tests/Functional</directory>
+        <testsuite name="rodson">
+            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Tests/*</directory>
         </testsuite>
-        <testsuite name="unit-dsl">
-            <directory suffix="Test.php">./src/iRESTful/DSLs/Tests/Tests/Unit</directory>
+        <testsuite name="rodson-functional">
+            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="unit">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/DSLs/Tests/Unit</directory>
+        <testsuite name="rodson-unit">
+            <directory suffix="Test.php">./src/iRESTful/Rodson/*/Tests/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="functional">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/DSLs/Tests/Functional</directory>
+        <testsuite name="leopaul">
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/Tests/Tests/*</directory>
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/*/Tests/Tests/*</directory>
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/*/*/Tests/Tests/*</directory>
+        </testsuite>
+        <testsuite name="leopaul-unit">
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/Tests/Tests/Unit</directory>
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/*/Tests/Tests/Unit</directory>
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/*/*/Tests/Tests/Unit</directory>
+        </testsuite>
+        <testsuite name="leopaul-functional">
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/Tests/Tests/Functional</directory>
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/*/Tests/Tests/Functional</directory>
+            <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/*/*/Tests/Tests/Functional</directory>
         </testsuite>
 
     </testsuites>
@@ -35,7 +47,7 @@
     <filter>
         <whitelist>
             <exclude>
-                <directory>./src/iRESTful/Rodson/Tests</directory>
+                <directory>./src/iRESTful/Tests/Tests</directory>
             </exclude>
             <directory>./src</directory>
         </whitelist>

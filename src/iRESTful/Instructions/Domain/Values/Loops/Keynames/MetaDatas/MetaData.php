@@ -1,8 +1,0 @@
-<?php
-namespace iRESTful\Instructions\Domain\Values\Loops\Keynames\MetaDatas;
-
-interface MetaData {
-    public function hasLength();
-    public function hasProperty();
-    public function getProperty();
-}

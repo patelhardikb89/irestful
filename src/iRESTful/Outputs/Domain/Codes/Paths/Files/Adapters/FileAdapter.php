@@ -1,6 +1,0 @@
-<?php
-namespace  iRESTful\Outputs\Domain\Codes\Paths\Files\Adapters;
-
-interface FileAdapter {
-    public function fromFileStringToFile($file);
-}
