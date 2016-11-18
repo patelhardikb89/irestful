@@ -13,14 +13,9 @@ final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
         $jsonFileName = 'authenticated.json';
 
         $this->filePath = '/vagrant/src/iRESTful/Products/'.$folderName.'/CRUD/'.$jsonFileName;
-        $this->outputFolderPath = '/vagrant/build/'.$folderName.'/CRUD';
+        $this->outputFolderPath = '/vagrant/build/Products/Tests/'.$folderName.'/CRUD';
         $this->templatePath = '/vagrant/templates/rodson/code/php';
         $this->timezone = 'America/Montreal';
-
-        if (!is_dir($this->outputFolderPath)) {
-            mkdir($this->outputFolderPath, 777, true);
-        }
-
     }
 
     public function tearDown() {

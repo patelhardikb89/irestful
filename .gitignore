@@ -6,5 +6,5 @@
 *.log
 authentication.json.bck
 /src/iRESTful/Products/Profiles/*
-/build/*
+/build/*/*
 Notes.md
