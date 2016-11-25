@@ -134,7 +134,6 @@ final class ConcreteRequestEntityAdapter implements RequestEntityAdapter {
     private function fetchParamsWithContainer(Entity $entity, Entity $originalEntity = null) {
 
         $filter = function(array $data, array $originalData = null) {
-
             $output = [];
             foreach($data as $keyname => $oneElement) {
 
@@ -142,9 +141,17 @@ final class ConcreteRequestEntityAdapter implements RequestEntityAdapter {
                         is_null($oneElement) &&
                         !empty($originalData) &&
                         isset($originalData[$keyname]) &&
-                        !is_null($originalData[$keyname]) &&
-                        !is_array($originalData[$keyname])
+                        !is_null($originalData[$keyname])
                 ) {
+
+                    if (is_array($originalData[$keyname])) {
+                        $originalKeys = array_keys($originalData[$keyname]);
+                        $oneOriginalKey = array_pop($originalKeys);
+                        if (is_numeric($oneOriginalKey)) {
+                            continue;
+                        }
+                    }
+
                     $output[$keyname] = null;
                     continue;
                 }

@@ -56,7 +56,7 @@ final class ConcreteApplicationFactory implements ApplicationFactory {
 
         $name = $dsl->getName();
         $project = $dsl->getProject();
-        $baseNamespace = [$name->getOrganizationName(), $name->getProjectName()];
+        $baseNamespace = $name->getNameInParts();
 
         $controllerAdapterAdapterFactory = new ConcreteControllerAdapterAdapterFactory($baseNamespace);
         $configurationAdapterFactory = new ConcreteConfigurationAdapterFactory(

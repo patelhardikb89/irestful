@@ -27,7 +27,7 @@ final class ConcreteDomainAdapterFactory implements DomainAdapterFactory {
     public function create() {
         $name = $this->dsl->getName();
         $project = $this->dsl->getProject();
-        $baseNamespace = [$name->getOrganizationName(), $name->getProjectName()];
+        $baseNamespace = $name->getNameInParts();
 
         $annotatedObjectAdapterFactory = new ConcreteAnnotatedObjectAdapterFactory($baseNamespace);
         $annotatedEntityAdapterFactory = new ConcreteAnnotatedEntityAdapterFactory($baseNamespace, $this->timezone);

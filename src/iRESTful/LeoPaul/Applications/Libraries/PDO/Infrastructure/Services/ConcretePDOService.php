@@ -28,10 +28,9 @@ final class ConcretePDOService implements PDOService {
             $query = $request->getQuery();
             $params = $request->hasParams() ? $request->getParams() : null;
 
-            $pdo = $this->pdo;
             return $this->pdoAdapter->fromDataToPDO([
                 'request' => $request,
-                'closure' => function() use($query, $params, &$pdo) {
+                'closure' => function() use($query, $params) {
                     $statement = $this->pdo->prepare($query);
                     if (!$statement->execute($params)) {
                         throw new PDOException('There was an exception while executing a query on the PDO service.');

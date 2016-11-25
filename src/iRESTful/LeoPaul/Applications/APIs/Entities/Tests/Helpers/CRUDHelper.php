@@ -7,6 +7,8 @@ use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException
 use iRESTful\LeoPaul\SDK\HttpEntities\Infrastructure\Adapters\HttpEntityRelationRepositoryFactoryAdapter;
 use iRESTful\LeoPaul\SDK\HttpEntities\Infrastructure\Adapters\HttpEntitySetServiceFactoryAdapter;
 use iRESTful\LeoPaul\SDK\HttpEntities\Infrastructure\Adapters\HttpEntitySetRepositoryFactoryAdapter;
+use iRESTful\LeoPaul\Objects\Libraries\Ids\Domain\Uuids\Uuid;
+use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Entity;
 
 final class CRUDHelper {
     private $phpunit;
@@ -65,22 +67,22 @@ final class CRUDHelper {
         $this->entityService->insert($this->firstEntity);
 
         $readEntity = $this->read($this->firstEntity->getUuid()->getHumanReadable());
-        $this->phpunit->assertEquals($readEntity, $this->firstEntity);
+        $this->compareObjects($readEntity, $this->firstEntity);
 
         if (!empty($this->keyname)) {
             $entity = $this->readFromKeyname($this->keyname['name'], $this->keyname['value']);
-            $this->phpunit->assertEquals($entity, $this->firstEntity);
+            $this->compareObjects($entity, $this->firstEntity);
         }
 
         if (!empty($this->keynames)) {
             $entity = $this->readFromKeynames($this->keynames);
-            $this->phpunit->assertEquals($entity, $this->firstEntity);
+            $this->compareObjects($entity, $this->firstEntity);
         }
 
         $this->entityService->update($this->firstEntity, $this->updatedEntity);
 
         $readEntity = $this->read($this->updatedEntity->getUuid()->getHumanReadable());
-        $this->phpunit->assertEquals($readEntity, $this->updatedEntity);
+        $this->compareObjects($readEntity, $this->updatedEntity);
 
         $this->entityService->delete($this->updatedEntity);
 
@@ -96,17 +98,91 @@ final class CRUDHelper {
         $this->entitySetService->insert([$this->firstEntity]);
 
         $readEntities = $this->readSet([$this->firstEntity->getUuid()->getHumanReadable()]);
-        $this->phpunit->assertEquals($readEntities, [$this->firstEntity]);
+        $this->compareObjects($readEntities[0], $this->firstEntity);
 
         $this->entitySetService->update([$this->firstEntity], [$this->updatedEntity]);
 
         $readEntities = $this->readSet([$this->updatedEntity->getUuid()->getHumanReadable()]);
-        $this->phpunit->assertEquals($readEntities, [$this->updatedEntity]);
+        $this->compareObjects($readEntities[0], $this->updatedEntity);
 
         $this->entitySetService->delete([$this->updatedEntity]);
 
         $this->readFails($this->firstEntity->getUuid()->getHumanReadable());
         $this->readFails($this->updatedEntity->getUuid()->getHumanReadable());
+    }
+
+    private function compareObjects($first, $second) {
+
+        $class = new \ReflectionClass($first);
+        $methods = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+        foreach($methods as $oneMethod) {
+
+            $name = $oneMethod->getName();
+            if (strpos($name, 'get') !== 0) {
+                continue;
+            }
+
+            if ($oneMethod->getNumberOfParameters() != 0) {
+                continue;
+            }
+
+            $firstSub = $first->$name();
+            $secondSub = $second->$name();
+
+            if (is_array($firstSub)) {
+                $this->phpunit->assertTrue(is_array($secondSub));
+                $this->compareArrays($firstSub, $secondSub);
+                continue;
+            }
+
+            if (is_object($firstSub)) {
+                $this->phpunit->assertTrue(is_object($secondSub));
+                $this->compareObjects($firstSub, $secondSub);
+                continue;
+            }
+
+            $this->phpunit->assertEquals($firstSub, $secondSub);
+
+        }
+
+    }
+
+    private function compareArrays(array $first, array $second) {
+
+        $getSameFromUuid = function(Uuid $uuid, array $data) {
+            foreach($data as $oneEntity) {
+
+                if (!($oneEntity instanceof Entity)) {
+                    continue;
+                }
+
+                if ($uuid->get() == $oneEntity->getUuid()->get()) {
+                    return $oneEntity;
+                }
+
+            }
+
+            return null;
+        };
+
+        foreach($first as $keyname => $oneFirst) {
+
+            if (is_array($oneFirst)) {
+                $this->phpunit->assertTrue(is_array($second[$keyname]));
+                $this->compareArrays($oneFirst, $second[$keyname]);
+                continue;
+            }
+
+            if ($oneFirst instanceof Entity) {
+                $sameSecond = $getSameFromUuid($oneFirst->getUuid(), $second);
+                $this->compareObjects($oneFirst, $sameSecond);
+                continue;
+            }
+
+            $this->phpunit->assertEquals($oneFirst, $second[$keyname]);
+
+        }
     }
 
     private function readFails($uuid) {

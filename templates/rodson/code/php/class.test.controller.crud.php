@@ -1,8 +1,8 @@
 <?php
 namespace {{namespace.path}};
 use {{installation.object_configuration.namespace.all}};
-use iRESTful\Applications\APIs\Entities\Tests\Helpers\CRUDHelper;
-use iRESTful\Applications\APIs\Authenticated\Infrastructure\Configurations\AuthenticatedHttpConfiguration;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Tests\Helpers\CRUDHelper;
+use iRESTful\LeoPaul\Applications\APIs\Authenticated\Infrastructure\Configurations\AuthenticatedHttpConfiguration;
 
 final class {{namespace.name}} extends \PHPUnit_Framework_TestCase {
     private $crudHelpers;

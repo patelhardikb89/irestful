@@ -25,6 +25,13 @@ final class ConcreteName implements Name {
         return $this->organizationName.'/'.$this->projectName;
     }
 
+    public function getNameInParts() {
+        return [
+            $this->organizationName,
+            $this->projectName
+        ];
+    }
+
     public function getProjectName(): string {
         return $this->projectName;
     }

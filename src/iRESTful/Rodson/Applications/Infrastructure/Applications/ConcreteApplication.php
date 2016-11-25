@@ -74,10 +74,7 @@ final class ConcreteApplication implements Application {
         $this->domainApplicationAdapter->fromDomainToApplication($domain)->execute();
 
         $name = $this->dsl->getName();
-        $baseNamespace = [
-            $name->getOrganizationName(),
-            $name->getProjectName()
-        ];
+        $baseNamespace = $name->getNameInParts();
 
         $annotatedEntities = $domain->getEntities();
         $annotatedObjects = $domain->getObjects();
