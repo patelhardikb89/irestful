@@ -6,10 +6,10 @@ So far, I created the CRUD API.  You can see its code under the CRUD folder belo
 ## Discussion
 You can discuss this application on:
 
-* [Hacker News]()
-* [Reddit]()
-* [Facebook]()
-* [Twitter]()
+* [Hacker News](https://news.ycombinator.com/item?id=13056386)
+* [Reddit](https://www.reddit.com/r/irestful/comments/5fchvw/created_the_crud_api_of_an_authentication_software/)
+* [Facebook](https://www.facebook.com/steve.rodrigue.tech/posts/1769694656628480)
+* [Twitter](https://twitter.com/irestful/status/803272583693168641)
 
 ## Requirements
 * [PHP7](http://php.net/downloads.php)
