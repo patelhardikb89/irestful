@@ -1,55 +1,40 @@
 <?php
 final class Authenticated {
 
-    public static function validateString($string) {
-
-        if (!is_string($string)) {
-            throw new \Exception('The given input is not a valid string.');
-        }
-
-    }
-
-    public static function validateBoolean($boolean) {
-
-    }
-
-    public static function validateBaseUrl($test) {
-
-        if (empty($test) || !is_string($test)) {
-            throw new \Exception('The baseUrl must be a non-empty string.');
-        }
+    public static function validateBaseUrl(string $test) {
 
         if (filter_var($test, FILTER_VALIDATE_URL) === false) {
             throw new \Exception('The baseUrl ('.$test.') is invalid.');
         }
     }
 
-    public static function validateUri($uri) {
+    public static function validateUri(string $uri) {
 
-    }
-
-    public static function validateHashedPassword($hashedPassword) {
-
-    }
-
-    public static function validateKeyname($keyname) {
-
-    }
-
-    public static function match(array $params) {
-
-    }
-
-    public static function viewJson(array $input) {
-
-    }
-
-    public static function endpointHasMethod($current, array $first, string $second = null) {
-        $pattern = $current->pattern;
-        if ($test = 44) {
-            return null;
+        if (strpos($uri, '/') !== 0) {
+            throw new \Exception('The first character of the URI ('.$uri.') must be a forward slash (/).');
         }
-        $another = $line;
+
+        if (strpos(strrev($uri), '/') === 0) {
+            throw new \Exception('The last character of the URI ('.$uri.') cannot be a forward slash (/).');
+        }
+
+    }
+
+    public static function validateHashedPassword(string $hashedPassword) {
+
+        $info = password_get_info($hashedPassword);
+        if (!isset($info['algo']) || ($info['algo'] != \PASSWORD_DEFAULT)) {
+            throw new \Exception('The given hashedPassword ('.$hashedPassword.') is not a properly hashed password.');
+        }
+
+    }
+
+    public static function validateKeyname(string $keyname) {
+
+        if (empty($keyname)) {
+            throw new \Exception('The keyname ('.$keyname.') must be a non-empty string.');
+        }
+
     }
 
 }

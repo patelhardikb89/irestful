@@ -99,12 +99,13 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
     }
 
     public function fromTypeToCustomMethod(Type $type) {
-        if ($type->hasMethod()) {
+
+        if (!$type->hasMethod()) {
             return null;
         }
 
         $method = $type->getMethod();
-        return $this->fromMethodToCustomMethod($method);
+        return $this->createClassMethodCustom('validate', $method);
     }
 
     private function createClassMethodCustom($name, CodeMethod $codeMethod) {

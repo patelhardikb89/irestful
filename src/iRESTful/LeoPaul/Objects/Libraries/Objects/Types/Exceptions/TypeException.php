@@ -1,7 +1,7 @@
 <?php
-namespace iRESTful\LeoPaul\Objects\Libraries\Dimensions\Domain\Exceptions;
+namespace iRESTful\LeoPaul\Objects\Libraries\Objects\Types\Exceptions;
 
-final class DimensionException extends \Exception {
+final class TypeException extends \Exception {
     const CODE = 1;
     public function __construct($message, \Exception $parentException = null) {
         parent::__construct($message, self::CODE, $parentException);

@@ -118,6 +118,20 @@
     {%- endif -%}
 {% endmacro %}
 
+{% macro generateConstructorCustomMethod(constructor) %}
+    {%- import _self as fn -%}
+    {%- if constructor.custom_method -%}
+        ${{constructor.custom_method.name}} = function({{- fn.generateSignature(constructor.custom_method.parameters) -}}) {
+            {% for oneSourceCodeLine in constructor.custom_method.source_code.lines %}
+                {{- oneSourceCodeLine|replace({'\\Exception': 'TypeException'})|raw }}
+            {% endfor -%}
+        };
+
+        ${{constructor.custom_method.name}}({{- fn.generateConstructorInstanciationSignature(constructor.parameters) -}});
+    {%- endif -%}
+
+{% endmacro %}
+
 {% macro generateClassAnnotations(annotation) %}
 /**
 *   @container -> {{annotation.container_name}}

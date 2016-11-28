@@ -1,8 +1,9 @@
+* Enable combos in code generation.
+* Generate the .gitignore file.
+*
 * Make sure we have objects or container.  1 of them is mandatory.  Cannot be both empty.
 * Enable cross origin
 * Remove duplicate interfaces in classes, when 2 parameters have the same type.
-* Enable combos in code generation.
-* Generate the .gitignore file.
 * Enable importing static data on install
 
 * Fix the genration of the phpunit xml file, when using third-party crud apis.

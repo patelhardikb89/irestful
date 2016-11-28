@@ -23,9 +23,6 @@
                     "pattern": "pattern",
                     "is_user_mandatory": "boolean",
                     "params|?": "params[]"
-                },
-                "methods": {
-                    "has_method": "endpointHasMethod"
                 }
             },
             "api": {
