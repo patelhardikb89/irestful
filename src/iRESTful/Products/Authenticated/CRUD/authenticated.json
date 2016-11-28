@@ -1,7 +1,7 @@
 {
     "name": "iRESTful/Authenticated",
     "type": "library",
-    "url": "http://irestful.com/projects/authenticated",
+    "url": "https://github.com/steve-rodrigue/irestful/tree/master/src/iRESTful/Products/Authenticated/CRUD",
     "license": "MIT",
     "authors": [
         {
@@ -109,7 +109,10 @@
                 "properties": {
                     "regex_pattern|?": "string",
                     "specific_uri|?": "uri"
-                }
+                },
+                "combos": [
+                    "regex_pattern+|specific_uri"
+                ]
             },
             "param_pattern": {
                 "properties": {
@@ -117,7 +120,7 @@
                     "specific_value|?": "string"
                 },
                 "combos": [
-                    "regex_pattern|specific_value"
+                    "regex_pattern+|specific_value"
                 ]
             },
             "credentials": {

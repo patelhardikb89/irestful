@@ -3,6 +3,7 @@
 <?php
 namespace {{namespace.path}};
 use {{interface.namespace.all}};
+use iRESTful\LeoPaul\Objects\Libraries\Objects\Types\Exceptions\TypeException;
 
 final class {{namespace.name}} implements {{interface.namespace.name}} {
     {{ fn.generateClassProperties(constructor.parameters) }}
@@ -13,7 +14,13 @@ final class {{namespace.name}} implements {{interface.namespace.name}} {
 
     {% for oneMethod in methods %}
         public function {{oneMethod.name}}({{- fn.generateSignatureVariable(oneMethod.parameter, true) -}}) {
-            return new \{{oneMethod.namespace.all}}(${{oneMethod.parameter.name}});
+
+            try {
+                return new \{{oneMethod.namespace.all}}(${{oneMethod.parameter.name}});
+            } catch (TypeException $exception) {
+                return null;
+            }
+            
         }
     {% endfor %}
 

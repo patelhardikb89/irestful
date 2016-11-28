@@ -22,8 +22,15 @@ final class ConcreteConstructorAdapter implements ConstructorAdapter {
     }
 
     public function fromObjectToConstructor(Object $object) {
+
+        $customMethod = null;
+        if ($object->hasCombos()) {
+            $combos = $object->getCombos();
+            $customMethod = $this->customMethodAdapter->fromCombosToCustomMethod($combos);
+        }
+
         $parameters = $this->parameterAdapter->fromObjectToParameters($object);
-        return new ConcreteConstructor(null, $parameters);
+        return new ConcreteConstructor($customMethod, $parameters);
     }
 
     public function fromTypeToConstructor(Type $type) {

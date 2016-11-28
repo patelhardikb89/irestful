@@ -21,6 +21,7 @@ final class {{object.namespace.name}} implements {{object.interface.namespace.na
 
     {{ fn.generateConstructorAnnotationParameters(parameters) }}
     public function __construct({{- fn.generateConstructorSignature(object.constructor.parameters) }}) {
+        {{ fn.generateConstructorComboCustomMethod(object.constructor) }}
         {{ fn.generateAssignment(object.constructor.parameters) }}
     }
 

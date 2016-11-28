@@ -35,6 +35,7 @@ use iRESTful\Rodson\Instructions\Domain\Values\Value as InstructionValue;
 use iRESTful\Rodson\TestInstructions\Domain\TestInstruction;
 use iRESTful\Rodson\Classes\Domain\CustomMethods\SourceCodes\Adapters\SourceCodeAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Primitives\Adapters\PrimitiveAdapter;
+use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Combos\Properties\Property;
 
 final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
     private $primitiveAdapter;
@@ -106,6 +107,128 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
 
         $method = $type->getMethod();
         return $this->createClassMethodCustom('validate', $method);
+    }
+
+    public function fromCombosToCustomMethod(array $combos) {
+
+        $getParameters = function(Property $property) {
+            $output = [];
+            $objectProperties = $property->getObjectProperties();
+            foreach($objectProperties as $oneFromObjectProperty) {
+                $output[] = $this->parameterAdapter->fromDataToParameter([
+                    'name' => $oneFromObjectProperty->getName(),
+                    'primitive' => $oneFromObjectProperty->getType()->getPrimitive()
+                ]);
+            }
+
+            return $output;
+        };
+
+        $generateBoolean = function(array $parameters, $fn = 'is_null') {
+
+            $command = '';
+            $amount = count($parameters);
+            foreach($parameters as $index => $oneParameter) {
+                $delimiter = (($index + 1) < $amount) ? ' && ' : '';
+                $name = $oneParameter->getName();
+                $command .= $fn.'($'.$name.')'.$delimiter;
+            }
+
+            return $command;
+
+        };
+
+        $generateCodeLines = function(Property $from, Property $to) use(&$getParameters, &$generateBoolean) {
+
+            $generateCondition = function(Property $defaultProperty, Property $property) use(&$getParameters, &$generateBoolean) {
+
+                $generateDefaults = function(array $parameters) {
+
+                    $output = [];
+                    foreach($parameters as $oneParameter) {
+                        $name = $oneParameter->getName();
+                        $type = $oneParameter->getType();
+                        if ($type->isArray()) {
+                            $output[] = '$'.$name.' = [];';
+                            continue;
+                        }
+
+                        $primitive = $type->getPrimitive();
+                        if ($primitive->isString()) {
+                            $output[] = '$'.$name." = '';";
+                            continue;
+                        }
+
+                        if ($primitive->isBoolean()) {
+                            $output[] = '$'.$name." = true;";
+                            continue;
+                        }
+
+                        if ($primitive->isInteger()) {
+                            $output[] = '$'.$name." = 0;";
+                            continue;
+                        }
+
+                        $output[] = '$'.$name." = (float) 0;";
+                    }
+
+                    return $output;
+
+                };
+
+                $generateNulls = function(array $parameters) {
+
+                    $output = [];
+                    foreach($parameters as $oneParameter) {
+                        $name = $oneParameter->getName();
+                        $type = $oneParameter->getType();
+                        $output[] = '$'.$name.' = null;';
+                    }
+
+                    return $output;
+
+                };
+
+                $defaultParameters = $getParameters($defaultProperty);
+                $parameters = $getParameters($property);
+
+                return [
+                    'if (('.$generateBoolean($defaultParameters, '!empty').' && '.$generateBoolean($parameters, '!empty').') || ('.$generateBoolean($defaultParameters, 'empty').' && '.$generateBoolean($parameters, 'empty').')) {',
+                    array_merge($generateDefaults($defaultParameters), $generateNulls($parameters)),
+                    '}'
+                ];
+            };
+
+            $isFromDefault = $from->isDefault();
+            $isToDefault = $to->isDefault();
+            if (!$isFromDefault && !$isToDefault) {
+                return [];
+            }
+
+            if ($isFromDefault) {
+                return $generateCondition($from, $to);
+            }
+
+            return $generateCondition($to, $from);
+
+        };
+
+        $codeLines = [];
+        $parameters = [];
+        foreach($combos as $oneCombo) {
+            $from = $oneCombo->getFrom();
+            $to = $oneCombo->getTo();
+
+            $fromParameters = $getParameters($from);
+            $toParameters = $getParameters($to);
+
+            $codeLines = array_merge($codeLines, $generateCodeLines($from, $to));
+            $parameters = array_merge($parameters, $fromParameters, $toParameters);
+        }
+
+        $sourceCode = $this->sourceCodeAdapter->fromSourceCodeLinesToSourceCode($codeLines);
+        return new ConcreteCustomMethod('filterCombo', $sourceCode, $parameters);
+
     }
 
     private function createClassMethodCustom($name, CodeMethod $codeMethod) {

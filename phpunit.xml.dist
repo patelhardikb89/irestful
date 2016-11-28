@@ -11,14 +11,11 @@
          syntaxCheck="false"
          bootstrap="./vendor/autoload.php">
     <testsuites>
+        <testsuite name="products">
+            <directory suffix="Test.php">./src/iRESTful/Products/Tests</directory>
+        </testsuite>
         <testsuite name="rodson">
             <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Tests/*</directory>
-        </testsuite>
-        <testsuite name="rodson-functional">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/Tests/Tests/Functional</directory>
-        </testsuite>
-        <testsuite name="rodson-unit">
-            <directory suffix="Test.php">./src/iRESTful/Rodson/*/Tests/Tests/Unit</directory>
         </testsuite>
         <testsuite name="leopaul">
             <directory suffix="Test.php">./src/iRESTful/LeoPaul/*/*/Tests/Tests/*</directory>

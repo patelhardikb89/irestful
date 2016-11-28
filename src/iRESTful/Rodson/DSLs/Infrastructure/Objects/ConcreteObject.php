@@ -6,16 +6,23 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Exceptions\ObjectException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Databases\Database;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Method;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Samples\Sample;
+use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Combos\Combo;
+use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Properties\Property;
 
 final class ConcreteObject implements Object {
     private $name;
     private $properties;
     private $database;
     private $methods;
-    public function __construct(string $name, array $properties, Database $database = null, array $methods = null) {
+    private $combos;
+    public function __construct(string $name, array $properties, Database $database = null, array $methods = null, array $combos = null) {
 
         if (empty($methods)) {
             $methods = null;
+        }
+
+        if (empty($combos)) {
+            $combos = null;
         }
 
         if (empty($name)) {
@@ -27,7 +34,7 @@ final class ConcreteObject implements Object {
         }
 
         foreach($properties as $index => $oneProperty) {
-            if (!($oneProperty instanceof \iRESTful\Rodson\DSLs\Domain\Projects\Objects\Properties\Property)) {
+            if (!($oneProperty instanceof Property)) {
                 throw new ObjectException('The properties array must only contain Property objects.');
             }
 
@@ -41,10 +48,19 @@ final class ConcreteObject implements Object {
             }
         }
 
+        if (!empty($combos)) {
+            foreach($combos as $oneCombo) {
+                if (!($oneCombo instanceof Combo)) {
+                    throw new ObjectException('The combos array must only contain Combo objects.');
+                }
+            }
+        }
+
         $this->name = $name;
         $this->properties = array_values($properties);
         $this->database = $database;
         $this->methods = (empty($methods)) ? null : array_values($methods);
+        $this->combos = $combos;
 
     }
 
@@ -70,6 +86,14 @@ final class ConcreteObject implements Object {
 
     public function getMethods() {
         return $this->methods;
+    }
+
+    public function hasCombos() {
+        return !empty($this->combos);
+    }
+
+    public function getCombos() {
+        return $this->combos;
     }
 
     public function getPropertyTypes() {

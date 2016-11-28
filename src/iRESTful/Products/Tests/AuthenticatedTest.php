@@ -1,8 +1,8 @@
 <?php
-namespace iRESTful\Rodson\Tests\Tests\Functional;
+namespace iRESTful\Products\Tests;
 use iRESTful\Rodson\Applications\Infrastructure\Factories\ConcreteApplicationFactory;
 
-final class PHPFileApplicationTest extends \PHPUnit_Framework_TestCase {
+final class AuthenticatedTest extends \PHPUnit_Framework_TestCase {
     private $filePath;
     private $outputFolderPath;
     private $templatePath;

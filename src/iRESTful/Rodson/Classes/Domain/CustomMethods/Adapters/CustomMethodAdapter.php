@@ -10,4 +10,5 @@ interface CustomMethodAdapter {
     public function fromMethodsToCustomMethods(array $methods);
     public function fromMethodToCustomMethod(Method $method);
     public function fromTypeToCustomMethod(Type $type);
+    public function fromCombosToCustomMethod(array $combos);
 }

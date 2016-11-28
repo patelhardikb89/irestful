@@ -7,20 +7,24 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Properties\Exceptions\PropertyE
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Adapters\ObjectAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Adapters\MethodAdapter;
+use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Combos\Adapters\ComboAdapter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $methodAdapter;
     private $propertyAdapter;
+    private $comboAdapter;
     private $databases;
     private $parents;
     public function __construct(
         MethodAdapter $methodAdapter,
         PropertyAdapter $propertyAdapter,
+        ComboAdapter $comboAdapter,
         array $databases,
         array $parents
     ) {
         $this->methodAdapter = $methodAdapter;
         $this->propertyAdapter = $propertyAdapter;
+        $this->comboAdapter = $comboAdapter;
         $this->databases = $databases;
         $this->parents = $parents;
     }
@@ -65,7 +69,15 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
                 'parents' => $this->parents
             ]);
 
-            return new ConcreteObject($data['name'], $properties, $database, $methods);
+            $combos = null;
+            if (isset($data['combos'])) {
+                $combos = $this->comboAdapter->fromDataToCombos([
+                    'object_properties' => $properties,
+                    'combos' => $data['combos']
+                ]);
+            }
+
+            return new ConcreteObject($data['name'], $properties, $database, $methods, $combos);
 
         } catch (PropertyException $exception) {
             throw new ObjectException('There was an exception while converting data to Property objects.', $exception);

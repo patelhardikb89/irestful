@@ -56,6 +56,17 @@
     {%- endif -%}
 {%- endmacro -%}
 
+{%- macro generateUseSignature(parameters) -%}
+    {%- import _self as fn -%}
+    {%- if parameters|length > 0 -%}
+        {%- for oneParameter in parameters -%}
+            {%- if oneParameter.name != 'current' -%}
+                {{- '&$' -}}{{- oneParameter.name -}}{{- loop.last ? '' : ', ' -}}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endif -%}
+{%- endmacro -%}
+
 {%- macro generateConstructorSignature(parameters, hasForwardComma = false) -%}
     {%- import _self as fn -%}
     {%- if parameters|length > 0 -%}
@@ -128,6 +139,20 @@
         };
 
         ${{constructor.custom_method.name}}({{- fn.generateConstructorInstanciationSignature(constructor.parameters) -}});
+    {%- endif -%}
+
+{% endmacro %}
+
+{% macro generateConstructorComboCustomMethod(constructor) %}
+    {%- import _self as fn -%}
+    {%- if constructor.custom_method -%}
+        ${{constructor.custom_method.name}} = function() use({{- fn.generateUseSignature(constructor.custom_method.parameters) -}}) {
+            {% for oneSourceCodeLine in constructor.custom_method.source_code.lines %}
+                {{- oneSourceCodeLine|raw }}
+            {% endfor -%}
+        };
+
+        ${{constructor.custom_method.name}}();
     {%- endif -%}
 
 {% endmacro %}

@@ -48,6 +48,8 @@ use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteSubDSLAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteUrlAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Factories\ConcreteDSLAdapterFactory;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteParentObjectAdapter;
+use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteObjectComboAdapter;
+use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteObjectComboPropertyAdapter;
 
 final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
     private $codeData;
@@ -134,7 +136,9 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         $parentObjectAdapter = new ConcreteParentObjectAdapter();
         $propertyTypeAdapter = new ConcreteObjectPropertyTypeAdapter($parentObjectAdapter, $types, $primitives, $objects);
         $propertyAdapter = new ConcreteObjectPropertyAdapter($propertyTypeAdapter);
-        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $databases, $parents);
+        $comboPropertyAdapter = new ConcreteObjectComboPropertyAdapter();
+        $comboAdapter = new ConcreteObjectComboAdapter($comboPropertyAdapter);
+        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $comboAdapter, $databases, $parents);
     }
 
     private function getObjects(Code $code, array $types, array $primitives, array $databases, array $parents) {
