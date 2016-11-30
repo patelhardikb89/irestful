@@ -6,22 +6,35 @@ use  iRESTful\Rodson\Outputs\Domain\Codes\Paths\Files\Exceptions\FileException;
 final class ConcreteOutputCodeFile implements File {
     private $name;
     private $extension;
-    public function __construct($name, $extension = null) {
+    public function __construct($name = null, $extension = null) {
 
         if (empty($extension)) {
             $extension = null;
         }
 
-        if (empty($name) || !is_string($name)) {
-            throw new FileException('The name must be a non-empty string.');
+        if (empty($name)) {
+            $name = null;
+        }
+
+        if (!empty($name) && !is_string($name)) {
+            throw new FileException('The name must be a string if non-empty.');
         }
 
         if (!empty($extension) && !is_string($extension)) {
             throw new FileException('The extension must be a string if non-empty.');
         }
 
+        $amount = (empty($name) ? 0 : 1) + (empty($extension) ? 0 : 1);
+        if ($amount < 1) {
+            throw new FileException('The file must, at least, contain a name or an extension.  '.$amount.' given.');
+        }
+
         $this->name = $name;
         $this->extension = $extension;
+    }
+
+    public function hasName() {
+        return !empty($this->name);
     }
 
     public function getName() {

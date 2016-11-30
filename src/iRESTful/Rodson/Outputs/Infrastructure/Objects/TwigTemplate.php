@@ -8,7 +8,12 @@ final class TwigTemplate implements Template {
         $this->twig = $twig;
     }
 
-    public function render($file, array $data) {
+    public function render($file, array $data = null) {
+
+        if (empty($data)) {
+            $data = [];
+        }
+
         return $this->twig->render($file, $data);
     }
 

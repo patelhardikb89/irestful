@@ -1,8 +1,8 @@
 <?php
 namespace iRESTful\Rodson\Outputs\Infrastructure\Adapters;
-use  iRESTful\Rodson\Outputs\Domain\Codes\Adapters\CodeAdapter;
-use  iRESTful\Rodson\Outputs\Domain\Templates\Template;
-use  iRESTful\Rodson\Outputs\Domain\Codes\Paths\Adapters\PathAdapter;
+use iRESTful\Rodson\Outputs\Domain\Codes\Adapters\CodeAdapter;
+use iRESTful\Rodson\Outputs\Domain\Templates\Template;
+use iRESTful\Rodson\Outputs\Domain\Codes\Paths\Adapters\PathAdapter;
 use iRESTful\Rodson\Outputs\Infrastructure\Objects\ConcreteOutputCode;
 use iRESTful\Rodson\Classes\Domain\SpecificClass;
 use iRESTful\Rodson\ClassesObjectsAnnotations\Domain\AnnotatedObject;

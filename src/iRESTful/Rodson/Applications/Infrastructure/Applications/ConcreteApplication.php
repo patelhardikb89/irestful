@@ -14,6 +14,7 @@ use iRESTful\Rodson\ConfigurationsComposers\Domain\Adapters\Factories\ComposerAd
 use iRESTful\Rodson\ConfigurationsPHPUnits\Domain\Adapters\Factories\PHPUnitAdapterFactory;
 use iRESTful\Rodson\Outputs\Domain\Codes\Adapters\Factories\CodeAdapterFactory;
 use iRESTful\Rodson\Outputs\Domain\Codes\Services\Factories\CodeServiceFactory;
+use iRESTful\Rodson\Outputs\Domain\Codes\Factories\CodeFactory;
 
 final class ConcreteApplication implements Application {
     private $controllerAdapterAdapterFactory;
@@ -25,6 +26,7 @@ final class ConcreteApplication implements Application {
     private $composerAdapterFactory;
     private $phpunitAdapterFactory;
     private $codeAdapterFactory;
+    private $codeFactory;
     private $codeServiceFactory;
     private $domainAdapter;
     private $domainApplicationAdapter;
@@ -39,6 +41,7 @@ final class ConcreteApplication implements Application {
         ComposerAdapterFactory $composerAdapterFactory,
         PHPUnitAdapterFactory $phpunitAdapterFactory,
         CodeAdapterFactory $codeAdapterFactory,
+        CodeFactory $codeFactory,
         CodeServiceFactory $codeServiceFactory,
         DomainAdapter $domainAdapter,
         ApplicationAdapter $domainApplicationAdapter,
@@ -53,6 +56,7 @@ final class ConcreteApplication implements Application {
         $this->composerAdapterFactory = $composerAdapterFactory;
         $this->phpunitAdapterFactory = $phpunitAdapterFactory;
         $this->codeAdapterFactory = $codeAdapterFactory;
+        $this->codeFactory = $codeFactory;
         $this->codeServiceFactory = $codeServiceFactory;
         $this->domainAdapter = $domainAdapter;
         $this->domainApplicationAdapter = $domainApplicationAdapter;
@@ -131,7 +135,6 @@ final class ConcreteApplication implements Application {
 
         //we generate the code:
         $codeAdapter = $this->codeAdapterFactory->create();
-
         $phpunitCode = $codeAdapter->fromPHPUnitToCode($phpunit);
         $vagrantFileCodes = $codeAdapter->fromVagrantFileToCodes($vagrantFile);
         $composerCode = $codeAdapter->fromComposerToCode($composer);
@@ -140,8 +143,11 @@ final class ConcreteApplication implements Application {
         $installationCode = $codeAdapter->fromInstallationToCode($installationClass);
         $applicationCodes = $codeAdapter->fromApplicationToCodes($application);
 
+        $gitIgnoreCode = $this->codeFactory->createGitIgnore();
+
         //we save the codes:
         $this->codeServiceFactory->create()->saveMultiple(array_merge(
+            [$gitIgnoreCode],
             [$phpunitCode],
             $vagrantFileCodes,
             [$composerCode],

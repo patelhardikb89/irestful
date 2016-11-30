@@ -17,6 +17,7 @@ use iRESTful\Rodson\ConfigurationsPHPUnits\Infrastructure\Factories\ConcretePHPU
 use iRESTful\Rodson\Outputs\Infrastructure\Factories\ConcreteCodeAdapterFactory;
 use iRESTful\Rodson\Outputs\Infrastructure\Factories\FileCodeServiceFactory;
 use iRESTful\Rodson\Applications\Infrastructure\Adapters\ConcreteDomainApplicationAdapter;
+use iRESTful\Rodson\Outputs\Infrastructure\Factories\ConcreteCodeFactoryFactory;
 
 final class ConcreteApplicationFactory implements ApplicationFactory {
     private $timezone;
@@ -79,6 +80,11 @@ final class ConcreteApplicationFactory implements ApplicationFactory {
             $this->webDirectory
         );
 
+        $codeFactoryFactory = new ConcreteCodeFactoryFactory(
+            $this->templatePath,
+            $this->outputFolderPath
+        );
+
         $fileCodeServiceFactory = new FileCodeServiceFactory();
 
         $domainAdapterFactory = new ConcreteDomainAdapterFactory(
@@ -108,6 +114,7 @@ final class ConcreteApplicationFactory implements ApplicationFactory {
             $composerAdapterFactory,
             $phpunitAdapterFactory,
             $codeAdapterFactory,
+            $codeFactoryFactory->create(),
             $fileCodeServiceFactory,
             $domainAdapterFactory->create(),
             $domainApplicationAdapter,

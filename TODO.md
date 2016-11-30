@@ -1,4 +1,3 @@
-* Generate the .gitignore file.
 * Make sure we have objects or container.  1 of them is mandatory.  Cannot be both empty.
 * Enable cross origin
 * Remove duplicate interfaces in classes, when 2 parameters have the same type.
@@ -9,7 +8,6 @@
 * When an object uses a third-party object, tests do not work properly for data -> object -> data, when using third-party crud apis.
 
 * Create a logger that write on files.
-* Create an application
 * Generate the binary using composer.
 * Make sure the generated code is aligned properly.
 * Generate the Dockerfile and docker-compose file when necessary.
