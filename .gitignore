@@ -4,7 +4,4 @@
 /composer.phar
 .DS_Store
 *.log
-authentication.json.bck
-/src/iRESTful/Products/Profiles/*
 /build/*/*
-Notes.md
