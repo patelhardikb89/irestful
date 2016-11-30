@@ -157,6 +157,35 @@
 
 {% endmacro %}
 
+{% macro generateUseInterfaces(constructor, customMethods) %}
+    {%- import _self as fn -%}
+
+    {%- if constructor.parameters|length > 0 -%}
+        {% set added = [] %}
+        {% for oneParameter in constructor.parameters %}
+            {% if oneParameter.parameter.type.namespace.all %}
+                {% if oneParameter.parameter.type.namespace.all not in added %}
+                    use {{oneParameter.parameter.type.namespace.all}};
+                    {% set added = added|merge([oneParameter.parameter.type.namespace.all]) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {%- endif -%}
+
+    {%- if customMethods.parameters|length > 0 -%}
+        {% set added = [] %}
+        {% for oneParameter in customMethods.parameters %}
+            {% if oneParameter.type.namespace.all %}
+                {% if oneParameter.type.namespace.all not in added %}
+                    use {{oneParameter.type.namespace.all}};
+                    {% set added = added|merge([oneParameter.type.namespace.all]) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {%- endif -%}
+
+{% endmacro %}
+
 {% macro generateClassAnnotations(annotation) %}
 /**
 *   @container -> {{annotation.container_name}}

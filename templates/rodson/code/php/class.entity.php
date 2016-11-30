@@ -5,18 +5,7 @@ namespace {{entity.namespace.path}};
 use {{entity.interface.namespace.all}};
 use iRESTful\LeoPaul\Objects\Entities\Entities\Infrastructure\Objects\AbstractEntity;
 use iRESTful\LeoPaul\Objects\Libraries\Ids\Domain\Uuids\Uuid;
-
-{% for oneParameter in entity.constructor.parameters %}
-    {% if oneParameter.parameter.type.namespace.all %}
-        use {{oneParameter.parameter.type.namespace.all}};
-    {% endif %}
-{% endfor %}
-
-{% for oneParameter in entity.custom_methods.parameters %}
-    {% if oneParameter.type.namespace.all %}
-        use {{oneParameter.type.namespace.all}};
-    {% endif %}
-{% endfor %}
+{{ fn.generateUseInterfaces(entity.constructor, entity.custom_methods) }}
 
 {{ fn.generateClassAnnotations(annotation) }}
 final class {{entity.namespace.name}} extends AbstractEntity implements {{entity.interface.namespace.name}} {

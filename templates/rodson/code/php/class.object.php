@@ -3,18 +3,7 @@
 <?php
 namespace {{object.namespace.path}};
 use {{object.interface.namespace.all}};
-
-{% for oneParameter in object.constructor.parameters %}
-    {% if oneParameter.parameter.type.namespace.all %}
-        use {{oneParameter.parameter.type.namespace.all}};
-    {% endif %}
-{% endfor %}
-
-{% for oneParameter in object.custom_methods.parameters %}
-    {% if oneParameter.type.namespace.all %}
-        use {{oneParameter.type.namespace.all}};
-    {% endif %}
-{% endfor %}
+{{ fn.generateUseInterfaces(object.constructor, object.custom_methods) }}
 
 final class {{object.namespace.name}} implements {{object.interface.namespace.name}} {
     {{ fn.generateClassProperties(object.constructor.parameters) }}
