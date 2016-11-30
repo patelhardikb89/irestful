@@ -2,9 +2,12 @@
 {% import "includes/returned.hashmap.php" as fn %}
 <?php
 namespace {{namespace.path}};
+use {{object_configuration.namespace.all}};
 use iRESTful\LeoPaul\Applications\Libraries\PDO\Installations\Database as EngineDatabase;
 use iRESTful\LeoPaul\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionClassSchemaAdapterFactory;
 use iRESTful\LeoPaul\Applications\Libraries\PDODatabases\Infrastructure\Factories\PDOSchemaAdapterFactory;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOEntitySetServiceWithSubEntitiesFactory;
+use iRESTful\LeoPaul\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObjectAdapterFactory;
 
 final class {{namespace.name}} {
 
@@ -12,10 +15,13 @@ final class {{namespace.name}} {
 
         EngineDatabase::reset();
 
-        $containerClassMapper = [{{- fn.returnedHashMap(object_configuration.container_class_mapper) -}}];
-        $interfaceClassMapper = [{{- fn.returnedHashMap(object_configuration.interface_class_mapper) -}}];
         $engine = 'InnoDB';
-        $fieldDelimiter = '{{object_configuration.delimiter}}';
+        $objectConfiguration = new {{object_configuration.namespace.name}}();
+        $containerClassMapper = $objectConfiguration->getContainerClassMapper();
+        $interfaceClassMapper = $objectConfiguration->getInterfaceClassMapper();
+        $transformerObjects = $objectConfiguration->getTransformerObjects();
+        $fieldDelimiter = $objectConfiguration->getDelimiter();
+
         $schemaAdapterFactory = new ReflectionClassSchemaAdapterFactory($containerClassMapper, $interfaceClassMapper, $engine, $fieldDelimiter);
         $pdoSchemaAdapterFactory = new PDOSchemaAdapterFactory($fieldDelimiter);
         $schema = $schemaAdapterFactory->create()->fromDataToSchema([
@@ -28,6 +34,34 @@ final class {{namespace.name}} {
             EngineDatabase::execute($oneQuery);
         }
 
+        $entitySetServiceFactory = new PDOEntitySetServiceWithSubEntitiesFactory(
+            $transformerObjects,
+            $containerClassMapper,
+            $interfaceClassMapper,
+            $fieldDelimiter,
+            $objectConfiguration->getTimezone(),
+            getenv('DB_DRIVER'),
+            getenv('DB_SERVER'),
+            getenv('DB_NAME'),
+            getenv('DB_USERNAME'),
+            getenv('DB_PASSWORD')
+        );
+
+        $objectAdapterFactory = new ReflectionObjectAdapterFactory(
+            $transformerObjects,
+            $containerClassMapper,
+            $interfaceClassMapper,
+            $fieldDelimiter
+        );
+
+        $data = self::getData();
+        $objects = $objectAdapterFactory->create()->fromDataToObjects($data);
+        $entitySetServiceFactory->create()->insert($objects);
+
+    }
+
+    private static function getData() {
+        return json_decode('{{- entity_datas|json_encode(constant('JSON_PRETTY_PRINT'))|raw -}}', true);
     }
 
 }

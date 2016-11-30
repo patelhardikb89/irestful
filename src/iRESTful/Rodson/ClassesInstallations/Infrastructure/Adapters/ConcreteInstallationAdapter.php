@@ -21,8 +21,19 @@ final class ConcreteInstallationAdapter implements InstallationAdapter {
             throw new InstallationException('The relational_database keyname is mandatory in order to convert data to an Installation object.');
         }
 
+        $entityDatas = [];
+        if (isset($data['entities'])) {
+            foreach($data['entities'] as $oneEntity) {
+
+                if ($oneEntity->hasEntityDatas()) {
+                    $oneEntityDatas = $oneEntity->getEntityDatas();
+                    $entityDatas = array_merge($entityDatas, array_values($oneEntityDatas));
+                }
+            }
+        }
+
         $namespace = $this->namespaceFactory->create();
-        return new ConcreteInstallation($namespace, $data['object_configuration'], $data['relational_database']);
+        return new ConcreteInstallation($namespace, $data['object_configuration'], $data['relational_database'], $entityDatas);
 
     }
 

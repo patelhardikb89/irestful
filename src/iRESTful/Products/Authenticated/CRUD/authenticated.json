@@ -131,6 +131,90 @@
                 }
             }
         },
+        "converters": [
+            {
+                "from": "string",
+                "to": "base_url"
+            },
+            {
+                "from": "string",
+                "to": "uri"
+            },
+            {
+                "from": "string",
+                "to": "hashed_password"
+            },
+            {
+                "from": "string",
+                "to": "keyname"
+            }
+        ],
+        "databases": {
+            "pdo": {
+                "type": "relational",
+                "driver": "[db-driver]",
+                "hostname": "[db-hostname]",
+                "engine": "[engine]",
+                "credentials": {
+                    "username": "[db-username]",
+                    "password": "[db-password]"
+                }
+            }
+        },
+        "types": {
+            "base_url": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateBaseUrl",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "base_url"
+                    }
+                }
+            },
+            "uri": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateUri",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "uri"
+                    }
+                }
+            },
+            "keyname": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateKeyname",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "keyname"
+                    }
+                }
+            },
+            "hashed_password": {
+                "database_type": {
+                    "name": "string",
+                    "max": 255
+                },
+                "method": "validateHashedPassword",
+                "converters": {
+                    "database_to_object": {
+                        "from": "string",
+                        "to": "hashed_password"
+                    }
+                }
+            }
+        },
         "samples": {
             "api": [
                 {
@@ -245,87 +329,47 @@
                 }
             ]
         },
-        "converters": [
-            {
-                "from": "string",
-                "to": "base_url"
-            },
-            {
-                "from": "string",
-                "to": "uri"
-            },
-            {
-                "from": "string",
-                "to": "hashed_password"
-            },
-            {
-                "from": "string",
-                "to": "keyname"
-            }
-        ],
-        "databases": {
-            "pdo": {
-                "type": "relational",
-                "driver": "[db-driver]",
-                "hostname": "[db-hostname]",
-                "engine": "[engine]",
-                "credentials": {
-                    "username": "[db-username]",
-                    "password": "[db-password]"
-                }
-            }
-        },
-        "types": {
-            "base_url": {
-                "database_type": {
-                    "name": "string",
-                    "max": 255
-                },
-                "method": "validateBaseUrl",
-                "converters": {
-                    "database_to_object": {
-                        "from": "string",
-                        "to": "base_url"
-                    }
+        "data": {
+            "user": {
+                "root": {
+                    "name": "root",
+                    "credentials": {
+                        "username": "root",
+                        "hashed_password": "$2y$10$UqvqAbFlpVoAMpiVx4h7aedYBRRYJQLn4LAllgOIH2b8.6blkgvzC"
+                    },
+                    "roles": [
+                        "->root"
+                    ]
                 }
             },
-            "uri": {
-                "database_type": {
-                    "name": "string",
-                    "max": 255
-                },
-                "method": "validateUri",
-                "converters": {
-                    "database_to_object": {
-                        "from": "string",
-                        "to": "uri"
-                    }
+            "software": {
+                "root": {
+                    "name": "admin",
+                    "credentials": {
+                        "username": "admin",
+                        "hashed_password": "$2y$10$UqvqAbFlpVoAMpiVx4h7aedYBRRYJQLn4LAllgOIH2b8.6blkgvzC"
+                    },
+                    "roles": [
+                        "->root"
+                    ]
                 }
             },
-            "keyname": {
-                "database_type": {
-                    "name": "string",
-                    "max": 255
-                },
-                "method": "validateKeyname",
-                "converters": {
-                    "database_to_object": {
-                        "from": "string",
-                        "to": "keyname"
-                    }
+            "role": {
+                "root": {
+                    "title": "Root",
+                    "description": "The root role can access everything.",
+                    "permissions": [
+                        "->read_write_delete"
+                    ]
                 }
             },
-            "hashed_password": {
-                "database_type": {
-                    "name": "string",
-                    "max": 255
-                },
-                "method": "validateHashedPassword",
-                "converters": {
-                    "database_to_object": {
-                        "from": "string",
-                        "to": "hashed_password"
-                    }
+            "permission": {
+                "read_write_delete": {
+                    "title": "Read, Write and Delete objects.",
+                    "description": "This permission enables a user to read, write and delete objects.",
+                    "can_read": true,
+                    "can_write": true,
+                    "can_delete": true
                 }
             }
         }

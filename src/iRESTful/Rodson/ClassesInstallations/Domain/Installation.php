@@ -5,4 +5,6 @@ interface Installation {
     public function getNamespace();
     public function getObjectConfiguration();
     public function getRelationalDatabase();
+    public function hasEntityDatas();
+    public function getEntityDatas();
 }

@@ -5,4 +5,6 @@ interface Entity {
     public function getObject();
     public function getSample();
     public function getDatabase();
+    public function hasEntityDatas();
+    public function getEntityDatas();
 }

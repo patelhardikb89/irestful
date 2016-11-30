@@ -118,4 +118,20 @@ final class ConcreteObject implements Object {
         return $types;
     }
 
+    public function getObjectByPropertyByName(string $name) {
+        $properties = $this->getProperties();
+        foreach($properties as $oneProperty) {
+            if ($oneProperty->getName() == $name) {
+                $type = $oneProperty->getType();
+                if (!$type->hasObject()) {
+                    return null;
+                }
+
+                return $type->getObject();
+            }
+        }
+
+        return null;
+    }
+
 }

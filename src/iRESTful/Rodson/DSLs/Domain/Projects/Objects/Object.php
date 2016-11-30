@@ -12,4 +12,5 @@ interface Object {
     public function getCombos();
     public function getPropertyTypes();
     public function getTypes();
+    public function getObjectByPropertyByName(string $name);
 }

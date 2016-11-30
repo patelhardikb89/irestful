@@ -50,6 +50,7 @@ use iRESTful\Rodson\DSLs\Infrastructure\Factories\ConcreteDSLAdapterFactory;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteParentObjectAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteObjectComboAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteObjectComboPropertyAdapter;
+use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteEntityDataAdapter;
 
 final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
     private $codeData;
@@ -180,7 +181,8 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         $sampleAdapter = new ConcreteEntitySampleAdapter($uuidFactory, $dateTimeFactory, $referenceAdapter, $objects);
         $sampleNodeAdapter = new ConcreteEntitySampleNodeAdapter($sampleAdapter);
 
-        return new ConcreteEntityAdapter($sampleNodeAdapter);
+        $entityDataAdapter = new ConcreteEntityDataAdapter($uuidFactory, $dateTimeFactory, $objects);
+        return new ConcreteEntityAdapter($sampleNodeAdapter, $entityDataAdapter);
     }
 
     public function create() {

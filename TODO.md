@@ -1,5 +1,6 @@
 * Enable cross origin
-* Enable importing static data on install
+* Generate the Dockerfile and docker-compose file when necessary.
+* Add the CLI params
 
 * Fix the genration of the phpunit xml file, when using third-party crud apis.
 * Fix the composer.json file - src folders mapping, when using third-party crud apis.
@@ -8,9 +9,8 @@
 * Create a logger that write on files.
 * Generate the binary using composer.
 * Make sure the generated code is aligned properly.
-* Generate the Dockerfile and docker-compose file when necessary.
 
-* Add the CLI params
+
 * Create more factories to not duplicate code.
 --------------------
 * Validate that assignment variable names do not have the same name as an http request (for controllers).

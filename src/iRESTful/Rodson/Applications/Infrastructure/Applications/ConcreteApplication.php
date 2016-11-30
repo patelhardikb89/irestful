@@ -106,9 +106,9 @@ final class ConcreteApplication implements Application {
         //we get the installation class:
         $installationClass = $this->installationAdapterFactory->create()->fromDataToInstallation([
             'object_configuration' => $configuration->getObjectConfiguration(),
-            'relational_database' => $project->getRelationalDatabase()
+            'relational_database' => $project->getRelationalDatabase(),
+            'entities' => $project->getEntities()
         ]);
-
 
         //we get the test classes:
         $tests = $this->testAdapterFactory->create()->fromDataToTests([

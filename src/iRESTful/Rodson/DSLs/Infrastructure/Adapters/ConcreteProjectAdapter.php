@@ -41,6 +41,11 @@ final class ConcreteProjectAdapter implements ProjectAdapter {
                 $controllers = $this->controllerAdapter->fromDataToControllers($data['controllers']);
             }
 
+            $staticData = null;
+            if (isset($data['data'])) {
+                $staticData = $data['data'];
+            }
+
             $objects = null;
             $entities = null;
             if (isset($data['objects'])) {
@@ -63,7 +68,8 @@ final class ConcreteProjectAdapter implements ProjectAdapter {
                 $objects = $this->objectAdapter->fromDataToObjects($data['objects']);
                 $entities = $this->entityAdapter->fromDataToEntities([
                     'objects' => $objects,
-                    'samples' => isset($data['samples']) ? $data['samples'] : []
+                    'samples' => isset($data['samples']) ? $data['samples'] : [],
+                    'data' => $staticData
                 ]);
             }
 

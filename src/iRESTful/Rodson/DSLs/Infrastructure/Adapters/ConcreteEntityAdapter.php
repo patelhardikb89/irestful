@@ -4,11 +4,14 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Entities\Adapters\EntityAdapter
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Entities\Samples\Nodes\Adapters\SampleNodeAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Objects\ConcreteEntity;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Entities\Exceptions\EntityException;
+use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Entities\Data\Adapters\EntityDataAdapter;
 
 final class ConcreteEntityAdapter implements EntityAdapter {
     private $sampleNodeAdapter;
-    public function __construct(SampleNodeAdapter $sampleNodeAdapter) {
+    private $entityDataAdapter;
+    public function __construct(SampleNodeAdapter $sampleNodeAdapter, EntityDataAdapter $entityDataAdapter) {
         $this->sampleNodeAdapter = $sampleNodeAdapter;
+        $this->entityDataAdapter = $entityDataAdapter;
     }
 
     public function fromDataToEntities(array $data) {
@@ -19,6 +22,11 @@ final class ConcreteEntityAdapter implements EntityAdapter {
 
         if (!isset($data['samples'])) {
             throw new EntityException('The samples keyname is mandatory in order to convert data to Entity objects.');
+        }
+
+        $entityDatas = null;
+        if (isset($data['data'])) {
+            $entityDatas = $this->entityDataAdapter->fromDataToEntityDatas($data['data']);
         }
 
         $output = [];
@@ -36,7 +44,8 @@ final class ConcreteEntityAdapter implements EntityAdapter {
             $sample = $sampleNode->getSampleByName($keyname);
             $output[$keyname] = $this->fromDataToEntity([
                 'object' => $oneObject,
-                'sample' => $sample
+                'sample' => $sample,
+                'entity_datas' => (isset($entityDatas[$keyname])) ? $entityDatas[$keyname] : null
             ]);
         }
 
@@ -53,7 +62,12 @@ final class ConcreteEntityAdapter implements EntityAdapter {
             throw new EntityException('The sample keyname is mandatory in order to convert data to an Entity object.');
         }
 
-        return new ConcreteEntity($data['object'], $data['sample']);
+        $entityDatas = null;
+        if (isset($data['entity_datas'])) {
+            $entityDatas = $data['entity_datas'];
+        }
+
+        return new ConcreteEntity($data['object'], $data['sample'], $entityDatas);
 
     }
 
