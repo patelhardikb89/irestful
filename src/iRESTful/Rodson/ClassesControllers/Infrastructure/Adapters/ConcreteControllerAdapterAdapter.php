@@ -6,6 +6,7 @@ use iRESTful\Rodson\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\Rodson\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
 use iRESTful\Rodson\Classes\Domain\Namespaces\Adapters\ClassNamespaceAdapter;
 use iRESTful\Rodson\ClassesControllers\Infrastructure\Adapters\ConcreteControllerAdapter;
+use iRESTful\Rodson\ClassesControllers\Domain\Exceptions\ControllerException;
 
 final class ConcreteControllerAdapterAdapter implements ControllerAdapterAdapter {
     private $instructionAdapterAdapter;
@@ -24,13 +25,23 @@ final class ConcreteControllerAdapterAdapter implements ControllerAdapterAdapter
         $this->namespaceAdapter = $namespaceAdapter;
     }
 
-    public function fromAnnotatedEntitiesToControllerAdapter(array $annotatedEntities) {
+    public function fromDataToControllerAdapter(array $data) {
+
+        if (!isset($data['annotated_entities'])) {
+            throw new ControllerException('The annotated_entities keyname is mandatory in order to convert data to a ControllerAdapter object.');
+        }
+
+        if (!isset($data['converters'])) {
+            throw new ControllerException('The converters keyname is mandatory in order to convert data to a ControllerAdapter object.');
+        }
+
         return new ConcreteControllerAdapter(
             $this->instructionAdapterAdapter,
             $this->customMethodAdapter,
             $this->constructorAdapter,
             $this->namespaceAdapter,
-            $annotatedEntities
+            $data['annotated_entities'],
+            $data['converters']
         );
     }
 

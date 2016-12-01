@@ -14,13 +14,11 @@ final class ConcreteConfiguration implements Configuration {
     private $controllerNode;
     public function __construct(ClassNamespace $namespace, ObjectConfiguration $objectConfiguration, array $databases, ControllerNode $controllerNode = null) {
 
-        if (empty($databases)) {
-            throw new ConfigurationException('The databases must be non-empty.');
-        }
-
-        foreach($databases as $oneDatabase) {
-            if (!($oneDatabase instanceof Database)) {
-                throw new ConfigurationException('The databases array must only contain Database objects.');
+        if (!empty($databases)) {
+            foreach($databases as $oneDatabase) {
+                if (!($oneDatabase instanceof Database)) {
+                    throw new ConfigurationException('The databases array must only contain Database objects.');
+                }
             }
         }
 
@@ -37,6 +35,10 @@ final class ConcreteConfiguration implements Configuration {
 
     public function getObjectConfiguration() {
         return $this->objectConfiguration;
+    }
+
+    public function hasDatabases() {
+        return !empty($this->databases);
     }
 
     public function getDatabases() {

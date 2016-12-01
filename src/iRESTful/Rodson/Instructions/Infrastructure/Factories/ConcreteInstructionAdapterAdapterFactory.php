@@ -69,7 +69,7 @@ final class ConcreteInstructionAdapterAdapterFactory implements InstructionAdapt
             $classInstructionDatabaseActionAdapterAdapter
         );
 
-        $classInstructionConversionFromAdapterAdapter = new ConcreteInstructionConversionFromAdapterAdapter();
+        $classInstructionConversionFromAdapterAdapter = new ConcreteInstructionConversionFromAdapterAdapter($classInstructionContainerAdapterAdapter);
         $classInstructionConversionToAdapterAdapter = new ConcreteInstructionConversionToAdapterAdapter($classInstructionContainerAdapterAdapter);
         $classInstructionConversionAdapterAdapter = new ConcreteInstructionConversionAdapterAdapter($classInstructionConversionFromAdapterAdapter, $classInstructionConversionToAdapterAdapter);
 

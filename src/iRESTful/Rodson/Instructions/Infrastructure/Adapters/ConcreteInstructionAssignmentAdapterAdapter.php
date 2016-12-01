@@ -28,6 +28,11 @@ final class ConcreteInstructionAssignmentAdapterAdapter implements AssignmentAda
             throw new AssignmentException('The input keyname is mandatory in order to convert data to an AssignmentAdapter.');
         }
 
+        $converters = null;
+        if (isset($data['converters'])) {
+            $converters = $data['converters'];
+        }
+
         $previousAssignments = null;
         if (isset($data['previous_assignments'])) {
             $previousAssignments = $data['previous_assignments'];
@@ -44,6 +49,7 @@ final class ConcreteInstructionAssignmentAdapterAdapter implements AssignmentAda
             $this->conversionAdapterAdapter,
             $data['input'],
             $data['annotated_entities'],
+            $converters,
             $previousAssignments
         );
     }

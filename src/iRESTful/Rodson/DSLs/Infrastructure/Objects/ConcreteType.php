@@ -89,7 +89,15 @@ final class ConcreteType implements Type {
                 return $type->getType()->getName();
             }
 
-            return $type->getPrimitive()->getName();
+            if ($type->hasPrimitive()) {
+                return $type->getPrimitive()->getName();
+            }
+
+            if ($type->isData()) {
+                return 'data';
+            }
+
+            return $type->getObjectReferenceName();
         };
 
         $fromName = $this->getName();

@@ -1,6 +1,6 @@
 * Enable cross origin
+* Remove the input on controllers.  Always make it input.
 * Generate the Dockerfile and docker-compose file when necessary.
-* Add the CLI params
 
 * Fix the genration of the phpunit xml file, when using third-party crud apis.
 * Fix the composer.json file - src folders mapping, when using third-party crud apis.

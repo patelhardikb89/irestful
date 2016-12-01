@@ -14,7 +14,9 @@ final class ConcreteTestInstructionAdapterAdapter implements TestInstructionAdap
     }
 
     public function fromAnnotatedEntitiesToTestInstructionAdapter(array $annotatedEntities) {
-        $instructionAdapter = $this->instructionAdapterAdapter->fromAnnotatedEntitiesToInstructionAdapter($annotatedEntities);
+        $instructionAdapter = $this->instructionAdapterAdapter->fromDataToInstructionAdapter([
+            'annotated_entities' => $annotatedEntities
+        ]);
         return new ConcreteTestInstructionAdapter($instructionAdapter, $this->testContainerInstructionAdapter, $annotatedEntities);
     }
 

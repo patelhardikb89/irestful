@@ -16,6 +16,7 @@ use iRESTful\Rodson\Classes\Infrastructure\Adapters\ConcreteConstructorParameter
 use iRESTful\Rodson\Classes\Infrastructure\Adapters\ConcreteConstructorAdapter;
 use iRESTful\Rodson\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcretePrimitiveAdapter;
+use iRESTful\Rodson\ClassesConverters\Infrastructure\Factories\ConcreteConverterAdapterFactory;
 
 final class ConcreteObjectAdapterFactory implements ObjectAdapterFactory {
     private $baseNamespace;
@@ -45,7 +46,10 @@ final class ConcreteObjectAdapterFactory implements ObjectAdapterFactory {
         $constructorParameterAdapter = new ConcreteConstructorParameterAdapter($interfaceNamespaceAdapter, $classPropertyAdapter, $interfaceMethodParameterAdapter, $classConstructorParameterMethodAdapter);
         $constructorAdapter = new ConcreteConstructorAdapter($constructorParameterAdapter, $classCustomMethodAdapter);
 
-        return new ConcreteObjectAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $classCustomMethodAdapter);
+        $converterAdapterFactory = new ConcreteConverterAdapterFactory($this->baseNamespace);
+        $converterAdapter = $converterAdapterFactory->create();
+
+        return new ConcreteObjectAdapter($classNamespaceAdapter, $interfaceAdapter, $constructorAdapter, $classCustomMethodAdapter, $converterAdapter);
     }
 
 }

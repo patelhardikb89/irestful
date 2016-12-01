@@ -14,10 +14,9 @@ final class ConcreteInstructionContainerAdapter implements ContainerAdapter {
 
     public function fromStringToContainer($string) {
 
-        $annotatedEntities = $this->annotatedEntities;
-        $getAnnotatedEntityByObjectName = function($objectName) use(&$annotatedEntities) {
+        $getAnnotatedEntityByObjectName = function($objectName) {
 
-            foreach($annotatedEntities as $oneAnnotatedEntity) {
+            foreach($this->annotatedEntities as $oneAnnotatedEntity) {
                 $object = $oneAnnotatedEntity->getEntity()->getObject();
                 if ($object->getName() == $objectName) {
                     return $oneAnnotatedEntity;
@@ -35,6 +34,7 @@ final class ConcreteInstructionContainerAdapter implements ContainerAdapter {
 
         $value = null;
         $annotatedEntity = $getAnnotatedEntityByObjectName($string);
+
         if (empty($annotatedEntity) && empty($isLoopContainer)) {
             $value = $this->valueAdapter->fromStringToValue($string);
         }

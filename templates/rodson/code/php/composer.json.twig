@@ -21,11 +21,14 @@
       "phpunit/phpunit": "5.6.1",
       "steve-rodrigue/irestful": "dev-master"
     },
+
+    {% if installation %}
     "scripts": {
         "post-install-cmd": [
             "{{installation.namespace.all_escaped}}::install"
         ]
     },
+    {% endif %}
     "autoload": {
         "psr-0": { "{{base_namespace}}": "{{base_folder}}" }
     }

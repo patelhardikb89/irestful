@@ -72,7 +72,7 @@ final class ConcreteTypeAdapter implements TypeAdapter {
             return $converters[$keyname];
 
         };
-
+        
         if (!isset($data['name'])) {
             throw new TypeException('The name keyname is mandatory in order to convert data to a Type object.');
         }

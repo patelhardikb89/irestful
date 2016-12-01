@@ -44,4 +44,8 @@ final class ConcreteConstructorAdapter implements ConstructorAdapter {
         return new ConcreteConstructor();
     }
 
+    public function fromObjectToAdapterConstructor(Object $object) {
+        return new ConcreteConstructor();
+    }
+
 }

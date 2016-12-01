@@ -19,21 +19,23 @@ final class ConcreteTestAdapter implements TestAdapter {
 
     public function fromDataToTests(array $data) {
 
-        $transforms = $this->transformAdapter->fromDataToTransforms($data);
-        $cruds = $this->crudAdapter->fromDataTOCRUDs($data);
-        $controllers = $this->controllerAdapter->fromDataToControllers($data);
-
         $output = [];
-        foreach($transforms as $oneTransform) {
-            $output[] = new ConcreteTest($oneTransform);
-        }
+        if (isset($data['annotated_entities']) && !empty($data['annotated_entities'])) {
+            $transforms = $this->transformAdapter->fromDataToTransforms($data);
+            $cruds = $this->crudAdapter->fromDataTOCRUDs($data);
+            $controllers = $this->controllerAdapter->fromDataToControllers($data);
 
-        foreach($controllers as $oneController) {
-            $output[] = new ConcreteTest(null, $oneController);
-        }
+            foreach($transforms as $oneTransform) {
+                $output[] = new ConcreteTest($oneTransform);
+            }
 
-        foreach($cruds as $oneCRUD) {
-            $output[] = new ConcreteTest(null, null, $oneCRUD);
+            foreach($controllers as $oneController) {
+                $output[] = new ConcreteTest(null, $oneController);
+            }
+
+            foreach($cruds as $oneCRUD) {
+                $output[] = new ConcreteTest(null, null, $oneCRUD);
+            }
         }
 
         return $output;

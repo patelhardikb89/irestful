@@ -37,7 +37,7 @@ final class ConcreteInstructionConversionFrom implements From {
             return true;
         }
 
-        return $assignment->getConversion()->to()->isData();
+        return $assignment->getConversion()->getTo()->isData();
     }
 
     public function isInput() {

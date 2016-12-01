@@ -82,14 +82,18 @@ final class ConcreteInstructionAssignment implements Assignment {
         }
 
         $conversion = $this->getConversion();
-        $to = $conversion->to();
-        if ($to->isMultiple()) {
-            return true;
+        if ($conversion->hasTo()) {
+            $to = $conversion->getTo();
+            if ($to->isMultiple()) {
+                return true;
+            }
         }
 
-        $from = $conversion->from();
-        if (!$from->hasAssignment()) {
-            return false;
+        if ($conversion->hasFrom()) {
+            $from = $conversion->getFrom();
+            if (!$from->hasAssignment()) {
+                return false;
+            }
         }
 
         return $from->getAssignment()->isMultipleEntities();
@@ -104,9 +108,12 @@ final class ConcreteInstructionAssignment implements Assignment {
             return false;
         }
 
-        $from = $this->getConversion()->from();
-        if (!$from->hasAssignment()) {
-            return false;
+        $conversion = $this->getConversion();
+        if ($conversion->hasFrom()) {
+            $from = $this->getConversion()->getFrom();
+            if (!$from->hasAssignment()) {
+                return false;
+            }
         }
 
         return $from->getAssignment()->isPartialEntitySet();

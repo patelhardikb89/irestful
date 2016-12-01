@@ -50,4 +50,11 @@ final class ConcreteInterfaceAdapter implements InterfaceAdapter {
         return new ConcreteInterface($methods, $namespace, false);
     }
 
+    public function fromObjectToAdapterInterface(Object $object) {
+        $methods = $this->methodAdapter->fromObjectToAdapterMethods($object);
+        $namespace = $this->namespaceAdapter->fromObjectToAdapterNamespace($object);
+        
+        return new ConcreteInterface($methods, $namespace, false);
+    }
+
 }

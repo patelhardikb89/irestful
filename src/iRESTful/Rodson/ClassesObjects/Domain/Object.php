@@ -8,4 +8,6 @@ interface Object {
     public function getConstructor();
     public function hasCustomMethods();
     public function getCustomMethods();
+    public function hasConverter();
+    public function getConverter();
 }

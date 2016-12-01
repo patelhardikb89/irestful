@@ -8,6 +8,7 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Method;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Samples\Sample;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Combos\Combo;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Properties\Property;
+use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
 
 final class ConcreteObject implements Object {
     private $name;
@@ -15,7 +16,8 @@ final class ConcreteObject implements Object {
     private $database;
     private $methods;
     private $combos;
-    public function __construct(string $name, array $properties, Database $database = null, array $methods = null, array $combos = null) {
+    private $converters;
+    public function __construct(string $name, array $properties, Database $database = null, array $methods = null, array $combos = null, array $converters = null) {
 
         if (empty($methods)) {
             $methods = null;
@@ -23,6 +25,10 @@ final class ConcreteObject implements Object {
 
         if (empty($combos)) {
             $combos = null;
+        }
+
+        if (empty($converters)) {
+            $converters = null;
         }
 
         if (empty($name)) {
@@ -56,11 +62,20 @@ final class ConcreteObject implements Object {
             }
         }
 
+        if (!empty($converters)) {
+            foreach($converters as $oneConverter) {
+                if (!($oneConverter instanceof Converter)) {
+                    throw new ObjectException('The converters array must only contain Converter objects.');
+                }
+            }
+        }
+
         $this->name = $name;
         $this->properties = array_values($properties);
         $this->database = $database;
         $this->methods = (empty($methods)) ? null : array_values($methods);
         $this->combos = $combos;
+        $this->converters = $converters;
 
     }
 
@@ -94,6 +109,14 @@ final class ConcreteObject implements Object {
 
     public function getCombos() {
         return $this->combos;
+    }
+
+    public function hasConverters() {
+        return !empty($this->converters);
+    }
+
+    public function getConverters() {
+        return $this->converters;
     }
 
     public function getPropertyTypes() {

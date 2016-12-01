@@ -18,12 +18,16 @@ final class ConcreteControllerViewAdapter implements ViewAdapter {
             return new ConcreteControllerView(true);
         }
 
+        if ($string == 'text') {
+            return new ConcreteControllerView(false, true);
+        }
+
         throw new ViewException('The given string ('.$string.') does not point to a valid View.');
     }
 
     public function fromDataToView(array $data) {
         $template = $this->templateAdapter->fromDataToTemplate($data);
-        return new ConcreteControllerView(false, $template);
+        return new ConcreteControllerView(false, false, $template);
     }
 
 }

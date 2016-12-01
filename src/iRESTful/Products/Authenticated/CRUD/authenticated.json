@@ -1,5 +1,5 @@
 {
-    "name": "iRESTful/Authenticated",
+    "name": "iRESTful/CRUDAuthenticated",
     "type": "library",
     "url": "https://github.com/steve-rodrigue/irestful/tree/master/src/iRESTful/Products/Authenticated/CRUD",
     "license": "MIT",
@@ -13,8 +13,8 @@
     "project": {
         "code": {
             "language": "PHP",
-            "class": "Authenticated",
-            "file": "Authenticated.php"
+            "class": "CRUDAuthenticated",
+            "file": "CRUDAuthenticated.php"
         },
         "objects": {
             "endpoint": {

@@ -2,6 +2,10 @@
 namespace iRESTful\Rodson\Instructions\Domain\Conversions;
 
 interface Conversion {
-    public function from();
-    public function to();
+    public function hasFrom();
+    public function getFrom();
+    public function hasTo();
+    public function getTo();
+    public function hasConverter();
+    public function getConverter();
 }

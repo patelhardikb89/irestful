@@ -17,7 +17,7 @@ final class ConcreteInstructionContainer implements Container {
 
         $amount = (empty($value) ? 0 : 1) + (empty($annotatedEntity) ? 0 : 1) + ($isLoopContainer ? 1 : 0);
         if ($amount != 1) {
-            throw new ContainerException('The instruction container must contain either a value, an annotated entity or a loop container.  '.$amount.' given.');
+            throw new ContainerException('The instruction container must contain either a value, an annotated entity, an annotated object or a loop container.  '.$amount.' given.');
         }
 
         $this->value = $value;

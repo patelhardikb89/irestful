@@ -28,16 +28,22 @@ final class ConcreteInstructionConversionAdapterAdapter implements ConversionAda
             throw new ConversionException('The previous_assignments keyname is mandatory in order to convert data to a ConversionAdapter object.');
         }
 
+        $converters = null;
+        if (isset($data['converters'])) {
+            $converters = $data['converters'];
+        }
+
         $fromAdapter = $this->fromAdapterAdapter->fromDataToFromAdapter([
             'input' => $data['input'],
-            'assignments' => $data['previous_assignments']
+            'assignments' => $data['previous_assignments'],
+            'annotated_entities' => $data['annotated_entities']
         ]);
 
         $toAdapter = $this->toAdapterAdapter->fromDataToToAdapter([
             'annotated_entities' => $data['annotated_entities']
         ]);
 
-        return new ConcreteInstructionConversionAdapter($fromAdapter, $toAdapter);
+        return new ConcreteInstructionConversionAdapter($fromAdapter, $toAdapter, $converters);
     }
 
 }

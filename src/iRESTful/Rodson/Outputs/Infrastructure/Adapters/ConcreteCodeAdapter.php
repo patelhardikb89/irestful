@@ -212,20 +212,31 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $converter = $value->getConverter();
         $interface = $value->getInterface();
 
-        $codeConverters = $this->fromConverterToCodes($converter);
+        $codeConverters = $this->fromTypeConverterToCodes($converter);
         return array_merge($codeConverters, [
             $this->render($namespace, $data, 'class.value.php'),
             $this->fromInterfaceToCode($interface)
         ]);
     }
 
-    private function fromConverterToCodes(Converter $converter) {
+    private function fromTypeConverterToCodes(Converter $converter) {
         $data = $this->getData($converter);
         $namespace = $converter->getNamespace();
         $interface = $converter->getInterface();
 
         return [
-            $this->render($namespace, $data, 'class.adapter.php'),
+            $this->render($namespace, $data, 'class.type.adapter.php'),
+            $this->fromInterfaceToCode($interface)
+        ];
+    }
+
+    private function fromObjectConverterToCodes(Converter $converter) {
+        $data = $this->getData($converter);
+        $namespace = $converter->getNamespace();
+        $interface = $converter->getInterface();
+
+        return [
+            $this->render($namespace, $data, 'class.object.adapter.php'),
             $this->fromInterfaceToCode($interface)
         ];
     }
@@ -248,10 +259,16 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $namespace = $object->getNamespace();
         $interface = $object->getInterface();
 
-        return [
+        $converterCodes = [];
+        if ($object->hasConverter()) {
+            $converter = $object->getConverter();
+            $converterCodes = $this->fromObjectConverterToCodes($converter);
+        }
+
+        return array_merge($converterCodes, [
              $this->render($namespace, $data, 'class.object.php'),
              $this->fromInterfaceToCode($interface)
-        ];
+        ]);
 
     }
 

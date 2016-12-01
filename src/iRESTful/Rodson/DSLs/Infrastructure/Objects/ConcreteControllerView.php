@@ -7,21 +7,27 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Controllers\Views\Exceptions\ViewExcept
 
 final class ConcreteControllerView implements View {
     private $isJson;
+    private $isText;
     private $template;
-    public function __construct(bool $isJson, Template $template = null) {
+    public function __construct(bool $isJson, bool $isText, Template $template = null) {
 
-        $amount = ($isJson ? 1 : 0) + (!empty($template) ? 1 : 0);
+        $amount = ($isJson ? 1 : 0) + ($isText ? 1 : 0) + (!empty($template) ? 1 : 0);
         if ($amount != 1) {
             throw new ViewException('There must be either a Template object, or the view must be json.  '.$amount.' provided.');
         }
 
-        $this->isJson = (bool) $isJson;
+        $this->isJson = $isJson;
+        $this->isText = $isText;
         $this->template = $template;
 
     }
 
     public function isJson(): bool {
         return $this->isJson;
+    }
+
+    public function isText(): bool {
+        return $this->isText;
     }
 
     public function hasTemplate(): bool {

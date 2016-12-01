@@ -3,6 +3,7 @@ namespace iRESTful\Rodson\ClassesTests\Infrastructure\Adapters;
 use iRESTful\Rodson\ClassesTests\Domain\CRUDs\Adapters\CRUDAdapter;
 use iRESTful\Rodson\ClassesTests\Infrastructure\Objects\ConcreteTestCRUD;
 use iRESTful\Rodson\Classes\Infrastructure\Objects\ConcreteNamespace;
+use iRESTful\Rodson\ClassesTests\Domain\CRUDs\Exceptions\CRUDException;
 
 final class ConcreteTestCRUDAdapter implements CRUDAdapter {
     private $baseNamespaces;
@@ -13,11 +14,11 @@ final class ConcreteTestCRUDAdapter implements CRUDAdapter {
     public function fromDataTOCRUDs(array $data) {
 
         if (!isset($data['annotated_entities'])) {
-            throw new TransformException('The annotated_entities keyname is mandatory in order to convert data to CRUD objects.');
+            throw new CRUDException('The annotated_entities keyname is mandatory in order to convert data to CRUD objects.');
         }
 
         if (!isset($data['installation'])) {
-            throw new TransformException('The installation keyname is mandatory in order to convert data to CRUD objects.');
+            throw new CRUDException('The installation keyname is mandatory in order to convert data to CRUD objects.');
         }
 
         $output = [];

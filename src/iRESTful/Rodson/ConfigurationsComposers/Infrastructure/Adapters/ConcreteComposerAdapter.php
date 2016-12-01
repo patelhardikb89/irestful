@@ -16,8 +16,9 @@ final class ConcreteComposerAdapter implements ComposerAdapter {
             throw new ComposerException('The dsl keyname is mandatory in order to convert data to a Composer object.');
         }
 
-        if (!isset($data['installation'])) {
-            throw new ComposerException('The installation keyname is mandatory in order to convert data to a Composer object.');
+        $installation = null;
+        if (isset($data['installation'])) {
+            $installation = $data['installation'];
         }
 
         $dslName = $data['dsl']->getName();
@@ -29,7 +30,7 @@ final class ConcreteComposerAdapter implements ComposerAdapter {
         $authors = $data['dsl']->getAuthors();
         $baseNamespace = $dslName->getOrganizationName();
 
-        return new ConcreteComposer($name, $type, $homepage, $license, $authors, $baseNamespace, $this->baseFolder, $data['installation']);
+        return new ConcreteComposer($name, $type, $homepage, $license, $authors, $baseNamespace, $this->baseFolder, $installation);
 
     }
 

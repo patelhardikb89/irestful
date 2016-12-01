@@ -8,6 +8,7 @@ interface ClassNamespaceAdapter {
     public function fromControllerToNamespace(Controller $controller);
     public function fromObjectToNamespace(Object $object);
     public function fromTypeToAdapterNamespace(Type $type);
+    public function fromObjectToAdapterNamespace(Object $object);
     public function fromTypeToNamespace(Type $type);
     public function fromDataToNamespace(array $data);
     public function fromFullDataToNamespace(array $data);

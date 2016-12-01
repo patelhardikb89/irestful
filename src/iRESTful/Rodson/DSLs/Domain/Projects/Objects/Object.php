@@ -10,6 +10,8 @@ interface Object {
     public function getMethods();
     public function hasCombos();
     public function getCombos();
+    public function hasConverters();
+    public function getConverters();
     public function getPropertyTypes();
     public function getTypes();
     public function getObjectByPropertyByName(string $name);

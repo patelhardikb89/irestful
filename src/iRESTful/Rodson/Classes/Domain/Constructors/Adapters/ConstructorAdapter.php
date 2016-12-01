@@ -8,4 +8,5 @@ interface ConstructorAdapter {
     public function fromObjectToConstructor(Object $object);
     public function fromTypeToConstructor(Type $type);
     public function fromTypeToAdapterConstructor(Type $type);
+    public function fromObjectToAdapterConstructor(Object $object);
 }

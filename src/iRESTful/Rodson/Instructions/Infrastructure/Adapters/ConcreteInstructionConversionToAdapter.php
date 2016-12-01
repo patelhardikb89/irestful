@@ -11,10 +11,8 @@ final class ConcreteInstructionConversionToAdapter implements ToAdapter {
     public function __construct(ContainerAdapter $containerAdapter) {
         $this->containerAdapter = $containerAdapter;
     }
-
+    
     public function fromStringToTo($string) {
-
-        //from input to multiple input->container
 
         $isMultiple = false;
         if (strpos($string, 'multiple ') === 0) {

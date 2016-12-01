@@ -51,4 +51,9 @@ final class ConcreteClassNamespaceAdapter implements ClassNamespaceAdapter {
         return $this->fromDataToNamespace(['Types', 'Adapters', 'Concrete'.ucfirst($typeName).'Adapter']);
     }
 
+    public function fromObjectToAdapterNamespace(Object $object) {
+        $objectName = $object->getName();
+        return $this->fromDataToNamespace(['Objects', 'Adapters', 'Concrete'.ucfirst($objectName).'Adapter']);
+    }
+
 }

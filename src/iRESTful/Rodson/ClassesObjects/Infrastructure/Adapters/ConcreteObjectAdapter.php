@@ -7,22 +7,26 @@ use iRESTful\Rodson\Classes\Domain\Interfaces\Adapters\InterfaceAdapter;
 use iRESTful\Rodson\Classes\Domain\Constructors\Adapters\ConstructorAdapter;
 use iRESTful\Rodson\Classes\Domain\CustomMethods\Adapters\CustomMethodAdapter;
 use iRESTful\Rodson\ClassesObjects\Infrastructure\Objects\ConcreteObject;
+use iRESTful\Rodson\ClassesConverters\Domain\Adapters\ConverterAdapter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $namespaceAdapter;
     private $interfaceAdapter;
     private $constructorAdapter;
     private $customMethodAdapter;
+    private $converterAdapter;
     public function __construct(
         ClassNamespaceAdapter $namespaceAdapter,
         InterfaceAdapter $interfaceAdapter,
         ConstructorAdapter $constructorAdapter,
-        CustomMethodAdapter $customMethodAdapter
+        CustomMethodAdapter $customMethodAdapter,
+        ConverterAdapter $converterAdapter
     ) {
         $this->namespaceAdapter = $namespaceAdapter;
         $this->interfaceAdapter = $interfaceAdapter;
         $this->constructorAdapter = $constructorAdapter;
         $this->customMethodAdapter = $customMethodAdapter;
+        $this->converterAdapter = $converterAdapter;
     }
 
     public function fromDSLObjectsToObjects(array $objects) {
@@ -48,12 +52,21 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
         $constructor = $this->constructorAdapter->fromObjectToConstructor($object);
         $customMethods = $this->customMethodAdapter->fromObjectToCustomMethods($object);
 
+        $converter = null;
+        if ($object->hasConverters()) {
+            $converter = $this->converterAdapter->fromDataToConverter([
+                'object' => $object,
+                'namespace' => $namespace
+            ]);
+        }
+
         return new ConcreteObject(
             $object,
             $namespace,
             $interface,
             $constructor,
-            $customMethods
+            $customMethods,
+            $converter
         );
     }
 

@@ -312,8 +312,12 @@ final class PHPCustomMethodSourceCodeAdapter implements SourceCodeAdapter {
 
     private function generateCodeLineFromConversion(Conversion $conversion) {
 
-        $from = $conversion->from();
-        $to = $conversion->to();
+        if ($conversion->hasConverter()) {
+            return 'some line';
+        }
+
+        $from = $conversion->getFrom();
+        $to = $conversion->getTo();
 
         if ($from->isInput() && $to->hasContainer()) {
 

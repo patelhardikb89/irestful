@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace iRESTful\Rodson\DSLs\Infrastructure\Objects;
 use iRESTful\Rodson\DSLs\Domain\Projects\Project;
 use iRESTful\Rodson\DSLs\Domain\Projects\Exceptions\ProjectException;
+use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
 
 final class ConcreteProject implements Project {
     private $parents;
@@ -38,9 +39,8 @@ final class ConcreteProject implements Project {
         $entities = $verify($entities, 'iRESTful\Rodson\DSLs\Domain\Projects\Objects\Entities\Entity', 'The entities must only contain Entity objects.', 'The entities array must be an array, where the keynames are strings.');
         $controllers = $verify($controllers, 'iRESTful\Rodson\DSLs\Domain\Projects\Controllers\Controller', 'The controllers must only contain Controller objects.', 'The controllers array must be an array, where the keynames are strings.');
 
-        $amount = (empty($objects) ? 0 : 1) + (empty($controllers) ? 0 : 1);
-        if ($amount != 1) {
-            throw new ProjectException('There must be objects or controllers.  '.$amount.' given.');
+        if (empty($controllers) && empty($objects)) {
+            throw new ProjectException('The controllers and objects cannot be both empty.');
         }
 
         $this->parents = $parents;
@@ -85,6 +85,44 @@ final class ConcreteProject implements Project {
         }
 
         return null;
+    }
+
+    public function getConverters() {
+
+        if (!$this->hasObjects()) {
+            return [];
+        }
+
+        $output = [];
+        $objects = $this->getObjects();
+        foreach($objects as $oneObject) {
+
+            if ($oneObject->hasConverters()) {
+                $converters = $oneObject->getConverters();
+                foreach($converters as $oneConverter) {
+                    $output[$oneConverter->getKeyname()] = $oneConverter;
+                }
+            }
+
+            $properties = $oneObject->getProperties();
+            foreach($properties as $oneProperty) {
+                $propertyType = $oneProperty->getType();
+                if ($propertyType->hasType()) {
+                    $type = $propertyType->getType();
+                    $databaseConverter = $type->getDatabaseConverter();
+                    $output[$databaseConverter->getKeyname()] = $databaseConverter;
+
+                    if ($type->hasViewConverter()) {
+                        $viewConverter = $type->getViewConverter();
+                        $output[$viewConverter->getKeyname()] = $viewConverter;
+                    }
+                }
+            }
+
+        }
+
+        return $output;
+
     }
 
     public function hasObjects() {

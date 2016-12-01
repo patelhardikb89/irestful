@@ -76,6 +76,29 @@ final class ConcreteInterfaceMethodAdapter implements MethodAdapter {
 
     }
 
+    public function fromObjectToAdapterMethods(Object $object) {
+
+        if ($object->hasConverters()) {
+            //throws
+        }
+
+        $output = [];
+        $converters = $object->getConverters();
+        foreach($converters as $oneConverter) {
+
+            if (!$oneConverter->hasMethod()) {
+                continue;
+            }
+
+            $method = $oneConverter->getMethod();
+            $customMethod = $this->customMethodAdapter->fromMethodToCustomMethod($method);
+            $output[] = $this->fromCustomMethodToMethod($customMethod);
+        }
+
+        return $output;
+
+    }
+
     private function fromPropertiesToMethods(array $properties) {
         $methods = [];
         foreach($properties as $oneProperty) {

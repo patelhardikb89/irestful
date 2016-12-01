@@ -94,9 +94,15 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         return $databaseAdapter->fromDataToDatabases($this->databasesData);
     }
 
-    private function getConverters(array $types, array $primitives) {
+    private function getConverterAdapter(Code $code, array $types, array $primitives) {
+        $methodAdapter = new ConcreteCodeMethodAdapter($code);
+        $objectMethodAdapter = new ConcreteObjectMethodAdapter($methodAdapter);
         $converterTypeAdapter = new ConcreteConverterTypeAdapter();
-        $converterAdapter = new ConcreteConverterAdapter($converterTypeAdapter, $types, $primitives);
+        return new ConcreteConverterAdapter($objectMethodAdapter, $converterTypeAdapter, $types, $primitives);
+    }
+
+    private function getConverters(Code $code, array $types, array $primitives) {
+        $converterAdapter = $this->getConverterAdapter($code, $types, $primitives);
         return $converterAdapter->fromDataToConverters($this->convertersData);
     }
 
@@ -125,7 +131,7 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         };
 
         $types = $getValidTypes();
-        $converters = $this->getConverters($types, $primitives);
+        $converters = $this->getConverters($code, $types, $primitives);
         return $getTypes($converters);
     }
 
@@ -139,7 +145,8 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         $propertyAdapter = new ConcreteObjectPropertyAdapter($propertyTypeAdapter);
         $comboPropertyAdapter = new ConcreteObjectComboPropertyAdapter();
         $comboAdapter = new ConcreteObjectComboAdapter($comboPropertyAdapter);
-        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $comboAdapter, $databases, $parents);
+        $converters = $this->getConverters($code, $types, $primitives);
+        return new ConcreteObjectAdapter($objectMethodAdapter, $propertyAdapter, $comboAdapter, $databases, $parents, $converters);
     }
 
     private function getObjects(Code $code, array $types, array $primitives, array $databases, array $parents) {

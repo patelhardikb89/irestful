@@ -4,12 +4,15 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Adapters\ConverterAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Objects\ConcreteConverter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Exceptions\ConverterException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Types\Adapters\TypeAdapter;
+use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Adapters\MethodAdapter;
 
 final class ConcreteConverterAdapter implements ConverterAdapter {
+    private $methodAdapter;
     private $typeAdapter;
     private $types;
     private $primitives;
-    public function __construct(TypeAdapter $typeAdapter, array $types, array $primitives) {
+    public function __construct(MethodAdapter $methodAdapter, TypeAdapter $typeAdapter, array $types, array $primitives) {
+        $this->methodAdapter = $methodAdapter;
         $this->typeAdapter = $typeAdapter;
         $this->types = $types;
         $this->primitives = $primitives;
@@ -36,32 +39,38 @@ final class ConcreteConverterAdapter implements ConverterAdapter {
 
     public function fromDataToConverter(array $data) {
 
+        $getAdapterType = function($name) {
+            if (isset($this->types[$name])) {
+                return $this->typeAdapter->fromTypeToAdapterType($this->types[$name]);
+            }
+
+            if (isset($this->primitives[$name])) {
+                return $this->typeAdapter->fromPrimitiveToAdapterType($this->primitives[$name]);
+            }
+
+            return $this->typeAdapter->fromStringToAdapterType($name);
+        };
+
         $from = null;
         if (isset($data['from'])) {
-
-            if (isset($this->types[$data['from']])) {
-                $from = $this->typeAdapter->fromTypeToAdapterType($this->types[$data['from']]);
-            }
-
-            if (isset($this->primitives[$data['from']])) {
-                $from = $this->typeAdapter->fromPrimitiveToAdapterType($this->primitives[$data['from']]);
-            }
+            $from = $getAdapterType($data['from']);
         }
 
         $to = null;
         if (isset($data['to'])) {
-
-            if (isset($this->types[$data['to']])) {
-                $to = $this->typeAdapter->fromTypeToAdapterType($this->types[$data['to']]);
-            }
-
-            if (isset($this->primitives[$data['to']])) {
-                $to = $this->typeAdapter->fromPrimitiveToAdapterType($this->primitives[$data['to']]);
-            }
-
+            $to = $getAdapterType($data['to']);
         }
 
-        return new ConcreteConverter($from, $to);
+        $method = null;
+        if (isset($data['method'])) {
+            $method = $this->methodAdapter->fromDataToMethod([
+                'name' => $data['method'],
+                'method' => $data['method']
+            ]);
+        }
+
+        $keyname = 'from_'.$data['from'].'_to_'.$data['to'];
+        return new ConcreteConverter($keyname, $from, $to, $method);
 
     }
 

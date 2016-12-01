@@ -12,12 +12,14 @@ final class ConcreteInstructionAssignmentAdapter implements AssignmentAdapter {
     private $conversionAdapterAdapter;
     private $inputName;
     private $annotatedEntities;
+    private $converters;
     private $previousAssignments;
     public function __construct(
         DatabaseAdapter $databaseAdapter,
         ConversionAdapterAdapter $conversionAdapterAdapter,
         $inputName,
         array $annotatedEntities,
+        array $converters = null,
         array $previousAssignments = null
     ) {
 
@@ -29,6 +31,7 @@ final class ConcreteInstructionAssignmentAdapter implements AssignmentAdapter {
         $this->conversionAdapterAdapter = $conversionAdapterAdapter;
         $this->inputName = $inputName;
         $this->annotatedEntities = $annotatedEntities;
+        $this->converters = $converters;
         $this->previousAssignments = $previousAssignments;
     }
 
@@ -46,6 +49,7 @@ final class ConcreteInstructionAssignmentAdapter implements AssignmentAdapter {
         if (strpos($command, 'from ') === 0) {
             $conversion = $this->conversionAdapterAdapter->fromDataToConversionAdapter([
                 'annotated_entities' => $this->annotatedEntities,
+                'converters' => $this->converters,
                 'previous_assignments' => $this->previousAssignments,
                 'input' => $this->inputName
             ])->fromStringToConversion($command);

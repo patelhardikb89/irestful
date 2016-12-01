@@ -124,12 +124,14 @@ final class ConcreteConstructorParameterAdapter implements ConstructorParameterA
 
             $parameters[$propertyName] = new ConcreteConstructorParameter($property, $methodParameter);
 
-            $from = $conversion->from();
-            if ($from->hasAssignment()) {
-                $assignment = $from->getAssignment();
-                $newParameters = $this->fromInstructionAssignmentToParameters($assignment);
-                if (!empty($newParameters)) {
-                    $parameters = array_merge($parameters, $newParameters);
+            if ($conversion->hasFrom()) {
+                $from = $conversion->getFrom();
+                if ($from->hasAssignment()) {
+                    $assignment = $from->getAssignment();
+                    $newParameters = $this->fromInstructionAssignmentToParameters($assignment);
+                    if (!empty($newParameters)) {
+                        $parameters = array_merge($parameters, $newParameters);
+                    }
                 }
             }
         }

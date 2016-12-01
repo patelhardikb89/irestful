@@ -14,18 +14,21 @@ final class ConcreteControllerAdapter implements ControllerAdapter {
     private $constructorAdapter;
     private $namespaceAdapter;
     private $annotatedEntities;
+    private $converters;
     public function __construct(
         InstructionAdapterAdapter $instructionAdapterAdapter,
         CustomMethodAdapter $customMethodAdapter,
         ConstructorAdapter $constructorAdapter,
         ClassNamespaceAdapter $namespaceAdapter,
-        array $annotatedEntities
+        array $annotatedEntities,
+        array $converters
     ) {
         $this->instructionAdapterAdapter = $instructionAdapterAdapter;
         $this->customMethodAdapter = $customMethodAdapter;
         $this->constructorAdapter = $constructorAdapter;
         $this->namespaceAdapter = $namespaceAdapter;
         $this->annotatedEntities = $annotatedEntities;
+        $this->converters = $converters;
     }
 
     public function fromDSLControllersToControllers(array $controllers) {
@@ -36,10 +39,13 @@ final class ConcreteControllerAdapter implements ControllerAdapter {
 
         return $output;
     }
-    
+
     public function fromDSLControllerToController(Controller $controller) {
 
-        $instructions = $this->instructionAdapterAdapter->fromAnnotatedEntitiesToInstructionAdapter($this->annotatedEntities)
+        $instructions = $this->instructionAdapterAdapter->fromDataToInstructionAdapter([
+                                                            'annotated_entities' => $this->annotatedEntities,
+                                                            'converters' => $this->converters
+                                                        ])
                                                         ->fromDSLControllerToInstructions($controller);
 
         $namespace = $this->namespaceAdapter->fromControllerToNamespace($controller);

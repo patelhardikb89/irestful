@@ -114,7 +114,7 @@ final class ConcreteConverterMethodAdapter implements MethodAdapter {
                 'primitive' => $getPrimitive(),
                 'namespace' => $getNamespace()
             ]);
-            
+
             return new ConcreteConverterMethod($methodName, $parameter, $namespace);
 
         };

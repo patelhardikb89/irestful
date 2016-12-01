@@ -11,14 +11,17 @@ final class ConcreteInstructionAdapter implements InstructionAdapter {
     private $actionAdapterAdapter;
     private $assignmentAdapterAdapter;
     private $annotatedEntities;
+    private $converters;
     public function __construct(
         ActionAdapterAdapter $actionAdapterAdapter,
         AssignmentAdapterAdapter $assignmentAdapterAdapter,
-        array $annotatedEntities
+        array $annotatedEntities,
+        array $converters
     ) {
         $this->actionAdapterAdapter = $actionAdapterAdapter;
         $this->assignmentAdapterAdapter = $assignmentAdapterAdapter;
         $this->annotatedEntities = $annotatedEntities;
+        $this->converters = $converters;
     }
 
     public function fromDataToInstructions(array $data) {
@@ -90,6 +93,7 @@ final class ConcreteInstructionAdapter implements InstructionAdapter {
 
             $assignment = $this->assignmentAdapterAdapter->fromDataToAssignmentAdapter([
                 'annotated_entities' => $this->annotatedEntities,
+                'converters' => $this->converters,
                 'controller' => $data['controller'],
                 'previous_assignments' => $assignments,
                 'input' => $inputName

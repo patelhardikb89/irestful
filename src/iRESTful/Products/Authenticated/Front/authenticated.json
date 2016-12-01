@@ -1,0 +1,65 @@
+{
+    "name": "iRESTful/Authenticated",
+    "type": "library",
+    "url": "https://github.com/steve-rodrigue/irestful/tree/master/src/iRESTful/Products/Authenticated/Front",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Rodrigue",
+            "email": "stev.rodr@gmail.com",
+            "url": "http://irestful.com"
+        }
+    ],
+    "project": {
+        "code": {
+            "language": "PHP",
+            "class": "Authenticated",
+            "file": "Authenticated.php"
+        },
+        "parents": {
+            "authentication_crud": {
+                "file": "../CRUD/authenticated.json",
+                "database": "crud_api"
+            }
+        },
+        "objects": {
+            "token": {
+                "properties": {
+                    "software": "authentication_crud->software",
+                    "user|?": "authentication_crud->user"
+                }
+            }
+        },
+        "controllers": {
+            "authenticate": {
+                "pattern": "retrieve /authenticate",
+                "input": "input",
+                "instructions": [
+                    "token = from input to token",
+                    "tokenString = from token to string",
+                    "return tokenString"
+                ],
+                "view": "text"
+            }
+        },
+        "converters": [
+            {
+                "from": "input",
+                "to": "token",
+                "method": "fromDataToToken"
+            },
+            {
+                "from": "token",
+                "to": "string",
+                "method": "fromTokenToString"
+            }
+        ],
+        "databases": {
+            "crud_api": {
+                "type": "rest_api",
+                "base_url": "https://crud.authenticate.irestful.com",
+                    "port": 80
+            }
+        }
+    }
+}

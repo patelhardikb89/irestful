@@ -89,7 +89,14 @@ final class ConcreteApplication implements Application {
         $controllerClasses = [];
         if ($project->hasControllers()) {
             $controllers = $project->getControllers();
-            $controllerClasses = $this->controllerAdapterAdapterFactory->create()->fromAnnotatedEntitiesToControllerAdapter($annotatedEntities)->fromDSLControllersToControllers($controllers);
+
+            //must add objects as well!!!
+            $controllerClasses = $this->controllerAdapterAdapterFactory->create()
+                                                                        ->fromDataToControllerAdapter([
+                                                                            'annotated_entities' => $annotatedEntities,
+                                                                            'converters' => $project->getConverters()
+                                                                        ])
+                                                                        ->fromDSLControllersToControllers($controllers);
         }
 
         //we get the configuration class:
@@ -104,11 +111,14 @@ final class ConcreteApplication implements Application {
         ]);
 
         //we get the installation class:
-        $installationClass = $this->installationAdapterFactory->create()->fromDataToInstallation([
-            'object_configuration' => $configuration->getObjectConfiguration(),
-            'relational_database' => $project->getRelationalDatabase(),
-            'entities' => $project->getEntities()
-        ]);
+        $installationClass = null;
+        if ($project->hasEntities()) {
+            $installationClass = $this->installationAdapterFactory->create()->fromDataToInstallation([
+                'object_configuration' => $configuration->getObjectConfiguration(),
+                'relational_database' => $project->getRelationalDatabase(),
+                'entities' => $project->getEntities()
+            ]);
+        }
 
         //we get the test classes:
         $tests = $this->testAdapterFactory->create()->fromDataToTests([
@@ -140,22 +150,27 @@ final class ConcreteApplication implements Application {
         $composerCode = $codeAdapter->fromComposerToCode($composer);
         $controllerCodes = $codeAdapter->fromControllersToCodes($controllerClasses);
         $testCodes = $codeAdapter->fromTestsToCodes($tests);
-        $installationCode = $codeAdapter->fromInstallationToCode($installationClass);
         $applicationCodes = $codeAdapter->fromApplicationToCodes($application);
-
         $gitIgnoreCode = $this->codeFactory->createGitIgnore();
 
-        //we save the codes:
-        $this->codeServiceFactory->create()->saveMultiple(array_merge(
+        $installationCode = [];
+        if (!empty($installationClass)) {
+            $installationCode[] = $codeAdapter->fromInstallationToCode($installationClass);
+        }
+
+        $merged = array_merge(
             [$gitIgnoreCode],
             [$phpunitCode],
             $vagrantFileCodes,
             [$composerCode],
             $controllerCodes,
             $testCodes,
-            [$installationCode],
-            $applicationCodes
-        ));
+            $applicationCodes,
+            $installationCode
+        );
+
+        //we save the codes:
+        $this->codeServiceFactory->create()->saveMultiple($merged);
     }
 
 }

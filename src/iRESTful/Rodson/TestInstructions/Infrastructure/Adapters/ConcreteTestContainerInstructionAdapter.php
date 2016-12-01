@@ -59,7 +59,9 @@ final class ConcreteTestContainerInstructionAdapter implements TestContainerInst
 
         }
 
-        $instructions = $this->instructionAdapterAdapter->fromAnnotatedEntitiesToInstructionAdapter($data['annotated_entities'])->fromDataToInstructions([
+        $instructions = $this->instructionAdapterAdapter->fromDataToInstructionAdapter([
+            'annotated_entities' => $data['annotated_entities']
+        ])->fromDataToInstructions([
             'controller' => $data['controller'],
             'instructions' => $commands
         ]);

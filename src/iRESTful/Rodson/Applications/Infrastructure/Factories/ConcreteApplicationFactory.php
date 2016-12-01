@@ -18,6 +18,7 @@ use iRESTful\Rodson\Outputs\Infrastructure\Factories\ConcreteCodeAdapterFactory;
 use iRESTful\Rodson\Outputs\Infrastructure\Factories\FileCodeServiceFactory;
 use iRESTful\Rodson\Applications\Infrastructure\Adapters\ConcreteDomainApplicationAdapter;
 use iRESTful\Rodson\Outputs\Infrastructure\Factories\ConcreteCodeFactoryFactory;
+use iRESTful\Rodson\ClassesConverters\Infrastructure\Factories\ConcreteConverterAdapterFactory;
 
 final class ConcreteApplicationFactory implements ApplicationFactory {
     private $timezone;

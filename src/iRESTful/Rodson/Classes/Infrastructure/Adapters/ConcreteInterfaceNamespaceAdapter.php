@@ -64,6 +64,17 @@ final class ConcreteInterfaceNamespaceAdapter implements InterfaceNamespaceAdapt
         return $this->fromDataToNamespace(['Types', $folderName, 'Adapters', $typeName.'Adapter']);
     }
 
+    public function fromObjectToAdapterNamespace(Object $object) {
+        $objectName = $object->getName();
+
+        $folderName = $objectName;
+        if (substr($folderName, -1) != 's') {
+            $folderName = $folderName.'s';
+        }
+
+        return $this->fromDataToNamespace(['Objects', $folderName, 'Adapters', $objectName.'Adapter']);
+    }
+
     public function fromParentObjectToNamespace(ParentObject $parentObject) {
         $dslName = $parentObject->getSubDSL()->getDSL()->getName();
         $rootFolder = 'Entities';

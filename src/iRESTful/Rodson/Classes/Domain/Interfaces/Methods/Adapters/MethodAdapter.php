@@ -10,5 +10,6 @@ interface MethodAdapter {
     public function fromObjectToMethods(Object $object);
     public function fromTypeToMethod(Type $type);
     public function fromTypeToAdapterMethods(Type $type);
+    public function fromObjectToAdapterMethods(Object $object);
     public function fromControllerToMethod(Controller $controller);
 }

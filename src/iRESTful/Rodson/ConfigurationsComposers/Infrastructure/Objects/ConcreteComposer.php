@@ -15,7 +15,7 @@ final class ConcreteComposer implements Composer {
     private $baseNamespace;
     private $baseFolder;
     private $installation;
-    public function __construct($name, $type, Url $homepage, $license, array $authors, $baseNamespace, $baseFolder, Installation $installation) {
+    public function __construct($name, $type, Url $homepage, $license, array $authors, $baseNamespace, $baseFolder, Installation $installation = null) {
 
         foreach($authors as $oneAuthor) {
             if (!($oneAuthor instanceof Author)) {
@@ -59,6 +59,10 @@ final class ConcreteComposer implements Composer {
 
     public function getBaseFolder() {
         return $this->baseNamespace;
+    }
+
+    public function hasInstallation() {
+        return !empty($this->installation);
     }
 
     public function getInstallation() {

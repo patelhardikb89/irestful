@@ -9,5 +9,6 @@ interface Composer {
     public function getAuthors();
     public function getBaseNamespace();
     public function getBaseFolder();
+    public function hasInstallation();
     public function getInstallation();
 }

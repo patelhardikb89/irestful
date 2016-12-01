@@ -1,5 +1,5 @@
 <?php
-final class Authenticated {
+final class CRUDAuthenticated {
 
     public static function validateBaseUrl(string $test) {
 

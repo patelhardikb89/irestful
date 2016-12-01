@@ -22,7 +22,16 @@ final class ConcreteInterfaceMethodParameterAdapter implements ParameterAdapter 
                 return $type->getType()->getName();
             }
 
-            return $type->getPrimitive()->getName();
+            if ($type->hasPrimitive()) {
+                return $type->getPrimitive()->getName();
+            }
+
+            if ($type->isData()) {
+                return 'data';
+            }
+
+            return $type->getObjectReferenceName();
+
         };
 
         $name = $getName($type);
@@ -32,6 +41,16 @@ final class ConcreteInterfaceMethodParameterAdapter implements ParameterAdapter 
                 'name' => $name,
                 'primitive' => $primitive
             ]);
+        }
+
+        if ($type->isData()) {
+            print_r($type);
+            die();
+        }
+
+        if ($type->hasObjectReferenceName()) {
+            print_r($type);
+            die();
         }
 
         $namespace = $this->namespaceAdapter->fromTypeToNamespace($type);

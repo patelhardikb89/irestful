@@ -9,4 +9,5 @@ interface InterfaceAdapter {
     public function fromObjectToInterface(Object $object);
     public function fromTypeToInterface(Type $type);
     public function fromTypeToAdapterInterface(Type $type);
+    public function fromObjectToAdapterInterface(Object $object);
 }

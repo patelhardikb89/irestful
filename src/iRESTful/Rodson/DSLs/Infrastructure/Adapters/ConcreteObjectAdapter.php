@@ -8,6 +8,7 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Adapters\ObjectAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Combos\Adapters\ComboAdapter;
+use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
     private $methodAdapter;
@@ -15,18 +16,21 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
     private $comboAdapter;
     private $databases;
     private $parents;
+    private $converters;
     public function __construct(
         MethodAdapter $methodAdapter,
         PropertyAdapter $propertyAdapter,
         ComboAdapter $comboAdapter,
         array $databases,
-        array $parents
+        array $parents,
+        array $converters
     ) {
         $this->methodAdapter = $methodAdapter;
         $this->propertyAdapter = $propertyAdapter;
         $this->comboAdapter = $comboAdapter;
         $this->databases = $databases;
         $this->parents = $parents;
+        $this->converters = $converters;
     }
 
     public function fromDataToValidObjects(array $data) {
@@ -46,6 +50,53 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
         if (!isset($data['properties'])) {
             throw new ObjectException('The properties keyname is mandatory in order to convert data to Property objects.');
         }
+
+        $getConverters = function($name) {
+
+            $get = function(Converter $converter) use(&$name) {
+                if ($converter->hasFromType()) {
+                    $fromType = $converter->fromType();
+                    if ($fromType->hasObjectReferenceName()) {
+                        $referenceName = $fromType->getObjectReferenceName();
+                        if ($referenceName == $name) {
+                            return $converter;
+                        }
+
+                        return null;
+                    }
+
+                    if ($fromType->hasType()) {
+                        return null;
+                    }
+                }
+
+                if (!$converter->hasToType()) {
+                    return null;
+                }
+
+                $toType = $converter->toType();
+                if ($toType->hasObjectReferenceName()) {
+                    $referenceName = $toType->getObjectReferenceName();
+                    if ($referenceName == $name) {
+                        return $converter;
+                    }
+                }
+
+                return null;
+            };
+
+            $output = [];
+            foreach($this->converters as $oneConverter) {
+                $referencedConverter = $get($oneConverter);
+                if (!empty($referencedConverter)) {
+                    $output[] = $referencedConverter;
+                }
+
+            }
+
+            return $output;
+
+        };
 
         try {
 
@@ -77,7 +128,8 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
                 ]);
             }
 
-            return new ConcreteObject($data['name'], $properties, $database, $methods, $combos);
+            $converters = $getConverters($data['name']);
+            return new ConcreteObject($data['name'], $properties, $database, $methods, $combos, $converters);
 
         } catch (PropertyException $exception) {
             throw new ObjectException('There was an exception while converting data to Property objects.', $exception);
