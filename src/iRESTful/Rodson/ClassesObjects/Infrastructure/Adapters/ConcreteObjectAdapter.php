@@ -50,7 +50,6 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
         $namespace = $this->namespaceAdapter->fromObjectToNamespace($object);
         $interface = $this->interfaceAdapter->fromObjectToInterface($object);
         $constructor = $this->constructorAdapter->fromObjectToConstructor($object);
-        $customMethods = $this->customMethodAdapter->fromObjectToCustomMethods($object);
 
         $converter = null;
         if ($object->hasConverters()) {
@@ -65,7 +64,6 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
             $namespace,
             $interface,
             $constructor,
-            $customMethods,
             $converter
         );
     }

@@ -12,10 +12,10 @@ final class ConcreteAnnotationParameterConverterSingleAdapter implements SingleC
     }
 
     public function fromTypeToDatabaseSingleConverter(Type $type) {
-        $methodName = $type->getDatabaseConverterMethodName();
+        $functionName = $type->getDatabaseConverterFunctionName();
         $namespace = $this->namespaceAdapter->fromTypeToAdapterNamespace($type);
         $interfaceName = $namespace->getAllAsString();
-        return new ConcreteAnnotationParameterConverterSingle($interfaceName, $methodName);
+        return new ConcreteAnnotationParameterConverterSingle($interfaceName, $functionName);
     }
 
     public function fromTypeToViewSingleConverter(Type $type) {
@@ -24,10 +24,10 @@ final class ConcreteAnnotationParameterConverterSingleAdapter implements SingleC
             //throws
         }
 
-        $methodName = $type->getViewConverterMethodName();
+        $functionName = $type->getViewConverterFunctionName();
         $namespace = $this->namespaceAdapter->fromTypeToAdapterNamespace($type);
         $interfaceName = $namespace->getAllAsString();
-        return new ConcreteAnnotationParameterConverterSingle($interfaceName, $methodName);
+        return new ConcreteAnnotationParameterConverterSingle($interfaceName, $functionName);
     }
 
 }

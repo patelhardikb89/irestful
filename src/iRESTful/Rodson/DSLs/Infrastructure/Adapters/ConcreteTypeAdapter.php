@@ -3,19 +3,16 @@ namespace iRESTful\Rodson\DSLs\Infrastructure\Adapters;
 use iRESTful\Rodson\DSLs\Domain\Projects\Types\Adapters\TypeAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Types\Databases\Adapters;
 use iRESTful\Rodson\DSLs\Domain\Projects\Types\Databases\Adapters\DatabaseTypeAdapter;
-use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Objects\ConcreteType;
 use iRESTful\Rodson\DSLs\Domain\Projects\Types\Exceptions\TypeException;
-use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Methods\Exceptions\MethodException;
+use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Functions\Exceptions\FunctionException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Types\Databases\Exceptions\DatabaseTypeException;
 
 final class ConcreteTypeAdapter implements TypeAdapter {
     private $databaseTypeAdapter;
-    private $methodAdapter;
     private $converters;
-    public function __construct(DatabaseTypeAdapter $databaseTypeAdapter, MethodAdapter $methodAdapter, array $converters) {
+    public function __construct(DatabaseTypeAdapter $databaseTypeAdapter, array $converters) {
         $this->databaseTypeAdapter = $databaseTypeAdapter;
-        $this->methodAdapter = $methodAdapter;
         $this->converters = $converters;
     }
 
@@ -72,7 +69,7 @@ final class ConcreteTypeAdapter implements TypeAdapter {
             return $converters[$keyname];
 
         };
-        
+
         if (!isset($data['name'])) {
             throw new TypeException('The name keyname is mandatory in order to convert data to a Type object.');
         }
@@ -92,16 +89,11 @@ final class ConcreteTypeAdapter implements TypeAdapter {
                 $viewAdapter = $getConverter($data['name'], $data['converters']['object_to_view']);
             }
 
-            $method = null;
-            if (isset($data['method'])) {
-                $method = $this->methodAdapter->fromStringToMethod($data['method']);
-            }
-
             $databaseAdapter = $getConverter($data['name'], $data['converters']['database_to_object']);
             $databaseType = $this->databaseTypeAdapter->fromDataToDatabaseType($data['database_type']);
-            return new ConcreteType($data['name'], $databaseType, $databaseAdapter, $viewAdapter, $method);
+            return new ConcreteType($data['name'], $databaseType, $databaseAdapter, $viewAdapter, $data['function']);
 
-        } catch (MethodException $exception) {
+        } catch (FunctionException $exception) {
             throw new TypeException('There was an exception while converting a string to a Method object.', $exception);
         } catch (DatabaseTypeException $exception) {
             throw new TypeException('There was an exception while converting data to a DatabaseType object.', $exception);

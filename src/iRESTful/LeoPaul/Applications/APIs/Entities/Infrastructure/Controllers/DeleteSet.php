@@ -1,33 +1,25 @@
 <?php
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers;
 use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Repositories\Factories\EntitySetRepositoryFactory;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Services\Factories\EntitySetServiceFactory;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controller;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\InvalidRequestException;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\ServerException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Exceptions\ControllerResponseException;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Domain\Services\Service;
 
 class DeleteSet implements Controller {
     private $responseAdapter;
-    private $entitySetRepositoryFactory;
-    private $entitySetServiceFactory;
-    private $adapterFactory;
+    private $entitySetRepository;
+    private $entitySetService;
+    private $adapter;
     private $deleteFilePath;
-    public function __construct(
-        ControllerResponseAdapter $responseAdapter,
-        EntitySetRepositoryFactory $entitySetRepositoryFactory,
-        EntitySetServiceFactory $entitySetServiceFactory,
-        EntityAdapterFactory $adapterFactory,
-        $deleteFilePath = 'php://input'
-    ) {
+    public function __construct(ControllerResponseAdapter $responseAdapter, Service $service, $deleteFilePath = 'php://input') {
         $this->responseAdapter = $responseAdapter;
-        $this->entitySetRepositoryFactory = $entitySetRepositoryFactory;
-        $this->entitySetServiceFactory = $entitySetServiceFactory;
-        $this->adapterFactory = $adapterFactory;
+        $this->entitySetRepository = $service->getRepository()->getEntitySet();
+        $this->entitySetService = $service->getService()->getEntitySet();
+        $this->adapter = $service->getAdapter()->getEntity();
         $this->deleteFilePath = $deleteFilePath;
     }
 
@@ -74,21 +66,17 @@ class DeleteSet implements Controller {
 
             $entities = [];
             $criterias = $create($input);
-            $repositorySet = $this->entitySetRepositoryFactory->create();
             foreach($criterias as $oneCriteria) {
-                $batch = $repositorySet->retrieve($oneCriteria);
+                $batch = $this->entitySetRepository->retrieve($oneCriteria);
                 $entities = array_merge($entities, $batch);
             }
 
-            $serviceSet = $this->entitySetServiceFactory->create();
-            $serviceSet->delete($entities);
-
-            $adapter = $this->adapterFactory->create();
-            $output = $adapter->fromEntitiesToData($entities, true);
+            $this->entitySetService->delete($entities);
+            $output = $this->adapter->fromEntitiesToData($entities, true);
             return $this->responseAdapter->fromDataToControllerResponse($output);
 
         } catch (EntityException $exception) {
-            throw new ServerException('There was an exception while retrieving/deleting Entity objects and/or converting entity objects to human readable data and/or creating a repositorySet/serviceSet/adapter using a factory.', $exception);
+            throw new ServerException('There was an exception while retrieving/deleting Entity objects and/or converting entity objects to human readable data.', $exception);
         } catch (ControllerResponseException $exception) {
             throw new ServerException('There was an exception while converting data to a ControllerResponse object.', $exception);
         }

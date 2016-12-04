@@ -7,11 +7,9 @@ use iRESTful\Rodson\ClassesConfigurations\Domain\Configuration;
 final class ConcreteTestController implements Controller {
     private $namespace;
     private $configuration;
-    private $customMethodNodes;
-    public function __construct(ClassNamespace $namespace, Configuration $configuration, array $customMethodNodes) {
+    public function __construct(ClassNamespace $namespace, Configuration $configuration) {
         $this->namespace = $namespace;
         $this->configuration = $configuration;
-        $this->customMethodNodes = $customMethodNodes;
     }
 
     public function getNamespace() {
@@ -20,10 +18,6 @@ final class ConcreteTestController implements Controller {
 
     public function getConfiguration() {
         return $this->configuration;
-    }
-
-    public function getCustomMethodNodes() {
-        return $this->customMethodNodes;
     }
 
 }

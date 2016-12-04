@@ -1,7 +1,5 @@
 <?php
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Partials\Repositories\Factories\EntityPartialSetRepositoryFactory;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Partials\Adapters\Factories\EntityPartialSetAdapterFactory;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Partials\Exceptions\EntityPartialSetException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\InvalidRequestException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\NotFoundException;
@@ -10,19 +8,16 @@ use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controlle
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter;
 use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Exceptions\ControllerResponseException;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Domain\Services\Service;
 
 class RetrieveEntityPartialSet implements Controller {
     private $responseAdapter;
-    private $repositoryFactory;
-    private $adapterFactory;
-    public function __construct(
-        ControllerResponseAdapter $responseAdapter,
-        EntityPartialSetRepositoryFactory $repositoryFactory,
-        EntityPartialSetAdapterFactory $adapterFactory
-    ) {
+    private $repository;
+    private $adapter;
+    public function __construct(ControllerResponseAdapter $responseAdapter, Service $service) {
         $this->responseAdapter = $responseAdapter;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->adapterFactory = $adapterFactory;
+        $this->repository = $service->getRepository()->getEntityPartialSet();
+        $this->adapter = $service->getAdapter()->getEntityPartialSet();
     }
 
     public function execute(HttpRequest $request) {
@@ -56,11 +51,8 @@ class RetrieveEntityPartialSet implements Controller {
                 $params['ordering'] = $input['ordering'];
             }
 
-            $repository = $this->repositoryFactory->create();
-            $entityPartialSet = $repository->retrieve($params);
-
-            $adapter = $this->adapterFactory->create();
-            $output = $adapter->fromEntityPartialSetToData($entityPartialSet);
+            $entityPartialSet = $this->repository->retrieve($params);
+            $output = $this->adapter->fromEntityPartialSetToData($entityPartialSet);
             return $this->responseAdapter->fromDataToControllerResponse($output);
 
         } catch (EntityPartialSetException $exception) {

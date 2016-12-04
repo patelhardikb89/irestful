@@ -6,6 +6,4 @@ interface Entity {
     public function getNamespace();
     public function getInterface();
     public function getConstructor();
-    public function hasCustomMethods();
-    public function getCustomMethods();
 }

@@ -16,12 +16,20 @@ final class ConcreteCodeAdapter implements CodeAdapter {
 
     public function fromDataToCode(array $data) {
 
+        $getFunctions = function(string $fileName) {
+
+            $before = get_defined_functions();
+            include_once($fileName);
+            $after = get_defined_functions();
+
+            $before = (isset($before['user']) ? $before['user'] : []);
+            $after = (isset($after['user']) ? $after['user'] : []);
+            return array_diff($after, $before);
+
+        };
+
         if (!isset($data['language'])) {
             throw new CodeException('The language keyname is mandatory in order to convert data to a Code object.');
-        }
-
-        if (!isset($data['class'])) {
-            throw new CodeException('The class keyname is mandatory in order to convert data to a Code object.');
         }
 
         if (!isset($data['file'])) {
@@ -35,9 +43,13 @@ final class ConcreteCodeAdapter implements CodeAdapter {
                 throw new CodeException('The given file ('.$data['file'].') does not exists.  The base directory was: '.$this->baseDirectory.' - The absolute file path was supposed to be: '.$file);
             }
 
-            include_once($file);
+            if (!file_exists($file)) {
+                throw new CodeException('The given file ('.$data['file'].') is not a valid PHP file.');
+            }
+
+            $functions = $getFunctions($file);
             $language = $this->languageAdapter->fromStringToLanguage($data['language']);
-            return new ConcreteCode($language, $data['class']);
+            return new ConcreteCode($language, $functions);
 
         } catch (LanguageException $exception) {
             throw new CodeException('There was an exception while converting a string to a Language object.', $exception);

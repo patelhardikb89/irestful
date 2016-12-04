@@ -7,7 +7,6 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Types\Type;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Object;
 use iRESTful\Rodson\Classes\Domain\Interfaces\Methods\Parameters\Adapters\ParameterAdapter;
 use iRESTful\Rodson\Classes\Infrastructure\Objects\ConcreteCustomMethod;
-use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Methods\Method as CodeMethod;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
 use iRESTful\Rodson\Classes\Infrastructure\Objects\ConcreteNamespace;
 use iRESTful\Rodson\Instructions\Domain\Instruction;
@@ -73,17 +72,6 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
         return new ConcreteCustomMethod($name, $sourceCode, [$parameter]);
     }
 
-    public function fromObjectToCustomMethods(Object $object) {
-
-        if (!$object->hasMethods()) {
-            return [];
-        }
-
-        $methods = $object->getMethods();
-        return $this->fromMethodsToCustomMethods($methods);
-
-    }
-
     public function fromMethodsToCustomMethods(array $methods) {
         $output = [];
         foreach($methods as $oneMethod) {
@@ -96,17 +84,17 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
     public function fromMethodToCustomMethod(Method $method) {
         $name = $method->getName();
         $codeMethod = $method->getMethod();
-        return $this->createClassMethodCustom($name, $codeMethod);
+        return $this->createCustomFunction($name, $codeMethod);
     }
 
     public function fromTypeToCustomMethod(Type $type) {
 
-        if (!$type->hasMethod()) {
+        if (!$type->hasFunction()) {
             return null;
         }
 
-        $method = $type->getMethod();
-        return $this->createClassMethodCustom('validate', $method);
+        $function = $type->getFunction();
+        return $this->createCustomFunction('validate', $function);
     }
 
     public function fromCombosToCustomMethod(array $combos) {
@@ -231,7 +219,7 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
 
     }
 
-    private function createClassMethodCustom($name, CodeMethod $codeMethod) {
+    private function createCustomFunction($name, $functionName) {
 
         $removeBraces = function(array $code) {
 
@@ -290,11 +278,11 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
 
         };
 
-        $getSourceCodeLines = function(\ReflectionMethod $reflectionMethod) use(&$removeBraces) {
+        $getSourceCodeLines = function(\ReflectionFunction $reflectionFunction) use(&$removeBraces) {
 
-            $fileName = $reflectionMethod->getFileName();
-            $startLine = $reflectionMethod->getStartLine();
-            $endLine = $reflectionMethod->getEndLine();
+            $fileName = $reflectionFunction->getFileName();
+            $startLine = $reflectionFunction->getStartLine();
+            $endLine = $reflectionFunction->getEndLine();
             $numLines = $endLine - $startLine;
 
             $contents = file_get_contents($fileName);
@@ -304,9 +292,9 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
         };
 
         $parameterAdapter = $this->parameterAdapter;
-        $getParameters = function(\ReflectionMethod $reflectionMethod) use(&$parameterAdapter) {
+        $getParameters = function(\ReflectionFunction $reflectionFunction) use(&$parameterAdapter) {
             $parameters = [];
-            $reflectionParameters = $reflectionMethod->getParameters();
+            $reflectionParameters = $reflectionFunction->getParameters();
             foreach($reflectionParameters as $oneReflectionParameter) {
 
                 $isOptional = false;
@@ -336,19 +324,10 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
             return $parameters;
         };
 
-        $code = $codeMethod->getCode();
-        $methodName = $codeMethod->getMethodName();
-        $className = $code->getClassName();
-        $reflectionMethod = new \ReflectionMethod($className, $methodName);
-
-        $language = $code->getLanguage()->get();
-        if ($language != 'PHP') {
-            throw new CustomMethodException('The input language ('.$language.') is not yet supported.');
-        }
-
-        $sourceCodeLines = $getSourceCodeLines($reflectionMethod);
+        $reflectionFunction = new \ReflectionFunction($functionName);
+        $sourceCodeLines = $getSourceCodeLines($reflectionFunction);
         $sourceCode = $this->sourceCodeAdapter->fromSourceCodeLinesToSourceCode($sourceCodeLines);
-        $parameters = $getParameters($reflectionMethod);
+        $parameters = $getParameters($reflectionFunction);
         return new ConcreteCustomMethod($name, $sourceCode, $parameters);
     }
 

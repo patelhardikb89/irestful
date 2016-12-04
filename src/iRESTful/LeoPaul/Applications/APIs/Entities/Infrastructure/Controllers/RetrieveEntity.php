@@ -1,7 +1,5 @@
 <?php
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Repositories\Factories\EntityRepositoryFactory;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\InvalidRequestException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\NotFoundException;
@@ -10,31 +8,28 @@ use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controlle
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter;
 use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Exceptions\ControllerResponseException;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Domain\Services\Service;
 
 class RetrieveEntity implements Controller {
     private $responseAdapter;
-    private $repositoryFactory;
-    private $adapterFactory;
-    public function __construct(
-        ControllerResponseAdapter $responseAdapter,
-        EntityRepositoryFactory $repositoryFactory,
-        EntityAdapterFactory $adapterFactory
-    ) {
+    private $repository;
+    private $adapter;
+    public function __construct(ControllerResponseAdapter $responseAdapter, Service $service) {
         $this->responseAdapter = $responseAdapter;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->adapterFactory = $adapterFactory;
+        $this->repository = $service->getRepository()->getEntity();
+        $this->adapter = $service->getAdapter()->getEntity();
     }
 
     public function execute(HttpRequest $request) {
-        $repository = $this->repositoryFactory->create();
-        $retrieve = function(array $input) use(&$repository) {
+
+        $retrieve = function(array $input) {
 
             if (!isset($input['container'])) {
                 throw new InvalidRequestException('The container param is mandatory.');
             }
 
             if (isset($input['uuid'])) {
-                return $repository->retrieve([
+                return $this->repository->retrieve([
                     'uuid' => $input['uuid'],
                     'container' => $input['container']
                 ]);
@@ -59,10 +54,10 @@ class RetrieveEntity implements Controller {
                         ];
                     }
 
-                    return $repository->retrieve($params);
+                    return $this->repository->retrieve($params);
                 }
 
-                return $repository->retrieve([
+                return $this->repository->retrieve([
                     'container' => $input['container'],
                     'keyname' => [
                         'name' => $input['name'],
@@ -88,8 +83,7 @@ class RetrieveEntity implements Controller {
                 throw new NotFoundException('The given input did not point to a valid Entity object.');
             }
 
-            $adapter = $this->adapterFactory->create();
-            $output = $adapter->fromEntityToData($entity, true);
+            $output = $this->adapter->fromEntityToData($entity, true);
             return $this->responseAdapter->fromDataToControllerResponse($output);
 
         } catch (EntityException $exception) {

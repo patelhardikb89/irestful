@@ -6,26 +6,22 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Exceptions\ObjectException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Properties\Exceptions\PropertyException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Adapters\ObjectAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Object;
-use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Adapters\MethodAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Combos\Adapters\ComboAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
 
 final class ConcreteObjectAdapter implements ObjectAdapter {
-    private $methodAdapter;
     private $propertyAdapter;
     private $comboAdapter;
     private $databases;
     private $parents;
     private $converters;
     public function __construct(
-        MethodAdapter $methodAdapter,
         PropertyAdapter $propertyAdapter,
         ComboAdapter $comboAdapter,
         array $databases,
         array $parents,
         array $converters
     ) {
-        $this->methodAdapter = $methodAdapter;
         $this->propertyAdapter = $propertyAdapter;
         $this->comboAdapter = $comboAdapter;
         $this->databases = $databases;
@@ -110,11 +106,6 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
                 $database = $this->databases[$data['database']];
             }
 
-            $methods = null;
-            if (isset($data['methods'])) {
-                $methods = $this->methodAdapter->fromDataToMethods($data['methods']);
-            }
-
             $properties = $this->propertyAdapter->fromDataToProperties([
                 'properties' => $data['properties'],
                 'parents' => $this->parents
@@ -129,7 +120,7 @@ final class ConcreteObjectAdapter implements ObjectAdapter {
             }
 
             $converters = $getConverters($data['name']);
-            return new ConcreteObject($data['name'], $properties, $database, $methods, $combos, $converters);
+            return new ConcreteObject($data['name'], $properties, $database, $combos, $converters);
 
         } catch (PropertyException $exception) {
             throw new ObjectException('There was an exception while converting data to Property objects.', $exception);

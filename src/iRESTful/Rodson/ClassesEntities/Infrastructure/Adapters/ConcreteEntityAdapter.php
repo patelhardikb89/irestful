@@ -42,14 +42,12 @@ final class ConcreteEntityAdapter implements EntityAdapter {
         $namespace = $this->namespaceAdapter->fromObjectToNamespace($object);
         $interface = $this->interfaceAdapter->fromObjectToInterface($object);
         $constructor = $this->constructorAdapter->fromObjectToConstructor($object);
-        $customMethods = $this->customMethodAdapter->fromObjectToCustomMethods($object);
 
         return new ConcreteEntity(
             $entity,
             $namespace,
             $interface,
-            $constructor,
-            $customMethods
+            $constructor
         );
     }
 

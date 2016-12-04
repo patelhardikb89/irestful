@@ -1,19 +1,19 @@
 <?php
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Configurations;
 use iRESTful\LeoPaul\Applications\APIs\Entities\Domain\Configurations\EntityApplicationConfiguration;
-use iRESTful\LeoPaul\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObjectAdapterFactory;
-use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Infrastructure\Adapters\PDOEntityRepositoryServiceAdapter;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDODeleteSetFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDODeleteEntityFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDOInsertSetFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDOInsertEntityFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDORetrieveEntityFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDORetrieveEntityPartialSetFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDORetrieveRelationFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDORetrieveSetFactory;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDOUpdateEntityFactory;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Configurations\EntityConfiguration;
-use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Factories\PDO\PDOUpdateSetEntityFactory;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOServiceFactory;
+use iRESTful\LeoPaul\Applications\Libraries\Routers\Infrastructure\Adapters\ConcreteJsonControllerResponseAdapter;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\DeleteEntity;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\DeleteSet;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\InsertEntity;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\InsertSet;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\RetrieveEntity;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\RetrieveEntityPartialSet;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\RetrieveRelation;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\RetrieveSet;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\UpdateEntity;
+use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\UpdateSet;
 
 final class ConcreteEntityApplicationConfiguration implements EntityApplicationConfiguration {
     private $dbName;
@@ -28,8 +28,8 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
     }
 
     private function getControllerRules() {
-
-        $entityRepositoryServiceAdapter = new PDOEntityRepositoryServiceAdapter(
+        
+        $serviceFactory = new PDOServiceFactory(
             $this->entityObjects->getTransformerObjects(),
             $this->entityObjects->getContainerClassMapper(),
             $this->entityObjects->getInterfaceClassMapper(),
@@ -42,27 +42,12 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
             getenv('DB_PASSWORD')
         );
 
-        $objectAdapterFactory = new ReflectionObjectAdapterFactory(
-            $this->entityObjects->getTransformerObjects(),
-            $this->entityObjects->getContainerClassMapper(),
-            $this->entityObjects->getInterfaceClassMapper(),
-            $this->entityObjects->getDelimiter()
-        );
-
-        $deleteFactory = new PDODeleteEntityFactory($entityRepositoryServiceAdapter);
-        $deleteSetFactory = new PDODeleteSetFactory($entityRepositoryServiceAdapter);
-        $insertSetFactory = new PDOInsertSetFactory($entityRepositoryServiceAdapter);
-        $insertFactory = new PDOInsertEntityFactory($entityRepositoryServiceAdapter);
-        $retrieveFactory = new PDORetrieveEntityFactory($entityRepositoryServiceAdapter);
-        $retrievePartialSetFactory = new PDORetrieveEntityPartialSetFactory($entityRepositoryServiceAdapter);
-        $retrieveRelationFactory = new PDORetrieveRelationFactory($entityRepositoryServiceAdapter);
-        $retrieveSetFactory = new PDORetrieveSetFactory($entityRepositoryServiceAdapter);
-        $updateFactory = new PDOUpdateEntityFactory($entityRepositoryServiceAdapter, $objectAdapterFactory);
-        $updateSetFactory = new PDOUpdateSetEntityFactory($entityRepositoryServiceAdapter, $objectAdapterFactory);
+        $service = $serviceFactory->create();
+        $responseAdapter = new ConcreteJsonControllerResponseAdapter();
 
         return [
             [
-                'controller' => $retrievePartialSetFactory->create(),
+                'controller' => new RetrieveEntityPartialSet($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$container$/partials',
                     'method' => 'get',
@@ -74,7 +59,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $retrieveSetFactory->create(),
+                'controller' => new RetrieveSet($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$container$',
                     'method' => 'get',
@@ -84,7 +69,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $retrieveFactory->create(),
+                'controller' => new RetrieveEntity($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$container$/$name$/$value$',
                     'method' => 'get',
@@ -96,7 +81,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $retrieveFactory->create(),
+                'controller' => new RetrieveEntity($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$',
                     'method' => 'get',
@@ -107,7 +92,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $retrieveRelationFactory->create(),
+                'controller' => new RetrieveRelation($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$master_container$/$master_uuid$/$slave_property$/$slave_container$',
                     'method' => 'get',
@@ -120,7 +105,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $updateFactory->create(),
+                'controller' => new UpdateEntity($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|original_uuid$',
                     'method' => 'put',
@@ -131,14 +116,14 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $updateSetFactory->create(),
+                'controller' => new UpdateSet($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/',
                     'method' => 'put'
                 ]
             ],
             [
-                'controller' => $insertFactory->create(),
+                'controller' => new InsertEntity($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$container$',
                     'method' => 'post',
@@ -148,14 +133,14 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $insertSetFactory->create(),
+                'controller' => new InsertSet($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/',
                     'method' => 'post'
                 ]
             ],
             [
-                'controller' => $deleteFactory->create(),
+                'controller' => new DeleteEntity($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/$container$/$[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|uuid$',
                     'method' => 'delete',
@@ -166,7 +151,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
                 ]
             ],
             [
-                'controller' => $deleteSetFactory->create(),
+                'controller' => new DeleteSet($responseAdapter, $service),
                 'criteria' => [
                     'uri' => '/',
                     'method' => 'delete'

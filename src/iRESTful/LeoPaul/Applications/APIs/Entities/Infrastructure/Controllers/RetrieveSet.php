@@ -1,7 +1,5 @@
 <?php
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Repositories\Factories\EntitySetRepositoryFactory;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Exceptions\EntitySetException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\InvalidRequestException;
@@ -10,25 +8,21 @@ use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controlle
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter;
 use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Exceptions\ControllerResponseException;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Domain\Services\Service;
 
 class RetrieveSet implements Controller {
     private $responseAdapter;
-    private $repositoryFactory;
-    private $adapterFactory;
-    public function __construct(
-        ControllerResponseAdapter $responseAdapter,
-        EntitySetRepositoryFactory $repositoryFactory,
-        EntityAdapterFactory $adapterFactory
-    ) {
+    private $repository;
+    private $adapter;
+    public function __construct(ControllerResponseAdapter $responseAdapter, Service $service) {
         $this->responseAdapter = $responseAdapter;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->adapterFactory = $adapterFactory;
+        $this->repository = $service->getRepository()->getEntitySet();
+        $this->adapter = $service->getAdapter()->getEntity();
     }
 
     public function execute(HttpRequest $request) {
 
-        $repository = $this->repositoryFactory->create();
-        $retrieve = function(array $input) use (&$repository) {
+        $retrieve = function(array $input) {
 
             if (!isset($input['container'])) {
                 throw new InvalidRequestException('The container index is mandatory.');
@@ -45,7 +39,7 @@ class RetrieveSet implements Controller {
                     $params['ordering'] = $input['ordering'];
                 }
 
-                return $repository->retrieve($params);
+                return $this->repository->retrieve($params);
             }
 
             if (isset($input['name']) && $input['value']) {
@@ -62,7 +56,7 @@ class RetrieveSet implements Controller {
                     $params['ordering'] = $input['ordering'];
                 }
 
-                return $repository->retrieve($params);
+                return $this->repository->retrieve($params);
             }
 
             throw new InvalidRequestException('Some input parameters were missing.');
@@ -77,8 +71,7 @@ class RetrieveSet implements Controller {
             }
 
             $entities = $retrieve($input);
-            $adapter = $this->adapterFactory->create();
-            $output = $adapter->fromEntitiesToData($entities, true);
+            $output = $this->adapter->fromEntitiesToData($entities, true);
             return $this->responseAdapter->fromDataToControllerResponse($output);
 
         } catch (EntityException $exception) {

@@ -34,17 +34,8 @@ final class ConcreteInterfaceMethodAdapter implements MethodAdapter {
     }
 
     public function fromObjectToMethods(Object $object) {
-
         $properties = $object->getProperties();
-        $getterMethods = $this->fromPropertiesToMethods($properties);
-
-        $specificMethods = [];
-        if ($object->hasMethods()) {
-            $customMethods = $this->customMethodAdapter->fromObjectToCustomMethods($object);
-            $specificMethods = $this->fromCustomMethodsToMethods($customMethods);
-        }
-
-        return array_merge($getterMethods, $specificMethods);
+        return $this->fromPropertiesToMethods($properties);
     }
 
     public function fromTypeToMethod(Type $type) {
@@ -61,15 +52,15 @@ final class ConcreteInterfaceMethodAdapter implements MethodAdapter {
         };
 
         $databaseConverter = $type->getDatabaseConverter();
-        $databaseConverterMethodName = $type->getDatabaseConverterMethodName();
+        $databaseConverterFunctionName = $type->getDatabaseConverterFunctionName();
         $methods = [
-            $createMethod($databaseConverterMethodName, $type, $databaseConverter)
+            $createMethod($databaseConverterFunctionName, $type, $databaseConverter)
         ];
 
         if ($type->hasViewConverter()) {
             $viewConverter = $type->getViewConverter();
-            $viewConverterMethodName = $type->getViewConverterMethodName();
-            $methods[] = $createMethod($viewConverterMethodName, $type, $viewConverter);
+            $viewConverterFunctionName = $type->getViewConverterFunctionName();
+            $methods[] = $createMethod($viewConverterFunctionName, $type, $viewConverter);
         }
 
         return $methods;

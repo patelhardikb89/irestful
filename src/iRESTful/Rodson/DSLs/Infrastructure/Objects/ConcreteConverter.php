@@ -4,14 +4,12 @@ namespace iRESTful\Rodson\DSLs\Infrastructure\Objects;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Types\Type;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Exceptions\ConverterException;
-use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Method;
 
 final class ConcreteConverter implements Converter {
     private $keyname;
     private $from;
     private $to;
-    private $method;
-    public function __construct(string $keyname, Type $from = null, Type $to = null, Method $method = null) {
+    public function __construct(string $keyname, Type $from = null, Type $to = null) {
 
         if (empty($from) && empty($to)) {
             throw new ConverterException('The from and to Type cannot be both empty.');
@@ -20,7 +18,6 @@ final class ConcreteConverter implements Converter {
         $this->keyname = $keyname;
         $this->from = $from;
         $this->to = $to;
-        $this->method = $method;
     }
 
     public function getKeyname() {
@@ -41,13 +38,5 @@ final class ConcreteConverter implements Converter {
 
     public function toType() {
         return $this->to;
-    }
-
-    public function hasMethod() {
-        return !empty($this->method);
-    }
-
-    public function getMethod() {
-        return $this->method;
     }
 }

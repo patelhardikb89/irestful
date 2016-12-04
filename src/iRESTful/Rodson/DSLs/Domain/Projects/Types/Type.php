@@ -5,10 +5,10 @@ interface Type {
     public function getName();
     public function getDatabaseType();
     public function getDatabaseConverter();
-    public function getDatabaseConverterMethodName();
+    public function getDatabaseConverterFunctionName();
     public function hasViewConverter();
     public function getViewConverter();
-    public function getViewConverterMethodName();
-    public function hasMethod();
-    public function getMethod();
+    public function getViewConverterFunctionName();
+    public function hasFunction();
+    public function getFunction();
 }

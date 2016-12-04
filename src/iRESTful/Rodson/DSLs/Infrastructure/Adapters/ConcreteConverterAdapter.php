@@ -4,15 +4,12 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Adapters\ConverterAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Objects\ConcreteConverter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Exceptions\ConverterException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Types\Adapters\TypeAdapter;
-use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Methods\Adapters\MethodAdapter;
 
 final class ConcreteConverterAdapter implements ConverterAdapter {
-    private $methodAdapter;
     private $typeAdapter;
     private $types;
     private $primitives;
-    public function __construct(MethodAdapter $methodAdapter, TypeAdapter $typeAdapter, array $types, array $primitives) {
-        $this->methodAdapter = $methodAdapter;
+    public function __construct(TypeAdapter $typeAdapter, array $types, array $primitives) {
         $this->typeAdapter = $typeAdapter;
         $this->types = $types;
         $this->primitives = $primitives;
@@ -61,16 +58,8 @@ final class ConcreteConverterAdapter implements ConverterAdapter {
             $to = $getAdapterType($data['to']);
         }
 
-        $method = null;
-        if (isset($data['method'])) {
-            $method = $this->methodAdapter->fromDataToMethod([
-                'name' => $data['method'],
-                'method' => $data['method']
-            ]);
-        }
-
         $keyname = 'from_'.$data['from'].'_to_'.$data['to'];
-        return new ConcreteConverter($keyname, $from, $to, $method);
+        return new ConcreteConverter($keyname, $from, $to);
 
     }
 

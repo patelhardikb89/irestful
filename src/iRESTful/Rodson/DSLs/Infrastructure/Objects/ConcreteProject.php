@@ -39,8 +39,9 @@ final class ConcreteProject implements Project {
         $entities = $verify($entities, 'iRESTful\Rodson\DSLs\Domain\Projects\Objects\Entities\Entity', 'The entities must only contain Entity objects.', 'The entities array must be an array, where the keynames are strings.');
         $controllers = $verify($controllers, 'iRESTful\Rodson\DSLs\Domain\Projects\Controllers\Controller', 'The controllers must only contain Controller objects.', 'The controllers array must be an array, where the keynames are strings.');
 
-        if (empty($controllers) && empty($objects)) {
-            throw new ProjectException('The controllers and objects cannot be both empty.');
+        $amount = (empty($entities) ? 0 : 1) + (empty($controllers) ? 0 : 1);
+        if ($amount != 1) {
+            throw new ProjectException('There must be either entities or controllers in the project.  '.$amount.' given.');
         }
 
         $this->parents = $parents;

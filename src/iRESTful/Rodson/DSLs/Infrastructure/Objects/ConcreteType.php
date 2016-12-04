@@ -5,7 +5,6 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Types\Type;
 use iRESTful\Rodson\DSLs\Domain\Projects\Types\Exceptions\TypeException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Types\Databases\DatabaseType;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
-use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Methods\Method;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Types\Type as ConverterType;
 
 final class ConcreteType implements Type {
@@ -13,18 +12,26 @@ final class ConcreteType implements Type {
     private $databaseType;
     private $databaseConverter;
     private $viewConverter;
-    private $method;
-    public function __construct(string $name, DatabaseType $databaseType, Converter $databaseConverter, Converter $viewConverter = null, Method $method = null) {
+    private $function;
+    public function __construct(string $name, DatabaseType $databaseType, Converter $databaseConverter, Converter $viewConverter = null, string $function = null) {
+
+        if (empty($function)) {
+            $function = null;
+        }
 
         if (empty($name)) {
             throw new TypeException('The name must be a non-empty string.');
+        }
+
+        if (!empty($function) && !function_exists($function)) {
+            throw new TypeException('The given function name ('.$function.') is invalid.');
         }
 
         $this->name = $name;
         $this->databaseType = $databaseType;
         $this->databaseConverter = $databaseConverter;
         $this->viewConverter = $viewConverter;
-        $this->method = $method;
+        $this->function = $function;
     }
 
     public function getName(): string {
@@ -39,8 +46,8 @@ final class ConcreteType implements Type {
         return $this->databaseConverter;
     }
 
-    public function getDatabaseConverterMethodName(): string {
-        return $this->getMethodName($this->databaseConverter);
+    public function getDatabaseConverterFunctionName(): string {
+        return $this->getFunctionName($this->databaseConverter);
     }
 
     public function hasViewConverter(): bool {
@@ -51,25 +58,25 @@ final class ConcreteType implements Type {
         return $this->viewConverter;
     }
 
-    public function getViewConverterMethodName() {
+    public function getViewConverterFunctionName() {
 
         if (!$this->hasViewConverter()) {
             return null;
         }
 
-        return $this->getMethodName($this->viewConverter);
+        return $this->getFunctionName($this->viewConverter);
 
     }
 
-    public function hasMethod(): bool {
-        return !empty($this->method);
+    public function hasFunction(): bool {
+        return !empty($this->function);
     }
 
-    public function getMethod() {
-        return $this->method;
+    public function getFunction() {
+        return $this->function;
     }
 
-    private function fromNameToMethod($name) {
+    private function fromNameToFunction($name) {
 
         $matches = [];
         preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
@@ -82,7 +89,7 @@ final class ConcreteType implements Type {
         return $name;
     }
 
-    private function getMethodName(Converter $converter) {
+    private function getFunctionName(Converter $converter) {
 
         $getConverterTypeName = function(ConverterType $type) {
             if ($type->hasType()) {
@@ -112,7 +119,7 @@ final class ConcreteType implements Type {
             $toName = $getConverterTypeName($toType);
         }
 
-        return $this->fromNameToMethod('from'.ucfirst($fromName).'To'.ucfirst($toName));
+        return $this->fromNameToFunction('from'.ucfirst($fromName).'To'.ucfirst($toName));
     }
 
 }

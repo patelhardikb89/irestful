@@ -1,7 +1,5 @@
 <?php
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Services\Factories\EntityServiceFactory;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\InvalidRequestException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\ServerException;
@@ -9,19 +7,16 @@ use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controlle
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter;
 use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Exceptions\ControllerResponseException;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Domain\Services\Service;
 
 class InsertEntity implements Controller {
     private $responseAdapter;
-    private $serviceFactory;
-    private $adapterFactory;
-    public function __construct(
-        ControllerResponseAdapter $responseAdapter,
-        EntityServiceFactory $serviceFactory,
-        EntityAdapterFactory $adapterFactory
-    ) {
+    private $service;
+    private $adapter;
+    public function __construct(ControllerResponseAdapter $responseAdapter, Service $service) {
         $this->responseAdapter = $responseAdapter;
-        $this->serviceFactory = $serviceFactory;
-        $this->adapterFactory = $adapterFactory;
+        $this->service = $service->getService()->getEntity();
+        $this->adapter = $service->getAdapter()->getEntity();
     }
 
     public function execute(HttpRequest $request) {
@@ -37,8 +32,6 @@ class InsertEntity implements Controller {
 
         try {
 
-            $adapter = $this->adapterFactory->create();
-
             $container = $input['container'];
             unset($input['container']);
             $data = [
@@ -46,12 +39,10 @@ class InsertEntity implements Controller {
                 'data' => $input
             ];
 
-            $entity = $adapter->fromDataToEntity($data);
+            $entity = $this->adapter->fromDataToEntity($data);
+            $this->service->insert($entity);
 
-            $service = $this->serviceFactory->create();
-            $service->insert($entity);
-
-            $output = $adapter->fromEntityToData($entity, true);
+            $output = $this->adapter->fromEntityToData($entity, true);
             return $this->responseAdapter->fromDataToControllerResponse($output);
 
         } catch (EntityException $exception) {

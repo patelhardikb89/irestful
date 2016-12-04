@@ -2,36 +2,26 @@
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controller;
 use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Services\Factories\EntitySetServiceFactory;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\InvalidRequestException;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\ServerException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Exceptions\ControllerResponseException;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Sets\Repositories\Factories\EntitySetRepositoryFactory;
-use iRESTful\LeoPaul\Objects\Libraries\MetaDatas\Domain\Objects\Adapters\Factories\ObjectAdapterFactory;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Domain\Services\Service;
 
 final class UpdateSet implements Controller {
     private $responseAdapter;
-    private $repositorySetFactory;
-    private $serviceSetFactory;
-    private $adapterFactory;
-    private $objectAdapterFactory;
+    private $repository;
+    private $service;
+    private $adapter;
+    private $objectAdapter;
     private $putFilePath;
-    public function __construct(
-        ControllerResponseAdapter $responseAdapter,
-        EntitySetRepositoryFactory $repositorySetFactory,
-        EntitySetServiceFactory $serviceSetFactory,
-        EntityAdapterFactory $adapterFactory,
-        ObjectAdapterFactory $objectAdapterFactory,
-        $putFilePath = 'php://input'
-    ) {
+    public function __construct(ControllerResponseAdapter $responseAdapter, Service $service, $putFilePath = 'php://input') {
         $this->responseAdapter = $responseAdapter;
-        $this->repositorySetFactory = $repositorySetFactory;
-        $this->serviceSetFactory = $serviceSetFactory;
-        $this->adapterFactory = $adapterFactory;
-        $this->objectAdapterFactory = $objectAdapterFactory;
+        $this->repository = $service->getRepository()->getEntitySet();;
+        $this->service = $service->getService()->getEntitySet();;
+        $this->adapter = $service->getAdapter()->getEntity();
+        $this->objectAdapter = $service->getAdapter()->getObject();
         $this->putFilePath = $putFilePath;
     }
 
@@ -87,23 +77,17 @@ final class UpdateSet implements Controller {
             $updatedEntities = [];
             $criterias = $create($input);
 
-            $objectAdapter = $this->objectAdapterFactory->create();
-            $repositorySet = $this->repositorySetFactory->create();
-
             foreach($criterias as $oneCriteria) {
 
-                $updatedBatch = $objectAdapter->fromDataToObjects($oneCriteria['updated_entities']);
+                $updatedBatch = $this->objectAdapter->fromDataToObjects($oneCriteria['updated_entities']);
                 $updatedEntities = array_merge($updatedEntities, $updatedBatch);
 
-                $originalBatch = $repositorySet->retrieve($oneCriteria);
+                $originalBatch = $this->repository->retrieve($oneCriteria);
                 $originalEntities = array_merge($originalEntities, $originalBatch);
             }
 
-            $serviceSet = $this->serviceSetFactory->create();
-            $serviceSet->update($originalEntities, $updatedEntities);
-
-            $adapter = $this->adapterFactory->create();
-            $output = $adapter->fromEntitiesToData($updatedEntities, true);
+            $this->service->update($originalEntities, $updatedEntities);
+            $output = $this->adapter->fromEntitiesToData($updatedEntities, true);
             return $this->responseAdapter->fromDataToControllerResponse($output);
 
         } catch (EntityException $exception) {

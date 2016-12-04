@@ -7,24 +7,29 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Exceptions\CodeException;
 
 final class ConcreteCode implements Code {
     private $language;
-    private $className;
-    public function __construct(Language $language, string $className) {
+    private $functions;
+    public function __construct(Language $language, array $functions) {
 
-        if (!class_exists($className)) {
-            throw new CodeException('The className ('.$className.') is invalid.');
+        if (empty($functions)) {
+            throw new CodeException('The functions array cannot be empty.');
+        }
+
+        foreach ($functions as $oneFunction) {
+            if (!function_exists($oneFunction)) {
+                throw new CodeException('The given function ('.$oneFunction.') does not exists.');
+            }
         }
 
         $this->language = $language;
-        $this->className = $className;
-
+        $this->functions = $functions;
     }
 
     public function getLanguage(): Language {
         return $this->language;
     }
 
-    public function getClassName(): string {
-        return $this->className;
+    public function getFunctions(): array {
+        return $this->functions;
     }
 
 }

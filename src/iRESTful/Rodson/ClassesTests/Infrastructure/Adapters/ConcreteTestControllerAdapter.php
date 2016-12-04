@@ -1,23 +1,13 @@
 <?php
 namespace iRESTful\Rodson\ClassesTests\Infrastructure\Adapters;
 use iRESTful\Rodson\ClassesTests\Domain\Controllers\Adapters\ControllerAdapter;
-use iRESTful\Rodson\TestInstructions\Domain\Adapters\Adapters\TestInstructionAdapterAdapter;
-use iRESTful\Rodson\TestInstructions\Domain\CustomMethods\Nodes\Adapters\CustomMethodNodeAdapter;
 use iRESTful\Rodson\ClassesTests\Infrastructure\Objects\ConcreteTestController;
 use iRESTful\Rodson\ClassesTests\Domain\Controllers\Exceptions\ControllerException;
 use iRESTful\Rodson\Classes\Infrastructure\Objects\ConcreteNamespace;
 
 final class ConcreteTestControllerAdapter implements ControllerAdapter {
-    private $testInstructionAdapterAdapter;
-    private $customMethodNodeAdapter;
     private $baseNamespace;
-    public function __construct(
-        TestInstructionAdapterAdapter $testInstructionAdapterAdapter,
-        CustomMethodNodeAdapter $customMethodNodeAdapter,
-        array $baseNamespace
-    ) {
-        $this->testInstructionAdapterAdapter = $testInstructionAdapterAdapter;
-        $this->customMethodNodeAdapter = $customMethodNodeAdapter;
+    public function __construct(array $baseNamespace) {
         $this->baseNamespace = $baseNamespace;
     }
 
@@ -31,16 +21,11 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
             throw new ControllerException('The configuration keyname is mandatory in order to convert data to Controller objects.');
         }
 
-        if (!isset($data['annotated_entities'])) {
-            throw new ControllerException('The annotated_entities keyname is mandatory in order to convert data to Controller objects.');
-        }
-
         $output = [];
         foreach($data['controllers'] as $oneController) {
             $testController = $this->fromDataToController([
                 'controller' => $oneController,
-                'configuration' => $data['configuration'],
-                'annotated_entities' => $data['annotated_entities']
+                'configuration' => $data['configuration']
             ]);
 
             if (!empty($testController)) {
@@ -72,23 +57,11 @@ final class ConcreteTestControllerAdapter implements ControllerAdapter {
             throw new ControllerException('The configuration keyname is mandatory in order to convert data to a Controller object.');
         }
 
-        if (!isset($data['annotated_entities'])) {
-            throw new ControllerException('The annotated_entities keyname is mandatory in order to convert data to a Controller object.');
-        }
-
-        $testInstructions = $this->testInstructionAdapterAdapter->fromAnnotatedEntitiesToTestInstructionAdapter($data['annotated_entities'])
-                                                                ->fromDSLControllerToTestInstructions($data['controller']);
-
-        $testCustomMethodNodes = $this->customMethodNodeAdapter->fromTestInstructionsToCustomMethodNodes($testInstructions);
-        if (empty($testCustomMethodNodes)) {
-            return null;
-        }
-
         $name = $convert($data['controller']->getName()).'Test';
         $merged = array_merge($this->baseNamespace, ['Tests', 'Tests', 'Functional', 'Controllers', $name]);
         $namespace = new ConcreteNamespace($merged);
 
-        return new ConcreteTestController($namespace, $data['configuration'], $testCustomMethodNodes);
+        return new ConcreteTestController($namespace, $data['configuration']);
 
     }
 

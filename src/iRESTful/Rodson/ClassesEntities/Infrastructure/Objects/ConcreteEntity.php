@@ -6,39 +6,22 @@ use iRESTful\Rodson\Classes\Domain\Namespaces\ClassNamespace;
 use iRESTful\Rodson\Classes\Domain\Interfaces\ClassInterface;
 use iRESTful\Rodson\Classes\Domain\Constructors\Constructor;
 use iRESTful\Rodson\ClassesEntities\Domain\Exceptions\EntityException;
-use iRESTful\Rodson\Classes\Domain\CustomMethods\CustomMethod;
 
 final class ConcreteEntity implements Entity {
     private $entity;
     private $namespace;
     private $interface;
     private $constructor;
-    private $customMethods;
     public function __construct(
         DSLEntity $entity,
         ClassNamespace $namespace,
         ClassInterface $interface,
-        Constructor $constructor,
-        array $customMethods = null
+        Constructor $constructor
     ) {
-
-        if (empty($customMethods)) {
-            $customMethods = null;
-        }
-
-        if (!empty($customMethods)) {
-            foreach($customMethods as $oneCustomMethod) {
-                if (!($oneCustomMethod instanceof CustomMethod)) {
-                    throw new EntityException('The customMethods array must only contain CustomMethod objects if non-empty.');
-                }
-            }
-        }
-
         $this->entity = $entity;
         $this->namespace = $namespace;
         $this->interface = $interface;
         $this->constructor = $constructor;
-        $this->customMethods = $customMethods;
     }
 
     public function getEntity() {
@@ -55,14 +38,6 @@ final class ConcreteEntity implements Entity {
 
     public function getConstructor() {
         return $this->constructor;
-    }
-
-    public function hasCustomMethods() {
-        return !empty($this->customMethods);
-    }
-
-    public function getCustomMethods() {
-        return $this->customMethods;
     }
 
 }

@@ -14,14 +14,9 @@ final class ConcreteObject implements Object {
     private $name;
     private $properties;
     private $database;
-    private $methods;
     private $combos;
     private $converters;
-    public function __construct(string $name, array $properties, Database $database = null, array $methods = null, array $combos = null, array $converters = null) {
-
-        if (empty($methods)) {
-            $methods = null;
-        }
+    public function __construct(string $name, array $properties, Database $database = null, array $combos = null, array $converters = null) {
 
         if (empty($combos)) {
             $combos = null;
@@ -46,14 +41,6 @@ final class ConcreteObject implements Object {
 
         }
 
-        if (!empty($methods)) {
-            foreach($methods as $oneMethod) {
-                if (!($oneMethod instanceof Method)) {
-                    throw new ObjectException('The methods array must only contain Method objects.');
-                }
-            }
-        }
-
         if (!empty($combos)) {
             foreach($combos as $oneCombo) {
                 if (!($oneCombo instanceof Combo)) {
@@ -73,7 +60,6 @@ final class ConcreteObject implements Object {
         $this->name = $name;
         $this->properties = array_values($properties);
         $this->database = $database;
-        $this->methods = (empty($methods)) ? null : array_values($methods);
         $this->combos = $combos;
         $this->converters = $converters;
 
@@ -93,14 +79,6 @@ final class ConcreteObject implements Object {
 
     public function getDatabase() {
         return $this->database;
-    }
-
-    public function hasMethods(): bool {
-        return !empty($this->methods);
-    }
-
-    public function getMethods() {
-        return $this->methods;
     }
 
     public function hasCombos() {

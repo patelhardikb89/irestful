@@ -1,7 +1,5 @@
 <?php
 namespace iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Relations\Repositories\Factories\EntityRelationRepositoryFactory;
-use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Adapters\Factories\EntityAdapterFactory;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Exceptions\EntityException;
 use iRESTful\LeoPaul\Objects\Entities\Entities\Domain\Relations\Exceptions\EntityRelationException;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Exceptions\InvalidRequestException;
@@ -10,19 +8,16 @@ use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controlle
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Adapters\ControllerResponseAdapter;
 use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Responses\Exceptions\ControllerResponseException;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Domain\Services\Service;
 
 class RetrieveRelation implements Controller {
     private $responseAdapter;
-    private $repositoryFactory;
-    private $adapterFactory;
-    public function __construct(
-        ControllerResponseAdapter $responseAdapter,
-        EntityRelationRepositoryFactory $repositoryFactory,
-        EntityAdapterFactory $adapterFactory
-    ) {
+    private $repository;
+    private $adapter;
+    public function __construct(ControllerResponseAdapter $responseAdapter, Service $service) {
         $this->responseAdapter = $responseAdapter;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->adapterFactory = $adapterFactory;
+        $this->repository = $service->getRepository()->getEntityRelation();
+        $this->adapter = $service->getAdapter()->getEntity();
     }
 
     public function execute(HttpRequest $request) {
@@ -50,16 +45,14 @@ class RetrieveRelation implements Controller {
 
         try {
 
-            $repository = $this->repositoryFactory->create();
-            $entities = $repository->retrieve([
+            $entities = $this->repository->retrieve([
                 'master_container' => $input['master_container'],
                 'slave_container' => $input['slave_container'],
                 'slave_property' => $input['slave_property'],
                 'master_uuid' => $input['master_uuid']
             ]);
 
-            $adapter = $this->adapterFactory->create();
-            $output = $adapter->fromEntitiesToData($entities, true);
+            $output = $this->adapter->fromEntitiesToData($entities, true);
             return $this->responseAdapter->fromDataToControllerResponse($output);
 
         } catch (EntityException $exception) {

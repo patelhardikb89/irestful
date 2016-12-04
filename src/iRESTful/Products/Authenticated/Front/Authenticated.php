@@ -1,13 +1,7 @@
 <?php
-final class Authenticated {
 
-    public static function fromDataToToken(array $data) {
-        $some = 'data';
-        return $some;
-    }
+function authenticate($serviceFactory, $httpRequest) {
 
-    public static function fromTokenToString($token) {
+    //some code here.
 
-    }
-
-}
+};
