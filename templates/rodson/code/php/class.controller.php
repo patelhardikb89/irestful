@@ -3,6 +3,7 @@
 <?php
 namespace {{namespace.path}};
 use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controller;
+use iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest;
 
 {% for oneParameter in constructor.parameters %}
     {% if oneParameter.parameter.type.namespace.all %}
@@ -18,12 +19,12 @@ use iRESTful\LeoPaul\Applications\Libraries\Routers\Domain\Controllers\Controlle
 
 final class {{namespace.name}} implements Controller {
     {{ fn.generateClassProperties(constructor.parameters) }}
-    
+
     public function __construct({{- fn.generateConstructorSignature(constructor.parameters) }}) {
         {{ fn.generateAssignment(constructor.parameters) }}
     }
 
-    {{ fn.generateCustomMethod(custom_method) }}
+    {{ fn.generateControllerCustomMethod(custom_method) }}
 
 }
 {% endautoescape %}

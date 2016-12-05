@@ -4,13 +4,15 @@ namespace iRESTful\Rodson\DSLs\Infrastructure\Objects;
 use iRESTful\Rodson\DSLs\Domain\Projects\Project;
 use iRESTful\Rodson\DSLs\Domain\Projects\Exceptions\ProjectException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Converter;
+use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Code;
 
 final class ConcreteProject implements Project {
+    private $code;
     private $parents;
     private $objects;
     private $entities;
     private $controllers;
-    public function __construct(array $objects = null, array $entities = null, array $controllers = null, array $parents = null) {
+    public function __construct(Code $code, array $objects = null, array $entities = null, array $controllers = null, array $parents = null) {
 
         $verify = function(array $data = null, $type, $badTypeMessage, $badKeynameMessage) {
 
@@ -44,10 +46,15 @@ final class ConcreteProject implements Project {
             throw new ProjectException('There must be either entities or controllers in the project.  '.$amount.' given.');
         }
 
+        $this->code = $code;
         $this->parents = $parents;
         $this->objects = $objects;
         $this->entities = $entities;
         $this->controllers = $controllers;
+    }
+
+    public function getCode() {
+        return $this->code;
     }
 
     public function getTypes(): array {

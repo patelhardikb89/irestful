@@ -15,7 +15,6 @@ final class {{object.namespace.name}} implements {{object.interface.namespace.na
     }
 
     {{ fn.generateGetters(object.constructor.parameters) }}
-    {{ fn.generateCustomMethods(object.custom_methods) }}
 
 }
 {% endautoescape %}

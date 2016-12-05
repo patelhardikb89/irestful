@@ -18,13 +18,22 @@ final class ConcreteCodeAdapter implements CodeAdapter {
 
         $getFunctions = function(string $fileName) {
 
-            $before = get_defined_functions();
             include_once($fileName);
-            $after = get_defined_functions();
+            $functions = get_defined_functions();
+            $functions = (isset($functions['user']) ? $functions['user'] : []);
 
-            $before = (isset($before['user']) ? $before['user'] : []);
-            $after = (isset($after['user']) ? $after['user'] : []);
-            return array_diff($after, $before);
+            $output = [];
+            foreach($functions as $oneFunction) {
+                $reflection = new \ReflectionFunction($oneFunction);
+                $fnFileName = $reflection->getFileName();
+
+                if ($fnFileName == $fileName) {
+                    $output[] = $oneFunction;
+                }
+
+            }
+
+            return $output;
 
         };
 
@@ -47,7 +56,7 @@ final class ConcreteCodeAdapter implements CodeAdapter {
                 throw new CodeException('The given file ('.$data['file'].') is not a valid PHP file.');
             }
 
-            $functions = $getFunctions($file);
+            $functions = $getFunctions(realpath($file));
             $language = $this->languageAdapter->fromStringToLanguage($data['language']);
             return new ConcreteCode($language, $functions);
 

@@ -12,7 +12,7 @@ final class ConcreteProjectAdapterVirgin implements ProjectAdapter {
 
     public function fromDataToProject(array $data) {
 
-        if (!isset($data['code']) || !is_array($data['code'])) {
+        if (!isset($data['code'])) {
             throw new ProjectException('The code keyname is mandatory in order to convert data to a Project object.');
         }
 

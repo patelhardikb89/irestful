@@ -4,6 +4,8 @@ namespace {{namespace.path}};
 use {{object_configuration.namespace.all}};
 use iRESTful\LeoPaul\Objects\Libraries\MetaDatas\Infrastructure\Factories\ReflectionObjectAdapterFactory;
 use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Configurations\ConcreteEntityApplicationConfiguration;
+use iRESTful\LeoPaul\Applications\Libraries\Routers\Infrastructure\Adapters\ConcreteJsonControllerResponseAdapter;
+use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Infrastructure\Factories\PDOServiceFactory;
 
 {% for oneNamespace in controller_node.namespaces %}
     use {{oneNamespace.all}};
@@ -30,7 +32,7 @@ final class {{namespace.name}} {
     private function getControllerRules() {
 
         {% if controller_node %}
-            $factory = function($className) {
+            $serviceFactory = new PDOServiceFactory{
                 return new $className(
                     $this->entityObjects->getTransformerObjects(),
                     $this->entityObjects->getContainerClassMapper(),
@@ -42,17 +44,15 @@ final class {{namespace.name}} {
                     $this->dbName,
                     getenv('DB_USERNAME'),
                     getenv('DB_PASSWORD')
-                );
-            };
+            );
 
-            {% for oneParameter in controller_node.parameters %}
-                ${{oneParameter.constructor_parameter.parameter.name}} = $factory('\{{oneParameter.class_namespace.all}}');
-            {% endfor %}
+            $service = $serviceFactory->create();
+            $responseAdapter = new ConcreteJsonControllerResponseAdapter();
 
             return [
                 {%- for oneController in controller_node.controllers -%}
                     [
-                        'controller' => new {{oneController.controller.namespace.name}}({{- fn.generateConstructorInstanciationSignature(oneController.controller.constructor.parameters) -}}),
+                        'controller' => new {{oneController.controller.namespace.name}}($responseAdapter, $service),
                         'criteria' => [
                             'uri' => '{{oneController.pattern}}',
                             'method' => '{{oneController.method}}'

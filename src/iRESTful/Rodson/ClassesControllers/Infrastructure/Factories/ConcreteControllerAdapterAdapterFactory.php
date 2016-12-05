@@ -11,7 +11,6 @@ use iRESTful\Rodson\Classes\Infrastructure\Adapters\ConcreteConstructorParameter
 use iRESTful\Rodson\Classes\Infrastructure\Adapters\ConcreteConstructorParameterAdapter;
 use iRESTful\Rodson\Classes\Infrastructure\Adapters\ConcreteConstructorAdapter;
 use iRESTful\Rodson\Classes\Infrastructure\Adapters\ConcreteClassNamespaceAdapter;
-use iRESTful\Rodson\Instructions\Infrastructure\Factories\ConcreteInstructionAdapterAdapterFactory;
 use iRESTful\Rodson\Classes\Infrastructure\Adapters\ConcreteNamespaceAdapter;
 use iRESTful\Rodson\ClassesControllers\Infrastructure\Adapters\ConcreteControllerAdapterAdapter;
 use iRESTful\Rodson\Classes\Infrastructure\Adapters\PHPCustomMethodSourceCodeAdapter;
@@ -26,10 +25,6 @@ final class ConcreteControllerAdapterAdapterFactory implements ControllerAdapter
     public function create() {
 
         $primitiveAdapter = new ConcretePrimitiveAdapter();
-
-        //class instruction:
-        $instructionAdapterAdapterFactory = new ConcreteInstructionAdapterAdapterFactory();
-        $instructionAdapterAdapter = $instructionAdapterAdapterFactory->create();
 
         //custom method adapter
         $subInterfaceNamespaceAdapter = new ConcreteNamespaceAdapter($this->baseNamespace);
@@ -50,7 +45,6 @@ final class ConcreteControllerAdapterAdapterFactory implements ControllerAdapter
         $classNamespaceAdapter = new ConcreteClassNamespaceAdapter($subClassNamespaceAdapter);
 
         return new ConcreteControllerAdapterAdapter(
-            $instructionAdapterAdapter,
             $classCustomMethodAdapter,
             $constructorAdapter,
             $classNamespaceAdapter

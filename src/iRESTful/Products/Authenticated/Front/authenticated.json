@@ -24,7 +24,8 @@
         "controllers": {
             "authenticate": {
                 "pattern": "retrieve /authenticate",
-                "function": "authenticate",
+                "function": "authenticated_front_authenticate",
+                "test": "authenticated_front_authenticate_test",
                 "view": "text"
             }
         },

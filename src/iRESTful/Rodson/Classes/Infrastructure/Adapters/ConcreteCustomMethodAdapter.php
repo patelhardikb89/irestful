@@ -35,6 +35,7 @@ use iRESTful\Rodson\TestInstructions\Domain\TestInstruction;
 use iRESTful\Rodson\Classes\Domain\CustomMethods\SourceCodes\Adapters\SourceCodeAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Primitives\Adapters\PrimitiveAdapter;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Combos\Properties\Property;
+use iRESTful\Rodson\DSLs\Domain\Projects\Controllers\Controller;
 
 final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
     private $primitiveAdapter;
@@ -46,30 +47,25 @@ final class ConcreteCustomMethodAdapter implements CustomMethodAdapter {
         $this->sourceCodeAdapter = $sourceCodeAdapter;
     }
 
-    public function fromDataToCustomMethod(array $data) {
+    public function fromControllerToCustomMethod(Controller $controller) {
 
-        if (!isset($data['instructions'])) {
-            //throws
-        }
+        $convert = function($name) {
 
-        if (!isset($data['method_name'])) {
-            //throws
-        }
+            $matches = [];
+            preg_match_all('/\_[\s\S]{1}/s', $name, $matches);
 
-        $sourceCode = $this->sourceCodeAdapter->fromDataToSourceCode($data);
-        return new ConcreteCustomMethod($data['method_name'], $sourceCode);
+            foreach($matches[0] as $oneElement) {
+                $replacement = strtoupper(str_replace('_', '', $oneElement));
+                $name = str_replace($oneElement, $replacement, $name);
+            }
 
-    }
+            return lcfirst($name);
 
-    public function fromControllerInstructionsToCustomMethod(array $instructions) {
-        $name = 'execute';
-        $sourceCode = $this->sourceCodeAdapter->fromInstructionsToControllerSourceCode($instructions);
-        $parameter = $this->parameterAdapter->fromDataToParameter([
-            'name' => 'httpRequest',
-            'namespace' => new ConcreteNamespace(explode('\\', 'iRESTful\LeoPaul\Objects\Libraries\Https\Domain\Requests\HttpRequest'))
-        ]);
+        };
 
-        return new ConcreteCustomMethod($name, $sourceCode, [$parameter]);
+        $name = $convert($controller->getName());
+        $functionName = $controller->getFunction();
+        return $this->createCustomFunction($name, $functionName);
     }
 
     public function fromMethodsToCustomMethods(array $methods) {

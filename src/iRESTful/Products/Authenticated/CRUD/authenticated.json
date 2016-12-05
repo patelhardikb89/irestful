@@ -166,7 +166,7 @@
                     "name": "string",
                     "max": 255
                 },
-                "function": "validateBaseUrl",
+                "function": "authenticated_crud_validateBaseUrl",
                 "converters": {
                     "database_to_object": {
                         "from": "string",
@@ -179,7 +179,7 @@
                     "name": "string",
                     "max": 255
                 },
-                "function": "validateUri",
+                "function": "authenticated_crud_validateUri",
                 "converters": {
                     "database_to_object": {
                         "from": "string",
@@ -192,7 +192,7 @@
                     "name": "string",
                     "max": 255
                 },
-                "function": "validateKeyname",
+                "function": "authenticated_crud_validateKeyname",
                 "converters": {
                     "database_to_object": {
                         "from": "string",
@@ -205,7 +205,7 @@
                     "name": "string",
                     "max": 255
                 },
-                "function": "validateHashedPassword",
+                "function": "authenticated_crud_validateHashedPassword",
                 "converters": {
                     "database_to_object": {
                         "from": "string",

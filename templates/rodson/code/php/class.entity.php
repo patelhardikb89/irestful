@@ -18,7 +18,6 @@ final class {{entity.namespace.name}} extends AbstractEntity implements {{entity
     }
 
     {{ fn.generateGetters(entity.constructor.parameters) }}
-    {{ fn.generateCustomMethods(entity.custom_methods) }}
 
 }
 {% endautoescape %}

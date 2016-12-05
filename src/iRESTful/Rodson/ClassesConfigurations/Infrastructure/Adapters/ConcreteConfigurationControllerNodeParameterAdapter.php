@@ -31,6 +31,10 @@ final class ConcreteConfigurationControllerNodeParameterAdapter implements Param
                 if ($type->hasNamespace()) {
                     $interfaceNamespace = $type->getNamespace()->getAllAsString();
                     if (!isset($this->dependenciesInterfaceClassMapper[$interfaceNamespace])) {
+
+                        print_r([$interfaceNamespace]);
+                        die();
+
                         throw new ParameterException('The interface ('.$interfaceNamespace.') do not have a matching class in the given dependencies interface class mapper.');
                     }
 

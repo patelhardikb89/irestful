@@ -2,6 +2,7 @@
 namespace iRESTful\Rodson\DSLs\Domain\Projects;
 
 interface Project {
+    public function getCode();
     public function getTypes();
     public function getRelationalDatabase();
     public function hasObjects();

@@ -9,18 +9,22 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Exceptions\ProjectException;
 use iRESTful\Rodson\DSLs\Infrastructure\Objects\ConcreteProject;
 use iRESTful\Rodson\DSLs\Domain\Projects\Objects\Entities\Adapters\EntityAdapter;
 use iRESTful\Rodson\DSLs\Domain\SubDSLs\Adapters\SubDSLAdapter;
+use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Code;
 
 final class ConcreteProjectAdapter implements ProjectAdapter {
+    private $code;
     private $objectAdapter;
     private $entityAdapter;
     private $controllerAdapter;
     private $subDSLAdapter;
     public function __construct(
+        Code $code,
         ObjectAdapter $objectAdapter,
         EntityAdapter $entityAdapter,
         ControllerAdapter $controllerAdapter,
         SubDSLAdapter $subDSLAdapter
     ) {
+        $this->code = $code;
         $this->objectAdapter = $objectAdapter;
         $this->entityAdapter = $entityAdapter;
         $this->controllerAdapter = $controllerAdapter;
@@ -72,8 +76,8 @@ final class ConcreteProjectAdapter implements ProjectAdapter {
                     'data' => $staticData
                 ]);
             }
-
-            return new ConcreteProject($objects, $entities, $controllers, $parents);
+            
+            return new ConcreteProject($this->code, $objects, $entities, $controllers, $parents);
 
         } catch (ObjectException $exception) {
             throw new ProjectException('There was an exception while converting data to Object objects.', $exception);

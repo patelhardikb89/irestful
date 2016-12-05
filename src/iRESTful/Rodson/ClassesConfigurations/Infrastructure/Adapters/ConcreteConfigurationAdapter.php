@@ -60,7 +60,7 @@ final class ConcreteConfigurationAdapter implements ConfigurationAdapter {
         ]);
 
         $controllerNode = null;
-        if (!isset($data['controllers'])) {
+        if (isset($data['controllers'])) {
             $controllerNode = $this->controllerNodeAdapter->fromDataToControllerNode($data['controllers']);
         }
 

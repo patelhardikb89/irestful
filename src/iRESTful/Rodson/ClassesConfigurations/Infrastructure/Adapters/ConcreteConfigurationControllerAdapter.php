@@ -42,7 +42,7 @@ final class ConcreteConfigurationControllerAdapter implements ControllerAdapter 
             if (!isset($this->methodMapper[$controllerPatternMethod])) {
                 throw new ControllerException('The controller ('.$oneInput->getName().') contains an invalid method name ('.$controllerPatternMethod.') in pattern ('.$controllerPattern.').');
             }
-
+            
             $output[] = new ConcreteConfigurationController(
                 trim($exploded[1]),
                 $this->methodMapper[$controllerPatternMethod],

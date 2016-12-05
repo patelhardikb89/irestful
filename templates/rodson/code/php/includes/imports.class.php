@@ -111,6 +111,16 @@
     {%- endif -%}
 {% endmacro %}
 
+{% macro generateControllerCustomMethod(customMethod) %}
+    {%- import _self as fn -%}
+    public function {{customMethod.name}}(HttpRequest $httpRequest) {
+        {% for oneSourceCodeLine in customMethod.source_code.lines %}
+            {{- oneSourceCodeLine|replace({'$serviceFactory->': '$this->serviceFactory'})|replace({'return ': '$output = '})|raw }}
+        {% endfor -%}
+        return $this->responseAdapter->fromDataToControllerResponse($output);
+    }
+{% endmacro %}
+
 {% macro generateCustomMethod(customMethod) %}
     {%- import _self as fn -%}
     public function {{customMethod.name}}({{- fn.generateSignature(customMethod.parameters) -}}) {

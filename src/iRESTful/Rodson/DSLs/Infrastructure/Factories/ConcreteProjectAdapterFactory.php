@@ -16,9 +16,6 @@ use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteDatabaseTypeFloatAdapte
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteDatabaseTypeIntegerAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteDatabaseTypeStringAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteConverterAdapter;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteCodeAdapter;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteCodeLanguageAdapter;
-use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Code;
 use iRESTful\Rodson\DSLs\Domain\Projects\Codes\Exceptions\CodeException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Databases\Exceptions\DatabaseException;
 use iRESTful\Rodson\DSLs\Domain\Projects\Converters\Exceptions\ConverterException;
@@ -27,12 +24,6 @@ use iRESTful\Rodson\DSLs\Domain\Projects\Exceptions\ProjectException;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteObjectPropertyTypeAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteConverterTypeAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Factories\ConcretePrimitiveFactory;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestAdapter;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestCommandAdapter;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestCommandActionAdapter;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestCommandUrlAdapter;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteControllerHttpRequestViewAdapter;
-use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteValueAdapterAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteControllerViewTemplateAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteControllerViewAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteEntityAdapter;
@@ -49,6 +40,8 @@ use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteParentObjectAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteObjectComboAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteObjectComboPropertyAdapter;
 use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteEntityDataAdapter;
+use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteCodeAdapter;
+use iRESTful\Rodson\DSLs\Infrastructure\Adapters\ConcreteCodeLanguageAdapter;
 
 final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
     private $codeData;
@@ -75,12 +68,6 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
         $this->parentsData = $parentsData;
         $this->baseDirectory = $baseDirectory;
 
-    }
-
-    private function getCode() {
-        $languageAdapter = new ConcreteCodeLanguageAdapter();
-        $codeAdapter = new ConcreteCodeAdapter($languageAdapter, $this->baseDirectory);
-        return $codeAdapter->fromDataToCode($this->codeData);
     }
 
     private function getDatabases() {
@@ -162,14 +149,6 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
 
     }
 
-    private function getParents(array $databases) {
-        $dslAdapterFactory = new ConcreteDSLAdapterFactory();
-        $dslAdapter = $dslAdapterFactory->create();
-
-        $subDSLAdapterAdapter = new ConcreteSubDSLAdapter($dslAdapter, $databases, $this->baseDirectory);
-        return $subDSLAdapterAdapter->fromDataToSubDSLs($this->parentsData);
-    }
-
     private function getEntityAdapter(array $objects) {
 
         $dateTimeAdapter = new ConcreteDateTimeAdapter('America/Montreal');
@@ -188,32 +167,30 @@ final class ConcreteProjectAdapterFactory implements ProjectAdapterFactory {
 
         try {
 
-            $primitiveFactory = new ConcretePrimitiveFactory();
-            $primitives = $primitiveFactory->createAll();
-
-            $code = $this->getCode();
-            $types = $this->getTypes($primitives);
-            $databases = $this->getDatabases();
-            $parents = $this->getParents($databases);
-            $objects = $this->getObjects($types, $primitives, $databases, $parents);
-
-            $valueAdapterAdapter = new ConcreteValueAdapterAdapter();
-            $controllerHttpRequestCommandActionAdapter = new ConcreteControllerHttpRequestCommandActionAdapter();
-            $controllerHttpRequestCommandUrlAdapter = new ConcreteControllerHttpRequestCommandUrlAdapter();
-            $controllerHttpRequestCommandAdapter = new ConcreteControllerHttpRequestCommandAdapter($controllerHttpRequestCommandActionAdapter, $controllerHttpRequestCommandUrlAdapter);
-            $controllerHttpRequestViewAdapter = new ConcreteControllerHttpRequestViewAdapter();
-            $controllerHttpRequestAdapter = new ConcreteControllerHttpRequestAdapter($controllerHttpRequestCommandAdapter, $controllerHttpRequestViewAdapter, $valueAdapterAdapter);
-            $controllerViewTemplateAdapter = new ConcreteControllerViewTemplateAdapter();
-            $controllerViewAdapter = new ConcreteControllerViewAdapter($controllerViewTemplateAdapter);
-            $controllerAdapter = new ConcreteControllerAdapter($controllerViewAdapter, $controllerHttpRequestAdapter);
-            $objectAdapter = $this->getObjectAdapter($types, $primitives, $objects, $databases, $parents);
-            $entityAdapter = $this->getEntityAdapter($objects);
+            $codeLanguageAdapter = new ConcreteCodeLanguageAdapter();
+            $codeAdapter = new ConcreteCodeAdapter($codeLanguageAdapter, $this->baseDirectory);
+            $code = $codeAdapter->fromDataToCode($this->codeData);
 
             $dslAdapterFactory = new ConcreteDSLAdapterFactory();
             $dslAdapter = $dslAdapterFactory->create();
 
+            $primitiveFactory = new ConcretePrimitiveFactory();
+            $primitives = $primitiveFactory->createAll();
+
+            $types = $this->getTypes($primitives);
+            $databases = $this->getDatabases();
             $subDSLAdapterAdapter = new ConcreteSubDSLAdapter($dslAdapter, $databases, $this->baseDirectory);
-            return new ConcreteProjectAdapter($objectAdapter, $entityAdapter, $controllerAdapter, $subDSLAdapterAdapter);
+
+            $parents = $subDSLAdapterAdapter->fromDataToSubDSLs($this->parentsData);
+            $objects = $this->getObjects($types, $primitives, $databases, $parents);
+
+            $controllerViewTemplateAdapter = new ConcreteControllerViewTemplateAdapter();
+            $controllerViewAdapter = new ConcreteControllerViewAdapter($controllerViewTemplateAdapter);
+            $controllerAdapter = new ConcreteControllerAdapter($controllerViewAdapter);
+            $objectAdapter = $this->getObjectAdapter($types, $primitives, $objects, $databases, $parents);
+            $entityAdapter = $this->getEntityAdapter($objects);
+
+            return new ConcreteProjectAdapter($code, $objectAdapter, $entityAdapter, $controllerAdapter, $subDSLAdapterAdapter);
 
         } catch (CodeException $exception) {
             throw new ProjectException('There was an exception while converting data to a Code object.', $exception);
