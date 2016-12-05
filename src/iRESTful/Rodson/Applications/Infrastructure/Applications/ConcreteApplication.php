@@ -87,7 +87,8 @@ final class ConcreteApplication implements Application {
         //we get controller classes:
         $controllers = [];
         $controllerClasses = [];
-        if ($project->hasControllers()) {
+        $hasControllers = $project->hasControllers();
+        if ($hasControllers) {
             $controllers = $project->getControllers();
 
             //must add objects as well!!!
@@ -99,15 +100,20 @@ final class ConcreteApplication implements Application {
                                                                         ->fromDSLControllersToControllers($controllers);
         }
 
+        $controllersData = null;
+        if ($hasControllers) {
+            $controllersData = [
+                'inputs' => $controllers,
+                'classes' => $controllerClasses
+            ];
+        }
+
         //we get the configuration class:
         $configuration = $this->configurationAdapterFactory->create()->fromDataToConfiguration([
             'annotated_entities' => $annotatedEntities,
             'annotated_objects' => $annotatedObjects,
             'values' => $valueClasses,
-            'controllers' => [
-                'inputs' => $controllers,
-                'classes' => $controllerClasses
-            ]
+            'controllers' => $controllersData
         ]);
 
         //we get the installation class:

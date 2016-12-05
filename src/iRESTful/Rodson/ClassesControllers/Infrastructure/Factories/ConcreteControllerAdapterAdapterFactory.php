@@ -31,7 +31,7 @@ final class ConcreteControllerAdapterAdapterFactory implements ControllerAdapter
         $interfaceNamespaceAdapter = new ConcreteInterfaceNamespaceAdapter($subInterfaceNamespaceAdapter);
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
-        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('input', true);
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
         $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($primitiveAdapter, $interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         //constructor:

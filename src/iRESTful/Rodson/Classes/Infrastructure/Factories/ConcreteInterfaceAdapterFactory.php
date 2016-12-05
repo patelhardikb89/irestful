@@ -29,7 +29,7 @@ final class ConcreteInterfaceAdapterFactory implements InterfaceAdapterFactory {
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
 
-        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('input', true);
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
         $classCustomMethodAdapter = new ConcreteCustomMethodAdapter($primitiveAdapter, $interfaceMethodParameterAdapter, $sourceCodeAdapter);
 
         $interfaceMethodAdapter = new ConcreteInterfaceMethodAdapter($classCustomMethodAdapter, $interfaceMethodParameterAdapter);

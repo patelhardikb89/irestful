@@ -24,7 +24,7 @@ final class ConcreteCustomMethodAdapterFactory implements CustomMethodAdapterFac
         $interfaceMethodParamaterTypeAdapter = new ConcreteInterfaceMethodParameterTypeAdapter();
         $interfaceMethodParameterAdapter = new ConcreteInterfaceMethodParameterAdapter($interfaceNamespaceAdapter, $interfaceMethodParamaterTypeAdapter);
 
-        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter('input', true);
+        $sourceCodeAdapter = new PHPCustomMethodSourceCodeAdapter();
         return new ConcreteCustomMethodAdapter($primitiveAdapter, $interfaceMethodParameterAdapter, $sourceCodeAdapter);
     }
 
