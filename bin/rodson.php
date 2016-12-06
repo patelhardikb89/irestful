@@ -1,5 +1,6 @@
 <?php
-include_once(__DIR__.'/../vendor/autoload.php');
+$baseDir = getcwd();
+include_once($baseDir.'/vendor/autoload.php');
 use iRESTful\Rodson\Applications\Infrastructure\Factories\ConcreteApplicationFactory;
 
 $parse = function(array $arguments) {
@@ -35,7 +36,6 @@ if (!isset($arguments['output'])) {
     $render('The rodson application must receive an --output folder as argument.');
 }
 
-$baseDir = getcwd();
 $inputFile = (strpos($arguments['input'], '/') === 0) ? $arguments['input'] : $baseDir.'/'.$arguments['input'];
 if (!file_exists($inputFile)) {
     $render('The given --input file is invalid: '.$inputFile);
