@@ -49,7 +49,7 @@ if (!is_dir($outputDir) || !file_exists($outputDir)) {
 
 }
 
-$templatePath = 'templates/rodson/code/php';
+$templatePath = __DIR__.'/../templates/rodson/code/php';
 $timezone = 'America/Montreal';
 $applicationFactory = new ConcreteApplicationFactory($timezone, $templatePath, $inputFile, $outputDir);
 $applicationFactory->create()->execute();
