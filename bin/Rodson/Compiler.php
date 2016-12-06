@@ -3,11 +3,15 @@ namespace Rodson;
 use iRESTful\Rodson\Applications\Infrastructure\Factories\ConcreteApplicationFactory;
 
 final class Compiler {
+    private static $arguments;
+    public static function setArguments(array $arguments) {
+        self::$arguments = $arguments;
+    }
 
-    public static function compile($argv = []) {
+    public static function compile() {
 
-        if (empty($argv)) {
-            $argv = [
+        if (empty(self::$arguments)) {
+            self::$arguments = [
                 'bin/rodson.php',
                 '--input',
                 'src/rodson.json',
@@ -40,7 +44,7 @@ final class Compiler {
             $render('Your PHP version is: '.$version.'.  This CLI application requires PHP 7+.');
         }
 
-        $arguments = $parse($argv);
+        $arguments = $parse(self::$arguments);
         if (!isset($arguments['input'])) {
             $render('The rodson application must receive an --input file path as argument.');
         }
