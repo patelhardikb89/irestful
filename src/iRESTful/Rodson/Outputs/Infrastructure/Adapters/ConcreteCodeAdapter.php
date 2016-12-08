@@ -25,6 +25,7 @@ use iRESTful\Rodson\ClassesApplications\Domain\Application;
 use iRESTful\Rodson\ClassesInstallations\Domain\Installation;
 use iRESTful\Rodson\ClassesTests\Domain\Controllers\Controller as TestController;
 use iRESTful\Rodson\ClassesTests\Domain\CRUDs\CRUD;
+use iRESTful\Rodson\ConfigurationsDockerFiles\Domain\DockerFile;
 
 final class ConcreteCodeAdapter implements CodeAdapter {
     private $rootPathAdapter;
@@ -42,6 +43,14 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $data = $this->getData($phpunit);
         $code = $this->template->render('phpunit.xml.dist.twig', $data);
         $path =  $this->rootPathAdapter->fromRelativePathStringToPath('phpunit.xml.dist');
+        return new ConcreteOutputCode($code, $path);
+    }
+
+    public function fromDockerFileToCode(DockerFile $dockerFile) {
+        $data = $this->getData($dockerFile);
+        $code = $this->template->render('dockerfile.twig', $data);
+        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('DockerFile');
+
         return new ConcreteOutputCode($code, $path);
     }
 

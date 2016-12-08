@@ -11,6 +11,8 @@ final class ConcreteDSLTest extends \PHPUnit_Framework_TestCase {
     private $type;
     private $license;
     private $authors;
+    private $urls;
+    private $version;
     public function setUp() {
         $this->nameMock = $this->createMock('iRESTful\Rodson\DSLs\Domain\Names\Name');
         $this->urlMock = $this->createMock('iRESTful\Rodson\DSLs\Domain\URLs\Url');
@@ -24,6 +26,13 @@ final class ConcreteDSLTest extends \PHPUnit_Framework_TestCase {
             $this->authorMock,
             $this->authorMock
         ];
+
+        $this->urls = [
+            'homepage' => $this->urlMock,
+            'repository' => $this->urlMock
+        ];
+
+        $this->version = '16.05.22';
     }
 
     public function tearDown() {
@@ -32,11 +41,11 @@ final class ConcreteDSLTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate_Success() {
 
-        $dsl = new ConcreteDSL($this->nameMock, $this->type, $this->urlMock, $this->license, $this->authors, $this->projectMock);
+        $dsl = new ConcreteDSL($this->nameMock, $this->type, $this->urls, $this->license, $this->authors, $this->authorMock, $this->projectMock, $this->version);
 
         $this->assertEquals($this->nameMock, $dsl->getName());
         $this->assertEquals($this->type, $dsl->getType());
-        $this->assertEquals($this->urlMock, $dsl->getUrl());
+        $this->assertEquals($this->urls, $dsl->getUrls());
         $this->assertEquals($this->license, $dsl->getLicense());
         $this->assertEquals($this->authors, $dsl->getAuthors());
         $this->assertEquals($this->projectMock, $dsl->getProject());
@@ -50,7 +59,7 @@ final class ConcreteDSLTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteDSL($this->nameMock, $this->type, $this->urlMock, $this->license, $this->authors, $this->projectMock);
+            new ConcreteDSL($this->nameMock, $this->type, $this->urls, $this->license, $this->authors, $this->authorMock, $this->projectMock, $this->version);
 
         } catch (DSLException $exception) {
             $asserted = true;
@@ -65,7 +74,7 @@ final class ConcreteDSLTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteDSL($this->nameMock, $this->type, $this->urlMock, $this->license, [], $this->projectMock);
+            new ConcreteDSL($this->nameMock, $this->type, $this->urls, $this->license, [], $this->authorMock, $this->projectMock, $this->version);
 
         } catch (DSLException $exception) {
             $asserted = true;
@@ -80,7 +89,7 @@ final class ConcreteDSLTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteDSL($this->nameMock, '', $this->urlMock, $this->license, $this->authors, $this->projectMock);
+            new ConcreteDSL($this->nameMock, '', $this->urls, $this->license, $this->authors, $this->authorMock, $this->projectMock, $this->version);
 
         } catch (DSLException $exception) {
             $asserted = true;
@@ -95,7 +104,7 @@ final class ConcreteDSLTest extends \PHPUnit_Framework_TestCase {
         $asserted = false;
         try {
 
-            new ConcreteDSL($this->nameMock, $this->type, $this->urlMock, '', $this->authors, $this->projectMock);
+            new ConcreteDSL($this->nameMock, $this->type, $this->urls, '', $this->authors, $this->authorMock, $this->projectMock, $this->version);
 
         } catch (DSLException $exception) {
             $asserted = true;

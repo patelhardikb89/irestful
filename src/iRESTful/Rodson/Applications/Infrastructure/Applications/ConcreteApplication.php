@@ -15,6 +15,7 @@ use iRESTful\Rodson\ConfigurationsPHPUnits\Domain\Adapters\Factories\PHPUnitAdap
 use iRESTful\Rodson\Outputs\Domain\Codes\Adapters\Factories\CodeAdapterFactory;
 use iRESTful\Rodson\Outputs\Domain\Codes\Services\Factories\CodeServiceFactory;
 use iRESTful\Rodson\Outputs\Domain\Codes\Factories\CodeFactory;
+use iRESTful\Rodson\ConfigurationsDockerFiles\Domain\Adapters\Factories\DockerFileAdapterFactory;
 
 final class ConcreteApplication implements Application {
     private $controllerAdapterAdapterFactory;
@@ -23,6 +24,7 @@ final class ConcreteApplication implements Application {
     private $testAdapterFactory;
     private $applicationAdapterFactory;
     private $vagrantFileAdapterFactory;
+    private $dockerFileAdapterFactory;
     private $composerAdapterFactory;
     private $phpunitAdapterFactory;
     private $codeAdapterFactory;
@@ -38,6 +40,7 @@ final class ConcreteApplication implements Application {
         TestAdapterFactory $testAdapterFactory,
         ApplicationAdapterFactory $applicationAdapterFactory,
         VagrantFileAdapterFactory $vagrantFileAdapterFactory,
+        DockerFileAdapterFactory $dockerFileAdapterFactory,
         ComposerAdapterFactory $composerAdapterFactory,
         PHPUnitAdapterFactory $phpunitAdapterFactory,
         CodeAdapterFactory $codeAdapterFactory,
@@ -53,6 +56,7 @@ final class ConcreteApplication implements Application {
         $this->testAdapterFactory = $testAdapterFactory;
         $this->applicationAdapterFactory = $applicationAdapterFactory;
         $this->vagrantFileAdapterFactory = $vagrantFileAdapterFactory;
+        $this->dockerFileAdapterFactory = $dockerFileAdapterFactory;
         $this->composerAdapterFactory = $composerAdapterFactory;
         $this->phpunitAdapterFactory = $phpunitAdapterFactory;
         $this->codeAdapterFactory = $codeAdapterFactory;
@@ -137,6 +141,9 @@ final class ConcreteApplication implements Application {
         //we get the application class:
         $application = $this->applicationAdapterFactory->create()->fromConfigurationToApplication($configuration);
 
+        //we get the docker configurations:
+        $dockerFile = $this->dockerFileAdapterFactory->create()->fromDSLToDockerFile($this->dsl);
+
         //we get the vagrant configurations:
         $vagrantFile = $this->vagrantFileAdapterFactory->create()->fromDSLToVagrantFile($this->dsl);
 
@@ -153,6 +160,7 @@ final class ConcreteApplication implements Application {
         $codeAdapter = $this->codeAdapterFactory->create();
         $phpunitCode = $codeAdapter->fromPHPUnitToCode($phpunit);
         $vagrantFileCodes = $codeAdapter->fromVagrantFileToCodes($vagrantFile);
+        $dockerFileCode = $codeAdapter->fromDockerFileToCode($dockerFile);
         $composerCode = $codeAdapter->fromComposerToCode($composer);
         $controllerCodes = $codeAdapter->fromControllersToCodes($controllerClasses);
         $testCodes = $codeAdapter->fromTestsToCodes($tests);
@@ -168,6 +176,7 @@ final class ConcreteApplication implements Application {
             [$gitIgnoreCode],
             [$phpunitCode],
             $vagrantFileCodes,
+            [$dockerFileCode],
             [$composerCode],
             $controllerCodes,
             $testCodes,

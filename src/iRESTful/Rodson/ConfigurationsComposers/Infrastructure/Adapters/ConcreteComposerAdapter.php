@@ -25,7 +25,9 @@ final class ConcreteComposerAdapter implements ComposerAdapter {
 
         $name = $dslName->getName();
         $type = $data['dsl']->getType();
-        $homepage = $data['dsl']->getUrl();
+        $urls = $data['dsl']->getUrls();
+        $homepage = (isset($urls['homepage'])) ? $urls['homepage'] : null;
+
         $license = $data['dsl']->getLicense();
         $authors = $data['dsl']->getAuthors();
         $baseNamespace = $dslName->getOrganizationName();

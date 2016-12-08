@@ -1,5 +1,6 @@
 * Enable cross origin
 * Generate the Dockerfile and docker-compose file when necessary.
+* Make it possible to add external dependencies using apt-get
 
 * Fix the genration of the phpunit xml file, when using third-party crud apis.
 * Fix the composer.json file - src folders mapping, when using third-party crud apis.

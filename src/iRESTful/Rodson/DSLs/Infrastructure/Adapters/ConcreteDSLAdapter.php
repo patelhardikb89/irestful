@@ -35,8 +35,8 @@ final class ConcreteDSLAdapter implements DSLAdapter {
             throw new DSLException('The type keyname is mandatory in order to convert data to a Rodson object.');
         }
 
-        if (!isset($data['url'])) {
-            throw new DSLException('The url keyname is mandatory in order to convert data to a Rodson object.');
+        if (!isset($data['urls'])) {
+            throw new DSLException('The urls keyname is mandatory in order to convert data to a Rodson object.');
         }
 
         if (!isset($data['license'])) {
@@ -47,8 +47,16 @@ final class ConcreteDSLAdapter implements DSLAdapter {
             throw new DSLException('The authors keyname is mandatory in order to convert data to a Rodson object.');
         }
 
+        if (!isset($data['maintainer'])) {
+            throw new DSLException('The maintainer keyname is mandatory in order to convert data to a Rodson object.');
+        }
+
         if (!isset($data['project'])) {
             throw new DSLException('The project keyname is mandatory in order to convert data to a Rodson object.');
+        }
+
+        if (!isset($data['version'])) {
+            throw new DSLException('The version keyname is mandatory in order to convert data to a Rodson object.');
         }
 
         if (!isset($data['base_directory'])) {
@@ -57,12 +65,16 @@ final class ConcreteDSLAdapter implements DSLAdapter {
 
         $name = $this->nameAdapter->fromStringToName($data['name']);
         $authors = $this->authorAdapter->fromDataToAuthors($data['authors']);
-        $url = $this->urlAdapter->fromStringToUrl($data['url']);
+        $urls = $this->urlAdapter->fromDataToUrl($data['urls']);
 
         $data['project']['base_directory'] = $data['base_directory'];
         $project = $this->projectAdapter->fromDataToProject($data['project']);
 
-        return new ConcreteDSL($name, $data['type'], $url, $data['license'], $authors, $project);
+        if (!isset($authors[$data['maintainer']])) {
+            throw new DSLException('The given maintainer ('.$data['maintainer'].') is not an author.');
+        }
+
+        return new ConcreteDSL($name, $data['type'], $urls, $data['license'], $authors, $authors[$data['maintainer']], $project, $data['version']);
 
     }
 

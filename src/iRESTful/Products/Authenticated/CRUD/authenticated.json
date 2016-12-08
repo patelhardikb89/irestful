@@ -1,8 +1,12 @@
 {
-    "name": "iRESTful/CRUDAuthenticated",
-    "type": "library",
-    "url": "https://github.com/steve-rodrigue/irestful/tree/master/src/iRESTful/Products/Authenticated/CRUD",
+    "name": "iRESTful/Authenticated-CRUD",
+    "version": "master",
     "license": "MIT",
+    "type": "crud-rest-api",
+    "urls": {
+        "repository": "https://github.com/steve-rodrigue/authenticated-crud",
+        "homepage": "https://irestful.com/projects/authenticated#crud"
+    },
     "authors": [
         {
             "name": "Steve Rodrigue",
@@ -10,6 +14,7 @@
             "url": "http://irestful.com"
         }
     ],
+    "maintainer": "Steve Rodrigue",
     "project": {
         "code": {
             "language": "PHP",

@@ -19,6 +19,7 @@ use iRESTful\Rodson\Outputs\Infrastructure\Factories\FileCodeServiceFactory;
 use iRESTful\Rodson\Applications\Infrastructure\Adapters\ConcreteDomainApplicationAdapter;
 use iRESTful\Rodson\Outputs\Infrastructure\Factories\ConcreteCodeFactoryFactory;
 use iRESTful\Rodson\ClassesConverters\Infrastructure\Factories\ConcreteConverterAdapterFactory;
+use iRESTful\Rodson\ConfigurationsDockerFiles\Infrastructure\Factories\ConcreteDockerFileAdapterFactory;
 
 final class ConcreteApplicationFactory implements ApplicationFactory {
     private $timezone;
@@ -66,6 +67,7 @@ final class ConcreteApplicationFactory implements ApplicationFactory {
         $testAdapterFactory = new ConcreteTestAdapterFactory($baseNamespace);
         $applicationAdapterFactory = new ConcreteApplicationAdapterFactory($baseNamespace);
         $vagrantFileAdapterFactory = new ConcreteVagrantFileAdapterFactory();
+        $dockerFileAdapterFactory = new ConcreteDockerFileAdapterFactory();
         $composerAdapterFactory = new ConcreteComposerAdapterFactory($this->codeDirectory);
         $phpunitAdapterFactory = new ConcretePHPUnitAdapterFactory();
         $codeAdapterFactory = new ConcreteCodeAdapterFactory(
@@ -106,6 +108,7 @@ final class ConcreteApplicationFactory implements ApplicationFactory {
             $testAdapterFactory,
             $applicationAdapterFactory,
             $vagrantFileAdapterFactory,
+            $dockerFileAdapterFactory,
             $composerAdapterFactory,
             $phpunitAdapterFactory,
             $codeAdapterFactory,

@@ -1,0 +1,102 @@
+FROM ubuntu:16.10
+MAINTAINER {{maintainer.name}} <{{maintainer.email.email}}>
+
+VOLUME /var/www/html
+
+EXPOSE 80
+
+ARG VERSION
+ARG DB_USERNAME
+ARG DB_PASSWORD
+ARG DB_SERVER
+ARG DB_DRIVER
+ARG DB_NAME
+ARG API_PROTOCOL
+ARG API_DOMAIN
+ARG API_PORT
+
+ENV VERSION={{version}}
+ENV COMPANY_NAME={{name.organization_name|lower}}
+ENV PROJECT_NAME={{name.project_name|lower}}
+ENV NGINX_CONF_FILE=${COMPANY_NAME}-${PROJECT_NAME}.conf
+ENV PROJECT_NAME_WITH_VERSION=${PROJECT_NAME}-${VERSION}
+ENV PROJECT_PATH=/home/docker/project/${PROJECT_NAME_WITH_VERSION}
+ENV REPOSITORY_URL={{repository_url.url}}
+
+ENV DB_USERNAME=root
+ENV DB_PASSWORD=mypassword
+ENV DB_SERVER=127.0.0.1
+ENV DB_DRIVER=mysql
+ENV DB_NAME=mydb
+ENV API_PROTOCOL=http
+ENV API_DOMAIN=mydomain.dev
+ENV API_PORT=80
+
+#install the extensions we need:
+RUN apt-get update -y;
+RUN apt-get upgrade -y;
+RUN apt-get install -y python-software-properties;
+RUN apt-get install -y software-properties-common;
+RUN apt-get install -y git;
+RUN apt-get install -y curl;
+RUN apt-get install -y unzip;
+RUN apt-get install -y php;
+RUN apt-get install -y php-cli;
+RUN apt-get install -y php-fpm;
+RUN apt-get install -y php-curl;
+RUN apt-get install -y php-xml;
+RUN apt-get install -y php-mbstring;
+RUN apt-get install -y php-bcmath;
+
+#set workdir
+WORKDIR ${PROJECT_PATH}
+
+#purge apache:
+RUN apt-get -y purge apache2;
+
+#install nginx:
+RUN apt-get install -y nginx;
+
+#create user:
+RUN adduser docker --home /home/docker
+RUN echo 'docker:docker' | chpasswd
+
+#download our source code:
+RUN curl -o project.zip -fSL "${REPOSITORY_URL}/archive/${VERSION}.zip"
+RUN unzip project.zip -d /home/docker/project
+RUN curl -sS https://getcomposer.org/installer | php;
+RUN chown -R docker ${PROJECT_PATH};
+RUN chmod -R 777 ${PROJECT_PATH};
+
+#add domain to host file:
+RUN echo "127.0.0.1 ${API_DOMAIN}" >> /etc/hosts;
+
+#change user:
+RUN su docker
+USER docker
+
+#download our source code and install it using composer:
+RUN php composer.phar install --prefer-source
+RUN php vendor/steve-rodrigue/irestful/bin/rodson.php --input src/rodson.json --output build
+
+#change user back to root:
+USER root
+
+#setup nginx conf file:
+RUN cp ${PROJECT_PATH}/build/conf/nginx/${NGINX_CONF_FILE} /etc/nginx/sites-available/${NGINX_CONF_FILE};
+RUN ln -s /etc/nginx/sites-available/${NGINX_CONF_FILE} /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
+RUN sed -i "s/{username}/$DB_USERNAME/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
+RUN sed -i "s/{password}/$DB_PASSWORD/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
+RUN sed -i "s/{server}/$DB_SERVER/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
+RUN sed -i "s/{driver}/$DB_DRIVER/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
+
+#setup php-fpm conf file:
+RUN cp ${PROJECT_PATH}/build/conf/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf;
+
+#copy project in the right directory:
+RUN cp -R ${PROJECT_PATH} /var/www/html
+RUN cd /var/www/html; ls -l;
+
+#restart our services:
+RUN /etc/init.d/php7.0-fpm restart;
+RUN /etc/init.d/nginx restart;

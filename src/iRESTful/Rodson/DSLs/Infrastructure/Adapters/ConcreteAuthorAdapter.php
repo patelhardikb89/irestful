@@ -17,7 +17,10 @@ final class ConcreteAuthorAdapter implements AuthorAdapter {
     public function fromDataToAuthors(array $data) {
         $output = [];
         foreach($data as $oneData) {
-            $output[] = $this->fromDataToAuthor($oneData);
+            $author = $this->fromDataToAuthor($oneData);
+
+            $name = $author->getName();
+            $output[$name] = $author;
         }
 
         return $output;

@@ -11,11 +11,13 @@ use iRESTful\Rodson\DSLs\Domain\Names\Name;
 final class ConcreteDSL implements DSL {
     private $name;
     private $type;
-    private $url;
+    private $urls;
     private $license;
     private $authors;
+    private $maintainer;
     private $project;
-    public function __construct(Name $name, string $type, Url $url, string $license, array $authors, Project $project) {
+    private $version;
+    public function __construct(Name $name, string $type, array $urls, string $license, array $authors, Author $maintainer, Project $project, string $version) {
 
         if (empty($authors)) {
             throw new DSLException('The authors array cannot be empty.');
@@ -29,6 +31,14 @@ final class ConcreteDSL implements DSL {
             throw new DSLException('The license cannot be empty.');
         }
 
+        if (!isset($urls['repository']) || !(($urls['repository'] instanceof Url))) {
+            throw new DSLException('The urls array must contain a repository url.');
+        }
+
+        if (!isset($urls['homepage']) || !(($urls['homepage'] instanceof Url))) {
+            throw new DSLException('The urls array must contain a homepage url.');
+        }
+
         foreach($authors as $oneAuthor) {
             if (!($oneAuthor instanceof Author)) {
                 throw new DSLException('The authors array must only contain Author objects.');
@@ -37,10 +47,12 @@ final class ConcreteDSL implements DSL {
 
         $this->name = $name;
         $this->type = $type;
-        $this->url = $url;
+        $this->urls = $urls;
         $this->license = $license;
         $this->authors = $authors;
+        $this->maintainer = $maintainer;
         $this->project = $project;
+        $this->version = $version;
 
     }
 
@@ -52,8 +64,8 @@ final class ConcreteDSL implements DSL {
         return $this->type;
     }
 
-    public function getUrl(): Url {
-        return $this->url;
+    public function getUrls(): array {
+        return $this->urls;
     }
 
     public function getLicense(): string {
@@ -64,8 +76,16 @@ final class ConcreteDSL implements DSL {
         return $this->authors;
     }
 
+    public function getMaintainer(): Author {
+        return $this->maintainer;
+    }
+
     public function getProject(): Project {
         return $this->project;
+    }
+
+    public function getVersion(): string {
+        return $this->version;
     }
 
 }
