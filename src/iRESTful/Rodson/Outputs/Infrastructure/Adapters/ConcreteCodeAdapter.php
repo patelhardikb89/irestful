@@ -49,7 +49,7 @@ final class ConcreteCodeAdapter implements CodeAdapter {
     public function fromDockerFileToCode(DockerFile $dockerFile) {
         $data = $this->getData($dockerFile);
         $code = $this->template->render('dockerfile.twig', $data);
-        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('DockerFile');
+        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('Dockerfile');
 
         return new ConcreteOutputCode($code, $path);
     }
