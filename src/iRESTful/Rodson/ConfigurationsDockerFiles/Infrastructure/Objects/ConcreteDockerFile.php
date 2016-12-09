@@ -8,11 +8,13 @@ use iRESTful\Rodson\DSLs\Domain\Names\Name;
 
 final class ConcreteDockerFile implements DockerFile {
     private $name;
+    private $domain;
     private $maintainer;
     private $version;
     private $repositoryUrl;
     public function __construct(Name $name, Author $maintainer, string $version, URL $repositoryUrl) {
         $this->name = $name;
+        $this->domain = $name->getName();
         $this->maintainer = $maintainer;
         $this->version = $version;
         $this->repositoryUrl = $repositoryUrl;
@@ -20,6 +22,10 @@ final class ConcreteDockerFile implements DockerFile {
 
     public function getName(): Name {
         return $this->name;
+    }
+
+    public function getDomain(): string {
+        return $this->domain;
     }
 
     public function getMaintainer(): Author {
