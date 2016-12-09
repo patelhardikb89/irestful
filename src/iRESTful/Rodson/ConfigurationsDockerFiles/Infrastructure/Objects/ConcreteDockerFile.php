@@ -14,7 +14,7 @@ final class ConcreteDockerFile implements DockerFile {
     private $repositoryUrl;
     public function __construct(Name $name, Author $maintainer, string $version, URL $repositoryUrl) {
         $this->name = $name;
-        $this->domain = $name->getName();
+        $this->domain = strtolower(str_replace('/', '-', $name->getName())).'.dev';
         $this->maintainer = $maintainer;
         $this->version = $version;
         $this->repositoryUrl = $repositoryUrl;
