@@ -12,9 +12,8 @@ ARG API_PORT
 
 ENV VERSION={{version}}
 ENV PROJECT_NAME={{name.project_name|lower}}
-ENV PROJECT_NAME_WITH_VERSION=${PROJECT_NAME}-${VERSION}
-ENV PROJECT_PATH=/var/www
-ENV PROJECT_PATH_WITH_VERSION=${PROJECT_PATH}/${PROJECT_NAME_WITH_VERSION}
+ENV PROJECT_PATH=/var/www/html
+ENV PROJECT_PATH_WITH_VERSION=${PROJECT_PATH}/${PROJECT_NAME}
 ENV PROJECT_PATH_WITH_VERSION_WITH_BUILD=${PROJECT_PATH_WITH_VERSION}/build
 ENV PROJECT_PATH_WITH_VERSION_WITH_BUILD_WITH_WEB=${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/web
 ENV REPOSITORY_URL={{repository_url.url}}
@@ -57,6 +56,7 @@ WORKDIR ${PROJECT_PATH}
 RUN echo ${REPOSITORY_URL}/archive/${VERSION}.zip
 RUN curl -o project.zip -fSL "${REPOSITORY_URL}/archive/${VERSION}.zip"
 RUN unzip project.zip -d ${PROJECT_PATH}
+RUN mv ${PROJECT_PATH}/$(ls | sort -n | head -1) ${PROJECT_PATH_WITH_VERSION}
 
 #set workdir
 WORKDIR ${PROJECT_PATH_WITH_VERSION}
@@ -74,7 +74,10 @@ USER docker
 RUN php composer.phar install --prefer-source
 
 #compile the app using rodson:
-RUN php vendor/steve-rodrigue/irestful/bin/rodson.php --input src/rodson.json --output build
+RUN php vendor/steve-rodrigue/irestful/bin/rodson.php --input src/rodson.json --output ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}
+
+#move composer to the build folder:
+RUN mv composer.phar ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/composer.phar
 
 #set the user and directory back to root:
 USER root
@@ -87,7 +90,7 @@ WORKDIR ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}
 RUN echo "127.0.0.1 ${API_DOMAIN}" >> /etc/hosts;
 
 #setup nginx conf file:
-RUN cp ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/conf/nginx/default.conf /etc/nginx/sites-available/default.conf;
+RUN cp conf/nginx/default.conf /etc/nginx/sites-available/default.conf;
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf;
 RUN sed -i "s|{port}|${API_PORT}|g" /etc/nginx/sites-enabled/default.conf;
 RUN sed -i "s|{root_path}|${PROJECT_PATH_WITH_VERSION_WITH_BUILD_WITH_WEB}|g" /etc/nginx/sites-enabled/default.conf;
@@ -97,14 +100,13 @@ RUN sed -i "s|{server}|$DB_SERVER|g" /etc/nginx/sites-enabled/default.conf;
 RUN sed -i "s|{driver}|$DB_DRIVER|g" /etc/nginx/sites-enabled/default.conf;
 
 #setup php-fpm conf file:
-RUN cp ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/conf/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf;
+RUN cp conf/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf;
 
 #change user to docker:
 RUN chown -R docker ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}
 USER docker
 
 #install the app using composer:
-RUN cp ${PROJECT_PATH_WITH_VERSION}/composer.phar ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/composer.phar
 RUN php composer.phar install --prefer-source
 
 #set the user and directory back to root:
