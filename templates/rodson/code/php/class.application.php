@@ -6,8 +6,7 @@ use iRESTful\LeoPaul\Applications\Libraries\Routers\Infrastructure\Factories\Con
 final class {{namespace.name}} {
 
     public function __construct(array $server, array $queryParameters, array $requestParameters) {
-        $dbName = $this->retrieveDatabaseName($server['SERVER_NAME']);
-        $configs = new {{configuration.namespace.name}}($dbName);
+        $configs = new {{configuration.namespace.name}}();
         $factory = new ConcreteApplicationFactory($configs->get());
         $factory->create()->execute([
             'uri' => strtok($server['REQUEST_URI'], '?'),
@@ -29,11 +28,6 @@ final class {{namespace.name}} {
             $headers[$header] = $value;
         }
         return $headers;
-    }
-
-    private function retrieveDatabaseName($serverName) {
-        $exploded = explode('.', $serverName);
-        return str_replace('-', '_', $exploded[0]);
     }
 
 }

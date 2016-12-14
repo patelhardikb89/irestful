@@ -13,13 +13,11 @@ use iRESTful\LeoPaul\Applications\Libraries\PDOEntities\Infrastructure\Factories
 
 {% import "includes/imports.class.php" as fn %}
 final class {{namespace.name}} {
-    private $dbName;
     private $entityObjects;
     private $entityApplicationConfiguration;
-    public function __construct($dbName) {
-        $this->dbName = $dbName;
+    public function __construct() {
         $this->entityObjects = new {{object_configuration.namespace.name}}();
-        $this->entityApplicationConfiguration = new ConcreteEntityApplicationConfiguration($dbName, $this->entityObjects);
+        $this->entityApplicationConfiguration = new ConcreteEntityApplicationConfiguration($this->entityObjects);
     }
 
     public function get() {
@@ -41,7 +39,7 @@ final class {{namespace.name}} {
                     $this->entityObjects->getTimezone(),
                     getenv('DB_DRIVER'),
                     getenv('DB_SERVER'),
-                    $this->dbName,
+                    getenv('DB_NAME'),
                     getenv('DB_USERNAME'),
                     getenv('DB_PASSWORD')
             );

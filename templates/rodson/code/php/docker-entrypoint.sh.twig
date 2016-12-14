@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ ! -d "vendor" ]; then
+    #add domain to host file:
+    echo "127.0.0.1 ${API_DOMAIN}" >> /etc/hosts;
+
+    #setup nginx conf file:
+    cp conf/nginx/default.conf /etc/nginx/sites-available/default.conf;
+    ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf;
+    sed -i "s|{root_path}|${PROJECT_PATH_WITH_VERSION_WITH_BUILD_WITH_WEB}|g" /etc/nginx/sites-enabled/default.conf;
+    sed -i "s|{username}|${DB_USERNAME}|g" /etc/nginx/sites-enabled/default.conf;
+    sed -i "s|{password}|${DB_PASSWORD}|g" /etc/nginx/sites-enabled/default.conf;
+    sed -i "s|{server}|${DB_SERVER}|g" /etc/nginx/sites-enabled/default.conf;
+    sed -i "s|{database}|${DB_NAME}|g" /etc/nginx/sites-enabled/default.conf;
+    sed -i "s|{driver}|${DB_DRIVER}|g" /etc/nginx/sites-enabled/default.conf;
+
+    #setup php-fpm conf file:
+    cp conf/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf;
+
+    #install the app using composer:
+    php composer.phar install --prefer-source
+
+    #restart nginx:
+    /etc/init.d/nginx restart;
+fi
+
+#run nginx
+/etc/init.d/nginx -g daemon off;

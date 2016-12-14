@@ -81,6 +81,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         sudo sed -i "s/{username}/$DB_USERNAME/g" /etc/nginx/sites-enabled/{{nginx.name}};
         sudo sed -i "s/{password}/$DB_PASSWORD/g" /etc/nginx/sites-enabled/{{nginx.name}};
         sudo sed -i "s/{server}/$DB_SERVER/g" /etc/nginx/sites-enabled/{{nginx.name}};
+        sudo sed -i "s/{database}/$DB_NAME/g" /etc/nginx/sites-enabled/{{nginx.name}};
         sudo sed -i "s/{driver}/$DB_DRIVER/g" /etc/nginx/sites-enabled/{{nginx.name}};
 
         sudo service nginx restart;

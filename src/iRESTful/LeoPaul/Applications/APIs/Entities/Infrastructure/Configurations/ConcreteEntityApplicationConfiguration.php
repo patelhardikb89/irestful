@@ -16,10 +16,8 @@ use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\Updat
 use iRESTful\LeoPaul\Applications\APIs\Entities\Infrastructure\Controllers\UpdateSet;
 
 final class ConcreteEntityApplicationConfiguration implements EntityApplicationConfiguration {
-    private $dbName;
     private $entityObjects;
-    public function __construct($dbName, EntityConfiguration $configuration) {
-        $this->dbName = $dbName;
+    public function __construct(EntityConfiguration $configuration) {
         $this->entityObjects = $configuration;
     }
 
@@ -28,7 +26,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
     }
 
     private function getControllerRules() {
-        
+
         $serviceFactory = new PDOServiceFactory(
             $this->entityObjects->getTransformerObjects(),
             $this->entityObjects->getContainerClassMapper(),
@@ -37,7 +35,7 @@ final class ConcreteEntityApplicationConfiguration implements EntityApplicationC
             $this->entityObjects->getTimezone(),
             getenv('DB_DRIVER'),
             getenv('DB_SERVER'),
-            $this->dbName,
+            getenv('DB_NAME'),
             getenv('DB_USERNAME'),
             getenv('DB_PASSWORD')
         );

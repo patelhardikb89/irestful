@@ -52,11 +52,15 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         $dockerCode = $this->template->render('dockerfile.twig', $data);
         $dockerPath =  $this->rootPathAdapter->fromRelativePathStringToPath('dev-ops/docker/Dockerfile');
 
+        $dockerEntrypointCode = $this->template->render('docker-entrypoint.sh.twig', $data);
+        $dockerEntrypointPath =  $this->rootPathAdapter->fromRelativePathStringToPath('dev-ops/docker/docker-entrypoint.sh');
+
         $dockerComposeCode = $this->template->render('docker-compose.yml.twig', $data);
         $dockerComposePath =  $this->rootPathAdapter->fromRelativePathStringToPath('dev-ops/docker/docker-compose.yml');
 
         return [
             new ConcreteOutputCode($dockerCode, $dockerPath),
+            new ConcreteOutputCode($dockerEntrypointCode, $dockerEntrypointPath),
             new ConcreteOutputCode($dockerComposeCode, $dockerComposePath)
         ];
     }
