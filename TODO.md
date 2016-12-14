@@ -1,3 +1,6 @@
+* Make sure we have to hyphens in paths, classes, etc.
+* Make the installation script work with HTTP, since we use it with docker.
+* Use the db_name in the vagrant/docker file, not based on the domain name.
 * Enable cross origin
 * Generate the Dockerfile and docker-compose file when necessary.
 * Make it possible to add external dependencies using apt-get

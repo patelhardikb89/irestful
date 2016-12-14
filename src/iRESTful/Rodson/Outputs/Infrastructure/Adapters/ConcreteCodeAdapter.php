@@ -46,12 +46,19 @@ final class ConcreteCodeAdapter implements CodeAdapter {
         return new ConcreteOutputCode($code, $path);
     }
 
-    public function fromDockerFileToCode(DockerFile $dockerFile) {
+    public function fromDockerFileToCodes(DockerFile $dockerFile) {
         $data = $this->getData($dockerFile);
-        $code = $this->template->render('dockerfile.twig', $data);
-        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('Dockerfile');
 
-        return new ConcreteOutputCode($code, $path);
+        $dockerCode = $this->template->render('dockerfile.twig', $data);
+        $dockerPath =  $this->rootPathAdapter->fromRelativePathStringToPath('dev-ops/docker/Dockerfile');
+
+        $dockerComposeCode = $this->template->render('docker-compose.yml.twig', $data);
+        $dockerComposePath =  $this->rootPathAdapter->fromRelativePathStringToPath('dev-ops/docker/docker-compose.yml');
+
+        return [
+            new ConcreteOutputCode($dockerCode, $dockerPath),
+            new ConcreteOutputCode($dockerComposeCode, $dockerComposePath)
+        ];
     }
 
     public function fromVagrantFileToCodes(VagrantFile $vagrantFile) {

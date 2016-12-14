@@ -160,7 +160,7 @@ final class ConcreteApplication implements Application {
         $codeAdapter = $this->codeAdapterFactory->create();
         $phpunitCode = $codeAdapter->fromPHPUnitToCode($phpunit);
         $vagrantFileCodes = $codeAdapter->fromVagrantFileToCodes($vagrantFile);
-        $dockerFileCode = $codeAdapter->fromDockerFileToCode($dockerFile);
+        $dockerCodes = $codeAdapter->fromDockerFileToCodes($dockerFile);
         $composerCode = $codeAdapter->fromComposerToCode($composer);
         $controllerCodes = $codeAdapter->fromControllersToCodes($controllerClasses);
         $testCodes = $codeAdapter->fromTestsToCodes($tests);
@@ -176,7 +176,7 @@ final class ConcreteApplication implements Application {
             [$gitIgnoreCode],
             [$phpunitCode],
             $vagrantFileCodes,
-            [$dockerFileCode],
+            $dockerCodes,
             [$composerCode],
             $controllerCodes,
             $testCodes,

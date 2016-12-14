@@ -11,7 +11,7 @@ final class ConcreteDockerFileAdapter implements DockerFileAdapter {
     }
 
     public function fromDSLToDockerFile(DSL $dsl) {
-
+        
         $name = $dsl->getName();
         $maintainer = $dsl->getMaintainer();
         $version = $dsl->getVersion();

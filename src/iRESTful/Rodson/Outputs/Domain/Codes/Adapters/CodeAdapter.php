@@ -9,7 +9,7 @@ use iRESTful\Rodson\ConfigurationsDockerFiles\Domain\DockerFile;
 
 interface CodeAdapter {
     public function fromComposerToCode(Composer $composer);
-    public function fromDockerFileToCode(DockerFile $dockerFile);
+    public function fromDockerFileToCodes(DockerFile $dockerFile);
     public function fromVagrantFileToCodes(VagrantFile $vagrantFile);
     public function fromPHPUnitToCode(PHPUnit $phpunit);
     public function fromInstallationToCode(Installation $installation);

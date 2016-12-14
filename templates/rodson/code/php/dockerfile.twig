@@ -1,36 +1,32 @@
 FROM ubuntu:16.10
 MAINTAINER {{maintainer.name}} <{{maintainer.email.email}}>
 
-VOLUME /var/www/html
-
-EXPOSE 80
-
-ARG VERSION
 ARG DB_USERNAME
 ARG DB_PASSWORD
 ARG DB_SERVER
 ARG DB_DRIVER
 ARG DB_NAME
-ARG API_PROTOCOL
 ARG API_DOMAIN
+ARG API_PROTOCOL
 ARG API_PORT
 
 ENV VERSION={{version}}
-ENV COMPANY_NAME={{name.organization_name|lower}}
 ENV PROJECT_NAME={{name.project_name|lower}}
-ENV NGINX_CONF_FILE=${COMPANY_NAME}-${PROJECT_NAME}.conf
 ENV PROJECT_NAME_WITH_VERSION=${PROJECT_NAME}-${VERSION}
-ENV PROJECT_PATH=/home/docker/project/${PROJECT_NAME_WITH_VERSION}
+ENV PROJECT_PATH=/var/www
+ENV PROJECT_PATH_WITH_VERSION=${PROJECT_PATH}/${PROJECT_NAME_WITH_VERSION}
+ENV PROJECT_PATH_WITH_VERSION_WITH_BUILD=${PROJECT_PATH_WITH_VERSION}/build
+ENV PROJECT_PATH_WITH_VERSION_WITH_BUILD_WITH_WEB=${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/web
 ENV REPOSITORY_URL={{repository_url.url}}
 
-ENV DB_USERNAME=root
-ENV DB_PASSWORD=mypassword
-ENV DB_SERVER=127.0.0.1
-ENV DB_DRIVER=mysql
-ENV DB_NAME=mydb
-ENV API_PROTOCOL=http
-ENV API_DOMAIN={{domain}}
-ENV API_PORT=80
+ENV DB_USERNAME=${DB_USERNAME}
+ENV DB_PASSWORD=${DB_PASSWORD}
+ENV DB_SERVER=${DB_SERVER}
+ENV DB_DRIVER=${DB_DRIVER}
+ENV DB_NAME=${DB_NAME}
+ENV API_DOMAIN=${API_DOMAIN}
+ENV API_PROTOCOL=${API_PROTOCOL}
+ENV API_PORT=${API_PORT}
 
 #install the extensions we need:
 RUN apt-get update -y;
@@ -48,55 +44,81 @@ RUN apt-get install -y php-xml;
 RUN apt-get install -y php-mbstring;
 RUN apt-get install -y php-bcmath;
 
-#set workdir
-WORKDIR ${PROJECT_PATH}
-
 #purge apache:
 RUN apt-get -y purge apache2;
 
 #install nginx:
 RUN apt-get install -y nginx;
 
-#create user:
-RUN adduser docker --home /home/docker
-RUN echo 'docker:docker' | chpasswd
+#set workdir
+WORKDIR ${PROJECT_PATH}
 
 #download our source code:
+RUN echo ${REPOSITORY_URL}/archive/${VERSION}.zip
 RUN curl -o project.zip -fSL "${REPOSITORY_URL}/archive/${VERSION}.zip"
-RUN unzip project.zip -d /home/docker/project
+RUN unzip project.zip -d ${PROJECT_PATH}
+
+#set workdir
+WORKDIR ${PROJECT_PATH_WITH_VERSION}
+
+#download composer:
 RUN curl -sS https://getcomposer.org/installer | php;
-RUN chown -R docker ${PROJECT_PATH};
-RUN chmod -R 777 ${PROJECT_PATH};
+
+#create and change user:
+RUN adduser  --ingroup root docker
+RUN echo "docker:mypass"|chpasswd
+RUN chown -R docker ${PROJECT_PATH_WITH_VERSION}
+USER docker
+
+#install the app using composer:
+RUN php composer.phar install --prefer-source
+
+#compile the app using rodson:
+RUN php vendor/steve-rodrigue/irestful/bin/rodson.php --input src/rodson.json --output build
+
+#set the user and directory back to root:
+USER root
+RUN chown -R root ${PROJECT_PATH_WITH_VERSION}
+
+#set workdir
+WORKDIR ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}
 
 #add domain to host file:
 RUN echo "127.0.0.1 ${API_DOMAIN}" >> /etc/hosts;
 
-#change user:
-RUN su docker
-USER docker
-
-#download our source code and install it using composer:
-RUN php composer.phar install --prefer-source
-RUN php vendor/steve-rodrigue/irestful/bin/rodson.php --input src/rodson.json --output build
-
-#change user back to root:
-USER root
-
 #setup nginx conf file:
-RUN cp ${PROJECT_PATH}/build/conf/nginx/${NGINX_CONF_FILE} /etc/nginx/sites-available/${NGINX_CONF_FILE};
-RUN ln -s /etc/nginx/sites-available/${NGINX_CONF_FILE} /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
-RUN sed -i "s/{username}/$DB_USERNAME/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
-RUN sed -i "s/{password}/$DB_PASSWORD/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
-RUN sed -i "s/{server}/$DB_SERVER/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
-RUN sed -i "s/{driver}/$DB_DRIVER/g" /etc/nginx/sites-enabled/${NGINX_CONF_FILE};
+RUN cp ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/conf/nginx/default.conf /etc/nginx/sites-available/default.conf;
+RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf;
+RUN sed -i "s|{port}|${API_PORT}|g" /etc/nginx/sites-enabled/default.conf;
+RUN sed -i "s|{root_path}|${PROJECT_PATH_WITH_VERSION_WITH_BUILD_WITH_WEB}|g" /etc/nginx/sites-enabled/default.conf;
+RUN sed -i "s|{username}|$DB_USERNAME|g" /etc/nginx/sites-enabled/default.conf;
+RUN sed -i "s|{password}|$DB_PASSWORD|g" /etc/nginx/sites-enabled/default.conf;
+RUN sed -i "s|{server}|$DB_SERVER|g" /etc/nginx/sites-enabled/default.conf;
+RUN sed -i "s|{driver}|$DB_DRIVER|g" /etc/nginx/sites-enabled/default.conf;
 
 #setup php-fpm conf file:
-RUN cp ${PROJECT_PATH}/build/conf/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf;
+RUN cp ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/conf/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf;
 
-#copy project in the right directory:
-RUN cp -R ${PROJECT_PATH} /var/www/html
-RUN cd /var/www/html; ls -l;
+#change user to docker:
+RUN chown -R docker ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}
+USER docker
 
-#restart our services:
-RUN /etc/init.d/php7.0-fpm restart;
+#install the app using composer:
+RUN cp ${PROJECT_PATH_WITH_VERSION}/composer.phar ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}/composer.phar
+RUN php composer.phar install --prefer-source
+
+#set the user and directory back to root:
+USER root
+RUN chown -R root ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}
+
+#restart nginx:
 RUN /etc/init.d/nginx restart;
+
+#set the volumes:
+VOLUME ["${PROJECT_PATH}", "/etc/nginx/sites-available", "/var/log/nginx"]
+
+#expose api port:
+EXPOSE ${API_PORT}
+
+#start nginx:
+CMD ["nginx", "-g", "daemon off;"]
