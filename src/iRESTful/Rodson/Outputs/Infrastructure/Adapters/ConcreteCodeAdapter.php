@@ -165,12 +165,7 @@ final class ConcreteCodeAdapter implements CodeAdapter {
 
     private function fromNginxToCode(Nginx $nginx) {
         $data = $this->getData($nginx);
-
-        $fileName = $nginx->getName();
-        $nginxPath = '/'.implode('/', $nginx->getRoot()->getDirectoryPath());
-        $data['absolute_directory_path'] = '/vagrant'.$nginxPath;
-
-        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('conf/nginx/'.$fileName);
+        $path =  $this->rootPathAdapter->fromRelativePathStringToPath('conf/nginx/default.conf');
         $code = $this->template->render('nginx.conf.twig', $data);
         return new ConcreteOutputCode($code, $path);
     }
