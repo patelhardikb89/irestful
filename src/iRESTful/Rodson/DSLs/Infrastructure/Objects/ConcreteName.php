@@ -17,6 +17,18 @@ final class ConcreteName implements Name {
             throw new NameException('The organizationName must be a non-empty string.');
         }
 
+        $matches = [];
+        preg_match_all('/[a-zA-Z]+/s', $organizationName, $matches);
+        if (!isset($matches[0][0]) || ($matches[0][0] != $organizationName)) {
+            throw new NameException('The orgaizationName ('.$organizationName.') can only contain letters.');
+        }
+
+        $matches = [];
+        preg_match_all('/[a-zA-Z]+/s', $projectName, $matches);
+        if (!isset($matches[0][0]) || ($matches[0][0] != $projectName)) {
+            throw new NameException('The projectName ('.$projectName.') can only contain letters.');
+        }
+
         $this->projectName = $projectName;
         $this->organizationName = $organizationName;
     }

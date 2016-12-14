@@ -1,5 +1,5 @@
 {
-    "name": "iRESTful/Authenticated-CRUD",
+    "name": "iRESTful/AuthenticatedCRUD",
     "version": "master",
     "license": "MIT",
     "type": "crud-rest-api",
