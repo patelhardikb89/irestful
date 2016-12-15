@@ -4,6 +4,9 @@ if [ ! -d "vendor" ]; then
     #add domain to host file:
     echo "127.0.0.1 ${API_DOMAIN}" >> /etc/hosts;
 
+    #delete the default nginx conf file:
+    rm /etc/nginx/sites-available/default;
+
     #setup nginx conf file:
     cp conf/nginx/default.conf /etc/nginx/sites-available/default.conf;
     ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf;
@@ -25,4 +28,4 @@ if [ ! -d "vendor" ]; then
 fi
 
 #run nginx
-/etc/init.d/nginx -g daemon off;
+service nginx start

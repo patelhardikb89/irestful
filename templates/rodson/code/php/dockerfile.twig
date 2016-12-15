@@ -68,6 +68,9 @@ RUN chown -R root ${PROJECT_PATH_WITH_VERSION}
 #set workdir
 WORKDIR ${PROJECT_PATH_WITH_VERSION_WITH_BUILD}
 
+# Append "daemon off;" to the beginning of the configuration
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
 #set the volumes:
 VOLUME ["${PROJECT_PATH}", "/etc/nginx/sites-available", "/var/log/nginx"]
 
