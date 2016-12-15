@@ -15,7 +15,7 @@ services:
    authenticated-crud:
      depends_on:
        - db
-     image: {{name.organization_name|lower}}/{{name.project_name|lower}}:{{name.version}}
+     image: {{name.organization_name|lower}}/{{name.project_name|lower}}:{{version}}
      ports:
        - "80:80"
      restart: always
